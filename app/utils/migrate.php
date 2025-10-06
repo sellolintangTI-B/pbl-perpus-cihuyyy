@@ -2,7 +2,6 @@
 require_once("../core/Database.php");
 $db = new Database;
 
-
 try {
     $path = dirname(__DIR__) . '/migrations';
     $files = scandir($path);
