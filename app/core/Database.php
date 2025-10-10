@@ -3,9 +3,9 @@ class Database {
     public $conn;
     private $DB_HOST = "localhost";
     private $DB_USERNAME = "postgres";
-    private $DB_PASSWORD = "farrelpostgres";
+    private $DB_PASSWORD = "";
     private $DB_DBNAME = "pbl";
-    private $DB_PORT = "5431";
+    private $DB_PORT = "5432";
 
     public function __construct()
     {

@@ -11,23 +11,23 @@ class Auth extends Controller
 
     public function register()
     {
-        $this->view('auth/register');
+        $this->view('auth/register', layoutType: $this::$layoutType["default"]);
     }
 
     public function signup()
     {
         try {
-            $data = [
-                "id_number" => "asdf",
-                "email" => "farrelmaahira123@gmail.com",
-                "password" => "farrel123",
-                "first_name" => "farrel maahira",
-                "last_name" => "agraprana nugraha",
-                "institution" => "politeknik negeri jakarta",
-                "phone_number" => "087795774940",
-                "role" => "Mahasiswa"
-            ];
-
+            // $data = [
+            //     "id_number" => "asdf",
+            //     "email" => "farrelmaahira123@gmail.com",
+            //     "password" => "farrel123",
+            //     "first_name" => "farrel maahira",
+            //     "last_name" => "agraprana nugraha",
+            //     "institution" => "politeknik negeri jakarta",
+            //     "phone_number" => "087795774940",
+            //     "role" => "Mahasiswa"
+            // ];
+            $data = $_POST;
             $validator = new Validator($data);
             $validator->field("id_number", ["required"]);
             $validator->field("email", ["required", "email"]);
@@ -45,14 +45,12 @@ class Auth extends Controller
 
             if($insertData) {
                 $_SESSION['success'] = "Berhasil memasukan data";
-                header('location:'. URL . '/auth/register');
+                header('location:'. BASE_URI . '/auth/register');
             }
-            
-
         } catch (CustomException $e) {
             var_dump($e->getErrorMessages());
             ErrorHandler::setError($e->getErrorMessages());
-            header('location:' . URL . '/auth/register');
+            header('location:' . BASE_URI . '/auth/register');
         }
     }
 }
