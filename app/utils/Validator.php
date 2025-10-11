@@ -34,6 +34,7 @@ class Validator {
         }
     }
 
+
     public function error() 
     {
         if(!empty($this->errors)) {
