@@ -3,6 +3,6 @@
 class home extends Controller{
     
     public function index() {
-        return $this->view('home/index');
+        $this->view('home/index',  layoutType: $this::$layoutType["civitas"]);
     }
 }

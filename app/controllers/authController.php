@@ -11,7 +11,7 @@ class Auth extends Controller
 
     public function register()
     {
-        $this->view('auth/register');
+        $this->view('auth/register', layoutType: $this::$layoutType["default"]);
     }
 
     public function signup()

@@ -1,14 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link href="/public/css/output.css" rel="stylesheet">
-</head>
-<body>
-    <h1 class="text-3xl font-bold ">
-        Nama gwej
+<div class="h-screen  w-full flex items-center justify-center">
+    <h1 class="text-5xl font-poppins text-gray-800">
+        Welcome to the Home Page!
     </h1>
-</body>
-</html>
+</div>
