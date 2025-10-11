@@ -1,44 +1,4 @@
 <?php
-<<<<<<< HEAD
-$error = ResponseHandler::getResponse();
-var_dump($error);
-?>
-<h1>
-    register
-</h1>
-<form action="<?= URL ?>/auth/signup" method="POST" enctype="multipart/form-data">
-    <h2>Registration Form</h2>
-
-    <label for="id_number">ID Number</label>
-    <input type="text" id="id_number" name="id_number" >
-
-    <label for="email">Email</label>
-    <input type="email" id="email" name="email" >
-
-    <label for="password">Password</label>
-    <input type="password" id="password" name="password" >
-
-    <label for="first_name">First Name</label>
-    <input type="text" id="first_name" name="first_name" >
-
-    <label for="last_name">Last Name</label>
-    <input type="text" id="last_name" name="last_name">
-
-    <label for="phone_number">Phone Number</label>
-    <input type="tel" id="phone_number" name="phone_number" pattern="[0-9]{10,15}" placeholder="e.g. 081234567890" >
-
-    <label for="role">Role</label>
-    <select id="role" name="role" >
-        <option value="">-- Select Role --</option>
-        <option value="Mahasiswa">Mahasiswa</option>
-        <option value="Dosen">Dosen</option>
-    </select>
-
-    <input type="file" name="activation_proof" id="">
-
-    <button type="submit">Register</button>
-</form>
-=======
         require_once 'app/components/form-input.php'
 ?>
 <div class="w-full min-h-screen flex justify-center items-center p-4 ">
@@ -55,22 +15,22 @@ var_dump($error);
                     <h1 class="text-3xl font-poppins text-center mb-8">
                         Register
                     </h1>
-                    <form class="w-full grid grid-cols-1 sm:grid-cols-2 gap-4" action="<?=BASE_URI.'/auth/signup'?>" method="post" enctype="multipart/form-data">
+                    <form class="w-full grid grid-cols-1 sm:grid-cols-2 gap-4" action="<?=URL.'/auth/signup'?>" method="post" enctype="multipart/form-data">
                         <?php
-                            FormInput::input(id:'id_number', name:'id_number', label:'NIM/NIP', required:true);
-                            FormInput::input(id:'email', name:'email', type:'email', label:'Email', required:true);
-                            FormInput::input(id:'first_name', name:'first_name', label:'Nama Depan', required:true);
+                            FormInput::input(id:'id_number', name:'id_number', label:'NIM/NIP', required:false);
+                            FormInput::input(id:'email', name:'email', type:'email', label:'Email', required:false);
+                            FormInput::input(id:'first_name', name:'first_name', label:'Nama Depan', required:false);
                             FormInput::input(id:'last_name', name:'last_name', label:'Nama Belakang');
-                            FormInput::input(id:'jurusan', name:'jurusan', label:'Jurusan', required:true);
-                            FormInput::input(id:'phone_number', name:'phone_number', type:'tel', label:'Nomor Whatsapp', required:true);
-                            FormInput::input(id:'password', name:'password', type:'password', label:'Password', required:true);
-                            FormInput::input(id:'password_confirmation', name:'password_confirmation', type:'password', label:'Konfirmasi Password', required:true);
+                            FormInput::input(id:'jurusan', name:'jurusan', label:'Jurusan', required:false);
+                            FormInput::input(id:'phone_number', name:'phone_number', type:'tel', label:'Nomor Whatsapp', required:false);
+                            FormInput::input(id:'password', name:'password', type:'password', label:'Password', required:false);
+                            FormInput::input(id:'password_confirmation', name:'password_confirmation', type:'password', label:'Konfirmasi Password', required:false);
                             
                             FormInput::fileInput(
                                 id:'file_upload', 
                                 name:'file_upload', 
                                 label:'Upload bukti download \'Kubaca PNJ\'', 
-                                required:true, 
+                                required:false, 
                                 classGlobal:'sm:col-span-2'
                             );
                             
@@ -78,7 +38,7 @@ var_dump($error);
                                 id:'role', 
                                 name:'role', 
                                 label:'Jenis Civitas',
-                                required:true, 
+                                required:false, 
                                 classGlobal:'sm:col-span-2', 
                                 options: [
                                     [
@@ -104,4 +64,3 @@ var_dump($error);
         </div>
     </div>
 </div>
->>>>>>> 1ac6ff55fdc806a9488e78bfee17cd1c9dd3c9e0

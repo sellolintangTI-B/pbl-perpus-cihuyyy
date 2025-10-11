@@ -7,4 +7,3 @@ require_once('config/config.php');
 require_once("utils/Validator.php");
 require_once("core/ResponseHandler.php");
 require_once("utils/CustomException.php");
-$db = new Database;

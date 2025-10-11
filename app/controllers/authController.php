@@ -17,7 +17,6 @@ class Auth extends Controller
     public function signup()
     {
         try {
-
             $data = [
                 "id_number" => $_POST['id_number'],
                 "email" => $_POST['email'],
@@ -51,14 +50,14 @@ class Auth extends Controller
                 throw new CustomException(['email' => "Email sudah terdaftar"]);
             }
 
-            $file = $_FILES['activation_proof']['tmp_name'];
+            $file = $_FILES['file_upload']['tmp_name'];
             $allowedMimes = ["image/jpeg", "image/png", "image/jpg"];
             $getFileInfo = getimagesize($file);
             if (!in_array($getFileInfo['mime'], $allowedMimes)) {
                 throw new CustomException(['image' => "File tidak didukung"]);
             }
 
-            $newPath = 'storage/' . $_FILES['activation_proof']['name'];
+            $newPath = 'storage/' . $_FILES['file_upload']['name'];
             move_uploaded_file($file, __DIR__ . "/../../public/" . $newPath); 
             $data['image'] = $newPath;
 
@@ -71,6 +70,44 @@ class Auth extends Controller
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), "error");
             header('location:' . URL . '/auth/register');
+        }
+    }
+
+    public function signIn()
+    {
+        try {
+
+            $data = [
+                "id_number" => "2407411031",
+                "password" => "pass1234"
+            ];
+
+            $validator = new Validator($data);
+            $validator->field("id_number", ["required"]);
+            $validator->field("password", ["required"]);
+            $errors = $validator->error();
+            if ($errors) {
+                throw new CustomException($validator->getErrors());
+            }
+
+            $checkIfUserExist = $this->user->getByIdNumber($data['id_number']);
+            if(!$checkIfUserExist) throw new CustomException('User tidak tersedia');
+            if(!$checkIfUserExist['is_active']) throw new CustomException('Akun ini masih menunggu verifikasi admin');
+            if(!password_verify($data['password'], $checkIfUserExist['password_hash'])) throw new CustomException('Credentials not match');
+
+            $_SESSION['loggedInUser'] = [
+                "username" => $checkIfUserExist['first_name'] . ' ' . $checkIfUserExist['last_name'],
+                "role" => $checkIfUserExist['role'],
+                "id_number" => $checkIfUserExist['id_number'],
+                "email" => $checkIfUserExist['email'],
+                "id" => $checkIfUserExist['id']
+            ];
+
+        } catch (CustomException $e) {
+            ResponseHandler::setResponse($e->getErrorMessages(), "error");
+            $error = ResponseHandler::getResponse();
+            var_dump($error);
+            // header('location:' . URL . '/auth/login');
         }
     }
 }

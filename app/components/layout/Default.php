@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?=$title??"SIMARU"?></title>
-    <link href="/public/css/output.css" rel="stylesheet">
-    <link href="/public/css/style.css" rel="stylesheet">
+    <link href="http://localhost/pbl/public/css/output.css" rel="stylesheet">
+    <link href="http://localhost/pbl/public/css/style.css" rel="stylesheet">
     <style>
         @keyframes slideDown {
             from {
@@ -26,7 +26,7 @@
 <body class="font-poppins bg-gray-100">
     <!-- Error Messages -->
     <?php
-        $error = ErrorHandler::getError();
+        $error = ResponseHandler::getResponse();
         if(!empty($error)) {
     ?>
         <div class="fixed top-0 left-0 right-0 z-50 flex justify-center p-4 alert-slide">
@@ -46,15 +46,13 @@
                         </h3>
                         <div class="text-sm text-red-700">
                             <?php
-                                if(is_array($error)){
+                                if(is_array($error['message'])){
                                     echo "<ul class='list-disc list-inside space-y-1'>";
-                                    foreach($error as $err){
-                                        echo "<li>" . htmlspecialchars($err) . "</li>";
+                                    foreach($error['message'] as $field => $message){
+                                        echo "<li>" . htmlspecialchars($message) . "</li>";
                                     }
                                     echo "</ul>";
-                                } else {
-                                    echo "<p>" . htmlspecialchars($error) . "</p>";
-                                }
+                                } 
                             ?>
                         </div>
                     </div>

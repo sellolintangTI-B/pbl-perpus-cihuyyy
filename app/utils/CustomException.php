@@ -3,7 +3,7 @@
 class  CustomException extends Exception {
     private $errors;
 
-    public function __construct(string|array $data, $message = null)
+    public function __construct(string|array $data)
     {
         $this->errors = $data;
     }

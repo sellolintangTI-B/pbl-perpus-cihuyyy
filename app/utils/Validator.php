@@ -34,6 +34,11 @@ class Validator {
         }
     }
 
+    public function minLength($field, $length) {
+        if(strlen($this->data[$field]) < $length) {
+            return "$field must be at least $length characters long";
+        }
+    }
 
     public function error() 
     {

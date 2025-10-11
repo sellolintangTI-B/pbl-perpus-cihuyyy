@@ -31,7 +31,6 @@ class Controller {
                 require('app/components/layout/Default.php');
                 break;
         }
-       
     }
 }
 ?>

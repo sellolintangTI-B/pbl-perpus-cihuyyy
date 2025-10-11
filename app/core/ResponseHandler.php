@@ -12,8 +12,9 @@ class ResponseHandler {
     public static function getResponse() 
     {
         if(isset($_SESSION['response'])) {
-            return $_SESSION['response'];
+            $response = $_SESSION['response'];
             unset($_SESSION['response']);
+            return $response;
         }
     }
 
