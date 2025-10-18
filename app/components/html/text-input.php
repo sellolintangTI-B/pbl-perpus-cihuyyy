@@ -7,7 +7,7 @@
         id="<?= $id ?? ($name ?? '') ?>"
         value="<?= $value ?? '' ?>"
         placeholder="<?= $placeholder ?? '' ?>"
-        class="<?= $class.' border border-black px-2 py-1 focus:outline-none focus:ring-2 mt-2 focus:ring-blue-500 w-full' ?>"
+        class="<?= $class.' border border-black p-2 focus:outline-none mt-2 w-full' ?>"
         <?= isset($required) && $required ? 'required' : '' ?>
         <?= isset($readonly) && $readonly ? 'readonly' : '' ?>
         <?= isset($disabled) && $disabled ? 'disabled' : '' ?>
