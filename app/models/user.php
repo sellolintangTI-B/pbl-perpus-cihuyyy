@@ -37,4 +37,13 @@ class User extends Database {
         $data = $q->fetch(PDO::FETCH_ASSOC);
         return $data;
     }
+
+    public function getByEmailOrIdNumber($emailOrIdNumber) {
+        $q = $this->conn->prepare("SELECT * FROM users WHERE email = ? OR id_number = ?");
+        $q->bindParam(1, $emailOrIdNumber, PDO::PARAM_STR);
+        $q->bindParam(2, $emailOrIdNumber, PDO::PARAM_STR);
+        $q->execute();
+        $data = $q->fetch(PDO::FETCH_ASSOC);
+        return $data;
+    }
 }

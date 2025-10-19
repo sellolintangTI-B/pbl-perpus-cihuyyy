@@ -80,22 +80,24 @@ class Auth extends Controller
         try {
 
             $data = [
-                "id_number" => $_POST['username'],
+                "identifier" => $_POST['username'],
                 "password" => $_POST['password']
             ];
 
             $validator = new Validator($data);
-            $validator->field("id_number", ["required"]);
+            str_contains($data['identifier'], '@') ? $validator->field("identifier", ['required', 'email']) : $validator->field('identifier', ['required']);
             $validator->field("password", ["required"]);
             $errors = $validator->error();
+
             if ($errors) {
+                var_dump($validator->getErrors());
                 throw new CustomException($validator->getErrors());
             }
 
-            $checkIfUserExist = $this->user->getByIdNumber($data['id_number']);
+            $checkIfUserExist = $this->user->getByEmailOrIdNumber($data['identifier']);
             if(!$checkIfUserExist) throw new CustomException('User tidak tersedia');
-            if(!$checkIfUserExist['is_active']) throw new CustomException('Akun ini masih menunggu verifikasi admin');
             if(!password_verify($data['password'], $checkIfUserExist['password_hash'])) throw new CustomException('Credentials not match');
+            if(!$checkIfUserExist['is_active']) throw new CustomException('Akun ini masih menunggu verifikasi admin');
 
             $_SESSION['loggedInUser'] = [
                 "username" => $checkIfUserExist['first_name'] . ' ' . $checkIfUserExist['last_name'],
@@ -104,12 +106,17 @@ class Auth extends Controller
                 "email" => $checkIfUserExist['email'],
                 "id" => $checkIfUserExist['id']
             ];
-            header('location:'. URL);
+
+            if($checkIfUserExist['role'] === 'Admin') {
+                header('location:' . URL . '/admin/index');
+            } elseif ($checkIfUserExist['role'] === 'Mahasiswa' || $checkIfUserExist['role'] === 'Dosen') {
+                header('location:' . URL . '/user/index');
+            } 
+
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), "error");
             $error = ResponseHandler::getResponse();
-            // var_dump($error);
-            // header('location:' . URL . '/auth/login');
+            var_dump($error);
         }
     }
 }
