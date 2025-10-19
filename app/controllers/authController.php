@@ -13,7 +13,9 @@ class Auth extends Controller
     {
         $this->view('auth/register', layoutType: $this::$layoutType["default"]);
     }
-
+    public function login(){
+        $this->view('auth/login', layoutType: $this::$layoutType["default"]);
+    }
     public function signup()
     {
         try {
@@ -78,8 +80,8 @@ class Auth extends Controller
         try {
 
             $data = [
-                "id_number" => "2407411031",
-                "password" => "pass1234"
+                "id_number" => $_POST['username'],
+                "password" => $_POST['password']
             ];
 
             $validator = new Validator($data);
@@ -102,11 +104,11 @@ class Auth extends Controller
                 "email" => $checkIfUserExist['email'],
                 "id" => $checkIfUserExist['id']
             ];
-
+            header('location:'. URL);
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), "error");
             $error = ResponseHandler::getResponse();
-            var_dump($error);
+            // var_dump($error);
             // header('location:' . URL . '/auth/login');
         }
     }

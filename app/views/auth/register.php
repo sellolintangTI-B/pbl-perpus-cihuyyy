@@ -1,16 +1,12 @@
 <?php
         require_once 'app/components/form-input.php'
 ?>
-<div class="w-full min-h-screen flex justify-center items-center p-4 ">
-    <div class="w-full max-w-6xl flex flex-col lg:flex-row shadow-lg sm:overflow-hidden overflow-y-scroll overflow-x-hidden" style="max-height: 90vh;">
-        <!-- Left Side -->
-        <div class="hidden lg:flex lg:w-1/2 bg-gray-500">
-            <!-- Konten sisi kiri -->
+<div class="h-screen w-full  flex justify-center items-center p-4">
+    <div class="max-w-6xl h-[90vh] w-full flex items-center justify-center">
+        <div class=" w-full h-full bg-gray-500">
+
         </div>
-        
-        <!-- Right Side Form -->
-        <div class="w-full lg:w-1/2 flex flex-col bg-white">
-            <div class="flex-1 overflow-y-auto px-6 py-8 sm:px-8">
+        <div class="h-full w-full overflow-y-auto px-8 py-6 bg-white border ">
                 <div class="w-full max-w-md mx-auto">
                     <h1 class="text-3xl font-poppins text-center mb-8">
                         Register
@@ -61,6 +57,5 @@
                     </form>
                 </div>
             </div>
-        </div>
     </div>
-</div>
+</div>  

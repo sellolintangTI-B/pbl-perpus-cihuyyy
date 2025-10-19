@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?=$title??"SIMARU"?></title>
-    <link href="http://localhost/pbl/public/css/output.css" rel="stylesheet">
-    <link href="http://localhost/pbl/public/css/style.css" rel="stylesheet">
+    <title><?= $title ?? "SIMARU" ?></title>
+    <link href="/public/css/output.css" rel="stylesheet">
+    <link href="/public/css/style.css" rel="stylesheet">
     <style>
         @keyframes slideDown {
             from {
@@ -26,77 +26,58 @@
 <body class="font-poppins bg-gray-100">
     <!-- Error Messages -->
     <?php
-        $error = ResponseHandler::getResponse();
-        var_dump($error);
-        if(!empty($error)) {
+        $response = ResponseHandler::getResponse();
+        if (!empty($response)) {
+            $isSuccess = $response['type'] == 'success';
+            $message = $response['message'];
     ?>
         <div class="fixed top-0 left-0 right-0 z-50 flex justify-center p-4 alert-slide">
-            <div class="bg-white rounded-lg shadow-lg border-l-4 border-red-500 max-w-2xl w-full overflow-hidden">
+            <div class="<?= 'bg-white rounded-md shadow-lg border-l-4 max-w-2xl w-full overflow-hidden ' . ($isSuccess ? 'border-green-500' : 'border-red-500') ?>">
                 <div class="flex items-start p-4">
-                    <!-- Icon -->
-                    <div class="flex-shrink-0">
-                        <svg class="w-6 h-6 text-red-500" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
-                        </svg>
-                    </div>
-                    
-                    <!-- Content -->
-                    <div class="ml-3 flex-1">
-                        <h3 class="text-sm font-medium text-red-800 mb-2">
-                            Terjadi Kesalahan
-                        </h3>
-                        <div class="text-sm text-red-700">
-                            <?php
-                                if(is_array($error['message'])){
-                                    echo "<ul class='list-disc list-inside space-y-1'>";
-                                    foreach($error['message'] as $field => $message){
-                                        echo "<li>" . htmlspecialchars($message) . "</li>";
-                                    }
-                                    echo "</ul>";
-                                } 
-                            ?>
+                    <?php if ($isSuccess) { ?>
+                        <!-- Success Icon -->
+                        <div class="flex-shrink-0">
+                            <svg class="w-6 h-6 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
                         </div>
-                    </div>
-                    
-                    <!-- Close Button -->
-                    <button onclick="this.parentElement.parentElement.parentElement.remove()" class="flex-shrink-0 ml-4 text-red-400 hover:text-red-600 transition">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-    <?php
-        }
-    ?>
-    
-    <!-- Success Messages -->
-    <?php
-        if(isset($_SESSION['success'])) {
-    ?>
-        <div class="fixed top-0 left-0 right-0 z-50 flex justify-center p-4 alert-slide">
-            <div class="bg-white rounded-lg shadow-lg border-l-4 border-green-500 max-w-2xl w-full overflow-hidden">
-                <div class="flex items-start p-4">
-                    <!-- Icon -->
-                    <div class="flex-shrink-0">
-                        <svg class="w-6 h-6 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                        </svg>
-                    </div>
-                    
+                    <?php } else { ?>
+                        <!-- Error Icon -->
+                        <div class="flex-shrink-0">
+                            <svg class="w-6 h-6 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                    <?php } ?>
+
                     <!-- Content -->
                     <div class="ml-3 flex-1">
-                        <h3 class="text-sm font-medium text-green-800 mb-1">
-                            Berhasil!
+                        <h3 class="<?= 'text-sm font-medium mb-2 ' . ($isSuccess ? 'text-green-800' : 'text-red-800') ?>">
+                            <?= $isSuccess ? "Berhasil!" : "Terjadi Kesalahan!" ?>
                         </h3>
-                        <p class="text-sm text-green-700">
-                            <?= htmlspecialchars($_SESSION['success']) ?>
-                        </p>
+                        <?php if ($isSuccess) { ?>
+                            <p class="text-sm text-green-700">
+                                <?= htmlspecialchars($message) ?>
+                            </p>
+                        <?php } else { ?>
+                            <div class="text-sm text-red-700">
+                                <?php
+                                    if (is_array($message)) {
+                                        echo "<ul class='list-disc list-inside space-y-1'>";
+                                        foreach ($message as $err) {
+                                            echo "<li>" . htmlspecialchars($err) . "</li>";
+                                        }
+                                        echo "</ul>";
+                                    } else {
+                                        echo "<p>" . htmlspecialchars($message) . "</p>";
+                                    }
+                                ?>
+                            </div>
+                        <?php } ?>
                     </div>
                     
                     <!-- Close Button -->
-                    <button onclick="this.parentElement.parentElement.parentElement.remove()" class="flex-shrink-0 ml-4 text-green-400 hover:text-green-600 transition">
+                    <button onclick="this.parentElement.parentElement.parentElement.remove()" class="flex-shrink-0 ml-4 text-gray-400 hover:text-gray-600 transition">
                         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
                         </svg>
@@ -105,13 +86,12 @@
             </div>
         </div>
     <?php
-        unset($_SESSION['success']);
         }
     ?>
     
     <!-- Main Content -->
     <div>
-        <?=$content?>
+        <?= $content ?>
     </div>
     
     <script>
