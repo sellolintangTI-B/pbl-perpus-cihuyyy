@@ -1,11 +1,20 @@
 <?php
-
 class Auth extends Controller
 {
     private $user;
 
     public function __construct()
     {
+        $auth = new Authentication;
+
+        if(!empty($auth->user)) {
+            if($auth->user['role'] === 'Admin') {
+                header('location:'. URL . '/admin/index');
+            } elseif($auth->user['role'] === 'Mahasiswa' || $auth->user['role'] === 'Dosen') {
+                header('location:' . URL . '/user/index');
+            }
+        }
+
         $this->user = $this->model('user');
     }
 
@@ -13,16 +22,18 @@ class Auth extends Controller
     {
         $this->view('auth/register', layoutType: $this::$layoutType["default"]);
     }
+
     public function login(){
         $this->view('auth/login', layoutType: $this::$layoutType["default"]);
     }
+
     public function signup()
     {
         try {
             $data = [
                 "id_number" => $_POST['id_number'],
                 "email" => $_POST['email'],
-                "password" => password_hash($_POST['password'], PASSWORD_BCRYPT),
+                "password" => $_POST['password'],
                 "first_name" => $_POST['first_name'],
                 "last_name" => $_POST['last_name'],
                 "institution" => "Politeknik Negeri Jakarta",
@@ -62,10 +73,10 @@ class Auth extends Controller
             $newPath = 'storage/' . $_FILES['file_upload']['name'];
             move_uploaded_file($file, __DIR__ . "/../../public/" . $newPath); 
             $data['image'] = $newPath;
-
+            $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
             $insertData = $this->user->insert($data);
             if($insertData) {
-                ResponseHandler::setResponse("Berhasil memasukan data");
+                ResponseHandler::setResponse("Registrasi berhasil, tunggu verifikasi admin");
                 header('location:'. URL . '/auth/register');
             }
 
@@ -95,7 +106,7 @@ class Auth extends Controller
             }
 
             $checkIfUserExist = $this->user->getByEmailOrIdNumber($data['identifier']);
-            if(!$checkIfUserExist) throw new CustomException('User tidak tersedia');
+            if(!$checkIfUserExist) throw new CustomException('Credentials not match');
             if(!password_verify($data['password'], $checkIfUserExist['password_hash'])) throw new CustomException('Credentials not match');
             if(!$checkIfUserExist['is_active']) throw new CustomException('Akun ini masih menunggu verifikasi admin');
 
@@ -115,8 +126,8 @@ class Auth extends Controller
 
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), "error");
-            $error = ResponseHandler::getResponse();
-            var_dump($error);
+            header('location:' . URL . '/auth/login');
+
         }
     }
 }
