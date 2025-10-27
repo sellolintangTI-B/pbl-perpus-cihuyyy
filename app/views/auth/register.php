@@ -1,6 +1,7 @@
 <?php
-        require_once 'app/components/form-input.php';
-        $options = [
+require_once 'app/components/form-input.php';
+require_once 'app/components/icon/icon.php';
+ $options = [
             [
                 "display" => "Teknik Sipil",
                 "value" => "Teknik Sipil"
@@ -30,16 +31,15 @@
                 "value" => "Teknik Grafika dan Penerbitan"
             ],
         ];
-
 ?>
 <div class="h-screen w-full  flex justify-center items-center p-4">
-    <div class="max-w-6xl h-[90vh] w-full flex items-center justify-center">
-        <div class=" w-full h-full bg-gray-500">
+    <div class="max-w-7xl h-[90vh] w-full flex items-center justify-center overflow-hidden rounded-xl shadow-md shadow-gray-400 bg-white/20 p-6">
+        <div class="w-full h-full bg-[url('/public/storage/images/login-image.jpg')] bg-cover shadow-md shadow-gray-400 rounded-lg">
 
         </div>
-        <div class="h-full w-full overflow-y-auto px-8 py-6 bg-white border ">
-                <div class="w-full max-w-md mx-auto">
-                    <h1 class="text-3xl font-poppins text-center mb-8">
+        <div class="h-full w-full overflow-y-auto px-8 py-6 ">
+           <div class="w-full">
+                    <h1 class="text-3xl font-poppins text-center font-medium mb-8 text-secondary-100">
                         Register
                     </h1>
                     <form class="w-full grid grid-cols-1 sm:grid-cols-2 gap-4" action="<?=URL.'/auth/signup'?>" method="post" enctype="multipart/form-data">
@@ -64,7 +64,8 @@
                                 name:'file_upload', 
                                 label:'Upload bukti download \'Kubaca PNJ\'', 
                                 required:true, 
-                                classGlobal:'sm:col-span-2'
+                                classGlobal:'sm:col-span-2',
+                                accept:'image/*'
                             );
                             
                             FormInput::select(
@@ -87,12 +88,18 @@
                         ?>
 
                         <div class="sm:col-span-2 mt-4">
-                            <button type="submit" name="register" class="w-full bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition font-medium">
+                            <button type="submit" name="register" class="w-full bg-secondary-100 text-white px-4 py-2 rounded-md cursor-pointer shadow-sm shadow-gray-400 hover:shadow-md hover:shadow-primary-100 duration-300 transition-all font-medium">
                                 Register
                             </button>
                         </div>
                     </form>
+                    <div class="w-full text-sm flex justify-center items-center gap-2 col-span-1 mx-auto mt-8">
+                            <p class="text-secondary-100">Already have an account?</p>
+                            <a class="text-primary-100 cursor-pointer" href="/auth/login">
+                                Login
+                            </a>
+                    </div>
                 </div>
-            </div>
+        </div>
     </div>
-</div>  
+</div>

@@ -1,9 +1,26 @@
 {
+  "name": "pbl-perpus-cihuyyy",
+  "version": "1.0.0",
+  "description": "<!-- to run tailwind css in this project, just type: \r     npx @tailwindcss/cli -i ./public/css/input.css -o ./public/css/output.css --watch \r -->",
+  "main": "index.js",
   "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
     "tailwind": "npx tailwindcss -i ./public/css/src.css -o ./public/css/style.css --watch"
   },
-  "dependencies": {
-    "@tailwindcss/cli": "^4.1.14",
-    "tailwindcss": "^4.1.14"
-  }
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sellolintangTI-B/pbl-perpus-cihuyyy.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sellolintangTI-B/pbl-perpus-cihuyyy/issues"
+  },
+  "homepage": "https://github.com/sellolintangTI-B/pbl-perpus-cihuyyy#readme",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.16",
+    "tailwindcss": "^4.1.16"
+  },
+  "type": "commonjs"
 }

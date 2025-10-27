@@ -2,3 +2,4 @@ node_moodules/
 app/core/Database.php
 app/config/config.php
 public/storage/*
+/vendor/

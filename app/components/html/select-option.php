@@ -1,10 +1,11 @@
 <div class="<?=$classGlobal?> flex flex-col w-full gap-2 font-poppins">
-    <label for="<?= $id ?? ($name ?? '') ?>" class="block mb-1 font-normal text-gray-700 text-sm">
-        <?= $label ?? '' ?>
+         <label for="<?= $id ?? ($name ?? '') ?>" class="block mb-1 text-lg font-normal text-secondary-100 ">
+            <?= $label ?? '' ?>
+        </label>
         <select
             name="<?= $name ?? '' ?>"
             id="<?= $id ?? ($name ?? '') ?>"
-            class="border border-black p-2 focus:outline-none focus:ring-2 mt-2 focus:ring-blue-500 w-full bg-white"
+            class="rounded-lg shadow-md p-3 bg-white cursor-pointer border border-gray-400 hover:border-primary-100 text-gray-600 outline-none text-sm focus:shadow-md focus:shadow-primary-100 transition-shadow duration-300 w-full"
             <?= isset($required) && $required ? 'required' : '' ?>
             <?= isset($disabled) && $disabled ? 'disabled' : '' ?>
         >
@@ -24,5 +25,4 @@
                 </option>
             <?php endforeach; ?>
         </select>
-    </label>
 </div>
