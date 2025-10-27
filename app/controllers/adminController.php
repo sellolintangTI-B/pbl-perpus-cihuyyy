@@ -7,11 +7,6 @@ class Admin extends Controller {
     public function __construct()
     {
         $this->authUser = new Authentication;
-        if(empty($this->authUser->user)) {
-            header('location:' . URL . '/auth/login');
-        } elseif($this->authUser->user['role'] !== 'Admin') {
-            header('location:' . URL . '/user/index');
-        }
     }
 
     public function index()
@@ -21,7 +16,10 @@ class Admin extends Controller {
 
     public function logout()
     {
-        $this->authUser->logout();
-        echo "Logout" . $this->authUser->user['username'] . "</h1>";
+        $logout = $this->authUser->logout();
+        if($logout) {
+            header('location:' . URL . '/auth/login');
+        }
     }
+
 }

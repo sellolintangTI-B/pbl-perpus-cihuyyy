@@ -8,3 +8,4 @@ require_once("utils/Validator.php");
 require_once("core/ResponseHandler.php");
 require_once("utils/CustomException.php");
 require_once("utils/Authentication.php");
+require_once("core/Middleware.php");

@@ -9,6 +9,9 @@ class App {
     public function __construct()
     {
         $url = $this->parseURL();
+
+        new Middleware($url);
+        
         if(isset($url[0])) {
             if(file_exists('app/controllers/' . $url[0] . 'Controller.php')) {
                 $this->controller = $url[0];
@@ -29,6 +32,7 @@ class App {
         if(!empty($url)) {
             $this->params = array_values($url);
         }
+
 
         call_user_func_array([$this->controller, $this->method], $this->params);
     }
