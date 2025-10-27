@@ -4,7 +4,7 @@
         <select
             name="<?= $name ?? '' ?>"
             id="<?= $id ?? ($name ?? '') ?>"
-            class="border border-black px-2 py-1 focus:outline-none focus:ring-2 mt-2 focus:ring-blue-500 w-full bg-white"
+            class="border border-black p-2 focus:outline-none focus:ring-2 mt-2 focus:ring-blue-500 w-full bg-white"
             <?= isset($required) && $required ? 'required' : '' ?>
             <?= isset($disabled) && $disabled ? 'disabled' : '' ?>
         >

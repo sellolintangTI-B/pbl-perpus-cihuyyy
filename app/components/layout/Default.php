@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $title ?? "SIMARU" ?></title>
-    <link href="<?= URL ?>/public/css/output.css" rel="stylesheet">
-    <link href="<?=  URL ?>/public/css/style.css" rel="stylesheet">
+    <link href="/public/css/style.css" rel="stylesheet">
     <style>
         @keyframes slideDown {
             from {
