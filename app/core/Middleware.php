@@ -2,11 +2,13 @@
 
 class Middleware 
 {
+    private $fullPath;
     private $routes = [
         "Admin" => [
             "/admin/index",
             "/admin/logout",
-            "/httperror/forbidden"
+            "/httperror/forbidden",
+            "/room/index"
         ],
         "Mahasiswa" => [
             "/user/index",
@@ -21,19 +23,19 @@ class Middleware
     private $exceptionRoutes = [
         "/auth/login",
         "/auth/register",
-        "/auth/logout"
+        "/auth/signin",
+        "/auth/signup"
     ];
 
     private $auth;
 
     public function __construct($url)
     {
-        $fullPath = '/' . ($url[0] ?? '') . '/' . ($url[1] ?? '');
+        $this->fullPath = '/' . ($url[0] ?? '') . '/' . ($url[1] ?? '');
         $this->auth = new Authentication;
         $user = $this->auth->user;
 
-        if (in_array($fullPath, $this->exceptionRoutes)) {
-            var_dump(true);
+        if (in_array($this->fullPath, $this->exceptionRoutes)) {
             return;
         }
 
@@ -41,11 +43,21 @@ class Middleware
             header('location:' . URL . '/auth/login');
         }
 
-        $role = $user['role'] ?? null;
+        if(!empty($user)) {
+            $role = $user['role'] ?? null;
+            if($this->forbidden($role)) {
+                header('Location:' . URL . '/httperror/forbidden');
+                return;
+            } 
+        }
 
+    }
 
-        if (!in_array($fullPath, $this->routes[$role])) {
-            header('Location:' . URL . '/httperror/forbidden');
+    public function forbidden($role)
+    {
+        if (!in_array($this->fullPath, $this->routes[$role])) {
+            return true;
         }
     }
+
 }

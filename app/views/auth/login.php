@@ -39,11 +39,11 @@ require_once 'app/components/icon/icon.php';
 
                     </div>
                     <div class="flex flex-col gap-2 items-center justify-center text-sm text-secondary-100">
-                        <a class="w-12 h-12 flex items-center justify-center shadow-md bg-white text-secondary-100 text-xl cursor-pointer rounded-full"  href="/guest">
+                        <a class="w-12 h-12 flex items-center justify-center shadow-md bg-white text-secondary-100 text-xl cursor-pointer rounded-full" href="/guest">
                             <?php Icon::person(); ?>
                         </a>
                         <p>
-                             Guest mode
+                            Guest mode
                         </p>
                     </div>
                 </form>

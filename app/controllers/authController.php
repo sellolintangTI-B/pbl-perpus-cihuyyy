@@ -14,7 +14,6 @@ class Auth extends Controller
                 header('location:' . URL . '/user/index');
             }
         }
-
         $this->user = $this->model('user');
     }
 
@@ -127,7 +126,14 @@ class Auth extends Controller
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), "error");
             header('location:' . URL . '/auth/login');
+        }
+    }
 
+    public function logout()
+    {
+        $auth = new Authentication;
+        if($auth->logout()) {
+            header('location:' . URL . '/auth/login');
         }
     }
 }
