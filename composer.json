@@ -1,0 +1,7 @@
+{
+    "name": "cihuyy/pbl-perpus-cihuyyy",
+    "description": "PBL Sistem Peminjaman Ruangan",
+    "type": "library",
+    "minimum-stability": "stable",
+    "require": {}
+}
