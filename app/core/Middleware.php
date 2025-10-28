@@ -11,7 +11,8 @@ class Middleware
             "/httperror/forbidden",
             "/room/index",
             "/room/store",
-            "/room/create"
+            "/room/create",
+            "/room/detail"
         ],
         "Mahasiswa" => [
             "/user/index",

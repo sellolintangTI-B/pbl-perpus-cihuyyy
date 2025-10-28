@@ -18,12 +18,8 @@ class RoomController extends Controller {
 
     public function index()
     {
-        try {
-            $data = $this->room->get();
-            $this->view('admin/rooms/index', layoutType: "Admin");
-        } catch (\Throwable $th) {
-
-        }
+        $data = $this->room->get();
+        $this->view('admin/rooms/index', $data, layoutType: "Admin");
     }
 
     public function create()
@@ -79,4 +75,25 @@ class RoomController extends Controller {
             header('location:' . URL . '/room/create');
         }
     }
+
+    public function detail($id) 
+    {
+        $data = $this->room->getById($id);
+    }
+
+    public function edit($id)
+    {
+
+    }
+
+    public function update($id) 
+    {
+
+    }
+
+    public function delete($id)
+    {
+        
+    }
+
 } 

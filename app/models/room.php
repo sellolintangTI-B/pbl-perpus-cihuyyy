@@ -9,7 +9,7 @@ class Room extends Database {
     {
         $stmt = $this->conn->prepare("SELECT * FROM rooms");
         $stmt->execute();
-        $data = $stmt->fetch(PDO::FETCH_OBJ);
+        $data = $stmt->fetchAll(PDO::FETCH_OBJ);
         return $data;
     }
 
