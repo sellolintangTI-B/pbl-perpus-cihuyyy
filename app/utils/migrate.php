@@ -1,5 +1,6 @@
 <?php
-require_once("../core/Database.php");
+use app\core\Database;
+
 $db = new Database;
 
 try {

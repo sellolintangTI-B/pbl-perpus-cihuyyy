@@ -1,4 +1,7 @@
 <?php
+namespace app\models;
+use app\core\Database;
+use Pdo;
 class User extends Database {
 
     public function insert($data) {

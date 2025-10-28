@@ -43,7 +43,7 @@ require_once 'app/components/icon/icon.php';
                             <?php Icon::person(); ?>
                         </a>
                         <p>
-                             Guest mode
+                            Guest mode
                         </p>
                     </div>
                 </form>

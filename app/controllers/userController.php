@@ -1,5 +1,8 @@
 <?php
-
+namespace App\Controllers;
+use app\core\Controller;
+use app\utils\Authentication;
+use app\utils\Validator;
 class User extends Controller {
 
     private $authUser;
@@ -7,11 +10,6 @@ class User extends Controller {
     public function __construct()
     {
         $this->authUser = new Authentication;
-        if(empty($this->authUser->user)) {
-            header('location:' . URL . '/auth/login');
-        } elseif(!in_array($this->authUser->user['role'], ['Mahasiswa', 'Dosen'])) {
-            header('location:' . URL . '/admin/index');
-        }
     }
 
     public function index()
@@ -19,4 +17,14 @@ class User extends Controller {
         $user = $_SESSION['loggedInUser'];
         echo "<h1> Hello " . $user['username'] . "</h1>";
     }
+
+    public function logout()
+    {
+        $logout = $this->authUser->logout();
+        if($logout) {
+            header('location:' . URL . '/auth/login');
+        }
+    }
+
+
 }

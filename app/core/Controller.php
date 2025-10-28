@@ -1,5 +1,5 @@
 <?php
-
+namespace app\core;
 class Controller {
     static $layoutType = [
         "civitas" => "Civitas",
@@ -10,7 +10,8 @@ class Controller {
     public function model($model) 
     {
         require_once('app/models/' . $model . '.php');
-        return new $model;
+        $class = "app\\models\\" . $model;
+        return new $class;
     }    
 
     public function view($view, $data = [], $layoutType = "default") 

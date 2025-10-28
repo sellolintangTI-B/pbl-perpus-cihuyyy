@@ -1,5 +1,12 @@
 <?php
-class Auth extends Controller
+
+namespace App\Controllers;
+use app\core\Controller;
+use app\utils\Authentication;
+use app\utils\Validator;
+use app\error\CustomException;
+use app\core\ResponseHandler;
+class AuthController extends Controller
 {
     private $user;
 
@@ -14,7 +21,6 @@ class Auth extends Controller
                 header('location:' . URL . '/user/index');
             }
         }
-
         $this->user = $this->model('user');
     }
 
@@ -70,7 +76,7 @@ class Auth extends Controller
                 throw new CustomException(['image' => "File tidak didukung"]);
             }
 
-            $newPath = 'storage/' . $_FILES['file_upload']['name'];
+            $newPath = 'storage/users/' . $_FILES['file_upload']['name'];
             move_uploaded_file($file, __DIR__ . "/../../public/" . $newPath); 
             $data['image'] = $newPath;
             $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
@@ -127,7 +133,14 @@ class Auth extends Controller
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), "error");
             header('location:' . URL . '/auth/login');
+        }
+    }
 
+    public function logout()
+    {
+        $auth = new Authentication;
+        if($auth->logout()) {
+            header('location:' . URL . '/auth/login');
         }
     }
 }

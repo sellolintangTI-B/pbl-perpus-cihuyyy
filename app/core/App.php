@@ -1,5 +1,5 @@
 <?php
-
+namespace app\core;
 class App {
 
     protected $controller = 'home';
@@ -9,6 +9,9 @@ class App {
     public function __construct()
     {
         $url = $this->parseURL();
+
+        new Middleware($url);
+        
         if(isset($url[0])) {
             if(file_exists('app/controllers/' . $url[0] . 'Controller.php')) {
                 $this->controller = $url[0];
@@ -17,7 +20,9 @@ class App {
         }
 
         require_once('app/controllers/' . $this->controller . 'Controller.php');
-        $this->controller = new $this->controller;
+        $namespace = "app\\controllers\\";
+        $controller = $namespace . $this->controller . "Controller";
+        $this->controller = new $controller; 
 
         if(isset($url[1])) {
             if(method_exists($this->controller, $url[1])) {
@@ -29,6 +34,7 @@ class App {
         if(!empty($url)) {
             $this->params = array_values($url);
         }
+
 
         call_user_func_array([$this->controller, $this->method], $this->params);
     }

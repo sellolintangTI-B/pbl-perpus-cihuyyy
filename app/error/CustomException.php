@@ -1,5 +1,7 @@
 <?php
 
+namespace app\error;
+use Exception;
 class  CustomException extends Exception {
     private $errors;
 

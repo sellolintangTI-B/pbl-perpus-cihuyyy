@@ -1,5 +1,6 @@
 <?php
 
+namespace app\utils;
 class Validator {
     private $data;
     private $errors = [];
@@ -31,6 +32,12 @@ class Validator {
     public function required($field) {
         if(empty($this->data[$field])) {
             return "$field is required";
+        }
+    }
+
+    public function int($field) {
+        if(!is_integer($this->data[$field])) {
+            return "$field have to be a number";
         }
     }
 

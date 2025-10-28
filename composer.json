@@ -3,5 +3,13 @@
     "description": "PBL Sistem Peminjaman Ruangan",
     "type": "library",
     "minimum-stability": "stable",
-    "require": {}
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "App\\Controllers\\" : "app/controllers/",
+            "App\\Models\\" : "app/models/",
+            "App\\Core\\" : "app/core/",
+            "App\\Error\\" : "app/error/"
+        }
+    }
 }
