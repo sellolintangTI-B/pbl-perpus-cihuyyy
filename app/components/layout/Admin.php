@@ -9,18 +9,15 @@
     <link href="<?=URL?>/public/css/theme.css" rel="stylesheet">
 </head>
 <?php
-    include_once 'app/components/NavThings.php';
-?>
-<body class="font-poppins bg-gray-100 w-full h-screen">
-    <?php 
-    include_once 'app/components/response-banner.php'; 
-    include_once 'app/components/icon/icon.php';
+    use App\components\icon\Icon;
+    use App\components\NavThings;
     $items = [
                     ['label' => 'Dashboard', 'url' => '/admin/dashboard', 'icon' => Icon::dashboard()],
-                    ['label' => 'Users', 'url' => '/admin/users', 'icon' => Icon::person()],
+                    ['label' => 'Data Ruangan', 'url' => '/admin/rooms', 'icon' => Icon::person()],
     ];
     $activeItem = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-    ?>
+?>
+<body class="font-poppins bg-gray-100 w-full h-screen">
     <!-- Main Content -->
      <div class="h-full w-full flex items-center bg-primary gap-4">
         <?=

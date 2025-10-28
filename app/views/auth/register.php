@@ -1,6 +1,5 @@
 <?php
-require_once 'app/components/form-input.php';
-require_once 'app/components/icon/icon.php';
+ use App\components\FormInput;
  $options = [
             [
                 "display" => "Teknik Sipil",

@@ -1,4 +1,5 @@
 <?php
+namespace App\components\icon;
 class Icon{
    public static function person(string $class = 'w-6 h-6 text-gray-700'): void {
         echo '<svg xmlns="http://www.w3.org/2000/svg" 

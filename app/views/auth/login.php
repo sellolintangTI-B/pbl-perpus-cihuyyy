@@ -1,11 +1,11 @@
 <?php
-require_once 'app/components/form-input.php';
-require_once 'app/components/icon/icon.php';
+use App\components\FormInput;
+use App\components\icon\Icon;
 ?>
 <div class="h-screen w-full  flex justify-center items-center p-4 bg-[#FAFAFA]">
     <div class="max-w-7xl h-[90vh] w-full flex items-center justify-center overflow-hidden rounded-xl shadow-md shadow-gray-400 bg-white/20 p-6">
-        <div class="w-full h-full bg-[url('/public/storage/images/login-image.jpg')] bg-cover shadow-md shadow-gray-400 rounded-lg">
-
+        <div class="w-full h-full  shadow-md shadow-gray-400 rounded-lg">
+            <img src="<?=URL?>/public/storage/images/login-image.jpg" alt="login image" class="w-full h-full object-cover rounded-lg hidden md:block"/>
         </div>
         <div class="h-full w-full overflow-y-auto px-8 py-6 ">
             <div class="w-full h-full max-w-md mx-auto flex flex-col justify-center">
@@ -31,7 +31,7 @@ require_once 'app/components/icon/icon.php';
                     </button>
                     <div class="w-full text-sm flex justify-center items-center gap-2 col-span-1 mt-8">
                         <p class="text-primary">Don't have an account?</p>
-                        <a class="text-secondary cursor-pointer" href="/auth/register">
+                        <a class="text-secondary cursor-pointer" href="<?=URL?>/auth/register">
                             Register Now
                         </a>
                     </div>
@@ -39,7 +39,7 @@ require_once 'app/components/icon/icon.php';
 
                     </div>
                     <div class="flex flex-col gap-2 items-center justify-center text-sm text-primary">
-                        <a class="w-12 h-12 flex items-center justify-center shadow-md bg-white text-primary text-xl cursor-pointer rounded-full"  href="/guest">
+                        <a class="w-12 h-12 flex items-center justify-center shadow-md bg-white text-primary text-xl cursor-pointer rounded-full"  href='<?=URL?>/guest'>
                             <?php Icon::person(); ?>
                         </a>
                         <p>
