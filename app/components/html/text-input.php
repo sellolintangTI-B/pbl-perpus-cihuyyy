@@ -1,5 +1,5 @@
-<div class="<?=$classGlobal?> flex flex-col w-full gap-1 font-poppins ">
-    <label for="<?= $id ?? ($name ?? '') ?>" class="block mb-1 text-lg font-normal text-secondary-100 ">
+<div class="<?=$classGlobal?> flex flex-col w-full gap-1 font-poppins focus-within:text-secondary">
+    <label for="<?= $id ?? ($name ?? '') ?>" class="block mb-1 text-lg font-normal text-primary  ">
         <?= $label ?? '' ?>
     </label>
     <div class="relative w-full">
@@ -9,7 +9,7 @@
             id="<?= $id ?? ($name ?? '') ?>"
             value="<?= $value ?? '' ?>"
             placeholder="<?= $placeholder ?? '' ?>"
-            class="<?= $class.'rounded-lg shadow-md p-3 bg-white text-gray-600 border border-gray-400 hover:border-primary-100 outline-none text-sm focus:shadow-md focus:shadow-primary-100 transition-shadow duration-300 w-full' ?>"
+            class="<?= $class.'rounded-lg shadow-md p-3 bg-white text-gray-600 border border-gray-400 hover:border-secondary outline-none text-sm focus:shadow-md focus:shadow-secondary transition-shadow duration-300 w-full' ?>"
             <?= isset($required) && $required ? 'required' : '' ?>
             <?= isset($readonly) && $readonly ? 'readonly' : '' ?>
             <?= isset($disabled) && $disabled ? 'disabled' : '' ?>

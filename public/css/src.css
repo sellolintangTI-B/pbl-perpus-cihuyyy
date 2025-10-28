@@ -33,38 +33,8 @@
 @theme {
   --font-poppins: 'Poppins', sans-serif;
 
-  --color-primary-100: #1CBAA3FF; /* 100% */
-  --color-primary-90:  #1CBAA3E6; /* 90% */
-  --color-primary-80:  #1CBAA3CC; /* 80% */
-  --color-primary-70:  #1CBAA3B3; /* 70% */
-  --color-primary-60:  #1CBAA399; /* 60% */
-  --color-primary-50:  #1CBAA380; /* 50% */
-  --color-primary-40:  #1CBAA366; /* 40% */
-  --color-primary-30:  #1CBAA34D; /* 30% */
-  --color-primary-20:  #1CBAA333; /* 20% */
-  --color-primary-10:  #1CBAA31A; /* 10% */
-
-
-  --color-secondary-100: #0B3F78FF;
-  --color-secondary-90:  #0B3F78E6;
-  --color-secondary-80:  #0B3F78CC;
-  --color-secondary-70:  #0B3F78B3;
-  --color-secondary-60:  #0B3F7899;
-  --color-secondary-50:  #0B3F7880;
-  --color-secondary-40:  #0B3F7866;
-  --color-secondary-30:  #0B3F784D;
-  --color-secondary-20:  #0B3F7833;
-  --color-secondary-10:  #0B3F781A;
-
-
-  --color-tertiary-100: #1DA0B4FF;
-  --color-tertiary-90:  #1DA0B4E6;
-  --color-tertiary-80:  #1DA0B4CC;
-  --color-tertiary-70:  #1DA0B4B3;
-  --color-tertiary-60:  #1DA0B499;
-  --color-tertiary-50:  #1DA0B480;
-  --color-tertiary-40:  #1DA0B466;
-  --color-tertiary-30:  #1DA0B44D;
-  --color-tertiary-20:  #1DA0B433;
-  --color-tertiary-10:  #1DA0B41A;
+  --color-primary:  #0B3F78;
+  --color-secondary: #1CBAA3;
+  --color-tertiary: #1DA0B4;
+  
 }

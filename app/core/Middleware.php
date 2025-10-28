@@ -28,7 +28,8 @@ class Middleware
         "/auth/login",
         "/auth/register",
         "/auth/signin",
-        "/auth/signup"
+        "/auth/signup",
+        "/guest/index"
     ];
 
     private $auth;

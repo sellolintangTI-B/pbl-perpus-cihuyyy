@@ -14,7 +14,7 @@ class AdminController extends Controller {
 
     public function index()
     {
-        echo "<h1> Hello " . $this->authUser->user['username'] . "</h1>";
+        return $this->view('admin/rooms/index');
     }
 
     public function logout()
