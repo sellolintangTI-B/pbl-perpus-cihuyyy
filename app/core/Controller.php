@@ -1,5 +1,5 @@
 <?php
-namespace app\core;
+namespace App\Core;
 class Controller {
     static $layoutType = [
         "civitas" => "Civitas",
@@ -17,7 +17,6 @@ class Controller {
     public function view($view, $data = [], $layoutType = "default") 
     {   
         extract($data);
-        
         ob_start();
         require_once('app/views/' . $view . '.php');
         $content = ob_get_clean();

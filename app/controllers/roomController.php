@@ -1,12 +1,11 @@
 <?php
 
 namespace App\Controllers;
-use app\core\Controller;
-use app\utils\Authentication;
-use app\utils\Validator;
-use app\error\CustomException;
-use app\core\ResponseHandler;
-use CurlShareHandle;
+use App\Core\Controller;
+use App\Utils\Authentication;
+use App\Utils\Validator;
+use App\Error\CustomException;
+use App\Core\ResponseHandler;
 
 class RoomController extends Controller {
     private $room;
@@ -93,7 +92,19 @@ class RoomController extends Controller {
 
     public function delete($id)
     {
-        
+        try {
+            $delete = $this->room->delete($id); 
+            if($delete) {
+                ResponseHandler::setResponse("Berhasil menghapus data ruangan");
+                header('location:' . URL . '/room/index');
+            } else {
+                throw new CustomException('Gagal menghapus data ruangan'); 
+            }
+        } catch (CustomException $e) {
+            ResponseHandler::setResponse($e->getErrorMessages(), "error");
+            exit;
+        }
+
     }
 
 } 

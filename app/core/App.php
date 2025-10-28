@@ -1,5 +1,5 @@
 <?php
-namespace app\core;
+namespace App\Core;
 class App {
 
     protected $controller = 'home';
@@ -10,7 +10,7 @@ class App {
     {
         $url = $this->parseURL();
 
-        // new Middleware($url);
+        new Middleware($url);
         
         if(isset($url[0])) {
             if(file_exists('app/controllers/' . $url[0] . 'Controller.php')) {

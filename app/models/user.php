@@ -1,6 +1,6 @@
 <?php
 namespace app\models;
-use app\core\Database;
+use App\Core\Database;
 use Pdo;
 class User extends Database {
 

@@ -15,7 +15,7 @@
         }
 </style>
 <?php
-    $response = app\core\ResponseHandler::getResponse();
+    $response = App\Core\ResponseHandler::getResponse();
     if (!empty($response)) {
         $isSuccess = $response['type'] == 'success';
         $message = $response['message'];

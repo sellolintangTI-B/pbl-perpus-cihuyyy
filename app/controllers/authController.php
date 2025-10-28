@@ -1,11 +1,12 @@
 <?php
 
 namespace App\Controllers;
-use app\core\Controller;
-use app\utils\Authentication;
-use app\utils\Validator;
-use app\error\CustomException;
-use app\core\ResponseHandler;
+use App\Core\Controller;
+use App\Utils\Authentication;
+use App\Utils\Validator;
+use App\Error\CustomException;
+use App\Core\ResponseHandler;
+
 class AuthController extends Controller
 {
     private $user;

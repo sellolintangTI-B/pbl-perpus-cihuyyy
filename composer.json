@@ -10,7 +10,8 @@
             "App\\Models\\" : "app/models/",
             "App\\Core\\" : "app/core/",
             "App\\Error\\" : "app/error/",
-            "App\\components\\" : "app/components/"
+            "App\\Utils\\" : "app/utils/",
+            "App\\Components\\" : "app/components/"
         }
     }
 }

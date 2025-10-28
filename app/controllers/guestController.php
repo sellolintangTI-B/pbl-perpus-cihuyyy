@@ -1,7 +1,7 @@
 <?php
 namespace App\Controllers;
-use app\core\Controller;
-class guest extends Controller{
+use App\Core\Controller;
+class GuestController extends Controller{
     public function index(){
         return $this->view('guest/index', layoutType: $this::$layoutType["default"]);
     }

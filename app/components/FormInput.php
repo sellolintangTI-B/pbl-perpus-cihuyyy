@@ -1,5 +1,5 @@
 <?php
-namespace app\components;
+namespace App\Components;
 class FormInput {
     public static function input($id = '', $name = '', $type ='text', $label = '', $value = '', $placeholder = '', $class = '', $classGlobal = '', $required = false, $readonly = false, $disabled = false) {
     include __DIR__ . '/html/text-input.php';

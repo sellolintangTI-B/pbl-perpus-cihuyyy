@@ -1,8 +1,8 @@
 <?php
-
 namespace App\Controllers;
-use app\core\Controller;
-use app\utils\Authentication;
+use App\Core\Controller;
+use App\Utils\Authentication;
+
 class AdminController extends Controller {
 
     private $authUser;

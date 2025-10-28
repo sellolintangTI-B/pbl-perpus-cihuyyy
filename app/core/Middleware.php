@@ -1,6 +1,6 @@
 <?php
 namespace app\core;
-use app\utils\Authentication;
+use App\Utils\Authentication;
 class Middleware 
 {
     private $fullPath;

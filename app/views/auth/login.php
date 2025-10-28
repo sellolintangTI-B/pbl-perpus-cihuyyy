@@ -1,6 +1,8 @@
 <?php
-use App\components\FormInput;
-use App\components\icon\Icon;
+
+use App\Components\FormInput;
+use App\Components\icon\Icon;
+
 ?>
 <div class="h-screen w-full  flex justify-center items-center p-4 bg-[#FAFAFA]">
     <div class="max-w-7xl h-[90vh] w-full flex items-center justify-center overflow-hidden rounded-xl shadow-md shadow-gray-400 bg-white/20 p-6">

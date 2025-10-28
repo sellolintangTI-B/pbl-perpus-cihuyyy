@@ -1,7 +1,5 @@
 <?php
-
-require_once 'app/components/form-input.php';
-require_once 'app/components/icon/icon.php';
+use app\components\FormInput;
 ?>
 <div class="h-screen w-full  flex justify-center items-center p-4">
     <div class="max-w-7xl h-[90vh] w-full flex items-center justify-center overflow-hidden rounded-xl shadow-md shadow-gray-400 bg-white/20 p-6">
@@ -15,7 +13,7 @@ require_once 'app/components/icon/icon.php';
                     </h1>
                     <form class="w-full grid grid-cols-1 gap-4" action="<?=URL.'/auth/signup'?>" method="post" enctype="multipart/form-data">
                         <?php
-                            FormInput::input(id:'nama', name:'nama', label:'Nama', required:true, placeholder:'masukkan nama penanggung jawab');
+                            app\components\FormInput::input(id:'nama', name:'nama', label:'Nama', required:true, placeholder:'masukkan nama penanggung jawab');
                             FormInput::input(id:'instansi', name:'instansi', type:'instansi', label:'Instansi', required:true, placeholder:'masukkan instansi asal');
                             FormInput::input(id:'email', name:'email', label:'Email', required:true, placeholder:'masukkan email penanggung jawab');
                             FormInput::input(id:'nomor_whatsapp', name:'nomor_whatsapp', label:'Whatsapp', required:true, placeholder:'masukkan nomor whatsapp penanggung jawab'); 
