@@ -1,5 +1,6 @@
 <?php
-
+namespace app\core;
+use app\utils\Authentication;
 class Middleware 
 {
     private $fullPath;
@@ -8,7 +9,9 @@ class Middleware
             "/admin/index",
             "/admin/logout",
             "/httperror/forbidden",
-            "/room/index"
+            "/room/index",
+            "/room/store",
+            "/room/create"
         ],
         "Mahasiswa" => [
             "/user/index",

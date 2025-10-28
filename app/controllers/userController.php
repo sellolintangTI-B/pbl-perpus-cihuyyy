@@ -1,5 +1,8 @@
 <?php
-
+namespace App\Controllers;
+use app\core\Controller;
+use app\utils\Authentication;
+use app\utils\Validator;
 class User extends Controller {
 
     private $authUser;

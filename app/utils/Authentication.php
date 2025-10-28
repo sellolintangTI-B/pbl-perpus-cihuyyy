@@ -1,5 +1,5 @@
 <?php
-
+namespace app\utils;
 class Authentication {
     public $user = [];
 

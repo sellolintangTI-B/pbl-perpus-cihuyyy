@@ -42,7 +42,7 @@ require_once 'app/components/icon/icon.php';
                     <h1 class="text-3xl font-poppins text-center font-medium mb-8 text-secondary-100">
                         Register
                     </h1>
-                    <form class="w-full grid grid-cols-1 sm:grid-cols-2 gap-4" action="<?=URL.'/auth/signup'?>" method="post" enctype="multipart/form-data">
+                    <form class="w-full grid grid-cols-1 sm:grid-cols-2 gap-4" action="<?= URL ?>/auth/signup" method="post" enctype="multipart/form-data">
                         <?php
                             FormInput::input(id:'id_number', name:'id_number', label:'NIM/NIP', required:true);
                             FormInput::input(id:'email', name:'email', type:'email', label:'Email', required:true);

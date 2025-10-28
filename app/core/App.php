@@ -1,5 +1,5 @@
 <?php
-
+namespace app\core;
 class App {
 
     protected $controller = 'home';
@@ -20,7 +20,9 @@ class App {
         }
 
         require_once('app/controllers/' . $this->controller . 'Controller.php');
-        $this->controller = new $this->controller;
+        $namespace = "app\\controllers\\";
+        $controller = $namespace . $this->controller . "Controller";
+        $this->controller = new $controller; 
 
         if(isset($url[1])) {
             if(method_exists($this->controller, $url[1])) {

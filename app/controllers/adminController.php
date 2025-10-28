@@ -1,6 +1,9 @@
 <?php
 
-class Admin extends Controller {
+namespace App\Controllers;
+use app\core\Controller;
+use app\utils\Authentication;
+class AdminController extends Controller {
 
     private $authUser;
 
