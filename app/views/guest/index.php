@@ -9,7 +9,7 @@ require_once 'app/components/icon/icon.php';
         </div>
         <div class="h-full w-full overflow-y-auto px-8 py-6 ">
            <div class="w-full max-w-md mx-auto">
-                    <h1 class="text-3xl font-poppins text-center font-medium mb-8 text-secondary-100">
+                    <h1 class="text-3xl font-poppins text-center font-medium mb-8 text-primary">
                         Guest Registration
                     </h1>
                     <form class="w-full grid grid-cols-1 gap-4" action="<?=URL.'/auth/signup'?>" method="post" enctype="multipart/form-data">
@@ -23,20 +23,20 @@ require_once 'app/components/icon/icon.php';
                                 name:'file_upload', 
                                 label:'Upload surat peminjaman resmi', 
                                 required:true, 
-                                accept:'image/*, application/pdf',
+                                accept:'application/pdf',
                             );  
         
                         ?>
 
                         <div class=" mt-4">
-                            <button type="submit" name="register" class="w-full bg-secondary-100 text-white px-4 py-2 rounded-md cursor-pointer shadow-sm shadow-gray-400 hover:shadow-md hover:shadow-primary-100 duration-300 transition-all font-medium">
+                            <button type="submit" name="register" class="w-full bg-primary text-white px-4 py-2 rounded-md cursor-pointer shadow-sm shadow-gray-400 hover:shadow-md hover:shadow-secondary duration-300 transition-all font-medium">
                                 Book this room
                             </button>
                         </div>
                     </form>
                     <div class="w-full text-sm flex justify-center items-center gap-2 mx-auto mt-8">
-                            <p class="text-secondary-100">Already have an account?</p>
-                            <a class="text-primary-100 cursor-pointer" href="/auth/login">
+                            <p class="text-primary">Already have an account?</p>
+                            <a class="text-secondary cursor-pointer" href="/auth/login">
                                 Login
                             </a>
                     </div>

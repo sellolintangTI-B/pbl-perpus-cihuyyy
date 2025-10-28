@@ -1,5 +1,5 @@
 <div class="<?=$classGlobal?> flex flex-col w-full gap-1 font-poppins">
-     <label for="<?= $id ?? ($name ?? '') ?>" class="block mb-1 text-lg font-normal text-secondary-100 ">
+     <label for="<?= $id ?? ($name ?? '') ?>" class="block mb-1 text-lg font-normal text-primary ">
         <?= $label ?? '' ?>
     </label>
     <div class="mt-2">
@@ -54,7 +54,7 @@ function handleDragOver(e, inputId) {
     e.preventDefault();
     e.stopPropagation();
     const dropArea = document.getElementById('drop-area-' + inputId);
-    dropArea.classList.add('border-primary-100', 'bg-primary-50');
+    dropArea.classList.add('border-primary/100', 'bg-primary/50');
     dropArea.classList.remove('border-gray-300');
 }
 
@@ -62,7 +62,7 @@ function handleDragLeave(e, inputId) {
     e.preventDefault();
     e.stopPropagation();
     const dropArea = document.getElementById('drop-area-' + inputId);
-    dropArea.classList.remove('border-primary-100', 'bg-primary-50');
+    dropArea.classList.remove('border-primary/100', 'bg-primary/50');
     dropArea.classList.add('border-gray-300');
 }
 
@@ -71,7 +71,7 @@ function handleDrop(e, inputId) {
     e.stopPropagation();
     
     const dropArea = document.getElementById('drop-area-' + inputId);
-    dropArea.classList.remove('border-primary-100', 'bg-primary-50');
+    dropArea.classList.remove('border-primary/100', 'bg-primary/50');
     dropArea.classList.add('border-gray-300');
     
     const input = document.getElementById(inputId);

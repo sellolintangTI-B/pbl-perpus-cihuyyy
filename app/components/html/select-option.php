@@ -1,11 +1,11 @@
 <div class="<?=$classGlobal?> flex flex-col w-full gap-2 font-poppins">
-         <label for="<?= $id ?? ($name ?? '') ?>" class="block mb-1 text-lg font-normal text-secondary-100 ">
+         <label for="<?= $id ?? ($name ?? '') ?>" class="block mb-1 text-lg font-normal text-primary ">
             <?= $label ?? '' ?>
         </label>
         <select
             name="<?= $name ?? '' ?>"
             id="<?= $id ?? ($name ?? '') ?>"
-            class="rounded-lg shadow-md p-3 bg-white cursor-pointer border border-gray-400 hover:border-primary-100 text-gray-600 outline-none text-sm focus:shadow-md focus:shadow-primary-100 transition-shadow duration-300 w-full"
+            class="rounded-lg shadow-md p-3 bg-white cursor-pointer border border-gray-400 hover:border-secondary text-gray-600 outline-none text-sm focus:shadow-md focus:shadow-secondary transition-shadow duration-300 w-full"
             <?= isset($required) && $required ? 'required' : '' ?>
             <?= isset($disabled) && $disabled ? 'disabled' : '' ?>
         >
