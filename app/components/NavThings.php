@@ -5,6 +5,6 @@ class NavThings {
         include __DIR__ . '/html/admin-nav-link.php';
     }
     public static function adminSideBar($items = [], $activeItem = null, $title = "SIMARU", $logo = null){
-        include __DIR__ . '/html/admin-side-bar.php';
+        include __DIR__ . '/html/admin-sidebar.php';
     }
 }

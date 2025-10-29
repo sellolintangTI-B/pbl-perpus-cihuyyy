@@ -1,15 +1,16 @@
 <!-- variable: active, icon -->
-<div class="w-full flex flex-col gap-4 mt-8">
+ <?php
+    use App\Components\Icon\Icon;
+ ?>
+<div class="w-full flex flex-col gap-4">
     <div class="w-full h-fit flex items-center gap-4 cursor-pointer">
-        <div class="w-1 rounded-r-xs bg-white duration-300 transition-all <?= $active ? "h-6" : "h-0" ?>">
-
+        <div class="w-1 rounded-r bg-white transition-all duration-300 ease-in-out overflow-hidden <?= $active ? 'max-h-6' : 'max-h-0' ?>">
+            <div class="h-6"></div>
         </div>
-        <a class="p-1.5 bg-white/20 rounded-md hover:bg-white/30 w-full text-center flex gap-2 justify-center items-center <?= $active ? "h-6" : "h-0" ?>" href="<?= $href ?>">
-            <span class="w-5 h-5">
-                <?=
-                    $icon;
-                ?>
-            </span>
+        <a class="p-1.5 rounded-lg hover:bg-white/30 hover:text-white w-full text-center flex gap-2 justify- items-center duration-300 transition-all <?= $active ? "bg-white/20 text-white" : "bg-white/0 text-gray-400" ?>" href="<?= URL.$href ?>">
+            <?php
+                Icon::{ $icon }('w-6 h-6');
+            ?>
             <?= $label ?>
         </a>
     </div>
