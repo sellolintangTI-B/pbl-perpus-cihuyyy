@@ -12,7 +12,8 @@ class Middleware
             "/room/index",
             "/room/store",
             "/room/create",
-            "/room/detail"
+            "/room/detail",
+            "/room/edit"
         ],
         "Mahasiswa" => [
             "/user/index",

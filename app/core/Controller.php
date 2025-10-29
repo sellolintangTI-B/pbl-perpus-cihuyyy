@@ -16,7 +16,7 @@ class Controller {
 
     public function view($view, $data = [], $layoutType = "default") 
     {   
-        extract($data);
+        // extract($data);
         ob_start();
         require_once('app/views/' . $view . '.php');
         $content = ob_get_clean();

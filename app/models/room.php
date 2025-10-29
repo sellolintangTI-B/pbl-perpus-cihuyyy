@@ -40,4 +40,19 @@ class Room extends Database {
         if($stmt->execute()) return true;
         return false;
     } 
+
+    public function update($id, $data)
+    {
+        $query = "UPDATE rooms SET name = ?, floor = ?, min_capacity = ?, max_capacity = ?, requires_special_approval = ? WHERE id = ?";
+        if(isset($data['image'])) $query = "UPDATE rooms SET name = ?, floor = ?, min_capacity = ?, max_capacity = ?, requires_special_approval = ?, room_img_url = ? WHERE id = ?";
+        
+        $stmt = $this->conn->prepare($query);
+        $x = 1;
+        foreach($data as $key => $value) {
+            $stmt->bindValue($x++, $value);
+        }
+        $stmt->bindValue($x, $id);
+        if($stmt->execute()) return true;
+        return false;
+    }
 }

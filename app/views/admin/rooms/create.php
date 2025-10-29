@@ -1,6 +1,6 @@
 <?php
-require_once 'app/components/form-input.php';
-require_once 'app/components/icon/icon.php';
+// require_once 'app/components/form-input.php';
+// require_once 'app/components/icon/icon.php';
 ?>
 <form class="max-w-md bg-white rounded-lg shadow-md p-6 space-y-4" method="post" enctype="multipart/form-data" action="<?= URL ?>/room/store">
     <div>
