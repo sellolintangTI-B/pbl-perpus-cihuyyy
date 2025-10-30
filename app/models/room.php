@@ -7,7 +7,7 @@ class Room extends Database {
 
     public function get()
     {
-        $stmt = $this->conn->prepare("SELECT * FROM rooms");
+        $stmt = $this->conn->prepare("SELECT * FROM rooms WHERE is_deleted = FALSE");
         $stmt->execute();
         $data = $stmt->fetchAll(PDO::FETCH_OBJ);
         return $data;
@@ -52,6 +52,14 @@ class Room extends Database {
             $stmt->bindValue($x++, $value);
         }
         $stmt->bindValue($x, $id);
+        if($stmt->execute()) return true;
+        return false;
+    }
+
+    public function softDelete($id)
+    {
+        $stmt = $this->conn->prepare("UPDATE rooms SET is_deleted = true WHERE id = ?");
+        $stmt->bindValue(1, $id);
         if($stmt->execute()) return true;
         return false;
     }

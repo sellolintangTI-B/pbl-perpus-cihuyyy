@@ -1,40 +1,36 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Controllers\Auth;
+
 use App\Core\Controller;
+use App\Core\ResponseHandler;
+use App\Error\CustomException;
 use App\Utils\Authentication;
 use App\Utils\Validator;
-use App\Error\CustomException;
-use App\Core\ResponseHandler;
 
-class AuthController extends Controller
+class RegisterController extends Controller
 {
     private $user;
-
     public function __construct()
     {
         $auth = new Authentication;
 
-        if(!empty($auth->user)) {
-            if($auth->user['role'] === 'Admin') {
-                header('location:'. URL . '/admin/index');
-            } elseif($auth->user['role'] === 'Mahasiswa' || $auth->user['role'] === 'Dosen') {
+        if (!empty($auth->user)) {
+            if ($auth->user['role'] === 'Admin') {
+                header('location:' . URL . '/admin/index');
+            } elseif ($auth->user['role'] === 'Mahasiswa' || $auth->user['role'] === 'Dosen') {
                 header('location:' . URL . '/user/index');
             }
         }
-        $this->user = $this->model('user');
+        $this->user = $this->model('User');
     }
 
-    public function register()
+    public function index()
     {
         $this->view('auth/register', layoutType: $this::$layoutType["default"]);
     }
 
-    public function login(){
-        $this->view('auth/login', layoutType: $this::$layoutType["default"]);
-    }
-
-    public function signup()
+    public function signUp()
     {
         try {
             $data = [
@@ -46,7 +42,7 @@ class AuthController extends Controller
                 "institution" => "Politeknik Negeri Jakarta",
                 "phone_number" => $_POST['phone_number'],
                 "role" => $_POST['role'],
-                "image" => $_FILES
+                "image" => empty($_FILES['file_upload']['name']) ? null : $_FILES['file_upload'] 
             ];
 
             $validator = new Validator($data);
@@ -84,21 +80,12 @@ class AuthController extends Controller
             $insertData = $this->user->insert($data);
             if($insertData) {
                 ResponseHandler::setResponse("Registrasi berhasil, tunggu verifikasi admin");
-                header('location:'. URL . '/auth/register');
+                header('location:'. URL . '/auth/login/index');
             }
 
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), "error");
-            header('location:' . URL . '/auth/register');
-        }
-    }
-
-
-    public function logout()
-    {
-        $auth = new Authentication;
-        if($auth->logout()) {
-            header('location:' . URL . '/auth/login');
+            header('location:' . URL . '/auth/register/index');
         }
     }
 }

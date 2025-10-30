@@ -1,6 +1,6 @@
 <?php
 
-namespace app\utils;
+namespace App\Utils;
 class Validator {
     private $data;
     private $errors = [];

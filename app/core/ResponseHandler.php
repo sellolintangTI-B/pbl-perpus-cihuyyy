@@ -1,5 +1,5 @@
 <?php
-namespace app\core;
+namespace App\Core;
 class ResponseHandler {
 
     public static function setResponse($message, $type = "success") {

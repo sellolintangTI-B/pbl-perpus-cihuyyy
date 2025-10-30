@@ -49,4 +49,14 @@ class User extends Database {
         $data = $q->fetch(PDO::FETCH_ASSOC);
         return $data;
     }
+
+    public function approve($id)
+    {
+        $q = $this->conn->prepare("UPDATE users SET is_active = true WHERE id = ?");
+        $q->bindParam(1, $id, PDO::PARAM_STR);
+        $q->execute();
+        if($q) {
+            return true;
+        }
+    }
 }

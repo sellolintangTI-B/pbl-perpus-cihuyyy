@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Controllers\Admin;
+
 use App\Core\Controller;
-use App\Utils\Authentication;
 use App\Utils\Validator;
 use App\Error\CustomException;
 use App\Core\ResponseHandler;
@@ -84,7 +84,6 @@ class RoomController extends Controller {
     {
         try {
             $data = $this->room->getById($id);
-            var_dump($data);
             if(!$data) {
                 throw new CustomException('Data ruangan tidak ditemukan');
             }
@@ -93,7 +92,6 @@ class RoomController extends Controller {
             ResponseHandler::setResponse($e->getErrorMessages(), "error");
             header('location:' . URL. '/room/index');
         }
-
     }
 
     public function update($id) 
@@ -134,6 +132,12 @@ class RoomController extends Controller {
             }
 
             $update = $this->room->update($id, $data);
+            if($update) {
+                ResponseHandler::setResponse("Berhasil memperbarui data ruangan");
+                header('location:' . URL . '/room/index');
+            } else {
+                throw new CustomException('Gagal memperbarui data ruangan');
+            }
 
         } catch(CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), "error");
@@ -145,7 +149,7 @@ class RoomController extends Controller {
     public function delete($id)
     {
         try {
-            $delete = $this->room->delete($id); 
+            $delete = $this->room->softDelete($id); 
             if($delete) {
                 ResponseHandler::setResponse("Berhasil menghapus data ruangan");
                 header('location:' . URL . '/room/index');
@@ -156,7 +160,6 @@ class RoomController extends Controller {
             ResponseHandler::setResponse($e->getErrorMessages(), "error");
             exit;
         }
-
     }
 
 } 

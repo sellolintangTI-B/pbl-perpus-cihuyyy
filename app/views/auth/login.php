@@ -14,7 +14,7 @@ use App\Components\icon\Icon;
                 <h1 class="text-3xl font-medium font-poppins text-primary text-center mb-8">
                     Login
                 </h1>
-                <form class="w-full grid grid-cols-1 gap-4" action="<?= URL ?>/auth/signin" method="post" enctype="multipart/form-data">
+                <form class="w-full grid grid-cols-1 gap-4" action="<?= URL ?>/auth/login/signin" method="post" enctype="multipart/form-data">
                     <?php
                     FormInput::input(id: 'username', name: 'username', type: 'text', label: 'username', required: false, placeholder: "Masukkan email atau NIM/NIP anda");
                     FormInput::input(id: 'password', name: 'password', type: 'password', label: 'password', required: false, placeholder: "Masukkan password anda");
@@ -33,7 +33,7 @@ use App\Components\icon\Icon;
                     </button>
                     <div class="w-full text-sm flex justify-center items-center gap-2 col-span-1 mt-8">
                         <p class="text-primary">Don't have an account?</p>
-                        <a class="text-secondary cursor-pointer" href="<?=URL?>/auth/register">
+                        <a class="text-secondary cursor-pointer" href="<?=URL?>/auth/register/index">
                             Register Now
                         </a>
                     </div>

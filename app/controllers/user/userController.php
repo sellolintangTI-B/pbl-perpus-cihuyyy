@@ -1,9 +1,9 @@
 <?php
-namespace App\Controllers;
+namespace App\Controllers\User;
 use App\Core\Controller;
 use App\Utils\Authentication;
-
-class AdminController extends Controller {
+use App\Utils\Validator;
+class UserController extends Controller {
 
     private $authUser;
 
@@ -14,13 +14,9 @@ class AdminController extends Controller {
 
     public function index()
     {
-        return $this->view('admin/rooms/index', layoutType: $this::$layoutType['admin']);
+        $user = $_SESSION['loggedInUser'];
+        echo "<h1> Hello " . $user['username'] . "</h1>";
     }
-    public function dashboard()
-    {
-        return $this->view('admin/dashboard/index', layoutType: $this::$layoutType['admin']);
-    }
-    
 
     public function logout()
     {
@@ -29,5 +25,6 @@ class AdminController extends Controller {
             header('location:' . URL . '/auth/login');
         }
     }
+
 
 }
