@@ -5,6 +5,7 @@ namespace App\Controllers\Auth;
 use App\Core\Controller;
 use App\Core\ResponseHandler;
 use App\Error\CustomException;
+use App\Models\User;
 use App\Utils\Authentication;
 use App\Utils\Validator;
 
@@ -22,7 +23,6 @@ class RegisterController extends Controller
                 header('location:' . URL . '/user/index');
             }
         }
-        $this->user = $this->model('User');
     }
 
     public function index()
@@ -61,7 +61,7 @@ class RegisterController extends Controller
                 throw new CustomException($validator->getErrors());
             }
 
-            $checkIfEmailExist = $this->user->getByEmail($data['email']);
+            $checkIfEmailExist = User::getByEmail($data['email']);
             if ($checkIfEmailExist) {
                 throw new CustomException(['email' => "Email sudah terdaftar"]);
             }
@@ -77,7 +77,7 @@ class RegisterController extends Controller
             move_uploaded_file($file, __DIR__ . "/../../public/" . $newPath); 
             $data['image'] = $newPath;
             $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
-            $insertData = $this->user->insert($data);
+            $insertData = User::insert($data);
             if($insertData) {
                 ResponseHandler::setResponse("Registrasi berhasil, tunggu verifikasi admin");
                 header('location:'. URL . '/auth/login/index');

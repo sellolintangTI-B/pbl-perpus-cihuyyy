@@ -1,5 +1,5 @@
 <?php
-namespace app\core;
+namespace App\Core;
 use App\Utils\Authentication;
 class Middleware 
 {
@@ -12,11 +12,17 @@ class Middleware
             "/admin/room/create",
             "/admin/room/detail",
             "/admin/room/edit",
+            "/admin/room/update",
+            "/admin/room/delete",
             //DASHBOARD
             "/admin/dashboard/index",
             "/admin/dashboard/logout",
             //USER
             "/admin/user/approve",
+            "/admin/user/index",
+            "/admin/user/store_admin",
+            "/admin/user/add_admin",
+            "/admin/user/approve_user",
             //ERROR
             "/error/forbidden/index",
             "/error/notfound/index",
@@ -25,11 +31,17 @@ class Middleware
             "/user/user/index",
             "/error/forbidden/index",
             "/error/notfound/index",
+            // RUANGAN
+            "/user/room/index",
+            "/user/room/details"
         ],
         "Dosen" => [
             "/user/user/index",
             "/error/forbidden/index",
             "/error/notfound/index",
+            // RUANGAN
+            "/user/room/index",
+            "/user/room/details"
         ]
     ];
 

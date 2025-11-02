@@ -3,7 +3,7 @@ use App\Core\ResponseHandler;
 $response = ResponseHandler::getResponse();
 
 ?>
-<form class="max-w-md bg-white rounded-lg shadow-md p-6 space-y-4" method="post" enctype="multipart/form-data" action="<?= URL ?>/room/update/<?= $data->id ?>">
+<form class="max-w-md bg-white rounded-lg shadow-md p-6 space-y-4" method="post" enctype="multipart/form-data" action="<?= URL ?>/admin/room/update/<?= $data->id ?>">
     <div>
         <label for="name" class="block text-sm font-medium text-gray-700 mb-1">
             Name

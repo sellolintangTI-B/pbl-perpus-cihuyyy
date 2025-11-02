@@ -6,7 +6,7 @@ use App\Core\Controller;
 use App\Utils\Validator;
 use App\Error\CustomException;
 use App\Core\ResponseHandler;
-
+use App\Models\Room;
 class RoomController extends Controller {
     private $room;
 
@@ -61,7 +61,7 @@ class RoomController extends Controller {
             move_uploaded_file($data['image']['tmp_name'], dirname(__DIR__) . '/../public/' . $newPath);
             $data['image'] = $newPath;
             
-            $insert = $this->room->create($data);
+            $insert = Room::create($data);
             if($insert) {
                 ResponseHandler::setResponse("Berhail memasukan data ruangan");
                 header('location:' . URL . '/room/index');
@@ -77,13 +77,18 @@ class RoomController extends Controller {
 
     public function detail($id) 
     {
-        $data = $this->room->getById($id);
+        try {
+            $data = Room::getById($id);
+        } catch (CustomException $e) {
+            ResponseHandler::setResponse($e->getErrorMessages());
+            header('location:' . URL . '/admin/room/index');
+        }
     }
 
     public function edit($id)
     {
         try {
-            $data = $this->room->getById($id);
+            $data = Room::getById($id);
             if(!$data) {
                 throw new CustomException('Data ruangan tidak ditemukan');
             }
@@ -103,6 +108,7 @@ class RoomController extends Controller {
                 "min" => (int) $_POST['min'],  
                 "max" => (int) $_POST['max'],
                 "isSpecial" => isset($_POST['isSpecial']) ? 1 : 0,
+                "isOperational" => isset($_POST['isOperational']) ? 1 : 0,
                 "image" => empty($_FILES['file_upload']['name']) ? null : $_FILES['file_upload']
             ];
 
@@ -131,17 +137,17 @@ class RoomController extends Controller {
                 $data['image'] = $newPath;
             }
 
-            $update = $this->room->update($id, $data);
+            $update = Room::update($id, $data);
             if($update) {
                 ResponseHandler::setResponse("Berhasil memperbarui data ruangan");
-                header('location:' . URL . '/room/index');
+                header('location:' . URL . '/admin/room/index');
             } else {
                 throw new CustomException('Gagal memperbarui data ruangan');
             }
 
         } catch(CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), "error");
-            header('location:' . URL . '/room/edit/' . $id);
+            header('location:' . URL . '/admin/room/edit/' . $id);
         }
 
     }
@@ -149,16 +155,16 @@ class RoomController extends Controller {
     public function delete($id)
     {
         try {
-            $delete = $this->room->softDelete($id); 
+            $delete = Room::softDelete($id); 
             if($delete) {
                 ResponseHandler::setResponse("Berhasil menghapus data ruangan");
-                header('location:' . URL . '/room/index');
+                header('location:' . URL . '/admin/room/index');
             } else {
                 throw new CustomException('Gagal menghapus data ruangan'); 
             }
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), "error");
-            exit;
+            header('location:' . URL . '/admin/room/index');
         }
     }
 
