@@ -13,8 +13,10 @@
 use App\Components\NavThings;
 
 $items = [
-    ['label' => 'Dashboard', 'url' => '/admin/dashboard', 'icon' => 'dashboard'],
-    ['label' => 'Data Ruangan', 'url' => '/admin/rooms', 'icon' => 'person'],
+    ['label' => 'Dashboard', 'url' => '/admin/dashboard/index', 'icon' => 'dashboard'],
+    ['label' => 'Data Ruangan', 'url' => '/admin/room/index', 'icon' => 'person'],
+    ['label' => 'Data User', 'url' => '/admin/user/index', 'icon' => 'person'],
+    ['label' => 'Logout', 'url' => '/admin/dashboard/logout', 'icon' => 'person'],
 ];
 $activeItem = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 ?>

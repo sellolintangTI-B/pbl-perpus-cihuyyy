@@ -1,8 +1,9 @@
 <?php
-// require_once 'app/components/form-input.php';
-// require_once 'app/components/icon/icon.php';
+use App\Core\ResponseHandler;
+$response = ResponseHandler::getResponse();
+
 ?>
-<form class="max-w-md bg-white rounded-lg shadow-md p-6 space-y-4" method="post" enctype="multipart/form-data" action="<?= URL ?>/room/store">
+<form class="max-w-md bg-white rounded-lg shadow-md p-6 space-y-4" method="post" enctype="multipart/form-data" action="<?= URL ?>/admin/room/update/<?= $data->id ?>">
     <div>
         <label for="name" class="block text-sm font-medium text-gray-700 mb-1">
             Name
@@ -11,6 +12,7 @@
             type="text"
             id="name"
             name="name"
+            value="<?= $data->name ?>"
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
     </div>
 
@@ -22,6 +24,7 @@
             type="number"
             id="floor"
             name="floor"
+            value="<?= $data->floor ?>"
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
     </div>
 
@@ -33,6 +36,7 @@
             type="number"
             id="min"
             name="min"
+            value="<?= $data->min_capacity ?>"
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
     </div>
 
@@ -44,6 +48,7 @@
             type="number"
             id="max"
             name="max"
+            value="<?= $data->max_capacity ?>"
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
     </div>
 
@@ -52,7 +57,7 @@
             type="checkbox"
             id="isSpecial"
             name="isSpecial"
-            value="true"
+            <?= $data->requires_special_approval ? 'checked' : '' ?>
             class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500">
         <label for="isSpecial" class="ml-2 text-sm font-medium text-gray-700">
             Is Special

@@ -1,9 +1,9 @@
 <?php
-namespace App\Controllers;
+namespace App\Controllers\Admin;
 use App\Core\Controller;
 use App\Utils\Authentication;
 
-class AdminController extends Controller {
+class DashboardController extends Controller {
 
     private $authUser;
 
@@ -11,23 +11,22 @@ class AdminController extends Controller {
     {
         $this->authUser = new Authentication;
     }
-
     public function index()
-    {
-        return $this->view('admin/rooms/index', layoutType: $this::$layoutType['admin']);
-    }
-    public function dashboard()
     {
         return $this->view('admin/dashboard/index', layoutType: $this::$layoutType['admin']);
     }
-    
 
     public function logout()
     {
         $logout = $this->authUser->logout();
         if($logout) {
-            header('location:' . URL . '/auth/login');
+            header('location:' . URL . '/auth/login/index');
         }
+    }
+
+    public function approved()
+    {
+        
     }
 
 }
