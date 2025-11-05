@@ -7,6 +7,7 @@ use App\Core\ResponseHandler;
 use App\Error\CustomException;
 use App\Utils\Validator;
 use App\Models\User;
+use Exception;
 
 class UserController extends Controller {
 
@@ -74,13 +75,12 @@ class UserController extends Controller {
         }
     }
 
-    public function add_admin()
-    {
-        try {
-            $this->view('admin/users/create', layoutType: "admin");
-        }catch(CustomException $e) {
+    public function add_admin(){
+        try{
+            return $this->view('admin/users/create', layoutType: "Admin");
+        }catch (CustomException $e){
             ResponseHandler::setResponse($e->getErrorMessages(), 'error');
-            header('location:' . URL . '/admin/user');
+            header('location:' . URL . '/admin/user/index');
         }
     }
 
@@ -133,8 +133,7 @@ class UserController extends Controller {
     {
         try {
             $data = User::getById($id);
-            if(!$data) throw new CustomException('User tidak ditemukan');
-            $this->view('admin/users/edit', $data, layoutType: "admin");
+            return $this->view('admin/users/edit', data: $data, layoutType:"Admin");
         }catch(CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), 'error');
             header('location:' . URL . '/admin/user');

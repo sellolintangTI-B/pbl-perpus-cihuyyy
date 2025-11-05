@@ -83,7 +83,7 @@
                         ?>
                         <div class="sm:col-span-2 mt-4">
                             <button type="submit" name="register" class="w-full bg-primary text-white px-4 py-2 rounded-xl cursor-pointer shadow-sm shadow-gray-400 hover:shadow-md hover:shadow-primary-100 duration-300 transition-all font-medium">
-                                Tambah Akun
+                                Edit Akun
                             </button>
                         </div>
                     </form>
