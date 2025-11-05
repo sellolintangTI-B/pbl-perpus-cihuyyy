@@ -34,6 +34,7 @@ class RoomController extends Controller {
                 "floor" => (int) $_POST['floor'],
                 "min" => (int) $_POST['min'],
                 "max" => (int) $_POST['max'],
+                "description" => $_POST['description'],
                 "isSpecial" => isset($_POST['isSpecial']) ? 1 : 0,
                 "image" => empty($_FILES['file_upload']['name']) ? null : $_FILES['file_upload'] 
             ];
@@ -43,6 +44,7 @@ class RoomController extends Controller {
             $validator->field('floor', ['required', 'int']);
             $validator->field('min', ['required', 'int']);
             $validator->field('max', ['required', 'int']);
+            $validator->field('description', ['required']);
             $validator->field('image', ['required']);
 
             $errors = $validator->error();
@@ -79,6 +81,9 @@ class RoomController extends Controller {
     {
         try {
             $data = Room::getById($id);
+            if(!$data) {
+                throw new CustomException('Data ruangan tidak ditemukan');
+            }
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages());
             header('location:' . URL . '/admin/room/index');
