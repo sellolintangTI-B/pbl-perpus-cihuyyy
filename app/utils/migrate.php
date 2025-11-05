@@ -17,7 +17,7 @@ class Migrate
             foreach ($files as $file) {
                 if ($file !== '.' && $file !== '..') {
                     $content = file_get_contents($path . "/" . $file);
-                    $this->db->conn->exec($content);
+                    $this->db->getConnection()->exec($content);
                 }
             }
             echo "Migrate success";

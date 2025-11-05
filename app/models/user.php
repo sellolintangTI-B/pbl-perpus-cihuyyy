@@ -9,7 +9,7 @@ class User extends Database {
         $conn = parent::getConnection();
         $q = $conn->prepare("SELECT * FROM users");
         $q->execute();
-        $data = $q->fetchAll(PDO::FETCH_OBJ);
+        $data = $q->fetchAll(PDO::FETCH_OBJ); 
         return $data;
     }
 
