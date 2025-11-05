@@ -23,6 +23,7 @@ class Middleware
             "/admin/user/store_admin",
             "/admin/user/add_admin",
             "/admin/user/approve_user",
+            "/admin/user/update",
             //ERROR
             "/error/forbidden/index",
             "/error/notfound/index",
@@ -58,7 +59,7 @@ class Middleware
 
     public function __construct($url)
     {
-        $this->fullPath = '/' . ($url[0] ?? '') . '/' . ($url[1] ?? '') . '/' . ($url[2] ?? '');
+        $this->fullPath = $url;
         $this->auth = new Authentication;
         $user = $this->auth->user;
 
@@ -68,13 +69,13 @@ class Middleware
         }
 
         if (empty($user)) {
-            header('location:' . URL . '/auth/login/index');
+            header('location:' . URL . '/auth/login');
         }
 
         if(!empty($user)) {
             $role = $user['role'] ?? null;
             if($this->forbidden($role)) {
-                header('location:' . URL . '/error/forbidden/index');
+                header('location:' . URL . '/error/forbidden');
             } 
             return;
         }

@@ -1,86 +1,50 @@
 <?php
-use App\Core\ResponseHandler;
-$response = ResponseHandler::getResponse();
-
+    use App\Components\Icon\Icon;
+    use App\Components\FormInput;
 ?>
-<form class="max-w-md bg-white rounded-lg shadow-md p-6 space-y-4" method="post" enctype="multipart/form-data" action="<?= URL ?>/admin/room/update/<?= $data->id ?>">
-    <div>
-        <label for="name" class="block text-sm font-medium text-gray-700 mb-1">
-            Name
-        </label>
-        <input
-            type="text"
-            id="name"
-            name="name"
-            value="<?= $data->name ?>"
-            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+<div class="w-full h-full flex flex-col items-start justify-start gap-5">
+    <div class="w-full flex items-center justify-start">
+         <h1 class="text-2xl font-medium text-primary">
+            Edit Ruangan
+        </h1>
     </div>
-
-    <div>
-        <label for="floor" class="block text-sm font-medium text-gray-700 mb-1">
-            Floor
-        </label>
-        <input
-            type="number"
-            id="floor"
-            name="floor"
-            value="<?= $data->floor ?>"
-            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+    <div class="p-6 bg-white shadow-sm shadow-gray-600 rounded-xl w-full h-full border border-gray-200 overflow-hidden flex flex-col items-start justify-center">
+           <div class="w-full h-10 flex items-center justify-start">
+                <a class="flex gap-2 text-primary items-center h-full cursor-pointer hover:bg-primary/5 px-3 py-1 rounded-full" href="<?=URL."/admin/room/index"?>">
+                    <?=Icon::arrowLeft('w-4 h-4')?>
+                    Back
+                </a>
+           </div>
+           <div class="flex-1 w-full overflow-y-auto">
+                <div class="flex items-center justify-center">
+                    <form class="w-full max-w-3xl grid grid-cols-1 sm:grid-cols-2 gap-6" action="" method="post" enctype="multipart/form-data">
+                        <?php
+                        FormInput::input(id: 'nama', name: 'nama', label: 'Nama', placeholder:"masukkan nama ruangan", required: true, value: $data->name);
+                        FormInput::input(id: 'lantai', name: 'lantai', type: 'number', label: 'Lantai', placeholder:"contoh: 1", required: true,value: $data->floor);
+                        FormInput::input(id: 'deskripsi', name: 'deskripsi', label: 'Deskripsi', placeholder:"masukkan deskripsi ruangan", required: true, value: $data->description);
+                        FormInput::input(id: 'jenis_ruangan', name: 'jenis_ruangan', label: 'Jenis Ruangan', value: $data->is_operational);
+                        FormInput::input(id: 'kapasitas_minimal', name: 'kapasitas_minimal', type: 'number', label: 'Kapasitas Minimal', required: true, value: $data->min_capacity);
+                        FormInput::input(id: 'kapasitas_maximal', name: 'kapasitas_maximal', type: 'number', label: 'Kapasitas Maximal', required: true, value: $data->max_capacity);
+                        ?>
+                        <div class="sm:col-span-2 mt-4">
+                            <?php
+                                FormInput::fileInput(
+                                                        id: 'file_upload',
+                                                        name: 'file_upload',
+                                                        label: 'Upload bukti download \'Kubaca PNJ\'',
+                                                        required: false,
+                                                        classGlobal: 'sm:col-span-2',
+                                                        accept: 'image/*'
+                                                    );                        
+                            ?>
+                        </div>
+                        <div class="sm:col-span-2 mt-4">
+                            <button type="submit" name="register" class="w-full bg-primary text-white px-4 py-2 rounded-xl cursor-pointer shadow-sm shadow-gray-400 hover:shadow-md hover:shadow-primary-100 duration-300 transition-all font-medium">
+                                Simpan Perubahan
+                            </button>
+                        </div>
+                    </form>
+                </div>
+           </div>
     </div>
-
-    <div>
-        <label for="min" class="block text-sm font-medium text-gray-700 mb-1">
-            Min
-        </label>
-        <input
-            type="number"
-            id="min"
-            name="min"
-            value="<?= $data->min_capacity ?>"
-            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-    </div>
-
-    <div>
-        <label for="max" class="block text-sm font-medium text-gray-700 mb-1">
-            Max
-        </label>
-        <input
-            type="number"
-            id="max"
-            name="max"
-            value="<?= $data->max_capacity ?>"
-            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-    </div>
-
-    <div class="flex items-center">
-        <input
-            type="checkbox"
-            id="isSpecial"
-            name="isSpecial"
-            <?= $data->requires_special_approval ? 'checked' : '' ?>
-            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500">
-        <label for="isSpecial" class="ml-2 text-sm font-medium text-gray-700">
-            Is Special
-        </label>
-    </div>
-
-    <div>
-        <label for="image" class="block text-sm font-medium text-gray-700 mb-1">
-            Image
-        </label>
-        <input
-            type="file"
-            id="image"
-            name="file_upload"
-            accept="image/*"
-            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
-    </div>
-
-    <div class="pt-4">
-        <button
-            type="submit"
-            class="w-full bg-blue-600 text-black py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors">
-            Submit
-        </button>
-    </div>
-</form>
+</div>

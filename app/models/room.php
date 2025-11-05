@@ -17,7 +17,7 @@ class Room extends Database {
     public static function create($data)
     {
         $conn = parent::getConnection();
-        $stmt = $conn->prepare("INSERT INTO rooms (name, floor, min_capacity, max_capacity, requires_special_approval, room_img_url) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO rooms (name, floor, min_capacity, max_capacity, description, requires_special_approval, room_img_url) VALUES (?, ?, ?, ?, ?, ?, ?)");
         $x = 1;
         foreach($data as $key => $value) {
             $stmt->bindValue($x++, $value);

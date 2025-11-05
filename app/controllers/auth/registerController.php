@@ -61,10 +61,11 @@ class RegisterController extends Controller
                 throw new CustomException($validator->getErrors());
             }
 
-            $checkIfEmailExist = User::getByEmail($data['email']);
-            if ($checkIfEmailExist) {
-                throw new CustomException(['email' => "Email sudah terdaftar"]);
-            }
+            $checkByIdNumber = User::getByIdNumber($data['id_number']);
+            $checkByEmail = User::getByEmail($data['email']);
+
+            if($checkByIdNumber) throw new CustomException('NIM / NIP sudah terdaftar');
+            if($checkByEmail) throw new CustomException('Email sudah terdaftar');
 
             $file = $_FILES['file_upload']['tmp_name'];
             $allowedMimes = ["image/jpeg", "image/png", "image/jpg"];

@@ -7,6 +7,7 @@ use App\Core\ResponseHandler;
 use App\Error\CustomException;
 use App\Utils\Validator;
 use App\Models\User;
+use Exception;
 
 class UserController extends Controller {
 
@@ -25,11 +26,23 @@ class UserController extends Controller {
                 "no" => 1,
                 "users" => $users
             ];
-
             return $this->view('admin/users/index', $data, layoutType: $this::$layoutType['admin']);
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), "error");
             header('location:' . URL . '/admin/dashboard/index');
+        }
+    }
+
+
+    public function details($id)
+    {
+        try {
+            $data = User::getById($id);
+            if(!$data) throw new CustomException('User tidak ditemukan');
+            $this->view('admin/user/details', $data, "admin");
+        }catch(CustomException $e) {
+            ResponseHandler::setResponse($e->getErrorMessages(), 'error');
+            header('location:' . URL . '/admin/user/index');
         }
     }
 
@@ -62,13 +75,12 @@ class UserController extends Controller {
         }
     }
 
-    public function add_admin()
-    {
-        try {
-    
-        }catch(CustomException $e) {
+    public function add_admin(){
+        try{
+            return $this->view('admin/users/create', layoutType: "Admin");
+        }catch (CustomException $e){
             ResponseHandler::setResponse($e->getErrorMessages(), 'error');
-            header('location:');
+            header('location:' . URL . '/admin/user/index');
         }
     }
 
@@ -84,7 +96,6 @@ class UserController extends Controller {
                 "phone_number" => '087785774940',
                 "institution" => "Politeknik Negeri Jakarta",
                 "role" => "Admin",
-                "image" => null
             ];
 
             $validator = new Validator($data);
@@ -102,6 +113,7 @@ class UserController extends Controller {
 
             if($checkByIdNumber) throw new CustomException('NIM / NIP sudah terdaftar');
             if($checkByEmail) throw new CustomException('Email sudah terdaftar');
+
             $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
             $insert = User::insert($data);
             if($insert) {
@@ -120,7 +132,8 @@ class UserController extends Controller {
     public function edit($id)
     {
         try {
-    
+            $data = User::getById($id);
+            return $this->view('admin/users/edit', data: $data, layoutType:"Admin");
         }catch(CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), 'error');
             header('location:');
@@ -131,7 +144,6 @@ class UserController extends Controller {
     {
         try {
             $data = [
-                "id_number" => "123456789",
                 "email" => "admin@gmail.com",
                 "first_name" => 'nugroho',
                 "last_name" => 'nur',
@@ -155,14 +167,12 @@ class UserController extends Controller {
             if($validator->error()) throw new CustomException($validator->getErrors());
 
             $update = User::update($id, $data);
-            // if($update) {
-
-            // } else {
-            //     throw new CustomException();
-            // }
+            if($update) {
+                
+            }
 
         } catch (CustomException $e) {
-            ResponseHandler::setResponse($e->getErrorMessages());
+            ResponseHandler::setResponse($e->getErrorMessages(), "error");
             header('location:' . URL . "/admin/user/edit/$id");
         }
     }

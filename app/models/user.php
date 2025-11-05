@@ -9,7 +9,7 @@ class User extends Database {
         $conn = parent::getConnection();
         $q = $conn->prepare("SELECT * FROM users");
         $q->execute();
-        $data = $q->fetchAll(PDO::FETCH_OBJ);
+        $data = $q->fetchAll(PDO::FETCH_OBJ); 
         return $data;
     }
 
@@ -86,6 +86,7 @@ class User extends Database {
 
     public static function update($id, $data) 
     {
-
+        $conn = parent::getConnection();
+        $q = $conn->prepare("UPDATE users SET first_name = ?, last_name = ?, ");
     }
 }
