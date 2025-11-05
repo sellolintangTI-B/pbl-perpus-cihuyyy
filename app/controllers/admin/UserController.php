@@ -7,6 +7,7 @@ use App\Core\ResponseHandler;
 use App\Error\CustomException;
 use App\Utils\Validator;
 use App\Models\User;
+use Exception;
 
 class UserController extends Controller {
 
@@ -74,6 +75,14 @@ class UserController extends Controller {
         }
     }
 
+    public function add_admin(){
+        try{
+            return $this->view('admin/users/create', layoutType: "Admin");
+        }catch (CustomException $e){
+            ResponseHandler::setResponse($e->getErrorMessages(), 'error');
+            header('location:' . URL . '/admin/user/index');
+        }
+    }
 
     public function store_admin()
     {
@@ -123,7 +132,8 @@ class UserController extends Controller {
     public function edit($id)
     {
         try {
-            var_dump($id);
+            $data = User::getById($id);
+            return $this->view('admin/users/edit', data: $data, layoutType:"Admin");
         }catch(CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), 'error');
             header('location:');

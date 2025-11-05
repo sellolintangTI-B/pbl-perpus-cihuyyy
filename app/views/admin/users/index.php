@@ -27,7 +27,7 @@
                 <div class="h-full flex-1">
                     <?= FormInput::input(type: "text", name: "search", placeholder: "Cari Pengguna...", value: $_GET['search'] ?? '', class:"h-full !w-full !border-primary", classGlobal:"h-full !w-full") ?>
                 </div>
-                <?= Button::button(href: "/admin/user/create", class: "px-4 h-full", label:"Search") ?>
+                <?= Button::button(class: "px-4 h-full", label:"Search") ?>
             </form>
         </div>
     </div>

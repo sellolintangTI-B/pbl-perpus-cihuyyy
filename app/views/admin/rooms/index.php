@@ -6,7 +6,7 @@
 
 ?>
 
-<div class="w-full h-full flex flex-col items-start justify-start gap-5">
+<div class="w-full h-full flex flex-col items-center justify-center gap-5 relative" x-data="{ onAlert: false }">
     <div class="w-full flex items-center justify-start">
         <h1 class="text-3xl font-medium text-primary">
             Data Ruangan
@@ -40,10 +40,14 @@
                     </tr>
                 </thead>
                 <tbody class="text-primary relative">
-                   <?php foreach ($data as $room) :  ?>
+                   <?php 
+                   $no = 0;
+                   foreach ($data as $room) :  
+                    $no++;
+                   ?>
                         <tr x-data="{ open: false }" class="hover:bg-gray-50 transition text-center ">
                             <td class="px-6 py-4 text-sm ">
-                                <?= $data['no']++ ?>
+                                <?= $no ?>
                             </td>
                             <td class="px-6 py-4 text-sm ">
                                 <?= $room->name ?>
@@ -57,10 +61,10 @@
                             <td class="px-6 py-4 text-sm ">
                                 <?= $room->max_capacity ?>
                             </td>
-                            <td class="px-6 py-4 text-sm ">
+                            <td class="px-6 py-4 text-sm flex justify-center">
                                 <?= Badge::badge(label: $room->is_operational == 1 ? "Yes" : "No", active:$room->is_operational)?>
                             </td>
-                            <td class="px-6 py-4">
+                            <td class="px-6 py-4 justify-items-center">
                                 <button @click="open = ! open" class="bg-none border-0 text-primary cursor-pointer p-2 rounded-full hover:bg-gray-100 transition flex items-center duration-300 ">
                                     <?=Icon::dotMenu('w-6 h-6')?>
                                 </button>
@@ -76,11 +80,11 @@
                                         <?=Icon::lock('w-4 h-4')?>
                                         Activation
                                     </a>
-                                    <a class="flex gap-3 w-full items-center justify-start text-primary text-sm px-3 py-2 cursor-pointer hover:bg-primary/10" href="<?=URL."/admin/room/edit/".$user->id?>">
+                                    <a class="flex gap-3 w-full items-center justify-start text-primary text-sm px-3 py-2 cursor-pointer hover:bg-primary/10" href="<?=URL."/admin/room/edit/".$room->id?>">
                                         <?=Icon::pencil('w-4 h-4')?>
                                         Edit
                                     </a>
-                                    <a class="flex gap-3 w-full items-center justify-start text-red text-sm px-3 py-2 cursor-pointer hover:bg-red/10">
+                                    <a class="flex gap-3 w-full items-center justify-start text-red text-sm px-3 py-2 cursor-pointer hover:bg-red/10" @click="onAlert = true">
                                         <?=Icon::trash('w-4 h-4')?>
                                         Delete
                                     </a>
@@ -91,4 +95,9 @@
                 </tbody>
             </table>
     </div>
+    <!-- any alert -->
+    <div class="w-96 h-96 z-50 bg-black/20 absolute transition-all duration-300 ease-in-out" x-show="onAlert" @click.outside="onAlert = false">
+        Lalalalla
+    </div>
 </div>
+

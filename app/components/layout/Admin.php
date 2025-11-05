@@ -18,12 +18,11 @@ $items = [
     ['label' => 'Dashboard', 'url' => '/admin/dashboard/index', 'icon' => 'home'],
     ['label' => 'Data Pengguna', 'url' => '/admin/user/index', 'icon' => 'person'],
     ['label' => 'Data Ruangan', 'url' => '/admin/room/index', 'icon' => 'room'],
-    ['label' => 'Logout', 'url' => '/admin/dashboard/logout', 'icon' => 'logout'],
 ];
 $activeItem = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 ?>
 
-<body class="font-poppins">
+<body class="font-poppins" >
     <!-- Main Content -->
     <div class="h-screen overflow-hidden w-full flex items-center bg-primary gap-4">
        <div class="w-56 h-full flex items-center justify-center">
@@ -32,7 +31,7 @@ $activeItem = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
             ?>
        </div>
         <div class="flex-1 w-full h-full p-4">
-            <div class="flex items-center justify-center w-full h-full bg-white rounded-xl overflow-hidden p-8">
+            <div class="flex items-center justify-center w-full h-full bg-white rounded-xl overflow-hidden p-8 relative">
                 <?= $content ?>
             </div>
         </div>

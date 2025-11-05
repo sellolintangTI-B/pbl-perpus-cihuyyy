@@ -66,14 +66,14 @@ class RoomController extends Controller {
             $insert = Room::create($data);
             if($insert) {
                 ResponseHandler::setResponse("Berhail memasukan data ruangan");
-                header('location:' . URL . '/room/index');
+                header('location:' . URL . '/admin/room/index');
             } else {
                 throw new CustomException('Gagal memasukan data');
             }
 
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), "error");
-            header('location:' . URL . '/room/create');
+            header('location:' . URL . '/admin/room/create');
         }
     }
 
