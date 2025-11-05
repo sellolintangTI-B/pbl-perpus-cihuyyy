@@ -74,6 +74,15 @@ class UserController extends Controller {
         }
     }
 
+    public function add_admin()
+    {
+        try {
+            $this->view('admin/users/create', layoutType: "admin");
+        }catch(CustomException $e) {
+            ResponseHandler::setResponse($e->getErrorMessages(), 'error');
+            header('location:' . URL . '/admin/user');
+        }
+    }
 
     public function store_admin()
     {
@@ -125,7 +134,7 @@ class UserController extends Controller {
         try {
             $data = User::getById($id);
             if(!$data) throw new CustomException('User tidak ditemukan');
-            
+            $this->view('admin/users/edit', $data, layoutType: "admin");
         }catch(CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), 'error');
             header('location:' . URL . '/admin/user');

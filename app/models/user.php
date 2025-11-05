@@ -87,6 +87,6 @@ class User extends Database {
     public static function update($id, $data) 
     {
         $conn = parent::getConnection();
-        $q = $conn->prepare("UPDATE users SET first_name = ?, last_name = ?, ")
+        $q = $conn->prepare("UPDATE users SET first_name = ?, last_name = ?, ");
     }
 }
