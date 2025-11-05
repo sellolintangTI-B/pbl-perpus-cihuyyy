@@ -65,7 +65,7 @@ class UserController extends Controller {
     public function add_admin()
     {
         try {
-    
+            return $this->view('admin/users/create',  layoutType: $this::$layoutType['admin']);
         }catch(CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), 'error');
             header('location:');
@@ -120,7 +120,8 @@ class UserController extends Controller {
     public function edit($id)
     {
         try {
-    
+            $user = User::getById($id);
+            return $this->view('admin/users/edit', layoutType: $this::$layoutType['admin'], data: [$user]);
         }catch(CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), 'error');
             header('location:');

@@ -7,16 +7,18 @@
     <title><?= $title ?? "SIMARU" ?></title>
     <link href="<?= URL ?>/public/css/style.css" rel="stylesheet">
     <link href="<?= URL ?>/public/css/theme.css" rel="stylesheet">
+    <!-- <script src="<?= URL ?>/public/js/alpine.js" defer></script> -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 <?php
 
 use App\Components\NavThings;
 
 $items = [
-    ['label' => 'Dashboard', 'url' => '/admin/dashboard/index', 'icon' => 'dashboard'],
-    ['label' => 'Data Ruangan', 'url' => '/admin/room/index', 'icon' => 'person'],
-    ['label' => 'Data User', 'url' => '/admin/user/index', 'icon' => 'person'],
-    ['label' => 'Logout', 'url' => '/admin/dashboard/logout', 'icon' => 'person'],
+    ['label' => 'Dashboard', 'url' => '/admin/dashboard/index', 'icon' => 'home'],
+    ['label' => 'Data Pengguna', 'url' => '/admin/user/index', 'icon' => 'person'],
+    ['label' => 'Data Ruangan', 'url' => '/admin/room/index', 'icon' => 'room'],
+    ['label' => 'Logout', 'url' => '/admin/dashboard/logout', 'icon' => 'logout'],
 ];
 $activeItem = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 ?>
@@ -30,7 +32,7 @@ $activeItem = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
             ?>
        </div>
         <div class="flex-1 w-full h-full p-4">
-            <div class="flex items-center justify-center w-full h-full bg-white rounded-xl">
+            <div class="flex items-center justify-center w-full h-full bg-white rounded-xl overflow-hidden p-8">
                 <?= $content ?>
             </div>
         </div>
