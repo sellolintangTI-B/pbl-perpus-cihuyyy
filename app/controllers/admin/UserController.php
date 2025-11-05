@@ -123,29 +123,30 @@ class UserController extends Controller {
     public function edit($id)
     {
         try {
-            var_dump($id);
+            $data = User::getById($id);
+            if(!$data) throw new CustomException('User tidak ditemukan');
+            
         }catch(CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), 'error');
-            header('location:');
+            header('location:' . URL . '/admin/user');
         }
     }
 
     public function update($id)
     {
         try {
+
             $data = [
-                "email" => "admin@gmail.com",
-                "first_name" => 'nugroho',
-                "last_name" => 'nur',
-                "password" => 'pass123',
-                "phone_number" => '087785774940',
-                "institution" => "Politeknik Negeri Jakarta",
-                "role" => "Admin",
-                // "image" => empty($_FILES['file_upload']['name']) ? null : $_FILES['file_upload'] 
+                "email" => $_POST['email'],
+                "first_name" => $_POST['first_name'],
+                "last_name" => $_POST['last_name'],
+                "password" => $_POST['password'],
+                "phone_number" => $_POST['phone_number'],
+                "institution" => $_POST['institution'],
+                "role" => $_POST['role'],
             ];
 
             $validator = new Validator($data);
-            $validator->field("id_number", ['required']);
             $validator->field("first_name", ['required']);
             $validator->field("last_name", ['required']);
             $validator->field("email", ['required']);
@@ -158,7 +159,8 @@ class UserController extends Controller {
 
             $update = User::update($id, $data);
             if($update) {
-                
+                ResponseHandler::setResponse('Berhasil mengubah data');
+                header('location:' . URL . '/admin/user');
             }
 
         } catch (CustomException $e) {
