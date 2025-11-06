@@ -10,5 +10,11 @@ class FormInput {
     public static function select($id = '', $name = '', $value = '', $options = [["display"=> null, "value" =>null]], $placeholder = '', $label = '', $required = false, $class = '', $classGlobal = '', $disabled = false, $selected = ''){
     include __DIR__ . '/html/select-option.php';
     }
+    public static function textarea($id = '', $name = '', $label = '', $value = '', $placeholder = '', $class = '', $classGlobal = '', $rows = 4, $required = false, $readonly = false, $disabled = false, $maxlength = null){
+        include __DIR__ . '/html/text-area.php';
+    }
+    public static function checkbox($id = '', $name = '', $label = '', $value = '1', $checked = false, $class = '', $classGlobal = '', $required = false, $disabled = false){
+    include __DIR__ . '/html/checkbox.php';
+    }
 }
 

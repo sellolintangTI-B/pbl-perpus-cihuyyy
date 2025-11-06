@@ -33,7 +33,7 @@
     }
     
     textarea.addEventListener('input', updateCount);
-    updateCount(); // Initial count
+    updateCount();
 })();
 </script>
 <?php endif; ?>

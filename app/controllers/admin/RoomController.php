@@ -172,5 +172,4 @@ class RoomController extends Controller {
             header('location:' . URL . '/admin/room/index');
         }
     }
-
 } 

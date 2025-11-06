@@ -15,29 +15,43 @@
                     Back
                 </a>
            </div>
+
            <div class="flex-1 w-full overflow-y-auto">
                 <div class="flex items-center justify-center">
-                    <form class="w-full max-w-3xl grid grid-cols-1 sm:grid-cols-2 gap-6" action="" method="post" enctype="multipart/form-data">
+                    <form class="w-full max-w-3xl grid grid-cols-1 sm:grid-cols-2 gap-6" action="<?=URL."/admin/room/update/".$data->id?>" method="post" enctype="multipart/form-data">
                         <?php
-                        FormInput::input(id: 'nama', name: 'nama', label: 'Nama', placeholder:"masukkan nama ruangan", required: true, value: $data->name);
-                        FormInput::input(id: 'lantai', name: 'lantai', type: 'number', label: 'Lantai', placeholder:"contoh: 1", required: true,value: $data->floor);
-                        FormInput::input(id: 'deskripsi', name: 'deskripsi', label: 'Deskripsi', placeholder:"masukkan deskripsi ruangan", required: true, value: $data->description);
-                        FormInput::input(id: 'jenis_ruangan', name: 'jenis_ruangan', label: 'Jenis Ruangan', value: $data->is_operational);
-                        FormInput::input(id: 'kapasitas_minimal', name: 'kapasitas_minimal', type: 'number', label: 'Kapasitas Minimal', required: true, value: $data->min_capacity);
-                        FormInput::input(id: 'kapasitas_maximal', name: 'kapasitas_maximal', type: 'number', label: 'Kapasitas Maximal', required: true, value: $data->max_capacity);
+                            FormInput::input(id: 'nama', name: 'name', label: 'Nama', placeholder:"masukkan nama ruangan", required: true, value:$data->name);
+                            FormInput::input(id: 'lantai', name: 'floor', type: 'number', label: 'Lantai', placeholder:"contoh: 1", required: true, value:$data->floor);
+                            FormInput::input(id: 'kapasitas_minimal', name: 'min', type: 'number', label: 'Kapasitas Minimal', placeholder:'contoh: 2', required: true, value:$data->min_capacity);
+                            FormInput::input(id: 'kapasitas_maximal', name: 'max', type: 'number', label: 'Kapasitas Maximal', placeholder:'contoh: 4',  required: true,value:$data->max_capacity);
                         ?>
                         <div class="sm:col-span-2 mt-4">
                             <?php
                                 FormInput::fileInput(
-                                                        id: 'file_upload',
-                                                        name: 'file_upload',
-                                                        label: 'Upload bukti download \'Kubaca PNJ\'',
-                                                        required: false,
-                                                        classGlobal: 'sm:col-span-2',
-                                                        accept: 'image/*'
-                                                    );                        
+                                            id: 'file_upload',
+                                            name: 'file_upload',
+                                            label: 'Upload foto ruangan',
+                                            classGlobal: 'sm:col-span-2',
+                                            accept: 'image/*',
+                                        );                        
                             ?>
                         </div>
+                        <div class="sm:col-span-2 mt-4">
+                            <?php
+                               FormInput::textarea(
+                                    id: 'deskripsi', 
+                                    name: 'description', 
+                                    label: 'Deskripsi', 
+                                    placeholder:"masukkan deskripsi ruangan", 
+                                    required: true, 
+                                    rows: 4,
+                                    value:$data->description);          
+                            ?>
+                        </div>
+                         <?php
+                                FormInput::checkbox(id: 'jenis_ruangan', name: 'isSpecial', label: 'Ruangan special', checked:$data->requires_special_approval == 1);                            
+                                FormInput::checkbox(id: 'isOperational', name: 'isOperational', label: 'Ruangan Beroperasi', checked:$data->is_operational == 1);                            
+                        ?>
                         <div class="sm:col-span-2 mt-4">
                             <button type="submit" name="register" class="w-full bg-primary text-white px-4 py-2 rounded-xl cursor-pointer shadow-sm shadow-gray-400 hover:shadow-md hover:shadow-primary-100 duration-300 transition-all font-medium">
                                 Simpan Perubahan

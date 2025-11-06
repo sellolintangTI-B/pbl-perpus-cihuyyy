@@ -88,12 +88,12 @@ class UserController extends Controller {
     {
         try {
             $data = [
-                "id_number" => "123456789",
-                "email" => "admin@gmail.com",
-                "first_name" => 'nugroho',
-                "last_name" => 'nur',
-                "password" => 'pass123',
-                "phone_number" => '087785774940',
+                "id_number" => $_POST["id_number"],
+                "email" => $_POST["email"],
+                "first_name" => $_POST["first_name"],
+                "last_name" => $_POST["last_name"],
+                "password" => $_POST["password"],
+                "phone_number" => $_POST["phone_number"],
                 "institution" => "Politeknik Negeri Jakarta",
                 "role" => "Admin",
             ];
@@ -144,13 +144,14 @@ class UserController extends Controller {
     {
         try {
             $data = [
-                "email" => "admin@gmail.com",
-                "first_name" => 'nugroho',
-                "last_name" => 'nur',
-                "password" => 'pass123',
-                "phone_number" => '087785774940',
+                "id_number" => $_POST["id_number"],
+                "email" => $_POST["email"],
+                "first_name" => $_POST["first_name"],
+                "last_name" => $_POST["last_name"],
+                "password" => $_POST["password"],
+                "phone_number" => $_POST["phone_number"],
                 "institution" => "Politeknik Negeri Jakarta",
-                "role" => "Admin",
+                "role" => $_POST["role"],
                 // "image" => empty($_FILES['file_upload']['name']) ? null : $_FILES['file_upload'] 
             ];
 
