@@ -24,6 +24,7 @@ class Middleware
             "/admin/user/add_admin",
             "/admin/user/approve_user",
             "/admin/user/update",
+            "/admin/user/edit",
             //ERROR
             "/error/forbidden/index",
             "/error/notfound/index",

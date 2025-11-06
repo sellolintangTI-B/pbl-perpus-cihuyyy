@@ -6,6 +6,7 @@ use App\Error\CustomException;
 use App\Core\ResponseHandler;
 use App\Models\User;
 use App\Utils\Authentication;
+use App\Utils\Captcha;
 
 class LoginController extends Controller {
     private $user;
@@ -25,7 +26,8 @@ class LoginController extends Controller {
 
     public function index()
     {
-        $this->view('auth/login', layoutType: $this::$layoutType["default"]);
+        $captchaCode = Captcha::Generate();
+        $this->view('auth/login', $captchaCode ,layoutType: $this::$layoutType["default"]);
     }
 
     public function signIn()
@@ -33,17 +35,19 @@ class LoginController extends Controller {
         try {
             $data = [
                 "identifier" => $_POST['username'],
-                "password" => $_POST['password']
+                "password" => $_POST['password'],
+                "captcha" => $_POST['captcha']
             ];
 
             $validator = new Validator($data);
             str_contains($data['identifier'], '@') ? $validator->field("identifier", ['required', 'email']) : $validator->field('identifier', ['required']);
             $validator->field("password", ["required"]);
+            $validator->field('captcha', ['required']);
             $errors = $validator->error();
+            if ($errors) throw new CustomException($validator->getErrors());
 
-            if ($errors) {
-                throw new CustomException($validator->getErrors());
-            }
+            if($_SESSION['captcha'] !== $data['captcha']) throw new CustomException('Captcha tidak valid');
+
 
             $checkIfUserExist = User::getByEmailOrIdNumber($data['identifier']);
             if(!$checkIfUserExist) throw new CustomException('Credentials not match');

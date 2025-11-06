@@ -6,7 +6,7 @@
 
 ?>
 
-<div class="w-full h-full flex flex-col items-start justify-start gap-5">
+<div class="w-full h-full flex flex-col items-start justify-start gap-5" x-data="{ onAlert: false, deleteUserId: null }" @delete-user.window="onAlert = true; deleteUserId = $event.detail.id">
     <div class="w-full flex items-center justify-start">
         <h1 class="text-3xl font-medium text-primary">
             Akun Pengguna
@@ -31,7 +31,7 @@
             </form>
         </div>
     </div>
-    <div class="p-6 bg-white shadow-sm shadow-gray-600 rounded-xl w-full h-full border border-gray-200 overflow-hidden ">
+    <div class="p-6 bg-white shadow-sm shadow-gray-600 rounded-xl w-full h-full border border-gray-200 overflow-y-auto">
             <table class="table-auto w-full">
                 <thead class="text-primary">
                     <tr class="border-b border-gray-100">
@@ -71,7 +71,13 @@
                                 </button>
                                 <div 
                                     x-show="open" 
-                                    @click.outside="open = false" 
+                                    @click.outside="open = false"
+                                    x-transition:enter="transition ease-out duration-200"
+                                    x-transition:enter-start="opacity-0 scale-95"
+                                    x-transition:enter-end="opacity-100 scale-100"
+                                    x-transition:leave="transition ease-in duration-150"
+                                    x-transition:leave-start="opacity-100 scale-100"
+                                    x-transition:leave-end="opacity-0 scale-95"
                                     class="absolute w-32 overflow-hidden flex flex-col items-start justify-start gap-1 right-0 bg-white transition duration-300 rounded-xl shadow-md">
                                     <a class="flex gap-3 w-full items-center justify-start text-black/80 text-sm px-3 py-2 cursor-pointer hover:bg-black/10">
                                         <?=Icon::eye('w-4 h-4')?>
@@ -85,7 +91,7 @@
                                         <?=Icon::pencil('w-4 h-4')?>
                                         Edit
                                     </a>
-                                    <a class="flex gap-3 w-full items-center justify-start text-red text-sm px-3 py-2 cursor-pointer hover:bg-red/10">
+                                    <a class="flex gap-3 w-full items-center justify-start text-red text-sm px-3 py-2 cursor-pointer hover:bg-red/10" @click="$dispatch('delete-user', { id: '<?=$user->id?>' }); open = false;">
                                         <?=Icon::trash('w-4 h-4')?>
                                         Delete
                                     </a>
@@ -94,6 +100,34 @@
                         </tr>
                     <?php endforeach ?>
                 </tbody>
-                </table>
+            </table>
+    </div>
+
+    <div class="h-full w-full z-50 absolute flex items-center justify-center bg-black/40 backdrop-blur-xs"  x-show="onAlert" x-cloak @click.outside="onAlert = false">
+        <div 
+            class="w-1/2 h-1/2 bg-white rounded-xl shadow-xl flex items-center justify-center border-red absolute transition-all duration-300 ease-in-out" 
+            x-show="onAlert" x-cloak @click.outside="onAlert = false"
+            x-transition:enter="transition ease-out duration-200"
+            x-transition:enter-start="opacity-0 scale-95"
+            x-transition:enter-end="opacity-100 scale-100"
+            x-transition:leave="transition ease-in duration-150"
+            x-transition:leave-start="opacity-100 scale-100"
+            x-transition:leave-end="opacity-0 scale-95">
+            <div class="flex flex-col gap-8 items-center justify-center max-w-4xl w-full">
+                <h1 class="text-red font-medium text-2xl">
+                    Yakin ingin menghapus data akun?
+                </h1>
+                <div class="flex gap-4 items-center justify-center h-10"  >
+                    <form x-bind:action="`<?=URL."/admin/user/delete/"?>${userRoomId}`" method="delete">
+                        <button class="p-2 text-white bg-red shadow-sm rounded-md h-full w-24 cursor-pointer">
+                            Hapus
+                        </button>
+                    </form>
+                    <button class="p-2 text-black/80 bg-white shadow-sm rounded-md h-full w-24 cursor-pointer" @click="onAlert = false">
+                        Batal
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
