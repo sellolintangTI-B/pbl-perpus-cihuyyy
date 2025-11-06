@@ -34,7 +34,7 @@ class App {
             }
         }
         $path = $path . '/' . $this->method;
-        // new Middleware($path);
+        new Middleware($path);
         if(!empty($url)) {
             $this->params = array_values($url);
         }
