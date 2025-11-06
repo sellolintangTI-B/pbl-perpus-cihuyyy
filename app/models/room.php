@@ -48,8 +48,8 @@ class Room extends Database {
     public static function update($id, $data)
     {
         $conn = parent::getConnection();
-        $query = "UPDATE rooms SET name = ?, floor = ?, min_capacity = ?, max_capacity = ?, requires_special_approval = ?, is_operational = ? WHERE id = ?";
-        if(isset($data['image'])) $query = "UPDATE rooms SET name = ?, floor = ?, min_capacity = ?, max_capacity = ?, requires_special_approval = ?, is_operational = ?, room_img_url = ?,  WHERE id = ?";
+        $query = "UPDATE rooms SET name = ?, floor = ?, min_capacity = ?, max_capacity = ?, description = ?, requires_special_approval = ?, is_operational = ? WHERE id = ?";
+        if(isset($data['image'])) $query = "UPDATE rooms SET name = ?, floor = ?, min_capacity = ?, max_capacity = ?, description = ?, requires_special_approval = ?, is_operational = ?, room_img_url = ?,  WHERE id = ?";
         
         $stmt = $conn->prepare($query);
         $x = 1;
