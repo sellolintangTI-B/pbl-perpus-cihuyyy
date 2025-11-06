@@ -136,13 +136,14 @@ class UserController extends Controller {
             return $this->view('admin/users/edit', data: $data, layoutType:"Admin");
         }catch(CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), 'error');
-            header('location:');
+            header('location:' . URL . '/admin/user');
         }
     }
 
     public function update($id)
     {
         try {
+
             $data = [
                 "id_number" => $_POST["id_number"],
                 "email" => $_POST["email"],
@@ -156,7 +157,6 @@ class UserController extends Controller {
             ];
 
             $validator = new Validator($data);
-            $validator->field("id_number", ['required']);
             $validator->field("first_name", ['required']);
             $validator->field("last_name", ['required']);
             $validator->field("email", ['required']);
@@ -169,7 +169,8 @@ class UserController extends Controller {
 
             $update = User::update($id, $data);
             if($update) {
-                
+                ResponseHandler::setResponse('Berhasil mengubah data');
+                header('location:' . URL . '/admin/user');
             }
 
         } catch (CustomException $e) {

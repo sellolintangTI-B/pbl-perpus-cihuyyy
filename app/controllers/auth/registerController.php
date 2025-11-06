@@ -7,6 +7,7 @@ use App\Core\ResponseHandler;
 use App\Error\CustomException;
 use App\Models\User;
 use App\Utils\Authentication;
+use App\Utils\Captcha;
 use App\Utils\Validator;
 
 class RegisterController extends Controller
@@ -27,7 +28,8 @@ class RegisterController extends Controller
 
     public function index()
     {
-        $this->view('auth/register', layoutType: $this::$layoutType["default"]);
+        $captchaCode = Captcha::Generate();
+        $this->view('auth/register', $captchaCode, layoutType: $this::$layoutType["default"]);
     }
 
     public function signUp()
@@ -42,7 +44,8 @@ class RegisterController extends Controller
                 "institution" => "Politeknik Negeri Jakarta",
                 "phone_number" => $_POST['phone_number'],
                 "role" => $_POST['role'],
-                "image" => empty($_FILES['file_upload']['name']) ? null : $_FILES['file_upload'] 
+                "image" => empty($_FILES['file_upload']['name']) ? null : $_FILES['file_upload'],
+                "captcha" => $_POST['captcha']
             ];
 
             $validator = new Validator($data);
@@ -55,11 +58,12 @@ class RegisterController extends Controller
             $validator->field("phone_number", ["required"]);
             $validator->field("role", ["required"]);
             $validator->field("image", ["required"]);
+            $validator->field("captcha", ['required']);
 
             $errors = $validator->error();
-            if ($errors) {
-                throw new CustomException($validator->getErrors());
-            }
+            if ($errors) throw new CustomException($validator->getErrors());
+            
+            if($_SESSION['captcha'] !== $data['captcha']) throw new CustomException('Captcha tidak valid');
 
             $checkByIdNumber = User::getByIdNumber($data['id_number']);
             $checkByEmail = User::getByEmail($data['email']);

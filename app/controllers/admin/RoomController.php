@@ -36,7 +36,7 @@ class RoomController extends Controller {
                 "max" => (int) $_POST['max'],
                 "description" => $_POST['description'],
                 "isSpecial" => isset($_POST['isSpecial']) ? 1 : 0,
-                "image" => empty($_FILES['file_upload']['name']) ? null : $_FILES['file_upload'] 
+                "image" => empty($_FILES['image']['name']) ? null : $_FILES['image'] 
             ];
 
             $validator = new Validator($data); 
@@ -112,6 +112,7 @@ class RoomController extends Controller {
                 "floor" => (int) $_POST['floor'],
                 "min" => (int) $_POST['min'],  
                 "max" => (int) $_POST['max'],
+                "description" => $_POST['description'],
                 "isSpecial" => isset($_POST['isSpecial']) ? 1 : 0,
                 "isOperational" => isset($_POST['isOperational']) ? 1 : 0,
                 "image" => empty($_FILES['file_upload']['name']) ? null : $_FILES['file_upload']
@@ -138,7 +139,7 @@ class RoomController extends Controller {
                     throw new CustomException(['image' => "File tidak didukung"]);
                 }
                 $newPath = "storage/rooms/" . $data['image']['name'];
-                move_uploaded_file($data['image']['tmp_name'], dirname(__DIR__) . '/../public/' . $newPath);
+                move_uploaded_file($data['image']['tmp_name'], dirname(__DIR__) . '/../../public/' . $newPath);
                 $data['image'] = $newPath;
             }
 
@@ -152,6 +153,9 @@ class RoomController extends Controller {
 
         } catch(CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), "error");
+            $error = ResponseHandler::getResponse();
+            var_dump($error);
+            die;
             header('location:' . URL . '/admin/room/edit/' . $id);
         }
 

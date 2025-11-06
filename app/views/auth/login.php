@@ -18,6 +18,7 @@ use App\Components\icon\Icon;
                     <?php
                     FormInput::input(id: 'username', name: 'username', type: 'text', label: 'username', required: false, placeholder: "Masukkan email atau NIM/NIP anda");
                     FormInput::input(id: 'password', name: 'password', type: 'password', label: 'password', required: false, placeholder: "Masukkan password anda");
+                    FormInput::input(id: 'captcha', name: 'captcha', type: 'text', label: $data, required: false, placeholder: "");
                     ?>
                     <div class="w-full text-sm flex justify-between col-span-1 text-primary">
                         <div class="flex gap-4 items-center ">

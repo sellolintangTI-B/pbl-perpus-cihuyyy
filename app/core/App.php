@@ -10,13 +10,14 @@ class App {
     {
         $path = '/';
         $url = $this->parseURL();
-        // new Middleware($url);
         if(isset($url[0])) {
             $path = $path . $url[0];
             if(file_exists("app/controllers/$url[0]/$url[1]Controller.php")) {
                 $this->controller = $url[1];
                 $path = $path . '/' . $this->controller;
                 unset($url[1]);
+            } else {
+                header('location:' . URL . '/error/notfound');
             }
         }
 
@@ -33,7 +34,7 @@ class App {
             }
         }
         $path = $path . '/' . $this->method;
-        // new Middleware($path);
+        new Middleware($path);
         if(!empty($url)) {
             $this->params = array_values($url);
         }
