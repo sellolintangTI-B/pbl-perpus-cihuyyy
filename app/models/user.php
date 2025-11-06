@@ -99,4 +99,15 @@ class User extends Database {
         if($q) return true;
         return false;
     }
+
+    public static function resetPassword($id, $password)
+    {
+        $conn = parent::getConnection();
+        $q = $conn->prepare("UPDATE users SET password_hash = ? WHERE id = ?");
+        $q->bindParam(1, $password);
+        $q->bindParam(2, $id);
+        $q->execute();
+        if($q) return true;
+        return false;
+    }
 }

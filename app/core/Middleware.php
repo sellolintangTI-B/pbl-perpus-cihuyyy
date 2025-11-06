@@ -25,6 +25,7 @@ class Middleware
             "/admin/user/approve_user",
             "/admin/user/update",
             "/admin/user/edit",
+            "/admin/user/reset_password",
             //ERROR
             "/error/forbidden/index",
             "/error/notfound/index",
