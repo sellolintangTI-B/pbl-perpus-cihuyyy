@@ -179,4 +179,16 @@ class UserController extends Controller {
         }
     }
 
+    public function delete($id)
+    {
+        try {
+            $data = User::delete($id);
+            if($data) {
+                ResponseHandler::setResponse('')
+            }
+        }catch(CustomException $e) {
+            ResponseHandler::setResponse($e->getErrorMessages(), 'error');
+            header('location:' . URL . '/admin/room/index');
+        }
+    }
 }

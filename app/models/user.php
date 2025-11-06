@@ -89,4 +89,14 @@ class User extends Database {
         $conn = parent::getConnection();
         $q = $conn->prepare("UPDATE users SET first_name = ?, last_name = ?, ");
     }
+
+    public static function delete($id)
+    {
+        $conn = parent::getConnection();
+        $q = $conn->prepare("DELETE FROM users WHERE id = ?");
+        $q->bindParam(1, $id);
+        $q->execute();
+        if($q) return true;
+        return false;
+    }
 }
