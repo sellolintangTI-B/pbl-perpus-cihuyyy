@@ -6,7 +6,7 @@
 
 ?>
 
-<div class="w-full h-full flex flex-col items-start justify-start gap-5" x-data="{ onAlert: false, deleteUserId: null }" @delete-user.window="onAlert = true; deleteUserId = $event.detail.id">
+<div class="w-full h-full flex flex-col items-start justify-start gap-5" x-data="{ showAlert: false, deleteUserId: null }" @delete-user.window="showAlert = true; deleteUserId = $event.detail.id">
     <div class="w-full flex items-center justify-start">
         <h1 class="text-3xl font-medium text-primary">
             Akun Pengguna
@@ -35,37 +35,37 @@
             <table class="table-auto w-full">
                 <thead class="text-primary">
                     <tr class="border-b border-gray-100">
-                        <th>No</th>
-                        <th>Nama</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                        <th>Institusi</th>
-                        <th>Status</th>
-                        <th>Aksi</th>
+                        <th class="px-2 py-3 text-sm">No</th>
+                        <th class="px-2 py-3 text-sm">Nama</th>
+                        <th class="px-2 py-3 text-sm">Email</th>
+                        <th class="px-2 py-3 text-sm">Role</th>
+                        <th class="px-2 py-3 text-sm">Institusi</th>
+                        <th class="px-2 py-3 text-sm">Status</th>
+                        <th class="px-2 py-3 text-sm">Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="text-primary relative">
+                <tbody class="text-primary">
                    <?php foreach ($data['users'] as $user) :  ?>
                         <tr x-data="{ open: false }" class="hover:bg-gray-50 transition text-center ">
-                            <td class="px-6 py-4 text-sm ">
+                            <td class="px-2 py-3 text-xs">
                                 <?= $data['no']++ ?>
                             </td>
-                            <td class="px-6 py-4 text-sm ">
+                            <td class="px-2 py-3 text-xs">
                                 <?= $user->first_name . ' ' . $user->last_name ?>
                             </td>
-                            <td class="px-6 py-4 text-sm ">
+                            <td class="px-2 py-3 text-xs">
                                 <?= $user->email ?>
                             </td>
-                            <td class="px-6 py-4 text-sm text-gray-600">
+                            <td class="px-2 py-3 text-xs">
                                 <?= $user->role ?>
                             </td>
-                            <td class="px-6 py-4 text-sm ">
+                            <td class="px-2 py-3 text-xs">
                                 <?= $user->institution ?>
                             </td>
-                            <td class="px-6 py-4 text-sm ">
+                            <td class="px-3 py-3 text-xs">
                                 <?= Badge::badge(label: $user->is_active == 1 ? "Active" : "inactive", active:$user->is_active)?>
                             </td>
-                            <td class="px-6 py-4">
+                            <td class="px-2 py-3 text-xs relative">
                                 <button @click="open = ! open" class="bg-none border-0 text-primary cursor-pointer p-2 rounded-full hover:bg-gray-100 transition flex items-center duration-300 ">
                                     <?=Icon::dotMenu('w-6 h-6')?>
                                 </button>
@@ -78,7 +78,7 @@
                                     x-transition:leave="transition ease-in duration-150"
                                     x-transition:leave-start="opacity-100 scale-100"
                                     x-transition:leave-end="opacity-0 scale-95"
-                                    class="absolute w-32 overflow-hidden flex flex-col items-start justify-start gap-1 right-0 bg-white transition duration-300 rounded-xl shadow-md">
+                                    class="absolute w-32 z-50 overflow-hidden flex flex-col items-start justify-start gap-1 right-0 bg-white transition duration-300 rounded-xl shadow-md">
                                     <a class="flex gap-3 w-full items-center justify-start text-black/80 text-sm px-3 py-2 cursor-pointer hover:bg-black/10">
                                         <?=Icon::eye('w-4 h-4')?>
                                         Detail
@@ -103,10 +103,10 @@
             </table>
     </div>
 
-    <div class="h-full w-full z-50 absolute flex items-center justify-center bg-black/40 backdrop-blur-xs"  x-show="onAlert" x-cloak @click.outside="onAlert = false">
+    <div class="h-full w-full absolute z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs"  x-show="showAlert" x-cloak @click.outside="showAlert = false">
         <div 
             class="w-1/2 h-1/2 bg-white rounded-xl shadow-xl flex items-center justify-center border-red absolute transition-all duration-300 ease-in-out" 
-            x-show="onAlert" x-cloak @click.outside="onAlert = false"
+            x-show="showAlert" x-cloak @click.outside="showAlert = false"
             x-transition:enter="transition ease-out duration-200"
             x-transition:enter-start="opacity-0 scale-95"
             x-transition:enter-end="opacity-100 scale-100"
@@ -118,12 +118,12 @@
                     Yakin ingin menghapus data akun?
                 </h1>
                 <div class="flex gap-4 items-center justify-center h-10"  >
-                    <form x-bind:action="`<?=URL."/admin/user/delete/"?>${userRoomId}`" method="delete">
+                    <form x-bind:action="`<?=URL."/admin/user/delete/"?>${deleteUserId}`" method="delete">
                         <button class="p-2 text-white bg-red shadow-sm rounded-md h-full w-24 cursor-pointer">
                             Hapus
                         </button>
                     </form>
-                    <button class="p-2 text-black/80 bg-white shadow-sm rounded-md h-full w-24 cursor-pointer" @click="onAlert = false">
+                    <button class="p-2 text-black/80 bg-white shadow-sm rounded-md h-full w-24 cursor-pointer" @click="showAlert = false">
                         Batal
                     </button>
                 </div>
@@ -131,3 +131,6 @@
         </div>
     </div>
 </div>
+<style>
+    [x-cloak] { display: none !important; }
+</style>

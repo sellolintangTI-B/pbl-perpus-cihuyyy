@@ -6,7 +6,7 @@
 
 ?>
 
-<div class="w-full h-full flex flex-col items-center justify-center gap-5" x-data="{ onAlert: false, deleteRoomId: null }" @delete-room.window="onAlert = true; deleteRoomId = $event.detail.id">
+<div class="w-full h-full flex flex-col items-center justify-center gap-5 " x-data="{ onAlert: false, deleteRoomId: null }" @delete-room.window="onAlert = true; deleteRoomId = $event.detail.id">
     <div class="w-full flex items-center justify-start">
         <h1 class="text-3xl font-medium text-primary">
             Data Ruangan
@@ -26,82 +26,92 @@
         </div>
     </div>
 
-    <div class="p-6 bg-white shadow-sm shadow-gray-600 rounded-xl w-full h-full border border-gray-200 overflow-y-auto ">
-            <table class="table-auto w-full">
-                <thead class="text-primary">
-                    <tr class="border-b border-gray-100">
-                        <th>No</th>
-                        <th>Nama</th>
-                        <th>Lantai</th>
-                        <th>Min</th>
-                        <th>Max</th>
-                        <th>Beroperasi</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody class="text-primary">
-                   <?php 
-                   $no = 0;
-                   foreach ($data as $room) :  
-                    $no++;
-                   ?>
-                        <tr x-data="{ open: false }" class="hover:bg-gray-50 transition text-center relative">
-                            <td class="px-6 py-4 text-sm ">
-                                <?= $no ?>
-                            </td>
-                            <td class="px-6 py-4 text-sm ">
-                                <?= $room->name ?>
-                            </td>
-                            <td class="px-6 py-4 text-sm ">
-                                <?= $room->floor ?>
-                            </td>
-                            <td class="px-6 py-4 text-sm text-gray-600">
-                                <?= $room->min_capacity ?>
-                            </td>
-                            <td class="px-6 py-4 text-sm ">
-                                <?= $room->max_capacity ?>
-                            </td>
-                            <td class="px-6 py-4 text-sm flex justify-center">
-                                <?= Badge::badge(label: $room->is_operational == 1 ? "Yes" : "No", active:$room->is_operational)?>
-                            </td>
-                            <td class="px-6 py-4 justify-items-center">
-                                <button @click="open = ! open" class="bg-none border-0 text-primary cursor-pointer p-2 rounded-full hover:bg-gray-100 transition flex items-center duration-300 ">
-                                    <?=Icon::dotMenu('w-6 h-6')?>
+    <div class="p-4 bg-white shadow-sm shadow-gray-600 rounded-xl w-full h-full border border-gray-200 overflow-auto">
+        <table class="table-auto w-full">
+            <thead class="text-primary sticky top-0 bg-white">
+                <tr class="border-b-2 border-gray-200">
+                    <th class="px-2 py-3 text-xs font-semibold">No</th>
+                    <th class="px-3 py-3 text-xs font-semibold text-left">Nama Ruangan</th>
+                    <th class="px-2 py-3 text-xs font-semibold">Lantai</th>
+                    <th class="px-2 py-3 text-xs font-semibold">Min</th>
+                    <th class="px-2 py-3 text-xs font-semibold">Max</th>
+                    <th class="px-2 py-3 text-xs font-semibold">Status</th>
+                    <th class="px-2 py-3 text-xs font-semibold">Khusus</th>
+                    <th class="px-3 py-3 text-xs font-semibold">Aksi</th>
+                </tr>
+            </thead>
+            <tbody class="text-primary">
+            <?php 
+            $no = 0;
+            foreach ($data as $room) :  
+                $no++;
+            ?>
+                    <tr x-data="{ open: false }" class="hover:bg-gray-50 transition text-center border-b border-gray-100">
+                        <td class="px-2 py-3 text-xs">
+                            <?= $no ?>
+                        </td>
+                        <td class="px-3 py-3 text-xs text-left font-medium">
+                            <?= $room->name ?>
+                        </td>
+                        <td class="px-2 py-3 text-xs">
+                            <?= $room->floor ?>
+                        </td>
+                        <td class="px-2 py-3 text-xs text-gray-600">
+                            <?= $room->min_capacity ?>
+                        </td>
+                        <td class="px-2 py-3 text-xs">
+                            <?= $room->max_capacity ?>
+                        </td>
+                        <td class="px-2 py-3 text-xs">
+                            <div class="flex justify-center">
+                                <?= Badge::badge(label: $room->is_operational == 1 ? "active" : "inactive", active:$room->is_operational)?>
+                            </div>
+                        </td>
+                        <td class="px-2 py-3 text-xs">
+                            <div class="flex justify-center">
+                                <?= Badge::badge(label: $room->requires_special_approval == 1 ? "ya" : "tidak", active:$room->requires_special_approval)?>
+                            </div>
+                        </td>
+                        <td class="px-3 py-3 relative">
+                            <button @click="open = ! open" class="bg-none border-0 text-primary cursor-pointer p-1.5 rounded-full hover:bg-gray-100 transition flex items-center mx-auto">
+                                <?=Icon::dotMenu('w-5 h-5')?>
+                            </button>
+                            <div 
+                                x-show="open" 
+                                @click.outside="open = false"
+                                x-transition:enter="transition ease-out duration-200"
+                                x-transition:enter-start="opacity-0 scale-95"
+                                x-transition:enter-end="opacity-100 scale-100"
+                                x-transition:leave="transition ease-in duration-150"
+                                x-transition:leave-start="opacity-100 scale-100"
+                                x-transition:leave-end="opacity-0 scale-95"
+                                class="absolute z-50 w-28 overflow-hidden flex flex-col items-start justify-start right-0 bg-white transition duration-300 rounded-lg shadow-lg border border-gray-200"
+                                style="display: none;">
+                                <a class="flex gap-2 w-full items-center justify-start text-black/80 text-xs px-2 py-2 cursor-pointer hover:bg-black/5">
+                                    <?=Icon::eye('w-3.5 h-3.5')?>
+                                    Detail
+                                </a>
+                                <a class="flex gap-2 w-full items-center justify-start text-secondary/80 text-xs px-2 py-2 cursor-pointer hover:bg-secondary/5">
+                                    <?=Icon::lock('w-3.5 h-3.5')?>
+                                    Aktivasi
+                                </a>
+                                <a class="flex gap-2 w-full items-center justify-start text-primary text-xs px-2 py-2 cursor-pointer hover:bg-primary/5" href="<?=URL."/admin/room/edit/".$room->id?>">
+                                    <?=Icon::pencil('w-3.5 h-3.5')?>
+                                    Edit
+                                </a>
+                                <button class="flex gap-2 w-full items-center justify-start text-red text-xs px-2 py-2 cursor-pointer hover:bg-red/5 border-t border-gray-100"  @click="$dispatch('delete-room', { id: '<?=$room->id?>' }); open = false;">
+                                    <?=Icon::trash('w-3.5 h-3.5')?>
+                                    Hapus
                                 </button>
-                                <div 
-                                    x-show="open" 
-                                    @click.outside="open = false"
-                                    x-transition:enter="transition ease-out duration-200"
-                                    x-transition:enter-start="opacity-0 scale-95"
-                                    x-transition:enter-end="opacity-100 scale-100"
-                                    x-transition:leave="transition ease-in duration-150"
-                                    x-transition:leave-start="opacity-100 scale-100"
-                                    x-transition:leave-end="opacity-0 scale-95"
-                                    class="absolute z-50 w-32 overflow-hidden flex flex-col items-start justify-start gap-1 right-0 bg-white transition duration-300 rounded-xl shadow-md">
-                                    <a class="flex gap-3 w-full items-center justify-start text-black/80 text-sm px-3 py-2 cursor-pointer hover:bg-black/10">
-                                        <?=Icon::eye('w-4 h-4')?>
-                                        Detail
-                                    </a>
-                                    <a class="flex gap-3 w-full items-center justify-start text-secondary/80 text-sm px-3 py-2 cursor-pointer hover:bg-secondary/10">
-                                        <?=Icon::lock('w-4 h-4')?>
-                                        Activation
-                                    </a>
-                                    <a class="flex gap-3 w-full items-center justify-start text-primary text-sm px-3 py-2 cursor-pointer hover:bg-primary/10" href="<?=URL."/admin/room/edit/".$room->id?>">
-                                        <?=Icon::pencil('w-4 h-4')?>
-                                        Edit
-                                    </a>
-                                    <button class="flex gap-3 w-full items-center justify-start text-red text-sm px-3 py-2 cursor-pointer hover:bg-red/10"  @click="$dispatch('delete-room', { id: '<?=$room->id?>' }); open = false;">
-                                        <?=Icon::trash('w-4 h-4')?>
-                                        Delete
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    <?php endforeach ?>
-                </tbody>
-            </table>
+                            </div>
+                        </td>
+                    </tr>
+                <?php endforeach ?>
+            </tbody>
+        </table>
     </div>
-    <div class="h-full w-full z-50 absolute flex items-center justify-center bg-black/40 backdrop-blur-xs"  x-show="onAlert" x-cloak @click.outside="onAlert = false">
+
+    <div class="h-full w-full absolute z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs"  x-show="onAlert" x-cloak @click.outside="onAlert = false">
         <div 
             class="w-1/2 h-1/2 bg-white rounded-xl shadow-xl flex items-center justify-center border-red absolute transition-all duration-300 ease-in-out" 
             x-show="onAlert" x-cloak @click.outside="onAlert = false"

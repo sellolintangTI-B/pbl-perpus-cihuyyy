@@ -6,7 +6,6 @@ use App\Error\CustomException;
 use App\Core\ResponseHandler;
 use App\Models\User;
 use App\Utils\Authentication;
-use App\Utils\Captcha;
 
 class LoginController extends Controller {
     private $user;
@@ -26,8 +25,7 @@ class LoginController extends Controller {
 
     public function index()
     {
-        $captchaCode = Captcha::Generate();
-        $this->view('auth/login', $captchaCode ,layoutType: $this::$layoutType["default"]);
+        $this->view('auth/login', layoutType: $this::$layoutType["default"]);
     }
 
     public function signIn()
@@ -38,7 +36,6 @@ class LoginController extends Controller {
                 "password" => $_POST['password'],
                 "captcha" => $_POST['captcha']
             ];
-
             $validator = new Validator($data);
             str_contains($data['identifier'], '@') ? $validator->field("identifier", ['required', 'email']) : $validator->field('identifier', ['required']);
             $validator->field("password", ["required"]);
