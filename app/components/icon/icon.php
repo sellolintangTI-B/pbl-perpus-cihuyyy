@@ -146,6 +146,41 @@ class Icon
                 <path  d="M5 22q-.825 0-1.412-.587T3 20V6q0-.825.588-1.412T5 4h1V3q0-.425.288-.712T7 2t.713.288T8 3v1h8V3q0-.425.288-.712T17 2t.713.288T18 3v1h1q.825 0 1.413.588T21 6v4.025q0 .425-.288.713t-.712.287t-.712-.288t-.288-.712V10H5v10h6q.425 0 .713.288T12 21t-.288.713T11 22zm9-1v-1.65q0-.2.075-.387t.225-.338l5.225-5.2q.225-.225.5-.325t.55-.1q.3 0 .575.113t.5.337l.925.925q.2.225.313.5t.112.55t-.1.563t-.325.512l-5.2 5.2q-.15.15-.337.225T16.65 22H15q-.425 0-.712-.287T14 21m6.575-4.6l.925-.975l-.925-.925l-.95.95z"/>
             </svg>
             ';
-
+    }
+    public static function people(string $class = 'w-6 h-6 text-gray-700'): void
+    {
+        echo '<svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                fill="currentColor"
+                class="' . htmlspecialchars($class) . '"
+                fill="none"
+                viewBox="0 0 24 24">
+                <path fill="currentColor" d="M16.5 12A2.5 2.5 0 0 0 19 9.5A2.5 2.5 0 0 0 16.5 7A2.5 2.5 0 0 0 14 9.5a2.5 2.5 0 0 0 2.5 2.5M9 11a3 3 0 0 0 3-3a3 3 0 0 0-3-3a3 3 0 0 0-3 3a3 3 0 0 0 3 3m7.5 3c-1.83 0-5.5.92-5.5 2.75V19h11v-2.25c0-1.83-3.67-2.75-5.5-2.75M9 13c-2.33 0-7 1.17-7 3.5V19h7v-2.25c0-.85.33-2.34 2.37-3.47C10.5 13.1 9.66 13 9 13"/>
+                </svg>
+            ';
+    }
+    public static function location(string $class = 'w-6 h-6 text-gray-700'): void
+    {
+        echo '<svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                fill="currentColor"
+                class="' . htmlspecialchars($class) . '"
+                fill="none"
+                viewBox="0 0 24 24">
+                <path fill="currentColor" d="M12 11.5A2.5 2.5 0 0 1 9.5 9A2.5 2.5 0 0 1 12 6.5A2.5 2.5 0 0 1 14.5 9a2.5 2.5 0 0 1-2.5 2.5M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7"/>
+            </svg>
+            ';
+    }
+    public static function file(string $class = 'w-6 h-6 text-gray-700'): void
+    {
+        echo '<svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                fill="currentColor"
+                class="' . htmlspecialchars($class) . '"
+                fill="none"
+                viewBox="0 0 24 24">
+                <path fill="currentColor" d="M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm0 2h7v5h5v11H6zm2 8v2h8v-2zm0 4v2h5v-2z"/>
+            </svg>
+            ';
     }
 }
