@@ -8,7 +8,7 @@
             id="<?= $id ?? ($name ?? '') ?>"
             placeholder="<?= $placeholder ?? '' ?>"
             rows="<?= $rows ?? 4 ?>"
-            class="<?= $class ?> rounded-xl shadow-md p-3 bg-white text-gray-600 border border-gray-400 hover:border-secondary outline-none text-sm focus:shadow-md focus:shadow-secondary transition-shadow duration-300 w-full resize-y"
+            class="<?= $class ?> rounded-xl shadow-md p-3 bg-base text-gray-600 border border-gray-400 hover:border-secondary outline-none text-sm focus:shadow-md focus:shadow-secondary transition-shadow duration-300 w-full resize-y"
             <?= isset($required) && $required ? 'required' : '' ?>
             <?= isset($readonly) && $readonly ? 'readonly' : '' ?>
             <?= isset($disabled) && $disabled ? 'disabled' : '' ?>

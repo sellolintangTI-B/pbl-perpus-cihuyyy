@@ -50,7 +50,7 @@
 <div class="w-full h-full flex flex-col items-start justify-start gap-5">
     <div class="w-full flex items-center justify-start">
          <h1 class="text-2xl font-medium text-primary">
-            Edit Akun Admin
+            Edit Akun
         </h1>
     </div>
     
@@ -152,7 +152,7 @@
             <div class="w-full">
                 <h2 class="text-xl font-medium text-gray-800 mb-4">Keamanan Akun</h2>
                 <div class="w-full p-6 shadow-md border border-gray-300 rounded-xl bg-gray-50">
-                    <form class="w-full grid grid-cols-1 gap-6" action="" method="post">
+                    <form class="w-full grid grid-cols-1 gap-6" action="<?= URL ?>/admin/user/reset_passwod/<?= $data->id ?>" method="post">
                         <?php
                         FormInput::input(
                             id: 'password',

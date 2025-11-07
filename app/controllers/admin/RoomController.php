@@ -84,6 +84,7 @@ class RoomController extends Controller {
             if(!$data) {
                 throw new CustomException('Data ruangan tidak ditemukan');
             }
+            return $this->view('admin/rooms/detail', $data, layoutType:$this::$layoutType['admin']);
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages());
             header('location:' . URL . '/admin/room/index');

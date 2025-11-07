@@ -28,8 +28,7 @@ class RegisterController extends Controller
 
     public function index()
     {
-        $captchaCode = Captcha::Generate();
-        $this->view('auth/register', $captchaCode, layoutType: $this::$layoutType["default"]);
+        $this->view('auth/register', layoutType: $this::$layoutType["default"]);
     }
 
     public function signUp()

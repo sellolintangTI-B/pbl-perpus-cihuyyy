@@ -4,7 +4,7 @@
             name="<?= $name ?? '' ?>"
             id="<?= $id ?? ($name ?? '') ?>"
             value="<?= $value ?? '1' ?>"
-            class="<?= $class ?> peer appearance-none w-5 h-5 border-2 border-gray-400 rounded cursor-pointer transition-all duration-200 checked:bg-secondary checked:border-secondary hover:border-secondary focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-1"
+            class="<?= $class ?>  w-5 h-5 border-2 border-gray-400 rounded cursor-pointer transition-all duration-200  checked:bg-secondary checked:border-secondary "
             <?= $checked ? 'checked' : '' ?>
             <?= isset($required) && $required ? 'required' : '' ?>
             <?= isset($disabled) && $disabled ? 'disabled' : '' ?>

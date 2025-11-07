@@ -10,7 +10,7 @@ use App\Components\icon\Icon;
             <img src="<?=URL?>/public/storage/images/login-image.jpg" alt="login image" class="w-full h-full object-cover rounded-lg hidden md:block"/>
         </div>
         <div class="h-full w-full overflow-y-auto px-8 py-6 ">
-            <div class="w-full h-full max-w-md mx-auto flex flex-col justify-center">
+            <div class="w-full max-w-md mx-auto flex flex-col justify-center">
                 <h1 class="text-3xl font-medium font-poppins text-primary text-center mb-8">
                     Login
                 </h1>
@@ -18,8 +18,35 @@ use App\Components\icon\Icon;
                     <?php
                     FormInput::input(id: 'username', name: 'username', type: 'text', label: 'username', required: false, placeholder: "Masukkan email atau NIM/NIP anda");
                     FormInput::input(id: 'password', name: 'password', type: 'password', label: 'password', required: false, placeholder: "Masukkan password anda");
-                    FormInput::input(id: 'captcha', name: 'captcha', type: 'text', label: $data, required: false, placeholder: "");
                     ?>
+                     <!-- CAPTCHA Section -->
+                    <div class="w-full">
+                        <label class="block text-primary mb-2 font-poppins">
+                            Kode Verifikasi
+                        </label>
+                        <div class="flex gap-3 items-center mb-2">
+                            <img id="captcha-image" 
+                                 src="<?=URL?>/public/validator/captcha.php" 
+                                 alt="CAPTCHA Code" 
+                                 class="border-2 border-primary rounded-md shadow-sm bg-white"
+                                 style="height: 50px; width: 200px;"/>
+                        </div>
+                        <?php
+                        FormInput::input(
+                            id: 'captcha', 
+                            name: 'captcha', 
+                            type: 'text', 
+                            label: '', 
+                            required: true, 
+                            placeholder: "Masukkan kode di atas"
+                        );
+                        ?>
+                        <?php if (isset($captcha_error)): ?>
+                            <p class="text-red-500 text-sm mt-1">
+                                <?= $captcha_error ?>
+                            </p>
+                        <?php endif; ?>
+                    </div>
                     <div class="w-full text-sm flex justify-between col-span-1 text-primary">
                         <div class="flex gap-4 items-center ">
                             <input type="checkbox" id="remember_me" name="remember_me" value="true" class="w-4 h-4 bg-primary active:bg-primary cursor-pointer text-primary " />

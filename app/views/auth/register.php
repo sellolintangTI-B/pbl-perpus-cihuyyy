@@ -87,7 +87,35 @@ $options = [
                         ]
                     );
                     ?>
-
+                     <!-- CAPTCHA Section -->
+                    <div class="w-full col-span-2">
+                        <label class="block text-primary mb-2 font-poppins">
+                            Kode Verifikasi
+                        </label>
+                        <div class="flex gap-3 items-center mb-2">
+                            <img id="captcha-image" 
+                                 src="<?=URL?>/public/validator/captcha.php" 
+                                 alt="CAPTCHA Code" 
+                                 class="border-2 border-primary rounded-md shadow-sm bg-white"
+                                 style="height: 50px; width: 200px;"/>
+                        </div>
+                        <?php
+                        FormInput::input(
+                            id: 'captcha', 
+                            name: 'captcha', 
+                            type: 'text', 
+                            label: '', 
+                            required: true, 
+                            placeholder: "Masukkan kode di atas",
+                            classGlobal:"w-full"
+                        );
+                        ?>
+                        <?php if (isset($captcha_error)): ?>
+                            <p class="text-red-500 text-sm mt-1">
+                                <?= $captcha_error ?>
+                            </p>
+                        <?php endif; ?>
+                    </div>
                     <div class="sm:col-span-2 mt-4">
                         <button type="submit" name="register" class="w-full bg-primary text-white px-4 py-2 rounded-md cursor-pointer shadow-sm shadow-gray-400 hover:shadow-md hover:shadow-primary-100 duration-300 transition-all font-medium">
                             Register

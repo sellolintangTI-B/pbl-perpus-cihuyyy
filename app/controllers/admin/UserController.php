@@ -179,4 +179,49 @@ class UserController extends Controller {
         }
     }
 
+    public function delete($id)
+    {
+        try {
+            $checkById = User::getById($id);
+            if(!$checkById) throw new CustomException('Data tidak ditemukan');
+
+            $data = User::delete($id);
+            if($data) {
+                ResponseHandler::setResponse('Berhasil menghapus data');
+                header('location:' . URL . '/user/index');
+            } 
+        }catch(CustomException $e) {
+            ResponseHandler::setResponse($e->getErrorMessages(), 'error');
+            header('location:' . URL . '/admin/user');
+        }
+    }
+
+    public function reset_password($id)
+    {
+        try {
+            $data = [
+                "password" => $_POST['password'],
+                "confirm_password" => $_POST['password_confirmation']
+            ];
+
+            $validator = new Validator($data);
+            $validator->field('password', ['required']);
+            $validator->field('confirm_password', ['required']);
+            if($validator->error()) throw new CustomException($validator->getErrors());
+
+            if($data['password'] !== $data['confirm_password']) throw new CustomException('Password tidak sama');
+            $checkById = User::getById($id);
+            if(!$checkById) throw new CustomException('Data tidak ditemukan');
+
+            $encryptedPass = password_hash($data['password'], PASSWORD_BCRYPT);
+            $update = User::resetPassword($id, $encryptedPass);
+            if($update) {
+                ResponseHandler::setResponse('Berhasil mengubah password user');
+                header('location:' . URL . '/admin/user/index');
+            } 
+        } catch(CustomException $e) {
+            ResponseHandler::setResponse($e->getErrorMessages(), 'error');
+            header('location:' . URL . '/admin/user/edit/' . $id);
+        }
+    }
 }
