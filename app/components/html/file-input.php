@@ -16,7 +16,7 @@
         <label 
             for="<?= $id ?? ($name ?? '') ?>"
             id="drop-area-<?= $id ?? ($name ?? '') ?>"
-            class="border-2 border-gray-300 rounded-xl px-4 py-4 w-full flex flex-col items-center justify-center cursor-pointer hover:border-gray-400 bg-white transition <?= isset($disabled) && $disabled ? 'opacity-50 cursor-not-allowed' : '' ?>"
+            class="border-2 border-gray-300 rounded-xl px-4 py-4 w-full flex flex-col items-center justify-center cursor-pointer hover:border-gray-400 bg-base transition <?= isset($disabled) && $disabled ? 'opacity-50 cursor-not-allowed' : '' ?>"
             ondragover="handleDragOver(event, '<?= $id ?? ($name ?? '') ?>')"
             ondragleave="handleDragLeave(event, '<?= $id ?? ($name ?? '') ?>')"
             ondrop="handleDrop(event, '<?= $id ?? ($name ?? '') ?>')"

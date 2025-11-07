@@ -5,7 +5,7 @@
     <select
         name="<?= $name ?? '' ?>"
         id="<?= $id ?? ($name ?? '') ?>"
-        class="<?=$class?> rounded-xl shadow-md p-3 bg-white cursor-pointer border border-gray-400 hover:border-secondary text-gray-600 outline-none text-sm focus:shadow-md focus:shadow-secondary transition-shadow duration-300 w-full"
+        class="<?=$class?> rounded-xl shadow-md p-3 bg-base cursor-pointer border border-gray-400 hover:border-secondary text-gray-600 outline-none text-sm focus:shadow-md focus:shadow-secondary transition-shadow duration-300 w-full"
         <?= isset($required) && $required ? 'required' : '' ?>
         <?= isset($disabled) && $disabled ? 'disabled' : '' ?>
     >

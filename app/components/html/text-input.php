@@ -9,7 +9,7 @@
             id="<?= $id ?? ($name ?? '') ?>"
             value="<?= $value ?? '' ?>"
             placeholder="<?= $placeholder ?? '' ?>"
-            class="<?= $class ?> rounded-xl shadow-md p-3 bg-white text-gray-600 border border-gray-400 hover:border-secondary outline-none text-sm focus:shadow-md focus:shadow-secondary transition-shadow duration-300 w-full <?= $type == 'password' ? 'pr-10' : '' ?>"
+            class="<?= $class ?> rounded-xl shadow-md p-3 bg-base text-gray-600 border border-gray-400 hover:border-secondary outline-none text-sm focus:shadow-md focus:shadow-secondary transition-shadow duration-300 w-full <?= $type == 'password' ? 'pr-10' : '' ?>"
             <?= isset($required) && $required ? 'required' : '' ?>
             <?= isset($readonly) && $readonly ? 'readonly' : '' ?>
             <?= isset($disabled) && $disabled ? 'disabled' : '' ?>

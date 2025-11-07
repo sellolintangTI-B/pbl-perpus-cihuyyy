@@ -1,6 +1,6 @@
 <div class="h-full w-full z-50 absolute flex items-center justify-center bg-black/40 backdrop-blur-xs"  x-show="onAlert" x-cloak @click.outside="onAlert = false">
         <div 
-            class="w-1/2 h-1/2 bg-white rounded-xl shadow-xl flex items-center justify-center border-red absolute transition-all duration-300 ease-in-out" 
+            class="w-1/2 h-1/2 bg-base rounded-xl shadow-xl flex items-center justify-center border-red absolute transition-all duration-300 ease-in-out" 
             x-show="onAlert" x-cloak @click.outside="onAlert = false"
             x-transition:enter="transition ease-out duration-200"
             x-transition:enter-start="opacity-0 scale-95"
@@ -13,10 +13,10 @@
                     Yakin ingin menghapus data akun?
                 </h1>
                 <div class="flex gap-4 items-center justify-center h-10">
-                    <button class="p-2 text-white bg-red shadow-sm rounded-md h-full w-24 cursor-pointer">
+                    <button class="p-2 text-base bg-red shadow-sm rounded-md h-full w-24 cursor-pointer">
                         Hapus
                     </button>
-                    <button class="p-2 text-black/80 bg-white shadow-sm rounded-md h-full w-24 cursor-pointer">
+                    <button class="p-2 text-black/80 bg-base shadow-sm rounded-md h-full w-24 cursor-pointer">
                         Batal
                     </button>
                 </div>
