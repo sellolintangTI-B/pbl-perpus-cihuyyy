@@ -69,7 +69,7 @@
             <div class="w-full">
                 <h2 class="text-xl font-medium text-gray-800 mb-4">Informasi Pengguna</h2>
                 <div class="w-full p-6 shadow-md border border-gray-300 rounded-xl bg-gray-50">
-                    <form class="w-full grid grid-cols-1 sm:grid-cols-2 gap-6" action="" method="post" enctype="multipart/form-data">
+                    <form class="w-full grid grid-cols-1 sm:grid-cols-2 gap-6" action="<?= URL ?>/admin/user/update/<?= $data->id ?>" method="post" enctype="multipart/form-data">
                         <?php
                         FormInput::input(
                             id: 'id_number',
@@ -105,7 +105,7 @@
                         
                         FormInput::select(
                             id: 'jurusan',
-                            name: 'jurusan',
+                            name: 'major',
                             label: 'Jurusan',
                             options: $options,
                             selected: $data->major ?? "",
@@ -136,6 +136,13 @@
                             options: $roleOptions,
                             selected: $data->role,
                             required: false
+                        );
+                        FormInput::fileInput(
+                            id: 'image',
+                            name: 'image',
+                            label: 'Image',
+                            required: false,
+                            classGlobal: 'col-span-2'
                         );
                         ?>
                         

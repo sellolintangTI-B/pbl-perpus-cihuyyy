@@ -143,34 +143,54 @@ class UserController extends Controller {
     public function update($id)
     {
         try {
-
             $data = [
                 "id_number" => $_POST["id_number"],
                 "email" => $_POST["email"],
                 "first_name" => $_POST["first_name"],
                 "last_name" => $_POST["last_name"],
-                "password" => $_POST["password"],
+                "major" => $_POST['major'],
                 "phone_number" => $_POST["phone_number"],
-                "institution" => "Politeknik Negeri Jakarta",
+                "institution" => $_POST['institution'],
                 "role" => $_POST["role"],
-                // "image" => empty($_FILES['file_upload']['name']) ? null : $_FILES['file_upload'] 
+                "image" => empty($_FILES['image']['name']) ? null : $_FILES['image'] 
             ];
 
             $validator = new Validator($data);
             $validator->field("first_name", ['required']);
             $validator->field("last_name", ['required']);
             $validator->field("email", ['required']);
-            $validator->field("password", ['required']);
             $validator->field("phone_number", ['required']);
             $validator->field("institution", ['required']);
             $validator->field("role", ['required']);
             
             if($validator->error()) throw new CustomException($validator->getErrors());
 
+            $checkById = User::checkIdNumberForUpdate($id, $data['id_number']);
+            $checkByEmail = User::checkEmailForUpdate($id, $data['email']);
+
+            if($checkById) throw new CustomException('NIP / NIM sudah digunakan');
+            if($checkByEmail) throw new CustomException('Email sudah digunakan');
+
+            if(!is_null($data['image'])) {
+                $file = $_FILES['image']['tmp_name'];
+                $allowedMimes = ["image/jpeg", "image/png", "image/jpg"];
+                $getFileInfo = getimagesize($file);
+                if (!in_array($getFileInfo['mime'], $allowedMimes)) {
+                    throw new CustomException(['image' => "File tidak didukung"]);
+                }
+                $newPath = 'storage/users/' . $_FILES['image']['name'];
+                move_uploaded_file($file, dirname(__DIR__) . "/../../public/" . $newPath); 
+                $data['image'] = $newPath;
+            } else {
+                unset($data['image']);
+            }
+
             $update = User::update($id, $data);
             if($update) {
                 ResponseHandler::setResponse('Berhasil mengubah data');
                 header('location:' . URL . '/admin/user');
+            } else {
+                throw new CustomException('Gagal mengubah data');
             }
 
         } catch (CustomException $e) {
