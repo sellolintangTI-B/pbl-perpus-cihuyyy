@@ -1,5 +1,5 @@
-<div class="<?=$classGlobal?> flex flex-col gap-1 font-poppins focus-within:text-secondary">
-    <label for="<?= $id ?? ($name ?? '') ?>" class="<?=empty($label)?'hidden':'block text-lg font-normal text-primary' ?>">
+<div class="<?= $classGlobal ?> flex flex-col gap-1 font-poppins focus-within:text-secondary">
+    <label for="<?= $id ?? ($name ?? '') ?>" class="<?= empty($label) ? 'hidden' : 'block text-lg font-normal text-primary' ?>">
         <?= $label ?? '' ?>
     </label>
     <div class="relative w-full h-full">
@@ -9,17 +9,15 @@
             id="<?= $id ?? ($name ?? '') ?>"
             value="<?= $value ?? '' ?>"
             placeholder="<?= $placeholder ?? '' ?>"
-            class="<?= $class ?> rounded-xl shadow-md p-3 bg-base text-gray-600 border border-gray-400 hover:border-secondary outline-none text-sm focus:shadow-md focus:shadow-secondary transition-shadow duration-300 w-full <?= $type == 'password' ? 'pr-10' : '' ?>"
+            class="<?= $class ?> rounded-xl shadow-md p-3 bg-baseColor text-gray-600 border border-gray-400 hover:border-secondary outline-none text-sm focus:shadow-md focus:shadow-secondary transition-shadow duration-300 w-full <?= $type == 'password' ? 'pr-10' : '' ?>"
             <?= isset($required) && $required ? 'required' : '' ?>
             <?= isset($readonly) && $readonly ? 'readonly' : '' ?>
-            <?= isset($disabled) && $disabled ? 'disabled' : '' ?>
-        />
-        <?php if($type == "password"): ?>
-            <button 
+            <?= isset($disabled) && $disabled ? 'disabled' : '' ?> />
+        <?php if ($type == "password"): ?>
+            <button
                 type="button"
                 class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none transition-colors duration-200 cursor-pointer"
-                onclick="togglePassword('<?= $id ?? ($name ?? '') ?>')"
-            >
+                onclick="togglePassword('<?= $id ?? ($name ?? '') ?>')">
                 <svg id="eye-icon-<?= $id ?? ($name ?? '') ?>" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
@@ -33,19 +31,19 @@
 </div>
 
 <script>
-function togglePassword(inputId) {
-    const input = document.getElementById(inputId);
-    const eyeIcon = document.getElementById('eye-icon-' + inputId);
-    const eyeSlashIcon = document.getElementById('eye-slash-icon-' + inputId);
-    
-    if (input.type === 'password') {
-        input.type = 'text';
-        eyeIcon.classList.add('hidden');
-        eyeSlashIcon.classList.remove('hidden');
-    } else {
-        input.type = 'password';
-        eyeIcon.classList.remove('hidden');
-        eyeSlashIcon.classList.add('hidden');
+    function togglePassword(inputId) {
+        const input = document.getElementById(inputId);
+        const eyeIcon = document.getElementById('eye-icon-' + inputId);
+        const eyeSlashIcon = document.getElementById('eye-slash-icon-' + inputId);
+
+        if (input.type === 'password') {
+            input.type = 'text';
+            eyeIcon.classList.add('hidden');
+            eyeSlashIcon.classList.remove('hidden');
+        } else {
+            input.type = 'password';
+            eyeIcon.classList.remove('hidden');
+            eyeSlashIcon.classList.add('hidden');
+        }
     }
-}
 </script>
