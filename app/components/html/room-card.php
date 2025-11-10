@@ -6,7 +6,7 @@ use App\Components\Icon\Icon;
 <div class="flex flex-col bg-white rounded-lg overflow-hidden shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-300">
     <!-- Room Image -->
     <div class="relative w-full h-48 overflow-hidden">
-        <img src="<?= $room['image'] ?? URL . '/public/storage/images/room-default.jpg' ?>" alt="<?= $room['name'] ?? 'Room' ?>" class="w-full h-full object-cover">
+        <img src="<?= $room->room_img_url ?? URL . '/public/storage/images/room-default.jpg' ?>" alt="<?= $room['name'] ?? 'Room' ?>" class="w-full h-full object-cover">
     </div>
 
     <!-- Room Info -->
@@ -14,7 +14,7 @@ use App\Components\Icon\Icon;
         <!-- Room Name & Rating -->
         <div class="flex flex-col gap-1">
             <h3 class="text-base font-semibold text-primary">
-                <?= $room['name'] ?? 'Ruang Perancis' ?>
+                <?= $room->name ?? 'Ruang Perancis' ?>
             </h3>
             <div class="flex items-center gap-1">
                 <?= Icon::star('w-4 h-4 text-primary') ?>
@@ -26,16 +26,14 @@ use App\Components\Icon\Icon;
 
         <!-- Room Description -->
         <p class="text-xs text-black/60 leading-relaxed line-clamp-3">
-            <?= $room['description'] ?? 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' ?>
+            <?= $room->description ?? 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' ?>
         </p>
 
         <!-- Capacity Info (if exists) -->
-        <?php if (isset($room['capacity'])): ?>
             <div class="flex items-center gap-2 text-xs text-black/70">
                 <?= Icon::people('w-4 h-4') ?>
-                <span><?= $room['capacity'] ?> Orang</span>
+                <span>Orang</span>
             </div>
-        <?php endif; ?>
 
         <!-- Book Button -->
         <div class="mt-auto pt-2">
