@@ -1,9 +1,13 @@
 <?php
+
 namespace App\Controllers\User;
+
 use App\Core\Controller;
 use App\Utils\Authentication;
 use App\Utils\Validator;
-class UserController extends Controller {
+
+class UserController extends Controller
+{
 
     private $authUser;
 
@@ -14,17 +18,15 @@ class UserController extends Controller {
 
     public function index()
     {
-        $user = $_SESSION['loggedInUser'];
-        echo "<h1> Hello " . $user['username'] . "</h1>";
+        // $user = $_SESSION['loggedInUser'];
+        return $this->view('user/beranda/index', layoutType: $this::$layoutType['civitas']);
     }
 
     public function logout()
     {
         $logout = $this->authUser->logout();
-        if($logout) {
+        if ($logout) {
             header('location:' . URL . '/auth/login');
         }
     }
-
-
 }
