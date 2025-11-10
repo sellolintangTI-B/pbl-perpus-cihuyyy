@@ -6,6 +6,7 @@ class User extends Database {
 
     public static function get()
     {
+        $query = "SELECT * FROM users";
         $conn = parent::getConnection();
         $q = $conn->prepare("SELECT * FROM users");
         $q->execute();
@@ -144,5 +145,42 @@ class User extends Database {
         $q->execute();
         $data = $q->fetch(PDO::FETCH_OBJ);
         return $data;
+    }
+
+    public static function where(array $params)
+    {
+        $filter = [];
+        $conn = parent::getConnection();        
+        foreach($params as $field => $conditions) {
+            if(!is_array($conditions)) {
+                $filter[] = "$field LIKE %$conditions%";
+                continue;
+            }
+
+            foreach($conditions as $operator => $value) {
+                var_dump($value);
+                // switch ($operator) {
+                //     case 'and':
+                //         $filter[] = "AND $field LIKE %$value%";
+                //         break;
+                //     case 'or' :
+                //         $filter[] = "OR $field LIKE %$value%";
+                //         break;
+                //     default:
+                //         return false;
+                //         break;
+                // }
+            }
+        } 
+        die;
+
+        $param = implode(" ", $filter);
+        $query = "SELECT * FROM users WHERE $param";
+        var_dump($query);
+        $q = $conn->prepare("SELECT * FROM users WHERE $param");
+        $q->execute();
+        $data = $q->fetchAll(PDO::FETCH_OBJ);
+        var_dump($data);
+        die;
     }
 }

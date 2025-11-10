@@ -22,7 +22,17 @@ class UserController extends Controller
     public function index()
     {
         try {
+            $type = isset($_GET['type']) ? $_GET['type'] : null;
+            $search = isset($_GET['search']) ? $_GET['search'] : null;
+            $users = User::where([
+                "id_number" => $search,
+                "first_name" => ["or" => $search],
+                "last_name" => ["or" => $search],
+                "role" => ['and' => $type],
+            ]);
             $users = User::get();
+            var_dump($users);
+            die;
             $data = [
                 "no" => 1,
                 "users" => $users

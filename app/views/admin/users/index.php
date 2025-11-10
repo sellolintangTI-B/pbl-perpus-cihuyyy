@@ -18,13 +18,13 @@
             <?= Button::anchor(label: "Tambah Pengguna", icon: "plus", href: "/admin/user/add_admin", class: "px-4 py-2 h-full") ?>
             <!-- form action -->
             <div class="flex items-center justify-end gap-2 h-full w-full max-w-[24rem]">
-                <?= FormInput::select(name: "room_type", options: [
-                    ['value' => '', 'display' => 'Semua'],
-                    ['value' => 'Admin', 'display' => 'Admin'],
-                    ['value' => 'Civitas', 'display' => 'Civitas'],
-                    ['value' => 'Tamu', 'display' => 'Tamu'],
-                ], class: "h-full !p-0 !px-4 !border-primary", classGlobal: "h-full") ?>
                 <form action="" method="GET" class="flex items-center gap-2  w-full h-full flex-1">
+                    <?= FormInput::select(name: "type", options: [
+                        ['value' => '', 'display' => 'Semua'],
+                        ['value' => 'Admin', 'display' => 'Admin'],
+                        ['value' => 'Civitas', 'display' => 'Civitas'],
+                        ['value' => 'Tamu', 'display' => 'Tamu'],
+                    ], class: "h-full !p-0 !px-4 !border-primary", classGlobal: "h-full") ?>
                     <div class="h-full flex-1">
                         <?= FormInput::input(type: "text", name: "search", placeholder: "Cari Pengguna...", value: $_GET['search'] ?? '', class: "h-full !w-full !border-primary", classGlobal: "h-full !w-full") ?>
                     </div>
