@@ -63,91 +63,17 @@ use App\Components\RoomCard;
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
             <?php
             // Dummy data ruangan
-            $rooms = [
-                [
-                    'id' => 1,
-                    'name' => 'Ruang Perancis',
+            foreach ($data as $room) {
+                $r = [
+                    'id' => $room->id,
+                    'name' => $room->name,
                     'image' => '/public/storage/images/ruang-dummy.jpg',
                     'rating' => '4.85',
-                    'capacity' => '4-8',
-                    'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-                ],
-                [
-                    'id' => 2,
-                    'name' => 'Ruang Perancis',
-                    'image' => '/public/storage/images/ruang-dummy.jpg',
-                    'rating' => '4.85',
-                    'capacity' => '4-8',
-                    'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-                ],
-                [
-                    'id' => 3,
-                    'name' => 'Ruang Perancis',
-                    'image' => '/public/storage/images/ruang-dummy.jpg',
-                    'rating' => '4.85',
-                    'capacity' => '4-8',
-                    'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-                ],
-                [
-                    'id' => 4,
-                    'name' => 'Ruang Perancis',
-                    'image' => '/public/storage/images/ruang-dummy.jpg',
-                    'rating' => '4.85',
-                    'capacity' => '4-8',
-                    'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-                ],
-                [
-                    'id' => 5,
-                    'name' => 'Ruang Perancis',
-                    'image' => '/public/storage/images/ruang-dummy.jpg',
-                    'rating' => '4.85',
-                    'capacity' => '4-8',
-                    'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-                ],
-                [
-                    'id' => 6,
-                    'name' => 'Ruang Perancis',
-                    'image' => '/public/storage/images/ruang-dummy.jpg',
-                    'rating' => '4.85',
-                    'capacity' => '4-8',
-                    'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-                ],
-                [
-                    'id' => 7,
-                    'name' => 'Ruang Perancis',
-                    'image' => '/public/storage/images/ruang-dummy.jpg',
-                    'rating' => '4.85',
-                    'capacity' => '4-8',
-                    'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-                ],
-                [
-                    'id' => 8,
-                    'name' => 'Ruang Perancis',
-                    'image' => '/public/storage/images/ruang-dummy.jpg',
-                    'rating' => '4.85',
-                    'capacity' => '4-8',
-                    'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-                ],
-                [
-                    'id' => 9,
-                    'name' => 'Ruang Perancis',
-                    'image' => '/public/storage/images/ruang-dummy.jpg',
-                    'rating' => '4.85',
-                    'capacity' => '4-8',
-                    'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-                ],
-                [
-                    'id' => 10,
-                    'name' => 'Ruang Perancis',
-                    'image' => '/public/storage/images/ruang-dummy.jpg',
-                    'rating' => '4.85',
-                    'capacity' => '4-8',
-                    'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-                ],
-            ];
-
-            foreach ($rooms as $room) {
-                RoomCard::card($room);
+                    'min' => $room->min_capacity,
+                    'max' => $room->max_capacity,
+                    'description' => $room->description
+                ];
+                RoomCard::card($r);
             }
             ?>
         </div>

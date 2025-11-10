@@ -32,12 +32,12 @@ class RoomController extends Controller
         }
     }
 
-    public function details($id)
+    public function detail($id)
     {
         try {
             $data = $this->room->getById($id);
             if (!$data) throw new CustomException("Data ruangan tidak ditemukan");
-            $this->view('user/room/details', $data);
+            $this->view('user/beranda/detail', $data);
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), "error");
             $error = ResponseHandler::getResponse();

@@ -4,9 +4,9 @@ use App\Components\Icon\Icon;
 use app\Components\UserNavbar;
 
 $navItems = [
-    ['label' => 'Beranda', 'url' => '/user/user/index', 'start-with' => '/user/user'],
-    ['label' => 'Booking', 'url' => '/user/user/index', 'start-with' => '/user/booking'],
-    ['label' => 'Panduan', 'url' => '/user/user/index', 'start-with' => '/user/panduan']
+    ['label' => 'Beranda', 'url' => '/user/room/index', 'start-with' => '/user/room'],
+    ['label' => 'Booking', 'url' => '/user/booking/index', 'start-with' => '/user/booking'],
+    ['label' => 'Panduan', 'url' => '/user/guide/index', 'start-with' => '/user/guide']
 ];
 
 $currentPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -24,7 +24,7 @@ $currentPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
             foreach ($navItems as $item):
                 $isActive = str_starts_with($currentPath, $item['start-with']);
             ?>
-                <?= UserNavbar::navLink(label: $item['label'], href: $item['label'], active: $isActive) ?>
+                <?= UserNavbar::navLink(label: $item['label'], href: $item['url'], active: $isActive) ?>
             <?php endforeach; ?>
         </div>
 
