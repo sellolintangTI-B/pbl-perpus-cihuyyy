@@ -49,7 +49,6 @@
     --font-weight-medium: 500;
     --font-weight-semibold: 600;
     --font-weight-bold: 700;
-    --radius-sm: 0.25rem;
     --radius-md: 0.375rem;
     --radius-lg: 0.5rem;
     --radius-xl: 0.75rem;
@@ -334,9 +333,6 @@
   .h-12 {
     height: calc(var(--spacing) * 12);
   }
-  .h-80 {
-    height: calc(var(--spacing) * 80);
-  }
   .h-\[90vh\] {
     height: 90vh;
   }
@@ -402,9 +398,6 @@
   }
   .w-56 {
     width: calc(var(--spacing) * 56);
-  }
-  .w-96 {
-    width: calc(var(--spacing) * 96);
   }
   .w-full {
     width: 100%;
@@ -528,9 +521,6 @@
       margin-block-end: calc(calc(var(--spacing) * 1) * calc(1 - var(--tw-space-y-reverse)));
     }
   }
-  .self-stretch {
-    align-self: stretch;
-  }
   .overflow-auto {
     overflow: auto;
   }
@@ -604,6 +594,9 @@
   }
   .border-green-500 {
     border-color: var(--color-green-500);
+  }
+  .border-primary {
+    border-color: var(--color-primary);
   }
   .border-primary\/100 {
     border-color: var(--color-primary);
@@ -805,12 +798,6 @@
   .text-base {
     color: var(--color-base);
   }
-  .text-black\/40 {
-    color: color-mix(in srgb, #000 40%, transparent);
-    @supports (color: color-mix(in lab, red, red)) {
-      color: color-mix(in oklab, var(--color-black) 40%, transparent);
-    }
-  }
   .text-black\/80 {
     color: color-mix(in srgb, #000 80%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
@@ -892,12 +879,6 @@
   .shadow-xl {
     --tw-shadow: 0 20px 25px -5px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 8px 10px -6px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
-  }
-  .shadow-black\/20 {
-    --tw-shadow-color: color-mix(in srgb, #000 20%, transparent);
-    @supports (color: color-mix(in lab, red, red)) {
-      --tw-shadow-color: color-mix(in oklab, color-mix(in oklab, var(--color-black) 20%, transparent) var(--tw-shadow-alpha), transparent);
-    }
   }
   .shadow-gray-400 {
     --tw-shadow-color: oklch(70.7% 0.022 261.325);
