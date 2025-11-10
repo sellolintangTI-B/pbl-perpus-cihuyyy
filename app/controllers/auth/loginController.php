@@ -62,7 +62,7 @@ class LoginController extends Controller {
             if($checkIfUserExist['role'] === 'Admin') {
                 header('location:' . URL . '/admin/dashboard/index');
             } elseif ($checkIfUserExist['role'] === 'Mahasiswa' || $checkIfUserExist['role'] === 'Dosen') {
-                header('location:' . URL . '/user/user/index');
+                header('location:' . URL . '/user/room/index');
             } 
 
         } catch (CustomException $e) {

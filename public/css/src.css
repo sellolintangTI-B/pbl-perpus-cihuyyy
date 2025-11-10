@@ -32,10 +32,9 @@
 
 @theme {
   --font-poppins: 'Poppins', sans-serif;
-
   --color-primary:  #0B3F78;
   --color-secondary: #1CBAA3;
   --color-tertiary: #1DA0B4;
   --color-red: #FF0051;
-  --color-base: #F8F8F8;
+  --color-baseColor: #F8F8F8;
 }

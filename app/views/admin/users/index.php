@@ -1,8 +1,9 @@
     <?php
-        use App\Components\Button;
-        use App\Components\FormInput;
-        use App\Components\Badge;
-        use App\Components\Icon\Icon;
+
+    use App\Components\Button;
+    use App\Components\FormInput;
+    use App\Components\Badge;
+    use App\Components\Icon\Icon;
 
     ?>
 
@@ -17,97 +18,111 @@
             <?= Button::anchor(label: "Tambah Pengguna", icon: "plus", href: "/admin/user/add_admin", class: "px-4 py-2 h-full") ?>
             <!-- form action -->
             <div class="flex items-center justify-end gap-2 h-full w-full max-w-[24rem]">
-                <?= FormInput::select(name: "room_type", options: [
-                    ['value' => '', 'display' => 'Semua'],
-                    ['value' => 'Admin', 'display' => 'Admin'],
-                    ['value' => 'Civitas', 'display' => 'Civitas'],
-                    ['value' => 'Tamu', 'display' => 'Tamu'],
-                ], class: "h-full !p-0 !px-4 !border-primary", classGlobal:"h-full") ?>
                 <form action="" method="GET" class="flex items-center gap-2  w-full h-full flex-1">
+                    <?= FormInput::select(name: "type", options: [
+                        ['value' => '', 'display' => 'Semua'],
+                        ['value' => 'Admin', 'display' => 'Admin'],
+                        ['value' => 'Civitas', 'display' => 'Civitas'],
+                        ['value' => 'Tamu', 'display' => 'Tamu'],
+                    ], class: "h-full !p-0 !px-4 !border-primary", classGlobal: "h-full") ?>
                     <div class="h-full flex-1">
-                        <?= FormInput::input(type: "text", name: "search", placeholder: "Cari Pengguna...", value: $_GET['search'] ?? '', class:"h-full !w-full !border-primary", classGlobal:"h-full !w-full") ?>
+                        <?= FormInput::input(type: "text", name: "search", placeholder: "Cari Pengguna...", value: $_GET['search'] ?? '', class: "h-full !w-full !border-primary", classGlobal: "h-full !w-full") ?>
                     </div>
-                    <?= Button::button(class: "px-4 h-full", label:"Search") ?>
+                    <?= Button::button(class: "px-4 h-full", label: "Search") ?>
                 </form>
             </div>
         </div>
         <!-- tabel users -->
-        <div class="p-6 bg-base shadow-sm shadow-gray-600 rounded-xl w-full h-full border border-gray-200 overflow-y-auto">
-                <table class="table-auto w-full">
-                    <thead class="text-primary">
-                        <tr class="border-b border-gray-100">
-                            <th class="px-2 py-3 text-sm">No</th>
-                            <th class="px-2 py-3 text-sm">Nama</th>
-                            <th class="px-2 py-3 text-sm">Email</th>
-                            <th class="px-2 py-3 text-sm">Role</th>
-                            <th class="px-2 py-3 text-sm">Institusi</th>
-                            <th class="px-2 py-3 text-sm">Status</th>
-                            <th class="px-2 py-3 text-sm">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody class="text-primary">
-                    <?php foreach ($data['users'] as $user) :  ?>
-                            <tr x-data="{ open: false }" class="hover:bg-gray-50 transition text-center ">
-                                <td class="px-2 py-3 text-xs">
-                                    <?= $data['no']++ ?>
-                                </td>
-                                <td class="px-2 py-3 text-xs">
-                                    <?= $user->first_name . ' ' . $user->last_name ?>
-                                </td>
-                                <td class="px-2 py-3 text-xs">
-                                    <?= $user->email ?>
-                                </td>
-                                <td class="px-2 py-3 text-xs">
-                                    <?= $user->role ?>
-                                </td>
-                                <td class="px-2 py-3 text-xs">
-                                    <?= $user->institution ?>
-                                </td>
-                                <td class="px-3 py-3 text-xs">
-                                    <?= Badge::badge(label: $user->is_active == 1 ? "Active" : "inactive", active:$user->is_active)?>
-                                </td>
-                                <!-- action section -->
-                                <td class="px-2 py-3 text-xs relative">
-                                    <button @click="open = ! open" class="bg-none border-0 text-primary cursor-pointer p-2 rounded-full hover:bg-gray-100 transition flex items-center duration-300 ">
-                                        <?=Icon::dotMenu('w-6 h-6')?>
+        <div class="p-6 bg-baseColor shadow-sm shadow-gray-600 rounded-xl w-full h-full border border-gray-200 overflow-y-auto">
+            <table class="table-auto w-full text-left border-collapse">
+                <!-- Header -->
+                <thead class="text-primary bg-gray-50">
+                    <tr class="border-b border-gray-200">
+                        <th class="px-3 py-3 text-xs font-semibold text-center">No</th>
+                        <th class="px-3 py-3 text-xs font-semibold">Nama</th>
+                        <th class="px-3 py-3 text-xs font-semibold">Email</th>
+                        <th class="px-3 py-3 text-xs font-semibold">Role</th>
+                        <th class="px-3 py-3 text-xs font-semibold">Institusi</th>
+                        <th class="px-3 py-3 text-xs font-semibold text-center">Status</th>
+                        <th class="px-3 py-3 text-xs font-semibold text-center">Aksi</th>
+                    </tr>
+                </thead>
+
+                <!-- Body -->
+                <tbody class="text-primary divide-y divide-gray-100">
+                    <?php foreach ($data['users'] as $user): ?>
+                        <tr
+                            x-data="{ open: false }"
+                            class="hover:bg-gray-50 transition-colors duration-150 text-center">
+                            <td class="px-3 py-3 text-xs text-gray-600"><?= $data['no']++ ?></td>
+
+                            <td class="px-3 py-3 text-xs font-medium text-gray-800 text-start">
+                                <?= htmlspecialchars($user->first_name . ' ' . $user->last_name) ?>
+                            </td>
+
+                            <td class="px-3 py-3 text-xs text-gray-700 text-start"><?= htmlspecialchars($user->email) ?></td>
+                            <td class="px-3 py-3 text-xs text-gray-700 text-start"><?= htmlspecialchars($user->role) ?></td>
+                            <td class="px-3 py-3 text-xs text-gray-700 text-start"><?= htmlspecialchars($user->institution ?? "") ?></td>
+
+                            <td class="px-3 py-3 text-xs">
+                                <div class="flex justify-center">
+                                    <?= Badge::badge(
+                                        label: $user->is_active ? "Active" : "Inactive",
+                                        active: $user->is_active
+                                    ) ?>
+                                </div>
+                            </td>
+
+                            <!-- Aksi -->
+                            <td class="px-3 py-3 relative">
+                                <button
+                                    @click="open = !open"
+                                    class="p-1.5 rounded-full hover:bg-gray-100 transition-colors duration-200 cursor-pointer">
+                                    <?= Icon::dotMenu('w-5 h-5') ?>
+                                </button>
+
+                                <!-- Dropdown -->
+                                <div
+                                    x-show="open"
+                                    @click.outside="open = false"
+                                    x-transition:enter="transition ease-out duration-200"
+                                    x-transition:enter-start="opacity-0 scale-95"
+                                    x-transition:enter-end="opacity-100 scale-100"
+                                    x-transition:leave="transition ease-in duration-150"
+                                    x-transition:leave-start="opacity-100 scale-100"
+                                    x-transition:leave-end="opacity-0 scale-95"
+                                    class="absolute right-0 mt-1 w-36 bg-white border border-gray-200 rounded-md shadow-md overflow-hidden z-50 text-left"
+                                    style="display: none;">
+                                    <a href="<?= URL . "/admin/user/details/" . $user->id ?>"
+                                        class="flex items-center gap-2 px-3 py-2 text-xs text-gray-700 hover:bg-gray-50 transition">
+                                        <?= Icon::eye('w-4 h-4') ?> Detail
+                                    </a>
+
+                                    <a class="flex items-center gap-2 px-3 py-2 text-xs text-secondary hover:bg-secondary/5 transition">
+                                        <?= Icon::lock('w-4 h-4') ?> Activation
+                                    </a>
+
+                                    <a href="<?= URL . "/admin/user/edit/" . $user->id ?>"
+                                        class="flex items-center gap-2 px-3 py-2 text-xs text-primary hover:bg-primary/5 transition">
+                                        <?= Icon::pencil('w-4 h-4') ?> Edit
+                                    </a>
+
+                                    <button
+                                        @click="$dispatch('delete-user', { id: '<?= $user->id ?>' }); open = false;"
+                                        class="flex items-center gap-2 px-3 py-2 text-xs text-red-600 hover:bg-red/5 border-t border-gray-100 w-full text-left transition">
+                                        <?= Icon::trash('w-4 h-4') ?> Delete
                                     </button>
-                                    <div 
-                                        x-show="open" 
-                                        @click.outside="open = false"
-                                        x-transition:enter="transition ease-out duration-200"
-                                        x-transition:enter-start="opacity-0 scale-95"
-                                        x-transition:enter-end="opacity-100 scale-100"
-                                        x-transition:leave="transition ease-in duration-150"
-                                        x-transition:leave-start="opacity-100 scale-100"
-                                        x-transition:leave-end="opacity-0 scale-95"
-                                        class="absolute w-32 z-50 overflow-hidden flex flex-col items-start justify-start gap-1 right-0 bg-base transition duration-300 rounded-xl shadow-md">
-                                        <a class="flex gap-3 w-full items-center justify-start text-black/80 text-sm px-3 py-2 cursor-pointer hover:bg-black/10">
-                                            <?=Icon::eye('w-4 h-4')?>
-                                            Detail
-                                        </a>
-                                        <a class="flex gap-3 w-full items-center justify-start text-secondary/80 text-sm px-3 py-2 cursor-pointer hover:bg-secondary/10">
-                                            <?=Icon::lock('w-4 h-4')?>
-                                            Activation
-                                        </a>
-                                        <a class="flex gap-3 w-full items-center justify-start text-primary text-sm px-3 py-2 cursor-pointer hover:bg-primary/10" href="<?=URL."/admin/user/edit/".$user->id?>">
-                                            <?=Icon::pencil('w-4 h-4')?>
-                                            Edit
-                                        </a>
-                                        <a class="flex gap-3 w-full items-center justify-start text-red text-sm px-3 py-2 cursor-pointer hover:bg-red/10" @click="$dispatch('delete-user', { id: '<?=$user->id?>' }); open = false;">
-                                            <?=Icon::trash('w-4 h-4')?>
-                                            Delete
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                        <?php endforeach ?>
-                    </tbody>
-                </table>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
         </div>
         <!-- modal -->
-        <div class="h-full w-full absolute z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs"  x-show="showAlert" x-cloak @click.outside="showAlert = false">
-            <div 
-                class="w-1/2 h-1/2 bg-base rounded-xl shadow-xl flex items-center justify-center border-red absolute transition-all duration-300 ease-in-out" 
+        <div class="h-full w-full absolute z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs" x-show="showAlert" x-cloak @click.outside="showAlert = false">
+            <div
+                class="w-1/2 h-1/2 bg-baseColor rounded-xl shadow-xl flex items-center justify-center border-red absolute transition-all duration-300 ease-in-out"
                 x-show="showAlert" x-cloak @click.outside="showAlert = false"
                 x-transition:enter="transition ease-out duration-200"
                 x-transition:enter-start="opacity-0 scale-95"
@@ -119,13 +134,13 @@
                     <h1 class="text-red font-medium text-2xl">
                         Yakin ingin menghapus data akun?
                     </h1>
-                    <div class="flex gap-4 items-center justify-center h-10"  >
-                        <form x-bind:action="`<?=URL."/admin/user/delete/"?>${deleteUserId}`" method="delete">
-                            <button class="p-2 text-base bg-red shadow-sm rounded-md h-full w-24 cursor-pointer">
+                    <div class="flex gap-4 items-center justify-center h-10">
+                        <form x-bind:action="`<?= URL . "/admin/user/delete/" ?>${deleteUserId}`" method="delete">
+                            <button class="p-2 text-baseColor bg-red shadow-sm rounded-md h-full w-24 cursor-pointer">
                                 Hapus
                             </button>
                         </form>
-                        <button class="p-2 text-black/80 bg-base shadow-sm rounded-md h-full w-24 cursor-pointer" @click="showAlert = false">
+                        <button class="p-2 text-black/80 bg-baseColor shadow-sm rounded-md h-full w-24 cursor-pointer" @click="showAlert = false">
                             Batal
                         </button>
                     </div>
@@ -134,5 +149,7 @@
         </div>
     </div>
     <style>
-        [x-cloak] { display: none !important; }
+        [x-cloak] {
+            display: none !important;
+        }
     </style>
