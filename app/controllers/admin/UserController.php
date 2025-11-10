@@ -7,32 +7,21 @@ use App\Core\ResponseHandler;
 use App\Error\CustomException;
 use App\Utils\Validator;
 use App\Models\User;
+use App\Utils\DB;
 use Exception;
 
 class UserController extends Controller
 {
-
-    private $user;
-
-    public function __construct()
-    {
-        $this->user = $this->model('user');
-    }
 
     public function index()
     {
         try {
             $type = isset($_GET['type']) ? $_GET['type'] : null;
             $search = isset($_GET['search']) ? $_GET['search'] : null;
-            $users = User::where([
-                "id_number" => $search,
-                "first_name" => ["or" => $search],
-                "last_name" => ["or" => $search],
-                "role" => ['and' => $type],
-            ]);
             $users = User::get();
-            var_dump($users);
-            die;
+            if(!is_null($type) || !is_null($search)) {
+                $users = DB::get("SELECT * FROM users WHERE (first_name LIKE ? OR last_name LIKE ?) OR role = ?", ["%$search%", "%$search%", $type]);
+            }
             $data = [
                 "no" => 1,
                 "users" => $users

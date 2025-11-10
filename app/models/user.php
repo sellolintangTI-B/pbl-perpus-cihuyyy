@@ -1,20 +1,24 @@
 <?php
+
 namespace App\Models;
+
 use App\Core\Database;
 use Pdo;
-class User extends Database {
+
+class User extends Database
+{
 
     public static function get()
     {
-        $query = "SELECT * FROM users";
         $conn = parent::getConnection();
         $q = $conn->prepare("SELECT * FROM users");
         $q->execute();
-        $data = $q->fetchAll(PDO::FETCH_OBJ); 
+        $data = $q->fetchAll(PDO::FETCH_OBJ);
         return $data;
     }
 
-    public static function insert($data) {
+    public static function insert($data)
+    {
         $conn = parent::getConnection();
         $q = $conn->prepare("INSERT INTO users (id_number, email, password_hash, first_name, last_name, institution, phone_number, role, activation_proof_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
         $q->bindParam(1, $data['id_number'], PDO::PARAM_STR);
@@ -28,7 +32,7 @@ class User extends Database {
         $q->bindParam(9, $data['image'], PDO::PARAM_STR);
         $q->execute();
 
-        if($q) {
+        if ($q) {
             return true;
         }
     }
@@ -53,7 +57,7 @@ class User extends Database {
         return $data;
     }
 
-    public static function getByEmail($email) 
+    public static function getByEmail($email)
     {
         $conn = parent::getConnection();
         $q = $conn->prepare("SELECT * FROM users WHERE email = ?");
@@ -63,7 +67,8 @@ class User extends Database {
         return $data;
     }
 
-    public static function getByEmailOrIdNumber($emailOrIdNumber) {
+    public static function getByEmailOrIdNumber($emailOrIdNumber)
+    {
         $conn = parent::getConnection();
         $q = $conn->prepare("SELECT * FROM users WHERE email = ? OR id_number = ?");
         $q->bindParam(1, $emailOrIdNumber, PDO::PARAM_STR);
@@ -79,29 +84,28 @@ class User extends Database {
         $q = $conn->prepare("UPDATE users SET is_active = true WHERE id = ?");
         $q->bindParam(1, $id, PDO::PARAM_STR);
         $q->execute();
-        if($q) {
+        if ($q) {
             return true;
         }
     }
 
-    public static function update($id, $data) 
+    public static function update($id, $data)
     {
         $conn = parent::getConnection();
         $query = "UPDATE users SET id_number = ?, email = ?, first_name = ?, last_name = ?, major = ?, phone_number = ?, institution = ?, role = ? WHERE id = ?";
-        if(isset($data['image'])) {
+        if (isset($data['image'])) {
             $query = "UPDATE users SET id_number = ?, email = ?, first_name = ?, last_name = ?, major = ?, phone_number = ?, institution = ?, role = ?, profile_picture_url = ? WHERE id = ?";
         }
         $q = $conn->prepare($query);
         $i = 1;
-        foreach($data as $key => $value) {
+        foreach ($data as $key => $value) {
             $q->bindParam($i, $data[$key]);
             $i++;
         }
         $q->bindParam($i++, $id);
         $q->execute();
-        if($q) return true;
+        if ($q) return true;
         return false;
-        
     }
 
     public static function delete($id)
@@ -110,7 +114,7 @@ class User extends Database {
         $q = $conn->prepare("DELETE FROM users WHERE id = ?");
         $q->bindParam(1, $id);
         $q->execute();
-        if($q) return true;
+        if ($q) return true;
         return false;
     }
 
@@ -121,11 +125,11 @@ class User extends Database {
         $q->bindParam(1, $password);
         $q->bindParam(2, $id);
         $q->execute();
-        if($q) return true;
+        if ($q) return true;
         return false;
     }
 
-    public static function checkEmailForUpdate($id, $email) 
+    public static function checkEmailForUpdate($id, $email)
     {
         $conn = parent::getConnection();
         $q = $conn->prepare("SELECT email FROM users WHERE email = ? AND NOT id = ?");
@@ -136,7 +140,7 @@ class User extends Database {
         return $data;
     }
 
-    public static function checkIdNumberForUpdate($id, $id_number) 
+    public static function checkIdNumberForUpdate($id, $id_number)
     {
         $conn = parent::getConnection();
         $q = $conn->prepare("SELECT id_number FROM users WHERE id_number = ? AND NOT id = ?");
@@ -144,43 +148,8 @@ class User extends Database {
         $q->bindParam(2, $id);
         $q->execute();
         $data = $q->fetch(PDO::FETCH_OBJ);
+
         return $data;
     }
 
-    public static function where(array $params)
-    {
-        $filter = [];
-        $conn = parent::getConnection();        
-        foreach($params as $field => $conditions) {
-            if(!is_array($conditions)) {
-                $filter[] = "$field LIKE %$conditions%";
-                continue;
-            }
-
-            foreach($conditions as $operator => $value) {
-                var_dump($value);
-                // switch ($operator) {
-                //     case 'and':
-                //         $filter[] = "AND $field LIKE %$value%";
-                //         break;
-                //     case 'or' :
-                //         $filter[] = "OR $field LIKE %$value%";
-                //         break;
-                //     default:
-                //         return false;
-                //         break;
-                // }
-            }
-        } 
-        die;
-
-        $param = implode(" ", $filter);
-        $query = "SELECT * FROM users WHERE $param";
-        var_dump($query);
-        $q = $conn->prepare("SELECT * FROM users WHERE $param");
-        $q->execute();
-        $data = $q->fetchAll(PDO::FETCH_OBJ);
-        var_dump($data);
-        die;
-    }
 }
