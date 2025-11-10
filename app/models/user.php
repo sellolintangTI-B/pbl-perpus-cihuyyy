@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Core\Database;
-use InvalidArgumentException;
 use Pdo;
 
 class User extends Database
@@ -11,7 +10,6 @@ class User extends Database
 
     public static function get()
     {
-        $query = "SELECT * FROM users";
         $conn = parent::getConnection();
         $q = $conn->prepare("SELECT * FROM users");
         $q->execute();
@@ -154,43 +152,4 @@ class User extends Database
         return $data;
     }
 
-    public static function where(array $params)
-    {
-        $conn = parent::getConnection();
-        $conditions = [];
-        $bindings = [];
-
-        foreach ($params as $field => $value) {
-            if (!is_array($value)) {
-                $conditions[] = "$field LIKE :$field";
-                $bindings[":$field"] = "%$value%";
-            } else {
-                foreach ($value as $operator => $val) {
-                    $placeholder = ":{$field}_{$operator}";
-                    $clause = "$field LIKE $placeholder";
-                    $bindings[$placeholder] = "%$val%";
-
-                    switch (strtolower($operator)) {
-                        case 'or':
-                            $conditions[] = "OR $clause";
-                            break;
-                        case 'and':
-                            $conditions[] = "AND $clause";
-                            break;
-                        default:
-                            throw new InvalidArgumentException("Operator $operator tidak dikenali.");
-                    }
-                }
-            }
-        }
-
-        $paramString = preg_replace('/^(AND|OR)\s*/', '', implode(' ', $conditions));
-
-        $query = 'SELECT CONCAT(first_name, last_name) AS "full_name", email, role, institution, is_active FROM users WHERE ' . $paramString;
-
-        $stmt = $conn->prepare($query);
-        $stmt->execute($bindings);
-        $data = $stmt->fetchAll(PDO::FETCH_OBJ);
-        return $data;
-    }
 }

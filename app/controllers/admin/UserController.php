@@ -20,7 +20,7 @@ class UserController extends Controller
             $search = isset($_GET['search']) ? $_GET['search'] : null;
             $users = User::get();
             if(!is_null($type) || !is_null($search)) {
-                $users = DB::get("SELECT * FROM users WHERE (first_name LIKE ? OR last_name LIKE ?) AND role = ?", ["%$search%", "%$search%", $type]);
+                $users = DB::get("SELECT * FROM users WHERE (first_name LIKE ? OR last_name LIKE ?) OR role = ?", ["%$search%", "%$search%", $type]);
             }
             $data = [
                 "no" => 1,
