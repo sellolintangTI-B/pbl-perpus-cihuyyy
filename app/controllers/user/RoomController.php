@@ -37,7 +37,7 @@ class RoomController extends Controller
         try {
             $data = $this->room->getById($id);
             if (!$data) throw new CustomException("Data ruangan tidak ditemukan");
-            $this->view('user/room/details', $data);
+            $this->view('user/beranda/detail', $data, layoutType: $this::$layoutType['civitas']);
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), "error");
             $error = ResponseHandler::getResponse();
@@ -45,13 +45,31 @@ class RoomController extends Controller
         }
     }
 
-    public function testing()
+    public function getUserByNim($identifier)
     {
         try {
-            var_dump($_POST);
-        }catch(CustomException $e) {
-            ResponseHandler::setResponse($e->getErrorMessages(), 'error');
-            header('location:');
+            $user = $this->user->getByIdNumber($identifier);
+            if (!$user) throw new CustomException("data user tidak tersedia");
+            $data = [
+                "success" => true,
+                "data" => $user
+            ];
+            echo json_encode($data);
+        } catch (CustomException $e) {
+            ResponseHandler::setResponse($e->getErrorMessages(), "error");
+            $error = ResponseHandler::getResponse();
+            var_dump($error);
         }
+    }
+
+    public function postData()
+    {
+        $data = [
+            "datetime" => $_POST['datetime'],
+            "duration" => $_POST['duration'],
+            "list_anggota" => $_POST['list_anggota'],
+            "file_surat" => empty($_FILES['image']['file_surat']) ? null : $_FILES['image']['file_surat'],
+        ];
+        var_dump($data);
     }
 }
