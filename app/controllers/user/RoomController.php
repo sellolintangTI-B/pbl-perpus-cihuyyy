@@ -6,6 +6,7 @@ use App\Core\Controller;
 use App\Core\ResponseHandler;
 use App\Error\CustomException;
 use app\models\Room;
+use App\Models\User;
 use App\Utils\Validator;
 use App\Utils\Authentication;
 
@@ -35,7 +36,7 @@ class RoomController extends Controller
     public function detail($id)
     {
         try {
-            $data = $this->room->getById($id);
+            $data = Room::getById($id);
             if (!$data) throw new CustomException("Data ruangan tidak ditemukan");
             $this->view('user/beranda/detail', $data, layoutType: $this::$layoutType['civitas']);
         } catch (CustomException $e) {

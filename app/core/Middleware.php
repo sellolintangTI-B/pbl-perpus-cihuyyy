@@ -37,7 +37,8 @@ class Middleware
             // RUANGAN
             "/user/room/index",
             "/user/room/detail",
-            "/user/booking/search_user"
+            "/user/booking/search_user",
+            "/user/booking/store"
         ],
         "Dosen" => [
             "/user/user/index",
@@ -46,7 +47,7 @@ class Middleware
             // RUANGAN
             "/user/room/index",
             "/user/room/detail",
-            "/user/room/reservation"
+            "/user/booking/store"
         ]
     ];
 

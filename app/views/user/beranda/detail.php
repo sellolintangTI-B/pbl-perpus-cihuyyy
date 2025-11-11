@@ -3,9 +3,6 @@
 use App\Components\FormInput;
 use App\Components\Icon\Icon;
 
-$data = [
-    "min_capacity" => 4,
-];
 ?>
 
 <div class="max-w-6xl mx-auto p-4 justify-center items-start flex flex-col gap-6" x-data="formAnggota()">
@@ -17,10 +14,10 @@ $data = [
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
             </svg>
         </a>
-        <h1 class="text-xl font-medium text-primary">Ruang Perancis</h1>
+        <h1 class="text-xl font-medium text-primary"><?= $data->name ?></h1>
     </div>
 
-    <img src="/public/storage/images/ruang-dummy.jpg" alt="Ruang Perancis" class="w-full h-80 object-cover rounded-lg shadow-md">
+    <img src="<?= URL ?>/public/<?= $data->room_img_url ?>" alt="Ruang Perancis" class="w-full h-80 object-cover rounded-lg shadow-md">
     <div class="flex gap-4 items-center justify-center w-full h-32">
         <div class="bg-linear-to-r from-primary to-secondary flex items-center justify-center rounded-xl p-4 shadow-lg flex-3 h-full">
             <div class="flex items-center gap-3 text-white">
@@ -28,7 +25,7 @@ $data = [
                     <?= Icon::global('w-10 h-10') ?>
                 </div>
                 <div class="flex-1">
-                    <h3 class="font-medium text-lg mb-1">Ruangan Umum</h3>
+                    <h3 class="font-medium text-lg mb-1"><?=   ($data->requires_special_approval) ? "Ruangan Khusus" : "Ruangan Umum"  ?></h3>
                     <p class="text-sm opacity-90">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod ad, nostrum dicta doloremque totam pariatur officia doloribus id soluta ea?</p>
                 </div>
             </div>
@@ -65,7 +62,7 @@ $data = [
                 <svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
                 </svg>
-                <span>Minimal 4 orang - Maksimal 7 orang</span>
+                <span>Minimal <?=  $data->min_capacity ?> orang - Maksimal <?= $data->max_capacity ?> orang</span>
             </div>
 
             <!-- Location -->
@@ -73,12 +70,12 @@ $data = [
                 <svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
                 </svg>
-                <span>Tempat: Perpustakaan PNJ, LT. 4</span>
+                <span>Tempat: Perpustakaan PNJ, LT. <?= $data->floor ?></span>
             </div>
 
             <!-- Description -->
             <p class="text-sm text-gray-600 leading-relaxed text-justify">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur tempus urna at turpis condimentum lobortis. Ut pharetra efficitur neque. Ut eam aliqua, semper lacus condimentum ac, mollis eu nisi.
+                <?= $data->description ?>
             </p>
 
             <h3 class="text-lg font-medium text-primary">Waktu terpakai</h3>
@@ -131,7 +128,7 @@ $data = [
         <div class="flex-2 flex flex-col gap-4 justify-start items-center">
             <!-- Form Section -->
             <div class="bg-white rounded-xl p-4 shadow-md w-full">
-                <form method="POST" action="<?= URL . "/user/room/postData" ?>" @submit="prepareData" enctype="multipart/form-data" class="space-y-4 w-full">
+                <form method="POST" action="<?= URL . "/user/booking/store/$data->id" ?>" @submit="prepareData" enctype="multipart/form-data" class="space-y-4 w-full">
                     <!-- Kapan -->
                     <div>
                         <label class="block text-sm font-medium text-primary mb-2">Kapan</label>
@@ -174,10 +171,10 @@ $data = [
                     </div>
 
                     <!-- Upload surat resmi -->
-                    <div>
-                        <label class="block text-sm font-medium text-primary mb-2">Upload Surat Resmi</label>
-                        <?php FormInput::fileInput(id: "surat", name: "file_surat", placeholder: "Surat Izin Peminjaman", accept: 'image/*', required: true) ?>
-                    </div>
+                    <!-- <div>
+                        <label class="block text-sm font-medium text-primary mb-2">Upload Surat Resmi</label> -->
+                        <?php //FormInput::fileInput(id: "surat", name: "file_surat", placeholder: "Surat Izin Peminjaman", accept: 'image/*', required: true) ?>
+                    <!-- </div> -->
 
                     <!-- Tombol submit -->
                     <button type="submit"
@@ -210,12 +207,13 @@ $data = [
                 }
                 try {
                     // request ke server untuk validasi NIM
-                    let res = await fetch(`<?= URL ?>/user/room/getuserbynim/${this.identifier}`);
+                    let res = await fetch(`<?= URL ?>/user/booking/search_user/${this.identifier}`);
                     let data = await res.json();
+                    console.log(data);
 
                     if (data.success) {
                         this.listAnggota.push({
-                            id_number: data.data.id_number,
+                            id: data.data.id,
                             name: data.data.first_name + " " + data.data.last_name
                         });
                         this.identifier = '';
@@ -224,6 +222,7 @@ $data = [
                         this.message = '* Data tidak ditemukan!';
                     }
                 } catch (err) {
+                    console.log(err);
                     this.message = '* Terjadi kesalahan server.';
                 }
             },

@@ -4,9 +4,10 @@ namespace App\Controllers\user;
 
 use App\Core\Controller;
 use App\Core\ResponseHandler;
-use app\error\CustomException;
+use App\Error\CustomException;
 use App\Models\Booking;
 use App\Models\BookingLog;
+use App\Models\User;
 use App\Utils\Authentication;
 use Carbon\Carbon;
 
@@ -21,7 +22,6 @@ class BookingController extends Controller
     public function store($id)
     {
         try {
-
             $user = new Authentication;
             $data = [
                 "date" => "2025-11-10T09:00",
@@ -34,37 +34,33 @@ class BookingController extends Controller
             ];
 
             $start = Carbon::parse($data['date']);
-            $duration = Carbon::parse($data["duration"]); 
+            $duration = Carbon::parse($data["duration"]);
             $data['duration'] = $start->diffInMinutes($duration);
             $data['start_time'] = $start->toDateTimeString();
-            // $data['end_time'] = $start->addMinutes($data['duration'])->toDateTimeString();
-            unset($data['date']);
-            unset($data['members']);
+            $members = $data['members'];
 
             $booking = Booking::create($data);
             $bookingLog = BookingLog::create($booking->id);
-            
-
-        }catch(CustomException $e) {
+        } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), 'error');
             header('location:');
         }
     }
 
-    public function search_user()
+    public function search_user($identifier)
     {
         try {
+            $user = User::getByIdNumber($identifier);
+            if (!$user) throw new CustomException("data user tidak tersedia");
             $data = [
-                "id" => "qeewrqwer",
-                "name" => "farrel"
+                "success" => true,
+                "data" => $user
             ];
-
-            $json = json_encode($data);
-            header("Content-Type: application/json");
-            echo $json;
-        }catch(CustomException $e) {
-            ResponseHandler::setResponse($e->getErrorMessages(), 'error');
-            header('location:');
+            header('Content-Type: application/json');
+            echo json_encode($data);
+        } catch (CustomException $e) {
+            $error = json_encode($e->getErrorMessages());
+            echo $error;
         }
     }
 }
