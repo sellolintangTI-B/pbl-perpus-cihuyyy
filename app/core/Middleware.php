@@ -36,7 +36,8 @@ class Middleware
             "/error/notfound/index",
             // RUANGAN
             "/user/room/index",
-            "/user/room/details"
+            "/user/room/detail",
+            "/user/booking/search_user"
         ],
         "Dosen" => [
             "/user/user/index",
@@ -44,7 +45,8 @@ class Middleware
             "/error/notfound/index",
             // RUANGAN
             "/user/room/index",
-            "/user/room/details"
+            "/user/room/detail",
+            "/user/room/reservation"
         ]
     ];
 

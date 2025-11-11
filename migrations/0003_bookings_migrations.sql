@@ -4,7 +4,7 @@ CREATE TABLE bookings (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL,
     room_id UUID NOT NULL,
-    datetime TIMESTAMP NOT NULL,
+    start_time TIMESTAMP NOT NULL,
     duration INTERVAL NOT NULL,
     is_approved BOOLEAN DEFAULT FALSE,
     special_requirement_attachments_url VARCHAR(100),
