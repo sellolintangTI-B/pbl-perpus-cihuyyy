@@ -7,6 +7,7 @@
     <title><?= $title ?? "SIMARU" ?></title>
     <link href="<?= URL ?>/public/css/style.css" rel="stylesheet">
     <link href="<?= URL ?>/public/css/theme.css" rel="stylesheet">
+    <link href="<?= URL ?>/public/css/global.css" rel="stylesheet">
     <script src="//unpkg.com/alpinejs" defer></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
@@ -36,7 +37,7 @@ $user = new Authentication
         <div class="w-full h-full max-h-full overflow-hidden bg-baseColor rounded-xl" :class="scrolled ? 'rounded-none!' : 'rounded-xl'">
             <?= UserNavbar::main(
                 activeMenu: 'beranda',
-                userName: $user->user['username'],
+                userName: $user->user['username'] ?? 'ga login yaa?',
                 logoUrl: URL . '/public/assets/logo.png',
             ) ?>
 

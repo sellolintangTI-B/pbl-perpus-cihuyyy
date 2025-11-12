@@ -1,5 +1,5 @@
 <?php
-// Sample data - replace with database query
+
 $bookingCode = $_GET['code'] ?? '#AA682358';
 $status = $_GET['status'] ?? 'Berlangsung';
 

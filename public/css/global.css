@@ -1,1 +1,4 @@
 [x-cloak] { display: none !important; }
+::-webkit-scrollbar{
+    display: none !important;
+}

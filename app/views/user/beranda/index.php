@@ -10,50 +10,48 @@ use App\Components\RoomCard;
         </h1>
 
         <!-- Search & Filter Section -->
-        <div class="w-full max-w-2xl flex flex-col gap-4">
-            <form action="<?= URL ?>/user/room/testing" method="post" class="m-3">
-                <!-- Search Bar -->
-                <div class="relative w-full">
-                    <div class="absolute left-4 top-1/2 -translate-y-1/2">
-                        <svg class="w-5 h-5 text-black/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                        </svg>
-                    </div>
-                    <input type="text" placeholder="Pusat Perancis ..." class="w-full pl-12 pr-4 py-3 text-center rounded-full border border-gray-300 focus:outline-none focus:border-primary transition-colors duration-200 text-sm">
+        <form class="w-full max-w-4xl justify-center items-center flex flex-col gap-4 m-3" action="<?= URL ?>/user/room/testing" method="post">
+            <!-- Search Bar -->
+            <div class="relative w-full max-w-2xl">
+                <div class="absolute left-4 top-1/2 -translate-y-1/2">
+                    <svg class="w-5 h-5 text-black/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+                <input type="text" placeholder="Pusat Perancis ..." class="w-full pl-12 pr-4 py-3 text-center rounded-full border border-gray-300 focus:outline-none focus:border-primary transition-colors duration-200 text-sm">
+            </div>
+
+            <!-- Filter Section -->
+            <div class="w-full flex items-center gap-3 px-6 py-3 bg-white shadow-sm rounded-full overflow-hidden">
+                <!-- Kapan Filter -->
+                <div class="flex-1 relative flex flex-col gap-3 justify-center items-start h-full">
+                    <label class="px-1 bg-transparent text-xs font-medium text-black/70">
+                        Kapan
+                    </label>
+                    <input type="datetime-local" name="date" placeholder="Tanggal dan jam peminjaman" class="w-full h-full rounded-lg border-0 focus:outline-none focus:ring-0 transition-colors duration-200 text-sm text-black/70 px-4">
+                </div>
+                <div class="h-12 w-[1px] rounded-full bg-black/20">
+
+                </div>
+                <!-- Durasi Filter -->
+                <div class="flex-1 relative flex flex-col gap-3 justify-center items-start h-full">
+                    <label class="px-1 bg-transparent text-xs font-medium text-black/70">
+                        Durasi
+                    </label>
+                    <input type="time" name="duration" placeholder="Lama peminjaman ruangan" class="w-full h-full rounded-lg border-0 focus:outline-none focus:ring-0 transition-colors duration-200 text-sm text-black/70 px-4">
                 </div>
 
-                <!-- Filter Section -->
-                <div class="w-full flex items-center gap-3 px-6 py-2 bg-white shadow-sm rounded-full overflow-hidden">
-                    <!-- Kapan Filter -->
-                    <div class="flex-1 relative flex flex-col gap-3 justify-center items-start h-full">
-                        <label class="px-1 bg-transparent text-xs font-medium text-black/70">
-                            Kapan
-                        </label>
-                        <input type="datetime-local" name="date" placeholder="Tanggal dan jam peminjaman" class="w-full h-full rounded-lg border-0 focus:outline-none focus:ring-0 transition-colors duration-200 text-sm text-black/70 px-4">
-                    </div>
-                    <div class="h-12 w-[1px] rounded-full bg-black/20">
+                <!-- Search Button -->
+                <!-- Search Button -->
+                <button class="px-8 py-3 cursor-pointer bg-linear-to-r from-primary to-secondary text-white rounded-full font-medium text-sm hover:opacity-90 transition-all duration-300 shadow-sm flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                    Cari
+                </button>
+            </div>
 
-                    </div>
-                    <!-- Durasi Filter -->
-                    <div class="flex-1 relative flex flex-col gap-3 justify-center items-start h-full">
-                        <label class="px-1 bg-transparent text-xs font-medium text-black/70">
-                            Durasi
-                        </label>
-                        <input type="time" name="duration" placeholder="Lama peminjaman ruangan" class="w-full h-full rounded-lg border-0 focus:outline-none focus:ring-0 transition-colors duration-200 text-sm text-black/70 px-4">
-                    </div>
-
-                    <!-- Search Button -->
-                    <!-- Search Button -->
-                    <button class="px-8 py-3 cursor-pointer bg-linear-to-r from-primary to-secondary text-white rounded-full font-medium text-sm hover:opacity-90 transition-all duration-300 shadow-sm flex items-center gap-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                        </svg>
-                        Cari
-                    </button>
-                </div>
-
-            </form>
-        </div>
+        </form>
     </div>
 
     <!-- Available Rooms Section -->
