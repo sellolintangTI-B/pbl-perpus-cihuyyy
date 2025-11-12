@@ -9,6 +9,7 @@
     <link href="<?= URL ?>/public/css/theme.css" rel="stylesheet">
     <!-- <script src="<?= URL ?>/public/js/alpine.js" defer></script> -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="//unpkg.com/alpinejs" defer></script>
     <script src="<?= URL ?>/public/js/modal.js"></script>
 </head>
 <?php
@@ -19,7 +20,7 @@ $items = [
     ['label' => 'Dashboard', 'url' => '/admin/dashboard/index', 'icon' => 'home'],
     ['label' => 'Data Pengguna', 'url' => '/admin/user/index', 'icon' => 'person'],
     ['label' => 'Data Ruangan', 'url' => '/admin/room/index', 'icon' => 'room'],
-    ['label' => 'Data Peminjaman', 'url' => '#', 'icon' => 'calendar_pencil'],
+    ['label' => 'Data Peminjaman', 'url' => '/admin/booking/index', 'icon' => 'calendar_pencil'],
 ];
 $activeItem = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 ?>

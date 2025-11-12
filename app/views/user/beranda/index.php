@@ -10,9 +10,9 @@ use App\Components\RoomCard;
         </h1>
 
         <!-- Search & Filter Section -->
-        <div class="w-full max-w-2xl flex flex-col gap-4">
+        <form class="w-full max-w-4xl justify-center items-center flex flex-col gap-4 m-3" action="<?= URL ?>/user/room/testing" method="post">
             <!-- Search Bar -->
-            <div class="relative w-full">
+            <div class="relative w-full max-w-2xl">
                 <div class="absolute left-4 top-1/2 -translate-y-1/2">
                     <svg class="w-5 h-5 text-black/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
@@ -22,13 +22,13 @@ use App\Components\RoomCard;
             </div>
 
             <!-- Filter Section -->
-            <div class="w-full flex items-center gap-3 px-6 py-2 bg-white shadow-sm rounded-full overflow-hidden">
+            <div class="w-full flex items-center gap-3 px-6 py-3 bg-white shadow-sm rounded-full overflow-hidden">
                 <!-- Kapan Filter -->
                 <div class="flex-1 relative flex flex-col gap-3 justify-center items-start h-full">
                     <label class="px-1 bg-transparent text-xs font-medium text-black/70">
                         Kapan
                     </label>
-                    <input type="datetime-local" placeholder="Tanggal dan jam peminjaman" class="w-full h-full rounded-lg border-0 focus:outline-none focus:ring-0 transition-colors duration-200 text-sm text-black/70 px-4">
+                    <input type="datetime-local" name="date" placeholder="Tanggal dan jam peminjaman" class="w-full h-full rounded-lg border-0 focus:outline-none focus:ring-0 transition-colors duration-200 text-sm text-black/70 px-4">
                 </div>
                 <div class="h-12 w-[1px] rounded-full bg-black/20">
 
@@ -38,7 +38,7 @@ use App\Components\RoomCard;
                     <label class="px-1 bg-transparent text-xs font-medium text-black/70">
                         Durasi
                     </label>
-                    <input type="time" placeholder="Lama peminjaman ruangan" class="w-full h-full rounded-lg border-0 focus:outline-none focus:ring-0 transition-colors duration-200 text-sm text-black/70 px-4">
+                    <input type="time" name="duration" placeholder="Lama peminjaman ruangan" class="w-full h-full rounded-lg border-0 focus:outline-none focus:ring-0 transition-colors duration-200 text-sm text-black/70 px-4">
                 </div>
 
                 <!-- Search Button -->
@@ -50,7 +50,8 @@ use App\Components\RoomCard;
                     Cari
                 </button>
             </div>
-        </div>
+
+        </form>
     </div>
 
     <!-- Available Rooms Section -->
@@ -63,91 +64,17 @@ use App\Components\RoomCard;
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
             <?php
             // Dummy data ruangan
-            $rooms = [
-                [
-                    'id' => 1,
-                    'name' => 'Ruang Perancis',
-                    'image' => '/public/storage/images/ruang-dummy.jpg',
+            foreach ($data as $room) {
+                $r = [
+                    'id' => $room->id,
+                    'name' => $room->name,
+                    'image' => $room->room_img_url,
                     'rating' => '4.85',
-                    'capacity' => '4-8',
-                    'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-                ],
-                [
-                    'id' => 2,
-                    'name' => 'Ruang Perancis',
-                    'image' => '/public/storage/images/ruang-dummy.jpg',
-                    'rating' => '4.85',
-                    'capacity' => '4-8',
-                    'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-                ],
-                [
-                    'id' => 3,
-                    'name' => 'Ruang Perancis',
-                    'image' => '/public/storage/images/ruang-dummy.jpg',
-                    'rating' => '4.85',
-                    'capacity' => '4-8',
-                    'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-                ],
-                [
-                    'id' => 4,
-                    'name' => 'Ruang Perancis',
-                    'image' => '/public/storage/images/ruang-dummy.jpg',
-                    'rating' => '4.85',
-                    'capacity' => '4-8',
-                    'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-                ],
-                [
-                    'id' => 5,
-                    'name' => 'Ruang Perancis',
-                    'image' => '/public/storage/images/ruang-dummy.jpg',
-                    'rating' => '4.85',
-                    'capacity' => '4-8',
-                    'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-                ],
-                [
-                    'id' => 6,
-                    'name' => 'Ruang Perancis',
-                    'image' => '/public/storage/images/ruang-dummy.jpg',
-                    'rating' => '4.85',
-                    'capacity' => '4-8',
-                    'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-                ],
-                [
-                    'id' => 7,
-                    'name' => 'Ruang Perancis',
-                    'image' => '/public/storage/images/ruang-dummy.jpg',
-                    'rating' => '4.85',
-                    'capacity' => '4-8',
-                    'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-                ],
-                [
-                    'id' => 8,
-                    'name' => 'Ruang Perancis',
-                    'image' => '/public/storage/images/ruang-dummy.jpg',
-                    'rating' => '4.85',
-                    'capacity' => '4-8',
-                    'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-                ],
-                [
-                    'id' => 9,
-                    'name' => 'Ruang Perancis',
-                    'image' => '/public/storage/images/ruang-dummy.jpg',
-                    'rating' => '4.85',
-                    'capacity' => '4-8',
-                    'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-                ],
-                [
-                    'id' => 10,
-                    'name' => 'Ruang Perancis',
-                    'image' => '/public/storage/images/ruang-dummy.jpg',
-                    'rating' => '4.85',
-                    'capacity' => '4-8',
-                    'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-                ],
-            ];
-
-            foreach ($rooms as $room) {
-                RoomCard::card($room);
+                    'min' => $room->min_capacity,
+                    'max' => $room->max_capacity,
+                    'description' => $room->description
+                ];
+                RoomCard::card($r);
             }
             ?>
         </div>

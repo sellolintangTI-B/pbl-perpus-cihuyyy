@@ -1,10 +1,14 @@
 <?php
 
 namespace App\Controllers;
+
 use App\Core\Controller;
-class HomeController extends Controller{
-    
-    public function index() {
-        $this->view('home/index',  layoutType: $this::$layoutType["admin"]);
+
+class HomeController extends Controller
+{
+
+    public function index()
+    {
+        $this->view('user/beranda/index',  layoutType: $this::$layoutType["civitas"]);
     }
 }

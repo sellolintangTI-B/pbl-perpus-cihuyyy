@@ -7,11 +7,17 @@
     <title><?= $title ?? "SIMARU" ?></title>
     <link href="<?= URL ?>/public/css/style.css" rel="stylesheet">
     <link href="<?= URL ?>/public/css/theme.css" rel="stylesheet">
+    <link href="<?= URL ?>/public/css/global.css" rel="stylesheet">
+    <script src="//unpkg.com/alpinejs" defer></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 <?php
 
 use App\Components\UserNavbar;
+use App\Utils\Authentication;
+
+$user = new Authentication
+
 ?>
 
 <body class="font-poppins bg-gray-100">
@@ -26,12 +32,12 @@ use App\Components\UserNavbar;
             });
         }
     }"
-        :class="scrolled ? 'p-0' : 'p-2'"
-        class="w-full h-screen max-h-full overflow-hidden bg-primary transition-all duration-300">
-        <div class="w-full h-full max-h-full overflow-hidden bg-white " :class="scrolled ? 'rounded-none' : 'rounded-xl'">
+        :class="scrolled ? 'p-0!' : 'p-2'"
+        class="w-full h-screen max-h-full overflow-hidden bg-primary transition-all duration-300 p-2" x-cloak>
+        <div class="w-full h-full max-h-full overflow-hidden bg-baseColor rounded-xl" :class="scrolled ? 'rounded-none!' : 'rounded-xl'">
             <?= UserNavbar::main(
                 activeMenu: 'beranda',
-                userName: 'Nugroho Nur Cahyo',
+                userName: $user->user['username'] ?? 'ga login yaa?',
                 logoUrl: URL . '/public/assets/logo.png',
             ) ?>
 

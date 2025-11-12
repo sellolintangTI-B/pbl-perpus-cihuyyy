@@ -6,6 +6,7 @@ use App\Core\Controller;
 use App\Utils\Validator;
 use App\Error\CustomException;
 use App\Core\ResponseHandler;
+use App\Models\Booking;
 use App\Models\Room;
 class RoomController extends Controller {
     private $room;
@@ -49,6 +50,8 @@ class RoomController extends Controller {
 
             $errors = $validator->error();
             if($errors) throw new CustomException($validator->getErrors());
+
+            if($data['floor'] <= 0 || $data['min'] <= 0 || $data['max'] <= 0) throw new CustomException('Tidak Boleh dibawah 0 atau 0');
 
             if($data['min'] > $data['max']) throw new CustomException('Kapasitas minimal harus lebih kecil dari kapasitas maximal'); 
 

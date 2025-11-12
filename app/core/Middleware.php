@@ -1,11 +1,16 @@
 <?php
+
 namespace App\Core;
+
 use App\Utils\Authentication;
-class Middleware 
+
+class Middleware
 {
     private $fullPath;
     private $routes = [
         "Admin" => [
+            //BOOKING
+            "/admin/booking/index",
             //ROOM
             "/admin/room/index",
             "/admin/room/store",
@@ -36,7 +41,10 @@ class Middleware
             "/error/notfound/index",
             // RUANGAN
             "/user/room/index",
-            "/user/room/details"
+            "/user/room/detail",
+            "/user/booking/search_user",
+            "/user/booking/store",
+            "/user/booking/index"
         ],
         "Dosen" => [
             "/user/user/index",
@@ -44,7 +52,9 @@ class Middleware
             "/error/notfound/index",
             // RUANGAN
             "/user/room/index",
-            "/user/room/details"
+            "/user/room/detail",
+            "/user/booking/store",
+            "/user/booking/index"
         ]
     ];
 
@@ -65,7 +75,6 @@ class Middleware
         $this->auth = new Authentication;
         $user = $this->auth->user;
 
-
         if (in_array($this->fullPath, $this->exceptionRoutes)) {
             return;
         }
@@ -74,14 +83,13 @@ class Middleware
             header('location:' . URL . '/auth/login');
         }
 
-        if(!empty($user)) {
+        if (!empty($user)) {
             $role = $user['role'] ?? null;
-            if($this->forbidden($role)) {
+            if ($this->forbidden($role)) {
                 header('location:' . URL . '/error/forbidden');
-            } 
+            }
             return;
         }
-
     }
 
     public function forbidden($role)
@@ -90,5 +98,4 @@ class Middleware
             return true;
         }
     }
-
 }

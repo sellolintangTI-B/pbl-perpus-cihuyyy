@@ -5,7 +5,9 @@ namespace App\Controllers\User;
 use App\Core\Controller;
 use App\Core\ResponseHandler;
 use App\Error\CustomException;
+use App\Models\Booking;
 use app\models\Room;
+use App\Models\User;
 use App\Utils\Validator;
 use App\Utils\Authentication;
 
@@ -32,16 +34,49 @@ class RoomController extends Controller
         }
     }
 
-    public function details($id)
+    public function detail($id)
     {
         try {
-            $data = $this->room->getById($id);
-            if (!$data) throw new CustomException("Data ruangan tidak ditemukan");
-            $this->view('user/room/details', $data);
+            $room = Room::getById($id);
+            if (!$room) throw new CustomException("Data ruangan tidak ditemukan");
+            $bookingSchedule = Booking::getByRoomId($id);
+            $data = [
+                "detail" => $room,
+                "schedule" => $bookingSchedule
+            ];
+            $this->view('user/beranda/detail', $data, layoutType: $this::$layoutType['civitas']);
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), "error");
             $error = ResponseHandler::getResponse();
             var_dump($error);
         }
+    }
+
+    public function getUserByNim($identifier)
+    {
+        try {
+            $user = $this->user->getByIdNumber($identifier);
+            if (!$user) throw new CustomException("data user tidak tersedia");
+            $data = [
+                "success" => true,
+                "data" => $user
+            ];
+            echo json_encode($data);
+        } catch (CustomException $e) {
+            ResponseHandler::setResponse($e->getErrorMessages(), "error");
+            $error = ResponseHandler::getResponse();
+            var_dump($error);
+        }
+    }
+
+    public function postData()
+    {
+        $data = [
+            "datetime" => $_POST['datetime'],
+            "duration" => $_POST['duration'],
+            "list_anggota" => $_POST['list_anggota'],
+            "file_surat" => empty($_FILES['image']['file_surat']) ? null : $_FILES['image']['file_surat'],
+        ];
+        var_dump($data);
     }
 }
