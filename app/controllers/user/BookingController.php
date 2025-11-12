@@ -10,6 +10,7 @@ use App\Models\BookingLog;
 use App\Models\BookingParticipant;
 use App\Models\User;
 use App\Utils\Authentication;
+use App\Utils\Validator;
 use Carbon\Carbon;
 
 class BookingController extends Controller
@@ -27,32 +28,30 @@ class BookingController extends Controller
             $data = [
                 "user_id" => $user->user['id'],
                 'room_id' => $id,
-                "duration" => "12:00",
-                "datetime" => "2025-11-12T11:03",
-                "list_anggota" => [
-                    [
-                        "id" => "e1fd08b8-73dc-48b8-8f20-704d52ba8bc5",
-                        "name" => "farrel maahira"
-                    ],
-                    [
-                        "id" => "bad8bff9-1e5d-4038-84ea-350abeae8277",
-                        "name" => "sello lintang"
-                    ],
-                    [
-                        "id" => "bfe292f7-355a-4525-ad24-753aa6f7d1ac",
-                        "name" => "Nabila Ananda"
-                    ],
-                    [
-                        "id" => "0f593165-07e4-40af-aaf2-99ec521972af",
-                        "name" => "Alya Putri"
-                    ]
-                ]
+                "datetime" => $_POST['datetime'], 
+                "duration" => $_POST['duration'],
+                "end_time" => "",
+                "booking_code" => "ABCD1",
+                "list_anggota" => json_decode($_POST['list_anggota'], true)            
             ];
+
+            $validator = new Validator($data);
+            $validator->field('datetime', ['required']);
+            $validator->field('duration', ['required']);
+            if($validator->error()) throw new CustomException($validator->getErrors());
 
             $start = Carbon::parse($data['datetime']);
             $duration = Carbon::parse($data["duration"]);
-            $data['duration'] = $start->diffInMinutes($duration);
             $data['datetime'] = $start->toDateTimeString();
+            $data['duration'] = $start->diffInMinutes($duration);
+            $data['end_time'] = $start->addMinutes($data['duration'])->toDateTimeString();
+
+            if($data['duration'] < 60) throw new CustomException('Minimal durasi pinjam ruangan 1 jam');
+            if($data['duration'] > 180) throw new CustomException('Maximal durasi pinjam ruangan 3 jam');
+
+            $checkIfScheduleExists = Booking::checkSchedule($data['datetime'], $data['duration']);
+            if($checkIfScheduleExists) throw new CustomException('Jadwal sudah dibooking');
+
             $members = $data['list_anggota'];
             unset($data['list_anggota']);
 
@@ -65,7 +64,7 @@ class BookingController extends Controller
             header("location:" . URL . '/user/room/index');
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), 'error');
-            header('location:');
+            header('location:' . URL . '/user/room/detail/' . $id);
         }
     }
 

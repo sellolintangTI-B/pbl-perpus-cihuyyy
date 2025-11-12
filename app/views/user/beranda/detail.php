@@ -2,6 +2,7 @@
 
 use App\Components\FormInput;
 use App\Components\Icon\Icon;
+use Carbon\Carbon;
 
 ?>
 
@@ -14,10 +15,10 @@ use App\Components\Icon\Icon;
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
             </svg>
         </a>
-        <h1 class="text-xl font-medium text-primary"><?= $data->name ?></h1>
+        <h1 class="text-xl font-medium text-primary"><?= $data['detail']->name ?></h1>
     </div>
 
-    <img src="<?= URL ?>/public/<?= $data->room_img_url ?>" alt="Ruang Perancis" class="w-full h-80 object-cover rounded-lg shadow-md">
+    <img src="<?= URL ?>/public/<?= $data['detail']->room_img_url ?>" alt="Ruang Perancis" class="w-full h-80 object-cover rounded-lg shadow-md">
     <div class="flex gap-4 items-center justify-center w-full h-32">
         <div class="bg-linear-to-r from-primary to-secondary flex items-center justify-center rounded-xl p-4 shadow-lg flex-3 h-full">
             <div class="flex items-center gap-3 text-white">
@@ -25,7 +26,7 @@ use App\Components\Icon\Icon;
                     <?= Icon::global('w-10 h-10') ?>
                 </div>
                 <div class="flex-1">
-                    <h3 class="font-medium text-lg mb-1"><?=   ($data->requires_special_approval) ? "Ruangan Khusus" : "Ruangan Umum"  ?></h3>
+                    <h3 class="font-medium text-lg mb-1"><?=   ($data['detail']->requires_special_approval) ? "Ruangan Khusus" : "Ruangan Umum"  ?></h3>
                     <p class="text-sm opacity-90">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod ad, nostrum dicta doloremque totam pariatur officia doloribus id soluta ea?</p>
                 </div>
             </div>
@@ -62,7 +63,7 @@ use App\Components\Icon\Icon;
                 <svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
                 </svg>
-                <span>Minimal <?=  $data->min_capacity ?> orang - Maksimal <?= $data->max_capacity ?> orang</span>
+                <span>Minimal <?=  $data['detail']->min_capacity ?> orang - Maksimal <?= $data['detail']->max_capacity ?> orang</span>
             </div>
 
             <!-- Location -->
@@ -70,12 +71,12 @@ use App\Components\Icon\Icon;
                 <svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
                 </svg>
-                <span>Tempat: Perpustakaan PNJ, LT. <?= $data->floor ?></span>
+                <span>Tempat: Perpustakaan PNJ, LT. <?= $data['detail']->floor ?></span>
             </div>
 
             <!-- Description -->
             <p class="text-sm text-gray-600 leading-relaxed text-justify">
-                <?= $data->description ?>
+                <?= $data['detail']->description ?>
             </p>
 
             <h3 class="text-lg font-medium text-primary">Waktu terpakai</h3>
@@ -108,18 +109,12 @@ use App\Components\Icon\Icon;
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200">
+                        <?php foreach($data['schedule'] as $schedule) : ?>
                         <tr>
-                            <td class="px-4 py-3 text-gray-600">08:00 - 11:00</td>
-                            <td class="px-4 py-3 text-gray-600">Bazrul Simanjuntak</td>
+                            <td class="px-4 py-3 text-gray-600"><?= Carbon::parse($schedule->start_time)->toTimeString() ?> - <?= Carbon::parse($schedule->end_time)->toTimeString() ?></td>
+                            <td class="px-4 py-3 text-gray-600"><?= $schedule->pic_name ?></td>
                         </tr>
-                        <tr>
-                            <td class="px-4 py-3 text-gray-600">13:00 - 14:00</td>
-                            <td class="px-4 py-3 text-gray-600">Nugroho Nur Cahyo</td>
-                        </tr>
-                        <tr>
-                            <td class="px-4 py-3 text-gray-600">14:00 - 16:30</td>
-                            <td class="px-4 py-3 text-gray-600">Budiono Siregar</td>
-                        </tr>
+                        <?php endforeach ?>
                     </tbody>
                 </table>
             </div>
@@ -128,7 +123,7 @@ use App\Components\Icon\Icon;
         <div class="flex-2 flex flex-col gap-4 justify-start items-center">
             <!-- Form Section -->
             <div class="bg-white rounded-xl p-4 shadow-md w-full">
-                <form method="POST" action="<?= URL . "/user/booking/store/$data->id" ?>" @submit="prepareData" enctype="multipart/form-data" class="space-y-4 w-full">
+                <form method="POST" action="<?= URL  ?>/user/booking/store/<?= $data['detail']->id ?>" @submit="prepareData" enctype="multipart/form-data" class="space-y-4 w-full">
                     <!-- Kapan -->
                     <div>
                         <label class="block text-sm font-medium text-primary mb-2">Kapan</label>
@@ -232,7 +227,7 @@ use App\Components\Icon\Icon;
             },
 
             prepareData(event) {
-                // const min_capacity = <?php /*echo $data["min_capacity"]; */ ?>;
+                // const min_capacity = <?php /*echo $data['detail']["min_capacity"]; */ ?>;
                 // if (this.listAnggota.length < min_capacity) {
                 //     event.preventDefault();
                 //     this.message = `Minimal ${min_capacity} anggota diperlukan.`;

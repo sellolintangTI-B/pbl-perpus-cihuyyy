@@ -5,6 +5,7 @@ namespace App\Controllers\User;
 use App\Core\Controller;
 use App\Core\ResponseHandler;
 use App\Error\CustomException;
+use App\Models\Booking;
 use app\models\Room;
 use App\Models\User;
 use App\Utils\Validator;
@@ -36,8 +37,13 @@ class RoomController extends Controller
     public function detail($id)
     {
         try {
-            $data = Room::getById($id);
-            if (!$data) throw new CustomException("Data ruangan tidak ditemukan");
+            $room = Room::getById($id);
+            if (!$room) throw new CustomException("Data ruangan tidak ditemukan");
+            $bookingSchedule = Booking::getByRoomId($id);
+            $data = [
+                "detail" => $room,
+                "schedule" => $bookingSchedule
+            ];
             $this->view('user/beranda/detail', $data, layoutType: $this::$layoutType['civitas']);
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), "error");
