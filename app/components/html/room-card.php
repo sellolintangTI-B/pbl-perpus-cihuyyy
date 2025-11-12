@@ -5,10 +5,10 @@ use App\Components\Icon\Icon;
 use Soap\Url;
 
 ?>
-<div class="flex flex-col bg-white rounded-lg overflow-hidden shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-300">
+<div class="flex flex-col bg-transparent rounded-lg overflow-hidden shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-300">
     <!-- Room Image -->
     <div class="relative w-full h-48 overflow-hidden">
-        <img src="<?= URL . '/public/' .$room['image'] ?>" alt="<?= $room['name'] ?? 'Room' ?>" class="w-full h-full object-cover">
+        <img src="<?= URL . '/public/' . $room['image'] ?>" alt="<?= $room['name'] ?? 'Room' ?>" class="w-full h-full object-cover">
     </div>
 
     <!-- Room Info -->
