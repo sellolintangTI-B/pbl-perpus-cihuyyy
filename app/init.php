@@ -4,3 +4,5 @@ use Dotenv\Dotenv;
 $dotEnv = Dotenv::createImmutable(__DIR__ . '/../');
 $dotEnv->load();
 require_once('config/config.php');
+  // use App\Utils\Migrate;
+  // new Migrate;
