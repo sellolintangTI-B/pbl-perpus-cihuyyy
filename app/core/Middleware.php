@@ -6,6 +6,8 @@ class Middleware
     private $fullPath;
     private $routes = [
         "Admin" => [
+            //BOOKING
+            "/admin/booking/index",
             //ROOM
             "/admin/room/index",
             "/admin/room/store",
@@ -36,7 +38,9 @@ class Middleware
             "/error/notfound/index",
             // RUANGAN
             "/user/room/index",
-            "/user/room/details"
+            "/user/room/detail",
+            "/user/booking/search_user",
+            "/user/booking/store"
         ],
         "Dosen" => [
             "/user/user/index",
@@ -44,7 +48,8 @@ class Middleware
             "/error/notfound/index",
             // RUANGAN
             "/user/room/index",
-            "/user/room/details"
+            "/user/room/detail",
+            "/user/booking/store"
         ]
     ];
 

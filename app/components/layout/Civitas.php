@@ -13,6 +13,10 @@
 <?php
 
 use App\Components\UserNavbar;
+use App\Utils\Authentication;
+
+$user = new Authentication
+
 ?>
 
 <body class="font-poppins bg-gray-100">
@@ -32,7 +36,7 @@ use App\Components\UserNavbar;
         <div class="w-full h-full max-h-full overflow-hidden bg-baseColor rounded-xl" :class="scrolled ? 'rounded-none!' : 'rounded-xl'">
             <?= UserNavbar::main(
                 activeMenu: 'beranda',
-                userName: 'Nugroho Nur Cahyo',
+                userName: $user->user['username'],
                 logoUrl: URL . '/public/assets/logo.png',
             ) ?>
 

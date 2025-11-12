@@ -7,7 +7,7 @@ use App\Components\icon\Icon;
 <div class="h-screen w-full  flex justify-center items-center p-4 bg-[#FAFAFA]">
     <div class="max-w-7xl h-[90vh] w-full flex items-center justify-center overflow-hidden rounded-xl shadow-md shadow-gray-400 bg-white/20 p-6">
         <div class="w-full h-full  shadow-md shadow-gray-400 rounded-lg">
-            <img src="<?=URL?>/public/storage/images/login-image.jpg" alt="login image" class="w-full h-full object-cover rounded-lg hidden md:block"/>
+            <img src="<?= URL ?>/public/storage/images/login-image.jpg" alt="login image" class="w-full h-full object-cover rounded-lg hidden md:block" />
         </div>
         <div class="h-full w-full overflow-y-auto px-8 py-6 ">
             <div class="w-full max-w-md mx-auto flex flex-col justify-center">
@@ -19,25 +19,25 @@ use App\Components\icon\Icon;
                     FormInput::input(id: 'username', name: 'username', type: 'text', label: 'username', required: false, placeholder: "Masukkan email atau NIM/NIP anda");
                     FormInput::input(id: 'password', name: 'password', type: 'password', label: 'password', required: false, placeholder: "Masukkan password anda");
                     ?>
-                     <!-- CAPTCHA Section -->
+                    <!-- CAPTCHA Section -->
                     <div class="w-full">
                         <label class="block text-primary mb-2 font-poppins">
                             Kode Verifikasi
                         </label>
                         <div class="flex gap-3 items-center mb-2">
-                            <img id="captcha-image" 
-                                 src="<?=URL?>/public/validator/captcha.php" 
-                                 alt="CAPTCHA Code" 
-                                 class="border-2 border-primary rounded-md shadow-sm bg-white"
-                                 style="height: 50px; width: 200px;"/>
+                            <img id="captcha-image"
+                                src="<?= URL ?>/public/validator/captcha.php"
+                                alt="CAPTCHA Code"
+                                class="border-2 border-primary rounded-md shadow-sm bg-white"
+                                style="height: 50px; width: 200px;" />
                         </div>
                         <?php
                         FormInput::input(
-                            id: 'captcha', 
-                            name: 'captcha', 
-                            type: 'text', 
-                            label: '', 
-                            required: true, 
+                            id: 'captcha',
+                            name: 'captcha',
+                            type: 'text',
+                            label: '',
+                            required: true,
                             placeholder: "Masukkan kode di atas"
                         );
                         ?>
@@ -61,7 +61,7 @@ use App\Components\icon\Icon;
                     </button>
                     <div class="w-full text-sm flex justify-center items-center gap-2 col-span-1 mt-8">
                         <p class="text-primary">Don't have an account?</p>
-                        <a class="text-secondary cursor-pointer" href="<?=URL?>/auth/register/index">
+                        <a class="text-secondary cursor-pointer" href="<?= URL ?>/auth/register/index">
                             Register Now
                         </a>
                     </div>
@@ -69,7 +69,7 @@ use App\Components\icon\Icon;
 
                     </div>
                     <div class="flex flex-col gap-2 items-center justify-center text-sm text-primary">
-                        <a class="w-12 h-12 flex items-center justify-center shadow-md bg-white text-primary text-xl cursor-pointer rounded-full"  href='<?=URL?>/guest'>
+                        <a class="w-12 h-12 flex items-center justify-center shadow-md bg-white text-primary text-xl cursor-pointer rounded-full" href='<?= URL ?>/guest'>
                             <?php Icon::person(); ?>
                         </a>
                         <p>

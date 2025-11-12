@@ -10,5 +10,6 @@ CREATE TABLE rooms (
     is_deleted BOOLEAN DEFAULT FALSE,
     is_operational BOOLEAN DEFAULT TRUE,
     requires_special_approval BOOLEAN DEFAULT FALSE,
-    room_img_url VARCHAR(255)
+    room_img_url VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

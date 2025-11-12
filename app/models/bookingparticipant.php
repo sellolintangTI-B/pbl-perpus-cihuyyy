@@ -1,0 +1,25 @@
+<?php
+namespace App\Models;
+use App\Core\Database;
+
+class BookingParticipant extends Database {
+    public static function bulkInsert($data)
+    {
+        $insertQuery = [];
+        $insertData = [];
+        $conn = parent::getConnection();
+        $sql = "INSERT INTO booking_participants (booking_id, user_id) VALUES";
+        $n = 0;
+        foreach($data as $item) {
+            $insertQuery[] = "(:bookingId$n, :userId$n)";
+            foreach($item as $key => $value) {
+                if($key == "booking_id") $insertData["bookingId$n"] = $value;
+                if($key == "id") $insertData["userId$n"] = $value;
+            }
+            $n++;
+        }
+        $sql .= implode(', ', $insertQuery);
+        $q = $conn->prepare($sql);
+        $q->execute($insertData);
+    }
+}

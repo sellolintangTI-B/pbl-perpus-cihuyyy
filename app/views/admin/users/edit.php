@@ -161,7 +161,7 @@ $roleOptions = [
             <div class="w-full">
                 <h2 class="text-xl font-medium text-gray-800 mb-4">Keamanan Akun</h2>
                 <div class="w-full p-6 shadow-md border border-gray-300 rounded-xl bg-gray-50">
-                    <form class="w-full grid grid-cols-1 gap-6" action="<?= URL ?>/admin/user/reset_passwod/<?= $data->id ?>" method="post">
+                    <form class="w-full grid grid-cols-1 gap-6" action="<?= URL ?>/admin/user/reset_password/<?= $data->id ?>" method="post">
                         <?php
                         FormInput::input(
                             id: 'password',

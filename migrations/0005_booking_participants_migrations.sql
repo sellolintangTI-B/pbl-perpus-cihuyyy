@@ -5,5 +5,6 @@ CREATE TABLE booking_participants(
     booking_id UUID NOT NULL,
     user_id UUID NOT NULL,
     FOREIGN KEY (booking_id) REFERENCES bookings(id),
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
