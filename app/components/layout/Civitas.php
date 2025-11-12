@@ -27,9 +27,9 @@ use App\Components\UserNavbar;
             });
         }
     }"
-        :class="scrolled ? 'p-0' : 'p-2'"
-        class="w-full h-screen max-h-full overflow-hidden bg-primary transition-all duration-300">
-        <div class="w-full h-full max-h-full overflow-hidden bg-baseColor " :class="scrolled ? 'rounded-none' : 'rounded-xl'">
+        :class="scrolled ? 'p-0!' : 'p-2'"
+        class="w-full h-screen max-h-full overflow-hidden bg-primary transition-all duration-300 p-2" x-cloak>
+        <div class="w-full h-full max-h-full overflow-hidden bg-baseColor rounded-xl" :class="scrolled ? 'rounded-none!' : 'rounded-xl'">
             <?= UserNavbar::main(
                 activeMenu: 'beranda',
                 userName: 'Nugroho Nur Cahyo',

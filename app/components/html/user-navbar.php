@@ -11,7 +11,7 @@ $navItems = [
 
 $currentPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 ?>
-<nav class="w-full py-4 px-8 transition-all duration-300" x-data="{ profileOpen: false }" x-bind:class="scrolled ? 'bg-primary' : 'bg-transparent'">
+<nav class="w-full py-4 px-8 transition-all duration-300" x-data="{ profileOpen: false }" x-bind:class="scrolled ? 'bg-primary' : 'bg-transparent'" x-cloak>
     <div class="w-full flex items-center justify-between">
         <!-- Logo & Brand -->
         <div class="flex items-center gap-3">
@@ -57,6 +57,7 @@ $currentPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
                 x-transition:leave="transition ease-in duration-150"
                 x-transition:leave-start="opacity-100 transform scale-100"
                 x-transition:leave-end="opacity-0 transform scale-95"
+                x-cloak
                 class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50"
                 style="display: none;">
                 <a href="<?= URL . '/profile' ?>" class="flex items-center gap-3 px-4 py-2 text-sm text-black/80 hover:bg-gray-50 transition-colors duration-200">
