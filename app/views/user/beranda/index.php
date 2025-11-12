@@ -70,7 +70,7 @@ use App\Components\RoomCard;
                 $r = [
                     'id' => $room->id,
                     'name' => $room->name,
-                    'image' => '/public/storage/images/ruang-dummy.jpg',
+                    'image' => $room->room_img_url,
                     'rating' => '4.85',
                     'min' => $room->min_capacity,
                     'max' => $room->max_capacity,

@@ -6,6 +6,8 @@ class Middleware
     private $fullPath;
     private $routes = [
         "Admin" => [
+            //BOOKING
+            "/admin/booking/index",
             //ROOM
             "/admin/room/index",
             "/admin/room/store",

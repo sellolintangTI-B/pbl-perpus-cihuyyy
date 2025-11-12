@@ -5,8 +5,7 @@ use PDO;
 
 class BookingLog extends Database {
 
-    public function index()
-    {
+    public function index() {
         $conn = parent::getConnection();
         $q = $conn->prepare("SELECT * FROM booking_logs");
         $q->execute();

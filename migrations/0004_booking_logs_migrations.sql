@@ -8,5 +8,6 @@ CREATE TABLE IF NOT EXISTS booking_logs (
     status status NOT NULL DEFAULT 'created',
     reason TEXT,
     FOREIGN KEY (booking_id) REFERENCES bookings(id),
-    FOREIGN KEY (cancelled_by) REFERENCES users(id)
+    FOREIGN KEY (cancelled_by) REFERENCES users(id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

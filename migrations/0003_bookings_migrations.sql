@@ -6,6 +6,7 @@ CREATE TABLE bookings (
     room_id UUID NOT NULL,
     start_time TIMESTAMP NOT NULL,
     duration INTERVAL NOT NULL,
+    booking_code VARCHAR(5) NOT NULL,
     is_approved BOOLEAN DEFAULT FALSE,
     special_requirement_attachments_url VARCHAR(100),
     is_deleted BOOLEAN DEFAULT FALSE,
