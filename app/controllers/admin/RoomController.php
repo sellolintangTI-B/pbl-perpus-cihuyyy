@@ -6,6 +6,7 @@ use App\Core\Controller;
 use App\Utils\Validator;
 use App\Error\CustomException;
 use App\Core\ResponseHandler;
+use App\Models\Booking;
 use App\Models\Room;
 class RoomController extends Controller {
     private $room;
