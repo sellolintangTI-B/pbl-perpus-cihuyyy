@@ -1,5 +1,5 @@
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
-DROP TABLE IF EXISTS bookings CASCADE;
+DROP TABLE IF EXISTS bookings RESTRICT;
 CREATE TABLE bookings (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL,

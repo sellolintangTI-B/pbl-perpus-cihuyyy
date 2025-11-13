@@ -16,13 +16,6 @@ class DashboardController extends Controller {
         return $this->view('admin/dashboard/index', layoutType: $this::$layoutType['admin']);
     }
 
-    public function logout()
-    {
-        $logout = $this->authUser->logout();
-        if($logout) {
-            header('location:' . URL . '/auth/login/index');
-        }
-    }
 
     public function approved()
     {

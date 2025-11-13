@@ -78,7 +78,7 @@ $roleOptions = [
                             name: 'id_number',
                             label: 'NIM/NIP',
                             value: $data->id_number,
-                            required: false
+                            required: true
                         );
 
                         FormInput::input(
@@ -87,7 +87,7 @@ $roleOptions = [
                             type: 'email',
                             label: 'Email',
                             value: $data->email,
-                            required: false
+                            required: true
                         );
 
                         FormInput::input(
@@ -95,7 +95,7 @@ $roleOptions = [
                             name: 'first_name',
                             label: 'Nama Depan',
                             value: $data->first_name,
-                            required: false
+                            required: true
                         );
 
                         FormInput::input(
@@ -111,7 +111,7 @@ $roleOptions = [
                             label: 'Jurusan',
                             options: $options,
                             selected: $data->major ?? "",
-                            required: false
+                            required: true
                         );
 
                         FormInput::input(
@@ -120,7 +120,7 @@ $roleOptions = [
                             type: 'tel',
                             label: 'Nomor Whatsapp',
                             value: $data->phone_number,
-                            required: false
+                            required: true
                         );
 
                         FormInput::input(
@@ -128,7 +128,7 @@ $roleOptions = [
                             name: 'institution',
                             label: 'Institusi',
                             value: $data->institution,
-                            required: false
+                            required: true
                         );
 
                         FormInput::select(
@@ -137,7 +137,19 @@ $roleOptions = [
                             label: 'Jenis Civitas',
                             options: $roleOptions,
                             selected: $data->role,
-                            required: false
+                            required: true
+                        );
+                        FormInput::select(
+                            id: 'status',
+                            name: 'status',
+                            label: 'Status',
+                            options: [
+                                ["display" => "Aktif", "value" => 1],
+                                ["display" => "Inactive", "value" => 0]
+                            ],
+                            selected: $data->is_active,
+                            required: true,
+                            classGlobal: 'sm:col-span-2 col-span-1'
                         );
                         FormInput::fileInput(
                             id: 'image',

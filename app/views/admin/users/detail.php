@@ -4,6 +4,7 @@ use App\Components\Icon\Icon;
 use App\Components\FormInput;
 use App\Components\Button;
 
+$edit = $_GET['edit'] ?? 'false';
 $options_jurusan = [
     ["display" => "Teknik Sipil", "value" => "Teknik Sipil"],
     ["display" => "Teknik Mesin", "value" => "Teknik Mesin"],
@@ -13,6 +14,7 @@ $options_jurusan = [
     ["display" => "Administrasi Niaga", "value" => "Administrasi Niaga"],
     ["display" => "Teknik Grafika dan Penerbitan", "value" => "Teknik Grafika dan Penerbitan"],
 ];
+
 
 ?>
 
@@ -46,22 +48,25 @@ $options_jurusan = [
                             <!-- Header -->
                             <div class="flex items-center justify-between bg-white shadow-md p-6 rounded-xl border border-gray-200">
                                 <div class="flex items-center gap-6">
-                                    <img src="https://img.freepik.com/free-photo/black-man-posing_23-2148171639.jpg?semt=ais_hybrid&w=740&q=80"
+                                    <img src="<?= URL . "/public/" . $data->profile_picture_url ?>"
                                         alt="Profile"
                                         class="w-20 h-20 rounded-full object-cover border-2 border-gray-200" />
                                     <h2 class="text-2xl font-medium text-primary">
                                         <?= $data->first_name . " " . $data->last_name ?>
                                     </h2>
                                 </div>
-                                <button class="p-2 text-primary hover:bg-primary/5 rounded-lg cursor-pointer transition-all duration-300">
-                                    <?= Icon::pencil('w-8 h-8') ?>
-                                </button>
+                                <form method="get">
+                                    <button class="p-2 text-primary hover:bg-primary/5 rounded-lg cursor-pointer transition-all duration-300 <?= $edit == 'true' ? 'bg-primary/10' : 'bg-transparent' ?>" name="edit" value="<?= $edit == 'true' ? 'false' : 'true' ?>">
+                                        <?= Icon::pencil('w-8 h-8') ?>
+                                    </button>
+                                </form>
                             </div>
 
                             <!-- Form -->
-                            <form class="w-full grid grid-cols-1 md:grid-cols-2 gap-6 bg-white shadow-md p-6 rounded-xl border border-gray-200" method="post"
+                            <form class="w-full grid grid-cols-1 md:grid-cols-2 gap-6 bg-white shadow-md p-6 rounded-xl border border-gray-200"
+                                method="post"
                                 enctype="multipart/form-data"
-                                action="<?= URL ?>/admin/account/update">
+                                action="<?= URL . "/admin/user/update/" . $data->id ?>">
 
                                 <!-- Nama Depan -->
                                 <?php
@@ -72,7 +77,7 @@ $options_jurusan = [
                                     label: 'Nama Depan',
                                     value: $data->first_name ?? "",
                                     placeholder: $data->first_name ?? "",
-                                    readonly: true
+                                    readonly: $edit == 'true' ? false : true
                                 );
                                 ?>
 
@@ -85,7 +90,7 @@ $options_jurusan = [
                                     label: 'Nama Belakang',
                                     value: $data->last_name ?? "",
                                     placeholder: $data->last_name ?? "",
-                                    readonly: true
+                                    readonly: $edit == 'true' ? false : true
                                 );
                                 ?>
 
@@ -98,7 +103,7 @@ $options_jurusan = [
                                     label: 'NIM/NIP',
                                     value: $data->id_number ?? "",
                                     placeholder: $data->id_number ?? "",
-                                    readonly: true
+                                    readonly: $edit == 'true' ? false : true
                                 );
                                 ?>
 
@@ -111,7 +116,7 @@ $options_jurusan = [
                                     label: 'Email',
                                     value: $data->email ?? "",
                                     placeholder: $data->email ?? "",
-                                    readonly: true
+                                    readonly: $edit == 'true' ? false : true
                                 );
                                 ?>
 
@@ -123,7 +128,7 @@ $options_jurusan = [
                                     label: 'Jurusan',
                                     options: $options_jurusan,
                                     value: $data->major ?? "",
-                                    disabled: true
+                                    disabled: $edit == 'true' ? false : true
                                 );
                                 ?>
 
@@ -136,7 +141,7 @@ $options_jurusan = [
                                     label: 'Nomor WhatsApp',
                                     value: $data->phone_number ?? "",
                                     placeholder: $data->phone_number ?? "",
-                                    readonly: true
+                                    readonly: $edit == 'true' ? false : true
                                 );
                                 ?>
 
@@ -149,7 +154,7 @@ $options_jurusan = [
                                     label: 'Institusi',
                                     value: $data->institution ?? "",
                                     placeholder: $data->institution ?? "",
-                                    readonly: true
+                                    readonly: $edit == 'true' ? false : true
                                 );
                                 ?>
 
@@ -161,14 +166,31 @@ $options_jurusan = [
                                     type: 'text',
                                     label: 'Role',
                                     value: $data->role ?? "",
-                                    readonly: true,
+                                    readonly: $edit == 'true' ? false : true,
+                                );
+                                ?>
+                                <!-- status -->
+                                <?php
+                                FormInput::select(
+                                    id: 'status',
+                                    name: 'status',
+                                    label: 'Status',
+                                    options: [
+                                        ["display" => "Aktif", "value" => 1],
+                                        ["display" => "Inactive", "value" => 0]
+                                    ],
+                                    selected: $data->is_active,
+                                    required: true,
+                                    classGlobal: 'sm:col-span-2 col-span-1',
+                                    disabled: $edit == 'true' ? false : true
                                 );
                                 ?>
 
                                 <!-- Submit Button -->
                                 <?php if ($data->is_active): ?>
-                                    <div class="col-span-1 md:col-span-2 mt-4">
-                                        <button type="submit"
+                                    <div class=" col-span-1 md:col-span-2 mt-4 <?= $edit == 'true' ? 'block' : 'hidden' ?>">
+                                        <button
+                                            type="submit"
                                             class="w-full bg-primary text-white px-6 py-3 rounded-lg cursor-pointer shadow-sm hover:shadow-md hover:bg-primary/90 transition-all duration-300 font-medium">
                                             Simpan Perubahan
                                         </button>
@@ -177,8 +199,12 @@ $options_jurusan = [
                             </form>
                             <?php if (!$data->is_active): ?>
                                 <div class="w-full flex justify-center items-center gap-6 rounded-full">
+                                    <form class="w-full h-10" action="<?= URL . '/admin/user/approve/' . $data->id ?>" method="get">
+                                        <?php
+                                        Button::button(label: 'aktivasi', color: 'secondary', class: 'w-full h-10 rounded-full!', type: 'submit');
+                                        ?>
+                                    </form>
                                     <?php
-                                    Button::button(label: 'aktivasi', color: 'secondary', class: 'w-full h-10 rounded-full!');
                                     Button::button(label: 'tolak', color: 'red', class: 'w-full h-10 rounded-full!');
                                     ?>
                                 </div>

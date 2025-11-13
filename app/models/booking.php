@@ -34,13 +34,25 @@ class Booking extends Database{
         return $data;
     }
 
-    public static function checkSchedule($startTime, $duration)
+    public static function checkSchedule($startTime, $duration, $roomId)
     {
         $conn = parent::getConnection();
-        $q = $conn->prepare("SELECT * FROM bookings WHERE start_time < TO_TIMESTAMP(:startTime, 'YYYY-MM-DD HH24:MI:SS') + (:duration || ' minutes')::INTERVAL AND end_time > TO_TIMESTAMP(:startTime2, 'YYYY-MM-DD HH24:MI:SS');");
+        $q = $conn->prepare("SELECT * FROM bookings WHERE start_time < TO_TIMESTAMP(:startTime, 'YYYY-MM-DD HH24:MI:SS') + (:duration || ' minutes')::INTERVAL AND end_time > TO_TIMESTAMP(:startTime2, 'YYYY-MM-DD HH24:MI:SS') AND room_id = :roomId;");
         $q->bindValue(":startTime", $startTime);
         $q->bindValue(":duration", $duration);
         $q->bindValue(":startTime2", $startTime);
+        $q->bindValue(":roomId", $roomId);
+        $q->execute();
+        $data = $q->fetchAll(PDO::FETCH_OBJ);
+        return $data;
+    }
+
+    public static function checkUserActiveBooking($userId)
+    {
+        $conn = parent::getConnection();
+        $q = $conn->prepare("SELECT bl.status FROM bookings AS b JOIN booking_logs AS bl ON b.id = bl.booking_id
+        JOIN booking_participants AS bp ON b.id = bp.booking_id WHERE NOT bl.status = 'finished' AND bp.user_id = :userId;");
+        $q->bindValue(':userId', $userId);
         $q->execute();
         $data = $q->fetchAll(PDO::FETCH_OBJ);
         return $data;

@@ -19,8 +19,8 @@ class UserController extends Controller
             $type = isset($_GET['type']) ? $_GET['type'] : null;
             $search = isset($_GET['search']) ? $_GET['search'] : null;
             $users = User::get();
-            if(!is_null($type) || !is_null($search)) {
-                $users = DB::get("SELECT * FROM users WHERE (first_name LIKE ? OR last_name LIKE ?) OR role = ?", ["%$search%", "%$search%", $type]);
+            if (!is_null($type) || !is_null($search)) {
+                $users = DB::get("SELECT * FROM users WHERE (first_name LIKE ? OR last_name LIKE ?) OR role = ? ORDER BY is_active ASC", ["%$search%", "%$search%", $type]);
             }
             $data = [
                 "no" => 1,
@@ -46,32 +46,19 @@ class UserController extends Controller
         }
     }
 
-    public function approve_user($id)
-    {
-        try {
-            $data = User::getById($id);
-            if (!$data) {
-                throw new CustomException('Akun tidak tersedia');
-            }
-            var_dump($data);
-        } catch (CustomException $e) {
-            var_dump($e->getErrorMessages());
-        }
-    }
-
     public function approve($id)
     {
         try {
             $approve = User::approve($id);
             if ($approve) {
                 ResponseHandler::setResponse("Akun berhasil disetujui, akun sudah aktif");
-                header('location:' . URL . '/admin/dashboard/index');
+                header('location:' . URL . '/admin/user/index');
             } else {
                 throw new CustomException('Gagal menyetujui akun');
             }
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), 'error');
-            header('location:' . URL . '/admin/dashboard/index');
+            header('location:' . URL . '/admin/user/index');
         }
     }
 
@@ -152,7 +139,7 @@ class UserController extends Controller
                 "phone_number" => $_POST["phone_number"],
                 "institution" => $_POST['institution'],
                 "role" => $_POST["role"],
-                "image" => empty($_FILES['image']['name']) ? null : $_FILES['image'] 
+                "image" => empty($_FILES['image']['name']) ? null : $_FILES['image']
             ];
 
             $validator = new Validator($data);
@@ -168,10 +155,10 @@ class UserController extends Controller
             $checkById = User::checkIdNumberForUpdate($id, $data['id_number']);
             $checkByEmail = User::checkEmailForUpdate($id, $data['email']);
 
-            if($checkById) throw new CustomException('NIP / NIM sudah digunakan');
-            if($checkByEmail) throw new CustomException('Email sudah digunakan');
+            if ($checkById) throw new CustomException('NIP / NIM sudah digunakan');
+            if ($checkByEmail) throw new CustomException('Email sudah digunakan');
 
-            if(!is_null($data['image'])) {
+            if (!is_null($data['image'])) {
                 $file = $_FILES['image']['tmp_name'];
                 $allowedMimes = ["image/jpeg", "image/png", "image/jpg"];
                 $getFileInfo = getimagesize($file);
@@ -179,7 +166,7 @@ class UserController extends Controller
                     throw new CustomException(['image' => "File tidak didukung"]);
                 }
                 $newPath = 'storage/users/' . $_FILES['image']['name'];
-                move_uploaded_file($file, dirname(__DIR__) . "/../../public/" . $newPath); 
+                move_uploaded_file($file, dirname(__DIR__) . "/../../public/" . $newPath);
                 $data['image'] = $newPath;
             } else {
                 unset($data['image']);
