@@ -8,6 +8,7 @@ use App\Error\CustomException;
 use App\Models\Booking;
 use App\Models\BookingLog;
 use App\Models\BookingParticipant;
+use App\Models\Room;
 use App\Models\User;
 use App\Utils\Authentication;
 use App\Utils\Validator;
@@ -28,29 +29,26 @@ class BookingController extends Controller
             $data = [
                 "user_id" => $user->user['id'],
                 'room_id' => $id,
-                "datetime" => $_POST['datetime'], 
+                "datetime" => $_POST['datetime'],
                 "duration" => $_POST['duration'],
                 "end_time" => "",
                 "booking_code" => "ABCD1",
-                "list_anggota" => json_decode($_POST['list_anggota'], true)            
+                "list_anggota" => json_decode($_POST['list_anggota'], true)
             ];
 
             $validator = new Validator($data);
             $validator->field('datetime', ['required']);
             $validator->field('duration', ['required']);
-            if($validator->error()) throw new CustomException($validator->getErrors());
+            if ($validator->error()) throw new CustomException($validator->getErrors());
 
             $start = Carbon::parse($data['datetime']);
-            $duration = Carbon::parse($data["duration"]);
+            $end = Carbon::parse($data['duration'])->setDateFrom($start);
             $data['datetime'] = $start->toDateTimeString();
-            $data['duration'] = $start->diffInMinutes($duration);
-            $data['end_time'] = $start->addMinutes($data['duration'])->toDateTimeString();
+            $data['duration'] = $start->diffInMinutes($end);
+            $data['end_time'] = $start->copy()->addMinutes($start->diffInMinutes($end))->toDateTimeString();
 
-            if($data['duration'] < 60) throw new CustomException('Minimal durasi pinjam ruangan 1 jam');
-            if($data['duration'] > 180) throw new CustomException('Maximal durasi pinjam ruangan 3 jam');
-
-            $checkIfScheduleExists = Booking::checkSchedule($data['datetime'], $data['duration']);
-            if($checkIfScheduleExists) throw new CustomException('Jadwal sudah dibooking');
+            $rules = $this->validationBookingRules($id, $data);
+            if(!$rules['status']) throw new CustomException($rules['message']);
 
             $members = $data['list_anggota'];
             unset($data['list_anggota']);
@@ -68,9 +66,35 @@ class BookingController extends Controller
         }
     }
 
+    private function validationBookingRules($roomId, $data)
+    {
+        try {
+            $roomDetail = Room::getById($roomId);
+            if (Carbon::today('Asia/Jakarta')->diffInDays($data['datetime']) >= 7) throw new CustomException('Tidak bisa booking untuk jadwal lebih dari 7 hari per hari ini');
+
+            if ($data['duration'] < 60) throw new CustomException('Minimal durasi pinjam ruangan 1 jam');
+            if ($data['duration'] > 180) throw new CustomException('Maximal durasi pinjam ruangan 3 jam');
+
+            $checkIfScheduleExists = Booking::checkSchedule($data['datetime'], $data['duration'], $roomId);
+            if ($checkIfScheduleExists) throw new CustomException('Jadwal sudah dibooking');
+
+            if(count($data['list_anggota']) < $roomDetail->min_capacity) throw new CustomException("Minimal kapasitas adalah $roomDetail->min_capacity orang");
+            if(count($data['list_anggota']) > $roomDetail->max_capacity) throw new CustomException("Maximal kapasitas adalah $roomDetail->max_capacity orang");
+
+            return [
+                'status' => true
+            ];
+        } catch (CustomException $e) {
+            return [
+                "status" => false,
+                "message" => $e->getErrorMessages()
+            ];
+        }
+    }
+
     private function addBookingIdToMembersData($members, $bookingId)
     {
-        $members = array_map(function($item) use ($bookingId) {
+        $members = array_map(function ($item) use ($bookingId) {
             $item['booking_id'] = $bookingId;
             return $item;
         }, $members);

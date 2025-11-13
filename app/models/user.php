@@ -20,7 +20,7 @@ class User extends Database
     public static function insert($data)
     {
         $conn = parent::getConnection();
-        $q = $conn->prepare("INSERT INTO users (id_number, email, password_hash, first_name, last_name, institution, phone_number, role, activation_proof_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $q = $conn->prepare("INSERT INTO users (id_number, email, password_hash, first_name, last_name, institution, phone_number, role, activation_proof_url, major) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         $q->bindParam(1, $data['id_number'], PDO::PARAM_STR);
         $q->bindParam(2, $data['email'], PDO::PARAM_STR);
         $q->bindParam(3, $data['password'], PDO::PARAM_STR);
@@ -30,6 +30,7 @@ class User extends Database
         $q->bindParam(7, $data['phone_number'], PDO::PARAM_STR);
         $q->bindParam(8, $data['role'], PDO::PARAM_STR);
         $q->bindParam(9, $data['image'], PDO::PARAM_STR);
+        $q->bindParam(10, $data['major'], PDO::PARAM_STR);
         $q->execute();
 
         if ($q) {
