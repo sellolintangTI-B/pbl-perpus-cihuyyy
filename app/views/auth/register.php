@@ -87,27 +87,27 @@ $options = [
                         ]
                     );
                     ?>
-                     <!-- CAPTCHA Section -->
+                    <!-- CAPTCHA Section -->
                     <div class="w-full col-span-2">
                         <label class="block text-primary mb-2 font-poppins">
                             Kode Verifikasi
                         </label>
                         <div class="flex gap-3 items-center mb-2">
-                            <img id="captcha-image" 
-                                 src="<?=URL?>/public/validator/captcha.php" 
-                                 alt="CAPTCHA Code" 
-                                 class="border-2 border-primary rounded-md shadow-sm bg-white"
-                                 style="height: 50px; width: 200px;"/>
+                            <img id="captcha-image"
+                                src="<?= URL ?>/public/validator/captcha.php"
+                                alt="CAPTCHA Code"
+                                class="border-2 border-primary rounded-md shadow-sm bg-white"
+                                style="height: 50px; width: 200px;" />
                         </div>
                         <?php
                         FormInput::input(
-                            id: 'captcha', 
-                            name: 'captcha', 
-                            type: 'text', 
-                            label: '', 
-                            required: true, 
+                            id: 'captcha',
+                            name: 'captcha',
+                            type: 'text',
+                            label: '',
+                            required: true,
                             placeholder: "Masukkan kode di atas",
-                            classGlobal:"w-full"
+                            classGlobal: "w-full"
                         );
                         ?>
                         <?php if (isset($captcha_error)): ?>

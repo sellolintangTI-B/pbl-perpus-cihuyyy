@@ -44,7 +44,8 @@ class RegisterController extends Controller
                 "phone_number" => $_POST['phone_number'],
                 "role" => $_POST['role'],
                 "image" => empty($_FILES['file_upload']['name']) ? null : $_FILES['file_upload'],
-                "captcha" => $_POST['captcha']
+                "captcha" => $_POST['captcha'],
+                "major" => $_POST['jurusan']
             ];
 
             $validator = new Validator($data);
@@ -62,7 +63,7 @@ class RegisterController extends Controller
             $errors = $validator->error();
             if ($errors) throw new CustomException($validator->getErrors());
             
-            if($_SESSION['captcha'] !== $data['captcha']) throw new CustomException('Captcha tidak valid');
+            // if($_SESSION['captcha'] !== $data['captcha']) throw new CustomException('Captcha tidak valid');
 
             $checkByIdNumber = User::getByIdNumber($data['id_number']);
             $checkByEmail = User::getByEmail($data['email']);

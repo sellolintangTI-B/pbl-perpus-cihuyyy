@@ -35,21 +35,24 @@ class BookingController extends Controller
                 "list_anggota" => json_decode($_POST['list_anggota'], true)            
             ];
 
+
             $validator = new Validator($data);
             $validator->field('datetime', ['required']);
             $validator->field('duration', ['required']);
             if($validator->error()) throw new CustomException($validator->getErrors());
 
             $start = Carbon::parse($data['datetime']);
-            $duration = Carbon::parse($data["duration"]);
+            $duration = Carbon::today('Asia/Jakarta')->setTimeFromTimeString($data['duration']);
+            $duration = $duration->toDateTimeString();
             $data['datetime'] = $start->toDateTimeString();
             $data['duration'] = $start->diffInMinutes($duration);
             $data['end_time'] = $start->addMinutes($data['duration'])->toDateTimeString();
 
+
             if($data['duration'] < 60) throw new CustomException('Minimal durasi pinjam ruangan 1 jam');
             if($data['duration'] > 180) throw new CustomException('Maximal durasi pinjam ruangan 3 jam');
 
-            $checkIfScheduleExists = Booking::checkSchedule($data['datetime'], $data['duration']);
+            $checkIfScheduleExists = Booking::checkSchedule($data['datetime'], $data['duration'], $id);
             if($checkIfScheduleExists) throw new CustomException('Jadwal sudah dibooking');
 
             $members = $data['list_anggota'];
