@@ -3,6 +3,8 @@ INSERT INTO users (
     institution, phone_number, major, role, profile_picture_url,
     activation_proof_url, is_active, created_at
 ) VALUES
+-- PASS BUAT ADMIN ADMIN123
+(gen_random_uuid(), '2407411031', 'farrelmaahira104@gmail.com', '$2y$10$qOjYJlIcJFQ4k1GeL4m07eejEG0fszjMRyyZp.lN8mcqdGXSSGCo.', 'Farrel', 'Nugraha', 'Politeknik Negeri Jakarta', '081234567801', 'Teknik Informatika', 'Admin', NULL, NULL, true, CURRENT_TIMESTAMP),
 (gen_random_uuid(), '24074110301', 'mahasiswa1@example.com', '$2b$10$CwTycUXWue0Thq9StjUM0uJ8Y3yE0YwzVZpXbI2H1IhTz1eWwKjBu', 'Farrel', 'Nugraha', 'Politeknik Negeri Jakarta', '081234567801', 'Teknik Informatika', 'Mahasiswa', NULL, NULL, true, CURRENT_TIMESTAMP),
 (gen_random_uuid(), '24074110302', 'mahasiswa2@example.com', '$2b$10$CwTycUXWue0Thq9StjUM0uJ8Y3yE0YwzVZpXbI2H1IhTz1eWwKjBu', 'Alya', 'Putri', 'Politeknik Negeri Jakarta', '081234567802', 'Teknik Informatika', 'Mahasiswa', NULL, NULL, true, CURRENT_TIMESTAMP),
 (gen_random_uuid(), '24074110303', 'mahasiswa3@example.com', '$2b$10$CwTycUXWue0Thq9StjUM0uJ8Y3yE0YwzVZpXbI2H1IhTz1eWwKjBu', 'Rafi', 'Hidayat', 'Politeknik Negeri Jakarta', '081234567803', 'Teknik Informatika', 'Mahasiswa', NULL, NULL, true, CURRENT_TIMESTAMP),

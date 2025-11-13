@@ -34,6 +34,7 @@ class Middleware
             //ERROR
             "/error/forbidden/index",
             "/error/notfound/index",
+            "/auth/logout/logout"
         ],
         "Mahasiswa" => [
             "/user/user/index",
@@ -44,7 +45,8 @@ class Middleware
             "/user/room/detail",
             "/user/booking/search_user",
             "/user/booking/store",
-            "/user/booking/index"
+            "/user/booking/index",
+            "/auth/logout/logout"
         ],
         "Dosen" => [
             "/user/user/index",
@@ -54,7 +56,8 @@ class Middleware
             "/user/room/index",
             "/user/room/detail",
             "/user/booking/store",
-            "/user/booking/index"
+            "/user/booking/index",
+            "/auth/logout/logout"
         ]
     ];
 

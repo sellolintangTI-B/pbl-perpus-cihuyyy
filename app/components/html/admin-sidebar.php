@@ -17,7 +17,7 @@ use App\Components\Icon\Icon;
             ?>
         </div>
     </div>
-    <form class="flex items-center justify-center w-full ps-8" action="<?= URL ?>/admin/dashboard/logout" method="POST">
+    <form class="flex items-center justify-center w-full ps-8" action="<?= URL ?>/auth/logout/logout" method="POST">
         <button class="text-baseColor flex items-center justify-center py-2 gap-4 w-full cursor-pointer rounded-lg hover:bg-baseColor/20 transition-all duration-300 ">
             <?= Icon::logout("w-6 h-6") ?>
             Logout
