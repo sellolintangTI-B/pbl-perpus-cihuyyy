@@ -16,8 +16,8 @@ use App\Components\icon\Icon;
                 </h1>
                 <form class="w-full grid grid-cols-1 gap-4" action="<?= URL ?>/auth/login/signin" method="post" enctype="multipart/form-data">
                     <?php
-                    FormInput::input(id: 'username', name: 'username', type: 'text', label: 'username', required: false, placeholder: "Masukkan email atau NIM/NIP anda");
-                    FormInput::input(id: 'password', name: 'password', type: 'password', label: 'password', required: false, placeholder: "Masukkan password anda");
+                    FormInput::input(id: 'username', name: 'username', type: 'text', label: 'username', required: true,   placeholder: "Masukkan email atau NIM/NIP anda");
+                    FormInput::input(id: 'password', name: 'password', type: 'password', label: 'password', required: true, placeholder: "Masukkan password anda");
                     ?>
                     <!-- CAPTCHA Section -->
                     <div class="w-full">

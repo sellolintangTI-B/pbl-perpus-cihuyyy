@@ -24,7 +24,7 @@ $currentPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
             foreach ($navItems as $item):
                 $isActive = str_starts_with($currentPath, $item['start-with']);
             ?>
-                <?= UserNavbar::navLink(label: $item['label'], href: $item['url'], active: $isActive) ?>
+                <?= UserNavbar::navLink(label: $item['label'], href: URL . $item['url'], active: $isActive) ?>
             <?php endforeach; ?>
         </div>
 
