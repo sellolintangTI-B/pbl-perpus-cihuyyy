@@ -15,7 +15,7 @@ $currentPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
     <div class="w-full flex items-center justify-between">
         <!-- Logo & Brand -->
         <div class="flex items-center gap-3">
-            <img :src="scrolled ? '/public/storage/logo/logo-simaru-text-white.svg' : '/public/storage/logo/logo-simaru-text.svg'" alt="Simaru Logo" class="h-12 object-cover transition-all duration-300">
+            <img :src="scrolled ? '<?= URL ?>/public/storage/logo/logo-simaru-text-white.svg' : '<?= URL ?>/public/storage/logo/logo-simaru-text.svg'" alt="Simaru Logo" class="h-12 object-cover transition-all duration-300">
         </div>
 
         <!-- Navigation Menu -->

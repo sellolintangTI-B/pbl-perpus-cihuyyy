@@ -11,7 +11,7 @@ class User extends Database
     public static function get()
     {
         $conn = parent::getConnection();
-        $q = $conn->prepare("SELECT * FROM users");
+        $q = $conn->prepare("SELECT * FROM users ORDER BY is_active ASC");
         $q->execute();
         $data = $q->fetchAll(PDO::FETCH_OBJ);
         return $data;
@@ -152,5 +152,4 @@ class User extends Database
 
         return $data;
     }
-
 }

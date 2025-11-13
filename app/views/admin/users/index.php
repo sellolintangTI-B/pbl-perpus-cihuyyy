@@ -18,11 +18,12 @@
             <?= Button::anchor(label: "Tambah Pengguna", icon: "plus", href: "/admin/user/add_admin", class: "px-4 py-2 h-full") ?>
             <!-- form action -->
             <div class="flex items-center justify-end gap-2 h-full w-full max-w-[24rem]">
-                <form action="" method="GET" class="flex items-center gap-2  w-full h-full flex-1">
+                <form method="GET" class="flex items-center gap-2  w-full h-full flex-1">
                     <?= FormInput::select(name: "type", options: [
                         ['value' => '', 'display' => 'Semua'],
                         ['value' => 'Admin', 'display' => 'Admin'],
-                        ['value' => 'Civitas', 'display' => 'Civitas'],
+                        ['value' => 'Mahasiswa', 'display' => 'Mahasiswa'],
+                        ['value' => 'Dosen', 'display' => 'Dosen'],
                         ['value' => 'Tamu', 'display' => 'Tamu'],
                     ], class: "h-full !p-0 !px-4 !border-primary", classGlobal: "h-full") ?>
                     <div class="h-full flex-1">
@@ -67,8 +68,9 @@
                             <td class="px-3 py-3 text-xs">
                                 <div class="flex justify-center">
                                     <?= Badge::badge(
-                                        label: $user->is_active ? "Active" : "Inactive",
-                                        active: $user->is_active
+                                        label: $user->is_active ? "• Active" : "• Inactive",
+                                        color: $user->is_active ? "secondary" : "red",
+                                        class: "w-24 text-xs!"
                                     ) ?>
                                 </div>
                             </td>
@@ -93,19 +95,20 @@
                                     x-transition:leave-end="opacity-0 scale-95"
                                     class="absolute right-0 mt-1 w-36 bg-white border border-gray-200 rounded-md shadow-md overflow-hidden z-50 text-left"
                                     style="display: none;">
-                                    <a href="<?= URL . "/admin/user/details/" . $user->id ?>"
-                                        class="flex items-center gap-2 px-3 py-2 text-xs text-gray-700 hover:bg-gray-50 transition">
-                                        <?= Icon::eye('w-4 h-4') ?> Detail
-                                    </a>
-
-                                    <a class="flex items-center gap-2 px-3 py-2 text-xs text-secondary hover:bg-secondary/5 transition">
-                                        <?= Icon::lock('w-4 h-4') ?> Activation
-                                    </a>
-
-                                    <a href="<?= URL . "/admin/user/edit/" . $user->id ?>"
-                                        class="flex items-center gap-2 px-3 py-2 text-xs text-primary hover:bg-primary/5 transition">
-                                        <?= Icon::pencil('w-4 h-4') ?> Edit
-                                    </a>
+                                    <?php if ($user->is_active ?? false): ?>
+                                        <a href="<?= URL . "/admin/user/details/" . $user->id ?>"
+                                            class="flex items-center gap-2 px-3 py-2 text-xs text-gray-700 hover:bg-gray-50 transition">
+                                            <?= Icon::eye('w-4 h-4') ?> Detail
+                                        </a>
+                                        <a href="<?= URL . "/admin/user/edit/" . $user->id ?>"
+                                            class="flex items-center gap-2 px-3 py-2 text-xs text-primary hover:bg-primary/5 transition">
+                                            <?= Icon::pencil('w-4 h-4') ?> Edit
+                                        </a>
+                                    <?php else: ?>
+                                        <a href="<?= URL . "/admin/user/details/" . $user->id ?>" class="flex items-center gap-2 px-3 py-2 text-xs text-secondary hover:bg-secondary/5 transition">
+                                            <?= Icon::lock('w-4 h-4') ?> Activation
+                                        </a>
+                                    <?php endif ?>
 
                                     <button
                                         @click="$dispatch('delete-user', { id: '<?= $user->id ?>' }); open = false;"

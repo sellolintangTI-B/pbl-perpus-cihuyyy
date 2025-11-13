@@ -29,7 +29,7 @@ use App\Components\Icon\Icon;
 
     <div class="p-6 bg-baseColor shadow-sm shadow-gray-600 rounded-xl w-full h-full border border-gray-200 overflow-auto">
         <table class="table-auto w-full border-collapse">
-            <thead class="text-primary sticky top-0 bg-baseColor z-10">
+            <thead class="text-primary bg-baseColor">
                 <tr class="border-b border-gray-200 bg-gray-50">
                     <th class="px-3 py-3 text-xs font-semibold text-center">No</th>
                     <th class="px-3 py-3 text-xs font-semibold text-left">Nama Ruangan</th>
@@ -61,8 +61,9 @@ use App\Components\Icon\Icon;
                         <td class="px-3 py-3 text-xs">
                             <div class="flex justify-center">
                                 <?= Badge::badge(
-                                    label: $room->is_operational ? "Aktif" : "Nonaktif",
-                                    active: $room->is_operational
+                                    label: $room->is_operational ? "• Aktif" : "• Nonaktif",
+                                    color: $room->is_operational ? "secondary" : "red",
+                                    class: "w-24 text-xs!"
                                 ) ?>
                             </div>
                         </td>
@@ -70,8 +71,9 @@ use App\Components\Icon\Icon;
                         <td class="px-3 py-3 text-xs">
                             <div class="flex justify-center">
                                 <?= Badge::badge(
-                                    label: $room->requires_special_approval ? "Ya" : "Tidak",
-                                    active: $room->requires_special_approval
+                                    label: $room->requires_special_approval ? "• Ya" : "• Tidak",
+                                    color: $room->requires_special_approval ? "secondary" : "red",
+                                    class: "w-24 text-xs!"
                                 ) ?>
                             </div>
                         </td>
