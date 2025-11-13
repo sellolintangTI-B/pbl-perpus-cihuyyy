@@ -5,40 +5,22 @@ use App\Components\RiwayatBookingCard;
 
 $historyBookings = [
     [
+        'id' => 1,
         'code' => '#AA682358',
         'status' => 'Selesai',
         'room' => 'Ruang Perancis',
         'floor' => '4',
         'date' => 'Tanggal: 8 - 11 - 2025',
         'time' => ' 13:00 - 15:00',
-        'url' => ''
     ],
     [
+        'id' => 2,
         'code' => '#AA682358',
         'status' => 'Dibatalkan',
         'room' => 'Ruang Perancis',
         'floor' => '4',
         'date' => '8 - 11 - 2025',
         'time' => ' 13:00 - 15:00',
-        'url' => ''
-    ],
-    [
-        'code' => '#AA682358',
-        'status' => 'Dibatalkan',
-        'room' => 'Ruang Perancis',
-        'floor' => '4',
-        'date' => '8 - 11 - 2025',
-        'time' => ' 13:00 - 15:00',
-        'url' => ''
-    ],
-    [
-        'code' => '#AA682358',
-        'status' => 'Dibatalkan',
-        'room' => 'Ruang Perancis',
-        'floor' => '4',
-        'date' => '8 - 11 - 2025',
-        'time' => ' 13:00 - 15:00',
-        'url' => ''
     ],
 ];
 
@@ -94,7 +76,7 @@ if ($currentStatus !== 'Semua') {
                     'location' => 'Tempat: Ruang Perancis, Perpustakaan PNJ, LT.' . $booking['floor'],
                     'date' => 'Tanggal: ' . $booking['date'],
                     'time' => 'Jam:' . $booking['time'],
-                    'url' => $booking['url']
+                    'url' => URL . '/user/booking/detail/' . htmlspecialchars($booking['id'])
                 ];
                 RiwayatBookingCard::card($data);
             endforeach;

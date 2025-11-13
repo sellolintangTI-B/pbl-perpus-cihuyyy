@@ -53,6 +53,8 @@ class BookingController extends Controller
             $data['duration'] = $start->diffInMinutes($end);
             $data['end_time'] = $start->copy()->addMinutes($start->diffInMinutes($end))->toDateTimeString();
 
+            $rules = $this->validationBookingRules($id, $data);
+            if (!$rules['status']) throw new CustomException($rules['message']);
             $rules = $this->validationBookingRules($id, $data, $data['user_id']);
             if(!$rules['status']) throw new CustomException($rules['message']);
 
@@ -87,8 +89,8 @@ class BookingController extends Controller
             $checkIfScheduleExists = Booking::checkSchedule($data['datetime'], $data['duration'], $roomId);
             if ($checkIfScheduleExists) throw new CustomException('Jadwal sudah dibooking');
 
-            if(count($data['list_anggota']) < $roomDetail->min_capacity) throw new CustomException("Minimal kapasitas adalah $roomDetail->min_capacity orang");
-            if(count($data['list_anggota']) > $roomDetail->max_capacity) throw new CustomException("Maximal kapasitas adalah $roomDetail->max_capacity orang");
+            if (count($data['list_anggota']) < $roomDetail->min_capacity) throw new CustomException("Minimal kapasitas adalah $roomDetail->min_capacity orang");
+            if (count($data['list_anggota']) > $roomDetail->max_capacity) throw new CustomException("Maximal kapasitas adalah $roomDetail->max_capacity orang");
 
             return [
                 'status' => true
@@ -108,6 +110,11 @@ class BookingController extends Controller
             return $item;
         }, $members);
         return $members;
+    }
+
+    public function detail($id)
+    {
+        $this->view('user/booking/detail', layoutType: $this::$layoutType['civitas']);
     }
 
     public function search_user($identifier)
