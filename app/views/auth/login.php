@@ -2,7 +2,6 @@
 
 use App\Components\FormInput;
 use App\Components\icon\Icon;
-
 ?>
 <div class="h-screen w-full  flex justify-center items-center p-4 bg-[#FAFAFA]">
     <div class="max-w-7xl h-[90vh] w-full flex items-center justify-center overflow-hidden rounded-xl shadow-md shadow-gray-400 bg-white/20 p-6">
@@ -16,7 +15,7 @@ use App\Components\icon\Icon;
                 </h1>
                 <form class="w-full grid grid-cols-1 gap-4" action="<?= URL ?>/auth/login/signin" method="post" enctype="multipart/form-data">
                     <?php
-                    FormInput::input(id: 'username', name: 'username', type: 'text', label: 'username', required: true,   placeholder: "Masukkan email atau NIM/NIP anda");
+                    FormInput::input(id: 'username', name: 'username', type: 'text', label: 'username', required: true, value: $_COOKIE['remember_username'] ?? "" , placeholder: "Masukkan email atau NIM/NIP anda");
                     FormInput::input(id: 'password', name: 'password', type: 'password', label: 'password', required: true, placeholder: "Masukkan password anda");
                     ?>
                     <!-- CAPTCHA Section -->
@@ -49,7 +48,7 @@ use App\Components\icon\Icon;
                     </div>
                     <div class="w-full text-sm flex justify-between col-span-1 text-primary">
                         <div class="flex gap-4 items-center ">
-                            <input type="checkbox" id="remember_me" name="remember_me" value="true" class="w-4 h-4 bg-primary active:bg-primary cursor-pointer text-primary " />
+                            <input type="checkbox" id="remember_me" name="remember_me" value="true" <?= isset($_COOKIE['remember_username']) ? 'checked' : '' ?> class="w-4 h-4 bg-primary active:bg-primary cursor-pointer text-primary " />
                             <p>remember username</p>
                         </div>
                         <a class="cursor-pointer">

@@ -31,6 +31,7 @@ class Middleware
             "/admin/user/update",
             "/admin/user/edit",
             "/admin/user/reset_password",
+            "/admin/user/details",
             //ERROR
             "/error/forbidden/index",
             "/error/notfound/index",
@@ -46,7 +47,10 @@ class Middleware
             "/user/booking/search_user",
             "/user/booking/store",
             "/user/booking/index",
-            "/auth/logout/logout"
+            //LOGOUT
+            "/auth/logout/logout",
+            //GUIDE
+            "/user/guide/index"
         ],
         "Dosen" => [
             "/user/user/index",
@@ -55,9 +59,13 @@ class Middleware
             // RUANGAN
             "/user/room/index",
             "/user/room/detail",
+            "/user/booking/search_user",
             "/user/booking/store",
             "/user/booking/index",
-            "/auth/logout/logout"
+            //LOGOUT
+            "/auth/logout/logout",
+            //GUIDE
+            "/user/guide/index"
         ]
     ];
 

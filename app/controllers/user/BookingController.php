@@ -19,7 +19,13 @@ class BookingController extends Controller
 
     public function index()
     {
-        $this->view('user/booking/index',  layoutType: $this::$layoutType["civitas"]);
+        try {
+            $user = new Authentication;
+            $data = Booking::checkUserActiveBooking($user->user['id']);
+        }catch(CustomException $e) {
+            ResponseHandler::setResponse($e->getErrorMessages(), 'error');
+            header('location:' . URL . '/user/booking/index');
+        }
     }
 
     public function store($id)
@@ -47,7 +53,7 @@ class BookingController extends Controller
             $data['duration'] = $start->diffInMinutes($end);
             $data['end_time'] = $start->copy()->addMinutes($start->diffInMinutes($end))->toDateTimeString();
 
-            $rules = $this->validationBookingRules($id, $data);
+            $rules = $this->validationBookingRules($id, $data, $data['user_id']);
             if(!$rules['status']) throw new CustomException($rules['message']);
 
             $members = $data['list_anggota'];
@@ -66,9 +72,12 @@ class BookingController extends Controller
         }
     }
 
-    private function validationBookingRules($roomId, $data)
+    private function validationBookingRules($roomId, $data, $userId)
     {
         try {
+
+            $checkUserActiveBooking = Booking::checkUserActiveBooking($userId);
+            if($checkUserActiveBooking) throw new CustomException('Tolong selesaikan peminjaman anda terlebih dahulu sebelum meminjam ruangan lain');
             $roomDetail = Room::getById($roomId);
             if (Carbon::today('Asia/Jakarta')->diffInDays($data['datetime']) >= 7) throw new CustomException('Tidak bisa booking untuk jadwal lebih dari 7 hari per hari ini');
 

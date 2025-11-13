@@ -4,42 +4,42 @@ use App\Components\Badge;
 use App\Components\RiwayatBookingCard;
 
 $historyBookings = [
-    // [
-    //     'code' => '#AA682358',
-    //     'status' => 'Selesai',
-    //     'room' => 'Ruang Perancis',
-    //     'floor' => '4',
-    //     'date' => 'Tanggal: 8 - 11 - 2025',
-    //     'time' => ' 13:00 - 15:00',
-    //     'url' => ''
-    // ],
-    // [
-    //     'code' => '#AA682358',
-    //     'status' => 'Dibatalkan',
-    //     'room' => 'Ruang Perancis',
-    //     'floor' => '4',
-    //     'date' => '8 - 11 - 2025',
-    //     'time' => ' 13:00 - 15:00',
-    //     'url' => ''
-    // ],
-    // [
-    //     'code' => '#AA682358',
-    //     'status' => 'Dibatalkan',
-    //     'room' => 'Ruang Perancis',
-    //     'floor' => '4',
-    //     'date' => '8 - 11 - 2025',
-    //     'time' => ' 13:00 - 15:00',
-    //     'url' => ''
-    // ],
-    // [
-    //     'code' => '#AA682358',
-    //     'status' => 'Dibatalkan',
-    //     'room' => 'Ruang Perancis',
-    //     'floor' => '4',
-    //     'date' => '8 - 11 - 2025',
-    //     'time' => ' 13:00 - 15:00',
-    //     'url' => ''
-    // ],
+    [
+        'code' => '#AA682358',
+        'status' => 'Selesai',
+        'room' => 'Ruang Perancis',
+        'floor' => '4',
+        'date' => 'Tanggal: 8 - 11 - 2025',
+        'time' => ' 13:00 - 15:00',
+        'url' => ''
+    ],
+    [
+        'code' => '#AA682358',
+        'status' => 'Dibatalkan',
+        'room' => 'Ruang Perancis',
+        'floor' => '4',
+        'date' => '8 - 11 - 2025',
+        'time' => ' 13:00 - 15:00',
+        'url' => ''
+    ],
+    [
+        'code' => '#AA682358',
+        'status' => 'Dibatalkan',
+        'room' => 'Ruang Perancis',
+        'floor' => '4',
+        'date' => '8 - 11 - 2025',
+        'time' => ' 13:00 - 15:00',
+        'url' => ''
+    ],
+    [
+        'code' => '#AA682358',
+        'status' => 'Dibatalkan',
+        'room' => 'Ruang Perancis',
+        'floor' => '4',
+        'date' => '8 - 11 - 2025',
+        'time' => ' 13:00 - 15:00',
+        'url' => ''
+    ],
 ];
 
 $filter = ["Semua", "Selesai", "Dibatalkan"];
