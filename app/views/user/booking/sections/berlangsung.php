@@ -1,14 +1,14 @@
 <?php
 // Sample data - replace with database query
 $currentBooking = [
-    // 'code' => '#AA682358',
-    // 'room' => 'Ruang Perancis',
-    // 'pic' => 'P.J: Nugroho Nur Cahyo',
-    // 'capacity' => '5 orang',
-    // 'location' => 'Tempat: Perpustakaan PNJ, LT. 4',
-    // 'date' => 'Tanggal: 8 - 11 - 2025',
-    // 'time' => 'Jam: 13:00 - 15:00',
-    // 'image' => '/public/storage/images/ruang-dummy.jpg'
+    'code' => '#AA682358',
+    'room' => 'Ruang Perancis',
+    'pic' => 'P.J: Nugroho Nur Cahyo',
+    'capacity' => '5 orang',
+    'location' => 'Tempat: Perpustakaan PNJ, LT. 4',
+    'date' => 'Tanggal: 8 - 11 - 2025',
+    'time' => 'Jam: 13:00 - 15:00',
+    'image' => '/public/storage/images/ruang-dummy.jpg'
 ];
 
 use App\Components\Icon\Icon;
@@ -70,7 +70,7 @@ use App\Components\FormInput;
         <!-- Action Buttons -->
         <div class="space-y-3">
             <?php
-            Button::anchorGradient(label: 'Detail Booking', link: '#', class: 'rounded-full!');
+            Button::anchorGradient(label: 'See Details', link: '#', class: 'rounded-full!');
             Button::button(label: 'Cancel Booking', color: 'red', class: 'w-full py-3 rounded-full!');
             ?>
         </div>
