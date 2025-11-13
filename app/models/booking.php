@@ -46,4 +46,15 @@ class Booking extends Database{
         $data = $q->fetchAll(PDO::FETCH_OBJ);
         return $data;
     }
+
+    public static function checkUserActiveBooking($userId)
+    {
+        $conn = parent::getConnection();
+        $q = $conn->prepare("SELECT bl.status FROM bookings AS b JOIN booking_logs AS bl ON b.id = bl.booking_id
+        JOIN booking_participants AS bp ON b.id = bp.booking_id WHERE NOT bl.status = 'finished' AND bp.user_id = :userId;");
+        $q->bindValue(':userId', $userId);
+        $q->execute();
+        $data = $q->fetchAll(PDO::FETCH_OBJ);
+        return $data;
+    }
 }

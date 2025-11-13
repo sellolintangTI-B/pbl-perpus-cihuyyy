@@ -31,9 +31,11 @@ class Middleware
             "/admin/user/update",
             "/admin/user/edit",
             "/admin/user/reset_password",
+            "/admin/user/details",
             //ERROR
             "/error/forbidden/index",
             "/error/notfound/index",
+            "/auth/logout/logout"
         ],
         "Mahasiswa" => [
             "/user/user/index",
@@ -44,7 +46,11 @@ class Middleware
             "/user/room/detail",
             "/user/booking/search_user",
             "/user/booking/store",
-            "/user/booking/index"
+            "/user/booking/index",
+            //LOGOUT
+            "/auth/logout/logout",
+            //GUIDE
+            "/user/guide/index"
         ],
         "Dosen" => [
             "/user/user/index",
@@ -53,8 +59,13 @@ class Middleware
             // RUANGAN
             "/user/room/index",
             "/user/room/detail",
+            "/user/booking/search_user",
             "/user/booking/store",
-            "/user/booking/index"
+            "/user/booking/index",
+            //LOGOUT
+            "/auth/logout/logout",
+            //GUIDE
+            "/user/guide/index"
         ]
     ];
 

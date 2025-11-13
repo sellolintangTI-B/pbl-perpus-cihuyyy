@@ -46,19 +46,6 @@ class UserController extends Controller
         }
     }
 
-    public function approve_user($id)
-    {
-        try {
-            $data = User::getById($id);
-            if (!$data) {
-                throw new CustomException('Akun tidak tersedia');
-            }
-            var_dump($data);
-        } catch (CustomException $e) {
-            var_dump($e->getErrorMessages());
-        }
-    }
-
     public function approve($id)
     {
         try {
