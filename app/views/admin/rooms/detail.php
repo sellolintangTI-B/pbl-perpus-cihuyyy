@@ -2,6 +2,7 @@
 
 use App\Components\Icon\Icon;
 use App\Components\Button;
+use App\Components\Badge;
 ?>
 <div class="w-full h-full flex flex-col gap-4">
     <h1 class="text-2xl font-medium text-primary">
@@ -19,7 +20,7 @@ use App\Components\Button;
                     <!-- gambar -->
                     <div class="relative h-80 w-96 shrink-0 self-stretch">
                         <img
-                            src="<?= URL . "/public/storage/images/login-image.jpg" ?>"
+                            src="<?= URL . "/public/" . $data->room_img_url ?>"
                             alt="Ruang Perancis"
                             class="w-full h-full object-cover rounded-lg shadow-sm" />
                     </div>
@@ -32,12 +33,12 @@ use App\Components\Button;
                             </h1>
                             <!-- badge tipe ruangan dan beroperasi -->
                             <div class="flex gap-2">
-                                <span class="px-4 py-1 bg-tertiary/20 text-tertiary text-sm font-medium rounded-full">
-                                    Ruangan Kecil
-                                </span>
-                                <span class="px-4 py-1 bg-secondary/20 text-secondary text-sm font-medium rounded-full">
-                                    Beroperasi
-                                </span>
+                                <?php
+                                if ($data->requires_special_approval) {
+                                    Badge::badge(label: "Ruangan Khusus", color: "secondary", class: 'border-none!');
+                                }
+                                Badge::badge(label: $data->is_operational ? "Beroperasi" : "Tidak Beroperasi", color: $data->is_operational ? "secondary" : "red", class: 'border-none!');
+                                ?>
                             </div>
                         </div>
 
