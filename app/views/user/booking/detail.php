@@ -5,7 +5,7 @@ use App\Components\Button;
 use App\Components\Badge;
 
 $bookingCode = $_GET['code'] ?? '#AA682358';
-$status = $_GET['status'] ?? 'dibatalkan';
+$status = $_GET['status'] ?? 'berlangsung';
 $statusEnum = [
     "berlangsung" => "berlangsung",
     "dibatalkan" => "dibatalkan",
@@ -45,20 +45,20 @@ $bookingDetail = [
         </div>
 
         <!-- Detail Card -->
-        <div class="bg-white rounded-xl shadow-lg p-5 mb-4">
+        <div class="bg-white rounded-xl shadow-lg p-4 mb-4 border border-gray-400 flex flex-col items-start justify-start gap-4">
             <!-- Header with Code and Status -->
-            <div class="flex justify-between items-start mb-4">
+            <div class="flex justify-between items-start w-full">
                 <div>
                     <h3 class="text-lg font-bold text-primary">Kode Booking: <?= $bookingDetail['code'] ?></h3>
                 </div>
-                <?= Badge::badge(label: $bookingDetail['status'], color: $bookingDetail['status'] === $statusEnum["berlangsung"] ? 'primary' : ($bookingDetail['status'] ===  $statusEnum["selesai"] ? 'secondary' : 'red')) ?>
+                <?= Badge::badge(label: $bookingDetail['status'], color: $bookingDetail['status'] === $statusEnum["berlangsung"] ? 'tertiary' : ($bookingDetail['status'] ===  $statusEnum["selesai"] ? 'secondary' : 'red')) ?>
             </div>
 
             <!-- Booking Information -->
-            <div class="space-y-3 mb-5">
+            <div class="space-y-3">
                 <div class="flex items-start gap-3">
                     <?= Icon::person('w-5 h-5 text-black/80') ?>
-                    <span class="text-sm text-black/80"><?= $bookingDetail['pic'] ?></span>
+                    <span class="text-sm text-black/80">Nama: <?= $bookingDetail['pic'] ?></span>
                 </div>
 
                 <div class="flex items-start gap-3">
@@ -70,17 +70,23 @@ $bookingDetail = [
 
                 <div class="flex items-start gap-3">
                     <?= Icon::calendar_pencil('w-5 h-5 text-black/80') ?>
-                    <span class="text-sm text-gray-700"><?= $bookingDetail['date'] ?></span>
+                    <span class="text-sm text-gray-700">Location: <?= $bookingDetail['date'] ?></span>
                 </div>
 
                 <div class="flex items-start gap-3">
                     <?= Icon::clock('w-5 h-5 text-black/80') ?>
-                    <span class="text-sm text-gray-700"><?= $bookingDetail['time'] ?></span>
+                    <span class="text-sm text-gray-700">Tempat: <?= $bookingDetail['time'] ?></span>
                 </div>
+                <?php if ($bookingDetail['status'] === $statusEnum['selesai']): ?>
+                    <div class="flex items-start gap-3">
+                        <?= Icon::clock('w-5 h-5 text-black/80') ?>
+                        <span class="text-sm text-gray-700">Check in: 13.05 &bull; Check out: 15.05</span>
+                    </div>
+                <?php endif; ?>
             </div>
 
             <!-- Members Section -->
-            <div class="border-t border-gray-200 pt-4">
+            <div class=" pt-4">
                 <h4 class="text-base font-semibold text-primary mb-3">Anggota:</h4>
                 <ul class="space-y-2">
                     <?php foreach ($bookingDetail['members'] as $index => $member): ?>
@@ -91,23 +97,34 @@ $bookingDetail = [
                     <?php endforeach; ?>
                 </ul>
             </div>
+
+            <?php if ($bookingDetail['status'] === $statusEnum['berlangsung']): ?>
+                <div class="flex flex-col gap-2 pt-4">
+                    <h4 class="text-base font-semibold text-primary">Detail Pembatalan:</h4>
+                    <div class="w-full flex flex-col gap-4">
+                        <div class="flex items-start gap-3">
+                            <?= Icon::person('w-5 h-5 text-black/80') ?>
+                            <span class="text-sm text-gray-700">dibatalkan oleh: nugiman</span>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <?= Icon::clock('w-5 h-5 text-black/80') ?>
+                            <span class="text-sm text-gray-700">Jam: 15.05</span>
+                        </div>
+                    </div>
+                    <p>
+                        Alasan:
+                    </p>
+                    <p class="text-sm">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab accusamus doloribus sunt. Labore exercitationem fugit eos assumenda repudiandae voluptas similique!
+                    </p>
+                </div>
+            <?php endif; ?>
+
+
+            <?php if ($bookingDetail['status'] === $statusEnum['berlangsung']): ?>
+                <?= Button::button(label: 'Cancel', type: 'submit', color: 'red', class: 'w-full py-2 rounded-full!') ?>
+            <?php endif; ?>
         </div>
 
-        <!-- Action Button - Only show Cancel if status is Berlangsung -->
-        <?php if ($bookingDetail['status'] === 'Berlangsung'): ?>
-            <button onclick="confirmCancel()"
-                class="w-full bg-pink-200 text-red border-2 border-pink-300 py-3 rounded-xl font-medium hover:bg-pink-300 transition-colors">
-                Cancel
-            </button>
-        <?php endif; ?>
     </div>
-
-    <script>
-        function confirmCancel() {
-            if (confirm('Apakah Anda yakin ingin membatalkan booking ini?')) {
-                // Redirect to cancel handler
-                window.location.href = '/cancel-booking.php?code=<?= urlencode($bookingDetail['code']) ?>';
-            }
-        }
-    </script>
 </div>
