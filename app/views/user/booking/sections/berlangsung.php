@@ -1,16 +1,19 @@
 <?php
-// Sample data - replace with database query
-$currentBooking = [
-    'id' => '1',
-    'code' => '#AA682358',
-    'room' => 'Ruang Perancis',
-    'pic' => 'P.J: Nugroho Nur Cahyo',
-    'capacity' => '5 orang',
-    'location' => 'Tempat: Perpustakaan PNJ, LT. 4',
-    'date' => 'Tanggal: 8 - 11 - 2025',
-    'time' => 'Jam: 13:00 - 15:00',
-    'image' => '/public/storage/images/ruang-dummy.jpg'
-];
+
+use Carbon\Carbon;
+
+if ($data) {
+    $currentBooking = [
+        'code' => $data->booking_code,
+        'room' => $data->room_name,
+        'pic' => "P.J $data->pic",
+        'capacity' => '5 orang',
+        'location' => "Tempat: Perpustakaan PNJ, LT. $data->floor",
+        'date' => "Tanggal : " . Carbon::parse($data->start_time)->translatedFormat('l, d F Y'),
+        'time' => "Jam : " . Carbon::parse($data->start_time)->toTimeString() . ' - ' . Carbon::parse($data->end_time)->toTimeString(),
+        'image' => $data->room_img_url
+    ];
+}
 
 use App\Components\Icon\Icon;
 use App\Components\Button;

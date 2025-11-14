@@ -12,7 +12,7 @@ use App\Components\Icon\Icon;
             <h3 class="text-base font-bold text-primary mb-1">Kode Booking: <?= $booking['code'] ?></h3>
         </div>
         <?php
-        Badge::badge(label: $booking['status'], active: false, color: $booking['status'] == 'Selesai' ? 'secondary' : 'red');
+        Badge::badge(label: $booking['status'], active: false, color: $booking['status'] == 'finished' ? 'secondary' : 'red');
         ?>
     </div>
 

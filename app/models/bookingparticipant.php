@@ -1,6 +1,7 @@
 <?php
 namespace App\Models;
 use App\Core\Database;
+use PDO;
 
 class BookingParticipant extends Database {
     public static function bulkInsert($data)
@@ -21,5 +22,15 @@ class BookingParticipant extends Database {
         $sql .= implode(', ', $insertQuery);
         $q = $conn->prepare($sql);
         $q->execute($insertData);
+    }
+
+    public static function getParticipantsByBookingId($id)
+    {
+        $conn = parent::getConnection();
+        $q = $conn->prepare("SELECT u.first_name || ' ' || u.last_name AS name FROM booking_participants AS bp JOIN users AS u ON bp.user_id = u.id WHERE bp.booking_id = :id");
+        $q->bindValue(':id', $id);
+        $q->execute();
+        $data = $q->fetchAll(PDO::FETCH_OBJ);
+        return $data;
     }
 }

@@ -3,6 +3,8 @@
 use App\Components\Icon\Icon;
 use App\Components\Button;
 use App\Components\Badge;
+use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 
 $bookingCode = $_GET['code'] ?? '#AA682358';
 $status = $_GET['status'] ?? 'berlangsung';
@@ -13,20 +15,14 @@ $statusEnum = [
 ];
 
 $bookingDetail = [
-    'code' => $bookingCode,
-    'status' => $status,
-    'pic' => 'Nugroho Nur Cahyo',
-    'room' => 'Ruang Perancis',
-    'floor' => '4',
-    'date' => '8 - 11 - 2025',
-    'time' => '13:00 - 15:00',
-    'members' => [
-        'Nugroho Nur Cahyo (Mahasiswa)',
-        'Naufal Bintang Pradana Himawan (Mahasiswa)',
-        'Farrel Maahira Aqraprana Nugraha (Mahasiswa)',
-        'Sello Lintang Pambayun (Mahasiswa)',
-        'Bambang Warsuta (Dosen)'
-    ]
+    'code' => $data['booking']->booking_code,
+    'status' => $data['booking']->status,
+    'pic' => $data['booking']->pic,
+    'room' => $data['booking']->name,
+    'floor' => $data['booking']->floor,
+    'date' => Carbon::parse($data['booking']->start_time)->translatedFormat('l, d F Y'),
+    'time' => Carbon::parse($data['booking']->start_time)->toTimeString() . ' - ' . Carbon::parse($data['booking']->end_time)->toTimeString(),
+    'members' => $data['participants']
 ];
 
 ?>
@@ -49,7 +45,7 @@ $bookingDetail = [
             <!-- Header with Code and Status -->
             <div class="flex justify-between items-start w-full">
                 <div>
-                    <h3 class="text-lg font-bold text-primary">Kode Booking: <?= $bookingDetail['code'] ?></h3>
+                    <h3 class="text-lg font-bold text-primary">Kode Booking: #<?= $bookingDetail['code'] ?></h3>
                 </div>
                 <?= Badge::badge(label: $bookingDetail['status'], color: $bookingDetail['status'] === $statusEnum["berlangsung"] ? 'tertiary' : ($bookingDetail['status'] ===  $statusEnum["selesai"] ? 'secondary' : 'red')) ?>
             </div>
@@ -89,10 +85,10 @@ $bookingDetail = [
             <div class=" pt-4">
                 <h4 class="text-base font-semibold text-primary mb-3">Anggota:</h4>
                 <ul class="space-y-2">
-                    <?php foreach ($bookingDetail['members'] as $index => $member): ?>
+                    <?php  foreach ($bookingDetail['members'] as $member): ?>
                         <li class="flex items-start gap-3">
                             <span class="text-secondary font-medium shrink-0">•</span>
-                            <span class="text-sm text-gray-700"><?= $member ?></span>
+                            <span class="text-sm text-gray-700"><?= $member->name ?></span>
                         </li>
                     <?php endforeach; ?>
                 </ul>
