@@ -36,6 +36,6 @@ use App\Components\Icon\Icon;
 
     <!-- Action Button -->
     <?php
-    Button::anchorGradient(label: "See Details", link: $booking['url'])
+    Button::anchorGradient(label: "See Details", link: $booking['url'], class: 'rounded-full!')
     ?>
 </div>

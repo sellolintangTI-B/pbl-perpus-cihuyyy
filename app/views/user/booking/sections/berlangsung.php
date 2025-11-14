@@ -74,7 +74,7 @@ use App\Components\FormInput;
         <!-- Action Buttons -->
         <div class="space-y-3">
             <?php
-            Button::anchorGradient(label: 'See Details', link: '#', class: 'rounded-full!');
+            Button::anchorGradient(label: 'See Details', link: URL . '/user/booking/detail/' . htmlspecialchars($currentBooking['id']), class: 'rounded-full!');
             Button::button(label: 'Cancel Booking', color: 'red', class: 'w-full py-3 rounded-full!');
             ?>
         </div>
