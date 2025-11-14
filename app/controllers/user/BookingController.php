@@ -21,8 +21,18 @@ class BookingController extends Controller
     {
         try {
             $user = new Authentication;
-            $data = Booking::checkUserActiveBooking($user->user['id']);
-        }catch(CustomException $e) {
+            $params = 'berlangsung';
+            $status = 'semua';
+            if (isset($_GET['tab'])) $params = $_GET['tab'];
+            if (isset($_GET['status'])) $status = $_GET['status'];
+            if ($params == 'berlangsung') {
+                $data = Booking::checkUserActiveBooking($user->user['id']);
+            } elseif ($params = 'riwayat') {
+                $data = Booking::getUserBookingHistory($user->user['id']);
+            }
+
+            $this->view('user/booking/index', $data, layoutType: "Civitas");
+        } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), 'error');
             header('location:' . URL . '/user/booking/index');
         }
@@ -53,10 +63,10 @@ class BookingController extends Controller
             $data['duration'] = $start->diffInMinutes($end);
             $data['end_time'] = $start->copy()->addMinutes($start->diffInMinutes($end))->toDateTimeString();
 
-            $rules = $this->validationBookingRules($id, $data);
+            $rules = $this->validationBookingRules($id, $data, $data['user_id']);
             if (!$rules['status']) throw new CustomException($rules['message']);
             $rules = $this->validationBookingRules($id, $data, $data['user_id']);
-            if(!$rules['status']) throw new CustomException($rules['message']);
+            if (!$rules['status']) throw new CustomException($rules['message']);
 
             $members = $data['list_anggota'];
             unset($data['list_anggota']);
@@ -79,7 +89,7 @@ class BookingController extends Controller
         try {
 
             $checkUserActiveBooking = Booking::checkUserActiveBooking($userId);
-            if($checkUserActiveBooking) throw new CustomException('Tolong selesaikan peminjaman anda terlebih dahulu sebelum meminjam ruangan lain');
+            if ($checkUserActiveBooking) throw new CustomException('Tolong selesaikan peminjaman anda terlebih dahulu sebelum meminjam ruangan lain');
             $roomDetail = Room::getById($roomId);
             if (Carbon::today('Asia/Jakarta')->diffInDays($data['datetime']) >= 7) throw new CustomException('Tidak bisa booking untuk jadwal lebih dari 7 hari per hari ini');
 
@@ -114,7 +124,19 @@ class BookingController extends Controller
 
     public function detail($id)
     {
-        $this->view('user/booking/detail', layoutType: $this::$layoutType['civitas']);
+        try {
+            $booking = Booking::getById($id);
+            if (!$booking) throw new CustomException('Data tidak ditemukan');
+            $bookingParticipants = BookingParticipant::getParticipantsByBookingId($id);
+            $data  = [
+                "booking" => $booking,
+                "participants" => $bookingParticipants
+            ];
+            $this->view('user/booking/detail', $data, layoutType: $this::$layoutType['civitas']);
+        } catch (CustomException $e) {
+            ResponseHandler::setResponse($e->getErrorMessages());
+            header('location:' . URL . '/user/booking/index');
+        }
     }
 
     public function search_user($identifier)
