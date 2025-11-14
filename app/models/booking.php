@@ -5,14 +5,15 @@ namespace App\Models;
 use App\Core\Database;
 use PDO;
 
-class Booking extends Database{
-    public static function create($data) 
+class Booking extends Database
+{
+    public static function create($data)
     {
         $conn = parent::getConnection();
         $q = $conn->prepare("INSERT INTO bookings (user_id, room_id, start_time, duration, end_time , booking_code) VALUES (?, ?, ?, ?, ?, ?) RETURNING id");
         $i = 1;
-        foreach($data as $key => $value) {
-            if($key == "duration") {
+        foreach ($data as $key => $value) {
+            if ($key == "duration") {
                 $q->bindValue($i, "$value minutes");
             }
             $q->bindValue($i, $value);
@@ -50,11 +51,58 @@ class Booking extends Database{
     public static function checkUserActiveBooking($userId)
     {
         $conn = parent::getConnection();
-        $q = $conn->prepare("SELECT bl.status FROM bookings AS b JOIN booking_logs AS bl ON b.id = bl.booking_id
-        JOIN booking_participants AS bp ON b.id = bp.booking_id WHERE NOT bl.status = 'finished' AND bp.user_id = :userId;");
+        $q = $conn->prepare("SELECT *
+            FROM (
+                SELECT DISTINCT ON (b.id)
+                    b.id AS booking_id,
+                    b.booking_code AS booking_code,
+                    r.name AS room_name,
+                    r.floor,
+                    u.first_name || ' ' || u.last_name AS pic,
+                    b.start_time,
+                    b.end_time,
+                    r.room_img_url,
+                    bl.status AS latest_status
+                FROM bookings AS b
+                JOIN booking_logs AS bl ON b.id = bl.booking_id
+                JOIN rooms AS r ON b.room_id = r.id
+                JOIN users AS u ON b.user_id = u.id
+                WHERE b.user_id = :userId 
+                ORDER BY b.id, bl.created_at DESC
+            ) AS latest
+            WHERE NOT latest.latest_status IN ('cancelled', 'finished');
+            ");
+        $q->bindValue(':userId', $userId);
+        $q->execute();
+        $data = $q->fetch(PDO::FETCH_OBJ);
+        return $data;
+    }
+
+    public static function getUserBookingHistory($userId)
+    {
+        $conn = parent::getConnection();
+        $q = $conn->prepare("SELECT DISTINCT ON (b.id) b.id, bl.status, r.name, b.start_time, b.end_time, b.booking_code, r.floor
+        FROM bookings AS b JOIN booking_logs AS bl ON b.id = bl.booking_id
+        JOIN booking_participants AS bp ON b.id = bp.booking_id 
+        JOIN rooms AS r ON b.room_id = r.id WHERE bp.user_id = :userId
+        AND bl.status IN ('finished', 'cancelled')");
         $q->bindValue(':userId', $userId);
         $q->execute();
         $data = $q->fetchAll(PDO::FETCH_OBJ);
+        return $data;
+    }
+
+    public static function getById($id)
+    {
+        $conn = parent::getConnection();
+        $q = $conn->prepare("SELECT DISTINCT ON (b.id) b.booking_code, bl.status, u.first_name || ' ' || u.last_name AS pic, r.name, r.floor, b.start_time, b.end_time
+        FROM bookings AS b JOIN booking_logs AS bl ON b.id = bl.booking_id
+        JOIN users AS u ON b.user_id = u.id
+        JOIN booking_participants AS bp ON b.id = bp.booking_id 
+        JOIN rooms AS r ON b.room_id = r.id WHERE b.id = :id ");
+        $q->bindValue(':id', $id);
+        $q->execute();
+        $data = $q->fetch(PDO::FETCH_OBJ);
         return $data;
     }
 }

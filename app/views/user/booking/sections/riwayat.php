@@ -2,6 +2,8 @@
 // Sample data - replace with database query
 use App\Components\Badge;
 use App\Components\RiwayatBookingCard;
+use Carbon\Carbon;
+use Carbon\CarbonInterface;
 
 $historyBookings = [
     [
@@ -66,17 +68,16 @@ if ($currentStatus !== 'Semua') {
     </form>
 
     <!-- Booking History List -->
-    <?php if (count($historyBookings) > 0): ?>
+    <?php if (count($data) > 0): ?>
         <div class="space-y-4">
-            <?php foreach ($historyBookings as $booking):
+            <?php foreach ($data as $booking):
                 $data = [
-                    'code' => $booking['code'],
-                    'status' => $booking['status'],
-                    'room' => $booking['room'],
-                    'location' => 'Tempat: Ruang Perancis, Perpustakaan PNJ, LT.' . $booking['floor'],
-                    'date' => 'Tanggal: ' . $booking['date'],
-                    'time' => 'Jam:' . $booking['time'],
-                    'url' => URL . '/user/booking/detail/' . htmlspecialchars($booking['id'])
+                    'code' => $booking->booking_code,
+                    'status' => $booking->status,
+                    'location' => "Tempat : $booking->name, Perpustakan PNJ Lt $booking->floor",
+                    'date' => 'Tanggal: ' . Carbon::parse($booking->start_time)->translatedFormat('l, d F Y'),
+                    'time' => "Jam : " . Carbon::parse($booking->start_time)->toTimeString() . ' - ' . Carbon::parse($booking->end_time)->toTimeString(),
+                    'url' => URL . '/user/booking/detail/' . htmlspecialchars($booking->id)
                 ];
                 RiwayatBookingCard::card($data);
             endforeach;
