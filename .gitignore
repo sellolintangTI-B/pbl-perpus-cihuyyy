@@ -1,6 +1,7 @@
 node_moodules/
 app/config/config.php
-public/storage/*
+public/storage/rooms/*
+public/storage/users/*
 /vendor/
 .env
 .vscode/    
