@@ -47,6 +47,7 @@ class Middleware
             "/user/booking/search_user",
             "/user/booking/store",
             "/user/booking/index",
+            "/user/booking/detail",
             //LOGOUT
             "/auth/logout/logout",
             //GUIDE
@@ -62,6 +63,7 @@ class Middleware
             "/user/booking/search_user",
             "/user/booking/store",
             "/user/booking/index",
+            "/user/booking/detail",
             //LOGOUT
             "/auth/logout/logout",
             //GUIDE

@@ -1,5 +1,6 @@
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 DROP TABLE IF EXISTS bookings RESTRICT;
+SET TIMEZONE = 'Asia/Jakarta';
 CREATE TABLE bookings (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL,
@@ -8,10 +9,9 @@ CREATE TABLE bookings (
     duration INTEGER NOT NULL,
     end_time TIMESTAMP NOT NULL,
     booking_code VARCHAR(5) NOT NULL,
-    is_approved BOOLEAN DEFAULT FALSE,
     special_requirement_attachments_url VARCHAR(100),
     is_deleted BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMPTZ DEFAULT NOW() 
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (room_id) REFERENCES rooms(id)
 );

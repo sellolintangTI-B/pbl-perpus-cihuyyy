@@ -4,6 +4,7 @@ use Carbon\Carbon;
 
 if ($data) {
     $currentBooking = [
+        'id' => $data->booking_id,
         'code' => $data->booking_code,
         'room' => $data->room_name,
         'pic' => "P.J $data->pic",

@@ -1,5 +1,6 @@
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 DROP TABLE IF EXISTS rooms RESTRICT;
+SET TIMEZONE = 'Asia/Jakarta';
 CREATE TABLE rooms (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name VARCHAR(255) NOT NULL,
@@ -11,5 +12,5 @@ CREATE TABLE rooms (
     is_operational BOOLEAN DEFAULT TRUE,
     requires_special_approval BOOLEAN DEFAULT FALSE,
     room_img_url VARCHAR(255),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMPTZ DEFAULT NOW() 
 );

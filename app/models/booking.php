@@ -65,9 +65,10 @@ class Booking extends Database
                     bl.status AS latest_status
                 FROM bookings AS b
                 JOIN booking_logs AS bl ON b.id = bl.booking_id
+                JOIN booking_participants AS bp ON b.id = bp.booking_id
                 JOIN rooms AS r ON b.room_id = r.id
                 JOIN users AS u ON b.user_id = u.id
-                WHERE b.user_id = :userId 
+                WHERE bp.user_id = :userId 
                 ORDER BY b.id, bl.created_at DESC
             ) AS latest
             WHERE NOT latest.latest_status IN ('cancelled', 'finished');
