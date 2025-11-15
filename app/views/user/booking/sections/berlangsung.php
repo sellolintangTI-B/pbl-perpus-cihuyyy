@@ -1,6 +1,12 @@
 <?php
 
 use Carbon\Carbon;
+use App\Components\Icon\Icon;
+use App\Components\Button;
+use App\Components\FormInput;
+use App\Utils\Authentication;
+
+$authUser = new Authentication;
 
 if ($data) {
     $currentBooking = [
@@ -16,9 +22,6 @@ if ($data) {
     ];
 }
 
-use App\Components\Icon\Icon;
-use App\Components\Button;
-use App\Components\FormInput;
 
 ?>
 <?php if (!empty($currentBooking)): ?>
@@ -76,7 +79,9 @@ use App\Components\FormInput;
         <div class="space-y-3">
             <?php
             Button::anchorGradient(label: 'See Details', link: URL . '/user/booking/detail/' . htmlspecialchars($currentBooking['id']), class: 'rounded-full!');
-            Button::button(label: 'Cancel Booking', color: 'red', class: 'w-full py-3 rounded-full!');
+            if ($authUser->user['id'] === $data->pic_id) {
+                Button::button(label: 'Cancel Booking', color: 'red', class: 'w-full py-3 rounded-full!', onClick: 'confirmCancel()');
+            }
             ?>
         </div>
 
@@ -104,7 +109,7 @@ use App\Components\FormInput;
     function confirmCancel() {
         if (confirm('Apakah Anda yakin ingin membatalkan booking ini?')) {
             // Redirect to cancel handler
-            window.location.href = '/cancel-booking.php?code=<?= urlencode($currentBooking['code']) ?>';
+            window.location.href = '<?= URL ?>/user/booking/cancel_booking/<?= $currentBooking['id'] ?>';
         }
     }
 </script>

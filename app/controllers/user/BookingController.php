@@ -9,6 +9,7 @@ use App\Models\Booking;
 use App\Models\BookingLog;
 use App\Models\BookingParticipant;
 use App\Models\Room;
+use App\Models\Suspension;
 use App\Models\User;
 use App\Utils\Authentication;
 use App\Utils\Validator;
@@ -48,7 +49,6 @@ class BookingController extends Controller
                 "datetime" => $_POST['datetime'],
                 "duration" => $_POST['duration'],
                 "end_time" => "",
-                "booking_code" => "ABCD1",
                 "list_anggota" => json_decode($_POST['list_anggota'], true)
             ];
 
@@ -69,6 +69,7 @@ class BookingController extends Controller
             if (!$rules['status']) throw new CustomException($rules['message']);
 
             $members = $data['list_anggota'];
+            $data['booking_code'] = $this->generateBookingCode();
             unset($data['list_anggota']);
 
             $booking = Booking::create($data);
@@ -91,6 +92,8 @@ class BookingController extends Controller
             $checkUserActiveBooking = Booking::checkUserActiveBooking($userId);
             if ($checkUserActiveBooking) throw new CustomException('Tolong selesaikan peminjaman anda terlebih dahulu sebelum meminjam ruangan lain');
             $roomDetail = Room::getById($roomId);
+            if(Carbon::parse($data['datetime'])->lt(Carbon::now('Asia/Jakarta'))) throw new CustomException('Tidak bisa booking di kemarin hari');
+            
             if (Carbon::today('Asia/Jakarta')->diffInDays($data['datetime']) >= 7) throw new CustomException('Tidak bisa booking untuk jadwal lebih dari 7 hari per hari ini');
 
             if ($data['duration'] < 60) throw new CustomException('Minimal durasi pinjam ruangan 1 jam');
@@ -154,5 +157,57 @@ class BookingController extends Controller
             $error = json_encode($e->getErrorMessages());
             echo $error;
         }
+    }
+
+    public function cancel_booking($id)
+    {
+        try {
+            $user = new Authentication;
+            $data = [
+                'user_id' => $user->user['id'],
+                'booking_id' => $id,
+                'reason' => 'saya malas'
+            ];
+            $bookingCheck = Booking::getById($data['booking_id']);
+            if (!$bookingCheck) throw new CustomException('Booking tidak tersedia');
+            if($bookingCheck->pic_id !== $data['user_id']) throw new CustomException('Maaf anda bukan PIC dari peminjaman ini');
+            $checkSuspendUser = Suspension::checkSupensionsByUserId($data['user_id']);
+            if(!$checkSuspendUser) {
+                $suspension = Suspension::create([
+                    'user_id' => $data['user_id'], 
+                    'point' => 1
+                ]);
+            } else {
+                $suspension = Suspension::update([
+                    'id' => $checkSuspendUser->id,
+                    'point' => $checkSuspendUser->suspend_count + 1
+                ]);
+            }
+
+            $cancelled = BookingLog::cancel($data);
+            if($suspension->suspend_count == 3) {
+                $suspendUser = User::suspendAccount($data['user_id']);
+            }
+            
+            if ($cancelled) {
+                ResponseHandler::setResponse('Berhasil membatalkan peminjaman');
+                header('location:' . URL . '/user/room/index');
+            }
+            
+        } catch (CustomException $e) {
+            ResponseHandler::setResponse($e->getErrorMessages(), 'error');
+            header('location:' . URL . '/user/room/index');
+        }
+    }
+
+    private function generateBookingCode()
+    {
+        $characters = 'ABCDFGHIJKLN01234567890';
+        $code = '';
+
+        for ($i = 0; $i < 5; $i++) {
+            $code .= $characters[rand(0, strlen($characters) - 1)];
+        }
+        return $code;
     }
 }

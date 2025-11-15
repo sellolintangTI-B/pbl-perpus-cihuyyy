@@ -2,6 +2,7 @@ CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 DROP TABLE IF EXISTS booking_participants;
 DROP TABLE IF EXISTS booking_logs;
 DROP TABLE IF EXISTS bookings;
+DROP TABLE IF EXISTS suspensions;
 DROP TABLE IF EXISTS users;
 SET TIMEZONE = 'Asia/Jakarta';
 CREATE TABLE IF NOT EXISTS users  (

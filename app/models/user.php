@@ -152,4 +152,9 @@ class User extends Database
 
         return $data;
     }
+
+    public static function suspendAccount($userId)
+    {
+        //tambahin dlu mas di migrations kolom Issuspend nya @farrel
+    }
 }
