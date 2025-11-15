@@ -1,5 +1,5 @@
 INSERT INTO users (
-    id, id_number, email, password_hash, first_name, last_name,
+    id, id_number, email, password_hash, first_name, last_name
     institution, phone_number, major, role, profile_picture_url,
     activation_proof_url, is_active, created_at
 ) VALUES
