@@ -69,14 +69,4 @@ class RoomController extends Controller
         }
     }
 
-    public function postData()
-    {
-        $data = [
-            "datetime" => $_POST['datetime'],
-            "duration" => $_POST['duration'],
-            "list_anggota" => $_POST['list_anggota'],
-            "file_surat" => empty($_FILES['image']['file_surat']) ? null : $_FILES['image']['file_surat'],
-        ];
-        var_dump($data);
-    }
 }

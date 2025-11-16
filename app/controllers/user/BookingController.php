@@ -65,8 +65,6 @@ class BookingController extends Controller
 
             $rules = $this->validationBookingRules($id, $data, $data['user_id']);
             if (!$rules['status']) throw new CustomException($rules['message']);
-            $rules = $this->validationBookingRules($id, $data, $data['user_id']);
-            if (!$rules['status']) throw new CustomException($rules['message']);
 
             $members = $data['list_anggota'];
             $data['booking_code'] = $this->generateBookingCode();
@@ -88,7 +86,10 @@ class BookingController extends Controller
     private function validationBookingRules($roomId, $data, $userId)
     {
         try {
-
+            $checkIsUserSupended = User::checkUserSuspend($userId);
+            if($checkIsUserSupended->is_suspend) {
+                throw new CustomException("Anda sedang dalam masa suspension. Tidak bisa meminjam ruangan sampai " . $checkIsUserSupended->suspend_date);
+            }
             $checkUserActiveBooking = Booking::checkUserActiveBooking($userId);
             if ($checkUserActiveBooking) throw new CustomException('Tolong selesaikan peminjaman anda terlebih dahulu sebelum meminjam ruangan lain');
             $roomDetail = Room::getById($roomId);
@@ -185,12 +186,15 @@ class BookingController extends Controller
             }
 
             $cancelled = BookingLog::cancel($data);
-            if($suspension->suspend_count == 3) {
+            $responseMessage = 'Berhasil membatalkan peminjaman';
+            if($suspension->suspend_count >= 3) {
                 $suspendUser = User::suspendAccount($data['user_id']);
+                $suspendDate = Carbon::parse($suspendUser->suspend_untill)->toDateString();
+                $responseMessage = "Berhasil membatalkan peminjaman dan akun anda akan tersuspend sampai $suspendDate karna sudah 3 kali melakukan pembatalan peminjaman";
             }
             
             if ($cancelled) {
-                ResponseHandler::setResponse('Berhasil membatalkan peminjaman');
+                ResponseHandler::setResponse($responseMessage);
                 header('location:' . URL . '/user/room/index');
             }
             
