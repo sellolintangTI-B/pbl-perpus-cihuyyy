@@ -9,7 +9,7 @@ use App\Components\Icon\Icon;
 
 <div class="w-full h-full flex flex-col items-center justify-center gap-5 " x-data="{ onAlert: false, deleteRoomId: null }" @delete-room.window="onAlert = true; deleteRoomId = $event.detail.id">
     <div class="w-full flex items-center justify-start">
-        <h1 class="text-3xl font-medium text-primary">
+        <h1 class="text-2xl font-medium text-primary">
             Data Ruangan
         </h1>
     </div>
@@ -30,7 +30,7 @@ use App\Components\Icon\Icon;
     <div class="p-6 bg-baseColor shadow-sm shadow-gray-600 rounded-xl w-full h-full border border-gray-200 overflow-auto">
         <table class="table-auto w-full border-collapse">
             <thead class="text-primary bg-baseColor">
-                <tr class="border-b border-gray-200 bg-gray-50">
+                <tr class="border-b  border-gray-200">
                     <th class="px-3 py-3 text-xs font-semibold text-center">No</th>
                     <th class="px-3 py-3 text-xs font-semibold text-left">Nama Ruangan</th>
                     <th class="px-3 py-3 text-xs font-semibold text-center">Lantai</th>

@@ -9,7 +9,7 @@ $navItems = [
     ['label' => 'Panduan', 'url' => '/user/guide/index', 'start-with' => '/user/guide']
 ];
 
-$currentPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$currentPath = URL . parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 ?>
 <nav class="w-full py-4 px-8 transition-all duration-300" x-data="{ profileOpen: false }" x-bind:class="scrolled ? 'bg-primary' : 'bg-transparent'" x-cloak>
     <div class="w-full flex items-center justify-between">
@@ -22,7 +22,7 @@ $currentPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         <div class="flex items-center gap-2">
             <?php
             foreach ($navItems as $item):
-                $isActive = str_starts_with($currentPath, $item['start-with']);
+                $isActive = str_starts_with($currentPath, URL . $item['start-with']);
             ?>
                 <?= UserNavbar::navLink(label: $item['label'], href: URL . $item['url'], active: $isActive) ?>
             <?php endforeach; ?>
