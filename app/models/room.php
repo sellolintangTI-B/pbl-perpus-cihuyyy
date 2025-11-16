@@ -8,7 +8,7 @@ use Pdo;
 class Room extends Database
 {
 
-    public static function get($params)
+    public static function get($params = [])
     {
         $paramValues = [];
         $conn = parent::getConnection();
