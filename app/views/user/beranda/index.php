@@ -10,7 +10,7 @@ use App\Components\RoomCard;
         </h1>
 
         <!-- Search & Filter Section -->
-        <form class="w-full max-w-4xl justify-center items-center flex flex-col gap-4 m-3" action="<?= URL ?>/user/room/testing" method="post">
+        <form class="w-full max-w-4xl justify-center items-center flex flex-col gap-4 m-3" method="get">
             <!-- Search Bar -->
             <div class="relative w-full max-w-2xl">
                 <div class="absolute left-4 top-1/2 -translate-y-1/2">
@@ -18,7 +18,7 @@ use App\Components\RoomCard;
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                     </svg>
                 </div>
-                <input type="text" placeholder="Pusat Perancis ..." class="w-full pl-12 pr-4 py-3 text-center rounded-full border border-gray-300 focus:outline-none focus:border-primary transition-colors duration-200 text-sm">
+                <input type="text" name="room" placeholder="Pusat Perancis ..." class="w-full pl-12 pr-4 py-3 text-center rounded-full border border-gray-300 focus:outline-none focus:border-primary transition-colors duration-200 text-sm">
             </div>
 
             <!-- Filter Section -->
@@ -42,8 +42,7 @@ use App\Components\RoomCard;
                 </div>
 
                 <!-- Search Button -->
-                <!-- Search Button -->
-                <button class="px-8 py-3 cursor-pointer bg-linear-to-r from-primary to-secondary text-white rounded-full font-medium text-sm hover:opacity-90 transition-all duration-300 shadow-sm flex items-center gap-2">
+                <button type="submit" class="px-8 py-3 cursor-pointer bg-linear-to-r from-primary to-secondary text-white rounded-full font-medium text-sm hover:opacity-90 transition-all duration-300 shadow-sm flex items-center gap-2">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                     </svg>

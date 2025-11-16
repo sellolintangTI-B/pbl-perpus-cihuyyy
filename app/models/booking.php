@@ -24,14 +24,14 @@ class Booking extends Database
         return $data;
     }
 
-
-
-    public static function getByRoomId($id)
+    public static function getByRoomId($id, $date)
     {
         $conn = parent::getConnection();
-        $q = $conn->prepare("SELECT b.start_time, b.start_time + (b.duration || ' minutes')::INTERVAL AS end_time, u.first_name || ' ' || u.last_name AS pic_name  FROM bookings AS b JOIN users AS u ON b.user_id = u.id
-        WHERE b.room_id = ? ORDER BY start_time ASC");
+        $q = $conn->prepare("SELECT b.start_time, b.start_time + (b.duration || ' minutes')::INTERVAL AS end_time, u.first_name || ' ' || u.last_name AS pic_name 
+        FROM bookings AS b JOIN users AS u ON b.user_id = u.id
+        WHERE b.room_id = ? AND b.start_time::date = ? ORDER BY start_time ASC");
         $q->bindValue(1, $id);
+        $q->bindValue(2, $date);
         $q->execute();
         $data = $q->fetchAll(PDO::FETCH_OBJ);
         return $data;
@@ -40,7 +40,8 @@ class Booking extends Database
     public static function checkSchedule($startTime, $duration, $roomId)
     {
         $conn = parent::getConnection();
-        $q = $conn->prepare("SELECT * FROM bookings WHERE start_time < TO_TIMESTAMP(:startTime, 'YYYY-MM-DD HH24:MI:SS') + (:duration || ' minutes')::INTERVAL AND end_time > TO_TIMESTAMP(:startTime2, 'YYYY-MM-DD HH24:MI:SS') AND room_id = :roomId;");
+        $q = $conn->prepare("SELECT * FROM bookings WHERE start_time < TO_TIMESTAMP(:startTime, 'YYYY-MM-DD HH24:MI:SS') + (:duration || ' minutes')::INTERVAL 
+        AND end_time > TO_TIMESTAMP(:startTime2, 'YYYY-MM-DD HH24:MI:SS') AND room_id = :roomId;");
         $q->bindValue(":startTime", $startTime);
         $q->bindValue(":duration", $duration);
         $q->bindValue(":startTime2", $startTime);
@@ -110,4 +111,8 @@ class Booking extends Database
         return $data;
     }
 
+    public static function getBooksByDate($date)
+    {
+        
+    }
 }
