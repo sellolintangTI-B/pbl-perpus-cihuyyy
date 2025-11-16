@@ -11,6 +11,7 @@ class Middleware
         "Admin" => [
             //BOOKING
             "/admin/booking/index",
+            "/admin/booking/details",
             //ROOM
             "/admin/room/index",
             "/admin/room/store",

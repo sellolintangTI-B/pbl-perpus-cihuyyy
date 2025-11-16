@@ -9,8 +9,8 @@
 
     <div class="w-full h-full flex flex-col items-start justify-start gap-5" x-data="{ showAlert: false, deleteUserId: null }" @delete-user.window="showAlert = true; deleteUserId = $event.detail.id">
         <div class="w-full flex items-center justify-start">
-            <h1 class="text-3xl font-medium text-primary">
-                Akun Pengguna
+            <h1 class="text-2xl font-medium text-primary">
+                Data Pengguna
             </h1>
         </div>
         <!-- action section -->
@@ -37,8 +37,8 @@
         <div class="p-6 bg-baseColor shadow-sm shadow-gray-600 rounded-xl w-full h-full border border-gray-200 overflow-y-auto">
             <table class="table-auto w-full text-left border-collapse">
                 <!-- Header -->
-                <thead class="text-primary bg-gray-50">
-                    <tr class="border-b border-gray-200">
+                <thead class="text-primary">
+                    <tr class="border-b border-gray-200 ">
                         <th class="px-3 py-3 text-xs font-semibold text-center">No</th>
                         <th class="px-3 py-3 text-xs font-semibold">Nama</th>
                         <th class="px-3 py-3 text-xs font-semibold">Email</th>

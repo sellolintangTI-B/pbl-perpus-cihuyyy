@@ -81,20 +81,19 @@ use Carbon\Carbon;
 
             <h3 class="text-lg font-medium text-primary">Waktu terpakai</h3>
             <!-- Date Input -->
-            <form class="w-full flex justify-between items-center h-8">
+            <form class="w-full flex justify-between items-center h-8" method="get">
                 <div class="flex items-center shrink gap-2 h-full">
                     <label class="block text-sm font-medium text-primary">Tanggal:</label>
                     <input type="date"
-                        name="tanggal"
+                        name="date"
                         x-model="tanggal"
                         placeholder="YYYY-MM-DD"
                         class="w-full h-full rounded-xl p-2 text-gray-600 outline-none border-none"
                         required>
                 </div>
                 <button
-                    type="button"
-                    class=" bg-primary text-white px-4 max-h-full h-full rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
-                    @click="if(tanggal) alert('Cek jadwal untuk: ' + tanggal)">
+                    type="submit"
+                    class=" bg-primary text-white px-4 max-h-full h-full rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors">
                     Cek
                 </button>
             </form>
