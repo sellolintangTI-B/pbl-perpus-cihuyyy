@@ -48,6 +48,7 @@ class Middleware
             "/user/booking/store",
             "/user/booking/index",
             "/user/booking/detail",
+            "/user/booking/cancel_booking",
             //LOGOUT
             "/auth/logout/logout",
             //GUIDE
@@ -64,6 +65,7 @@ class Middleware
             "/user/booking/store",
             "/user/booking/index",
             "/user/booking/detail",
+            "/user/booking/cancel_booking",
             //LOGOUT
             "/auth/logout/logout",
             //GUIDE

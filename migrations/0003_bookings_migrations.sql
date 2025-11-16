@@ -11,7 +11,7 @@ CREATE TABLE bookings (
     booking_code VARCHAR(5) NOT NULL,
     special_requirement_attachments_url VARCHAR(100),
     is_deleted BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMPTZ DEFAULT NOW() 
+    created_at TIMESTAMPTZ DEFAULT NOW(),
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (room_id) REFERENCES rooms(id)
 );

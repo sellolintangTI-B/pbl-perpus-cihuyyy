@@ -22,5 +22,17 @@ class BookingLog extends Database {
         if($q) return true;
         return false;
     }
+    
+    public static function cancel($data)
+    {
+        $conn = parent::getConnection();
+        $q = $conn->prepare("INSERT INTO booking_logs (status, cancelled_by, reason, booking_id) VALUES ('cancelled', ?, ?, ?)");
+        $q->bindValue(1, $data['user_id']);
+        $q->bindValue(2, $data['reason']);
+        $q->bindValue(3, $data['booking_id']);
+        $q->execute();
+        if($q) return true;
+        return false;
+    }
 
 }

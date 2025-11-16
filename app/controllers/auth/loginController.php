@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Controllers\Auth;
+
 use App\Core\Controller;
 use App\Utils\Validator;
 use App\Error\CustomException;
@@ -7,17 +9,18 @@ use App\Core\ResponseHandler;
 use App\Models\User;
 use App\Utils\Authentication;
 
-class LoginController extends Controller {
+class LoginController extends Controller
+{
     private $user;
-    
+
     public function __construct()
     {
         $auth = new Authentication;
 
-        if(!empty($auth->user)) {
-            if($auth->user['role'] === 'Admin') {
-                header('location:'. URL . '/admin/dashboard/index');
-            } elseif($auth->user['role'] === 'Mahasiswa' || $auth->user['role'] === 'Dosen') {
+        if (!empty($auth->user)) {
+            if ($auth->user['role'] === 'Admin') {
+                header('location:' . URL . '/admin/dashboard/index');
+            } elseif ($auth->user['role'] === 'Mahasiswa' || $auth->user['role'] === 'Dosen') {
                 header('location:' . URL . '/user/user/index');
             }
         }
@@ -46,16 +49,20 @@ class LoginController extends Controller {
             // if($_SESSION['captcha'] !== $data['captcha']) throw new CustomException('Captcha tidak valid');
 
             $checkIfUserExist = User::getByEmailOrIdNumber($data['identifier']);
-            if(!$checkIfUserExist) throw new CustomException('Credentials not match');
-            if(!password_verify($data['password'], $checkIfUserExist['password_hash'])) throw new CustomException('Credentials not match');
-            if(!$checkIfUserExist['is_active']) throw new CustomException('Akun ini masih menunggu verifikasi admin');
+            if (!$checkIfUserExist) throw new CustomException('Credentials not match');
+            if (!password_verify($data['password'], $checkIfUserExist['password_hash'])) throw new CustomException('Credentials not match');
+            if (!$checkIfUserExist['is_active']) throw new CustomException('Akun ini masih menunggu verifikasi admin');
 
-            if(isset($_POST['remember_me'])) {
-                setcookie('remember_username', $_POST['username'], time() + (30*24*60*60));
+            if (isset($_POST['remember_me'])) {
+                setcookie('remember_username', $_POST['username'], time() + (30 * 24 * 60 * 60), '/');
             } else {
+                $paths = ['/', '/auth', '/auth/login', '/auth/login/index'];
+                foreach ($paths as $p) {
+                    setcookie('remember_username', '', time() - 3600, $p);
+                }
                 unset($_COOKIE['remember_username']);
-                // setcookie("remember_username", "", time() - 3600, "/");
             }
+
 
             $_SESSION['loggedInUser'] = [
                 "username" => $checkIfUserExist['first_name'] . ' ' . $checkIfUserExist['last_name'],
@@ -65,12 +72,11 @@ class LoginController extends Controller {
                 "id" => $checkIfUserExist['id']
             ];
 
-            if($checkIfUserExist['role'] === 'Admin') {
+            if ($checkIfUserExist['role'] === 'Admin') {
                 header('location:' . URL . '/admin/dashboard/index');
             } elseif ($checkIfUserExist['role'] === 'Mahasiswa' || $checkIfUserExist['role'] === 'Dosen') {
                 header('location:' . URL . '/user/room/index');
-            } 
-
+            }
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), "error");
             header('location:' . URL . '/auth/login/index');

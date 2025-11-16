@@ -19,6 +19,6 @@ switch ($color) {
 }
 
 ?>
-<button class=" <?= $customClass ?> <?= $class ?> cursor-pointer" type="<?= $type ?>" onclick="<?= $onclick ?>" id="<?= $id ?>" name="<?= $name ?>">
+<button class=" <?= $customClass ?> <?= $class ?> cursor-pointer" type="<?= $type ?>" onclick="<?= $onClick ?>" id="<?= $id ?>" name="<?= $name ?>">
     <?php $icon ? Icon::{$icon}('w-6 h-6') : null; ?> <?= $label ?>
 </button>

@@ -24,6 +24,8 @@ class Booking extends Database
         return $data;
     }
 
+
+
     public static function getByRoomId($id)
     {
         $conn = parent::getConnection();
@@ -55,6 +57,7 @@ class Booking extends Database
             FROM (
                 SELECT DISTINCT ON (b.id)
                     b.id AS booking_id,
+                    b.user_id AS pic_id,
                     b.booking_code AS booking_code,
                     r.name AS room_name,
                     r.floor,
@@ -96,7 +99,7 @@ class Booking extends Database
     public static function getById($id)
     {
         $conn = parent::getConnection();
-        $q = $conn->prepare("SELECT DISTINCT ON (b.id) b.booking_code, bl.status, u.first_name || ' ' || u.last_name AS pic, r.name, r.floor, b.start_time, b.end_time
+        $q = $conn->prepare("SELECT DISTINCT ON (b.id) b.booking_code, bl.status, u.first_name || ' ' || u.last_name AS pic, r.name, r.floor, b.start_time, b.end_time, b.user_id AS pic_id
         FROM bookings AS b JOIN booking_logs AS bl ON b.id = bl.booking_id
         JOIN users AS u ON b.user_id = u.id
         JOIN booking_participants AS bp ON b.id = bp.booking_id 
@@ -106,4 +109,5 @@ class Booking extends Database
         $data = $q->fetch(PDO::FETCH_OBJ);
         return $data;
     }
+
 }

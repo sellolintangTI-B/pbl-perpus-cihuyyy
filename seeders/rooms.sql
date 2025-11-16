@@ -11,5 +11,5 @@ VALUES
 
 -- Lantai 2
 (gen_random_uuid(), 'Ruang Kelas 2A', 2, 'Ruang kelas standar dengan proyektor dan AC.', 10, 25, FALSE, TRUE, FALSE, 'https://example.com/img/room4.jpg'),
-(gen_random_uuid(), 'Ruang Kelas 2B', 2, 'Ruang kelas sedang dengan fasilitas lengkap.', 15, 30, FALSE, TRUE, FALSE, 'https://example.com/img/room5.jpg'),
+(gen_random_uuid(), 'Ruang Kelas 2B', 2, 'Ruang kelas sedang dengan fasilitas lengkap.', 15, 30, FALSE, TRUE, FALSE, 'https://example.com/img/room5.jpg');
 

@@ -152,4 +152,26 @@ class User extends Database
 
         return $data;
     }
+
+    public static function suspendAccount($userId)
+    {
+        $conn = parent::getConnection();
+        $q = $conn->prepare("UPDATE users SET is_suspend = true, suspend_untill = (NOW() AT TIME ZONE 'Asia/Jakarta') + INTERVAL '7 days' WHERE id = :userId RETURNING suspend_untill");
+        $q->bindValue(':userId', $userId);
+        $q->execute();
+        if($q) {
+            $data = $q->fetch(PDO::FETCH_OBJ);
+            return $data;
+        } return false;
+    }
+
+    public static function checkUserSuspend($userId)
+    {
+        $conn = parent::getConnection();
+        $q = $conn->prepare("SELECT is_suspend, TO_CHAR(suspend_untill, 'YYYY-MM-DD') AS suspend_date FROM users WHERE id = :userId");
+        $q->bindValue(':userId', $userId);
+        $q->execute();
+        $data = $q->fetch(PDO::FETCH_OBJ);
+        return $data;
+    }
 }
