@@ -7,7 +7,7 @@
 
     ?>
 
-    <div class="w-full h-full flex flex-col items-start justify-start gap-5" x-data="{ showAlert: false, deleteUserId: null }" @delete-user.window="showAlert = true; deleteUserId = $event.detail.id">
+    <div class="w-full h-full flex flex-col items-start justify-start gap-5 " x-data="{ showAlert: false, deleteUserId: null }" @delete-user.window="showAlert = true; deleteUserId = $event.detail.id">
         <div class="w-full flex items-center justify-start">
             <h1 class="text-2xl font-medium text-primary">
                 Data Peminjaman
@@ -15,7 +15,7 @@
         </div>
         <!-- action section -->
         <div class="w-full h-10 flex items-center justify-between">
-            <?= Button::anchor(label: "Tambah Peminjaman", icon: "plus", href: "/admin/user/add_admin", class: "px-4 py-2 h-full") ?>
+            <?= Button::anchor(label: "Tambah Peminjaman", icon: "plus", href: "/admin/booking/create", class: "px-4 py-2 h-full") ?>
             <!-- form action -->
             <div class="flex items-center justify-end gap-2 h-full w-full max-w-[24rem]">
                 <form method="GET" class="flex items-center gap-2  w-full h-full flex-1">
@@ -88,7 +88,21 @@
                                 x-transition:leave-end="opacity-0 scale-95"
                                 class="absolute right-0 mt-1 w-36 bg-white border border-gray-200 rounded-md shadow-md overflow-hidden z-50 text-left"
                                 style="display: none;">
-                                <a href=""
+                                <?php
+                                $checked_in = true;
+                                if (!$checked_in):
+                                ?>
+                                    <a href="<?= URL . '/admin/booking/details/1' ?>"
+                                        class="flex items-center gap-2 px-3 py-2 text-xs text-secondary hover:bg-secondary/5 transition">
+                                        <?= Icon::calendar_pencil('w-4 h-4') ?> Check In
+                                    </a>
+                                <?php else: ?>
+                                    <a href="<?= URL . '/admin/booking/details/1' ?>"
+                                        class="flex items-center gap-2 px-3 py-2 text-xs text-tertiary hover:bg-tertiary/5 transition">
+                                        <?= Icon::logout('w-4 h-4') ?> Finish
+                                    </a>
+                                <?php endif; ?>
+                                <a href="<?= URL . '/admin/booking/details/1' ?>"
                                     class="flex items-center gap-2 px-3 py-2 text-xs text-gray-700 hover:bg-gray-50 transition">
                                     <?= Icon::eye('w-4 h-4') ?> Detail
                                 </a>
@@ -99,7 +113,7 @@
                                 <button
                                     @click=""
                                     class="flex items-center gap-2 px-3 py-2 text-xs text-red-600 hover:bg-red/5 border-t border-gray-100 w-full text-left transition">
-                                    <?= Icon::trash('w-4 h-4') ?> Delete
+                                    <?= Icon::trash('w-4 h-4') ?> Cancel
                                 </button>
                             </div>
                         </td>

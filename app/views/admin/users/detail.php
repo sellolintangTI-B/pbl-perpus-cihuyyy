@@ -18,7 +18,7 @@ $options_jurusan = [
 
 ?>
 
-<div class="w-full h-full flex flex-col gap-6">
+<div class="w-full h-full flex flex-col gap-6 ">
     <!-- Title -->
     <h1 class="text-2xl font-medium text-primary">Detail Akun</h1>
 
@@ -44,7 +44,7 @@ $options_jurusan = [
                 <?php endif ?>
                 <div class="flex-1 w-full h-full">
                     <div class="h-full  w-full overflow-y-auto overflow-hidden">
-                        <div class="flex flex-col gap-6 px-2">
+                        <div class="flex flex-col gap-6 px-2  w-full max-w-5xl mx-auto">
                             <!-- Header -->
                             <div class="flex items-center justify-between bg-white shadow-md p-6 rounded-xl border border-gray-200">
                                 <div class="flex items-center gap-6">

@@ -4,9 +4,9 @@ use App\Components\Icon\Icon;
 use App\Components\Button;
 use App\Components\Badge;
 ?>
-<div class="w-full h-full flex flex-col gap-4" x-data="formAnggota()">
+<div class="w-full h-full flex flex-col gap-4 " x-data="formAnggota()">
     <h1 class="text-2xl font-medium text-primary">
-        Detail Ruangan
+        Detail Peminjaman
     </h1>
     <div class="flex-1 flex flex-col gap-4 items-start justify-start w-full h-full p-6 rounded-xl border border-gray-200 overflow-hidden bg-white shadow-lg shadow-black/20">
         <a class="flex gap-2 text-primary items-center cursor-pointer hover:bg-primary/5 px-3 py-1 rounded-full" href="<?= URL . "/admin/booking/index" ?>">
@@ -14,7 +14,7 @@ use App\Components\Badge;
             Back
         </a>
         <div class="w-full h-full overflow-y-auto overflow-hidden">
-            <div class="flex flex-col items-start justify-start gap-6 w-full px-2">
+            <div class="flex flex-col items-start justify-start gap-6 w-full max-w-5xl mx-auto px-2">
                 <!-- informasi ruangan -->
                 <div class="w-full h-fit flex flex-col gap-6">
                     <!-- gambar -->
@@ -79,42 +79,69 @@ use App\Components\Badge;
                                 Check In: 13.10 &bull; Check Out: 15.15
                             </p>
                         </div>
-                        <label class="block text-sm font-medium text-primary mb-2">Anggota</label>
 
-                        <!-- Anggota -->
-                        <div class="flex flex-col gap-2 rounded-xl items-start w-full justify-start">
-                            <!-- List anggota yang sudah ditambahkan -->
-                            <template x-for="(a, index) in listAnggota" :key="index">
-                                <div class="flex items-center justify-between w-full">
-                                    <span x-text="`${index + 1}. ${a.name} ${a.role}`" class="text-gray-700 text-sm"></span>
-                                    <button type="button" @click="deleteAnggota(index)" class="text-red-500 text-xs hover:underline" :class="index==0?'hidden':'block'">hapus</button>
-                                </div>
-                            </template>
-                            <!-- Input tambah anggota -->
-                            <input type="text"
-                                x-model="identifier"
-                                placeholder="Masukkan NIM/NIP atau Email"
-                                class="w-full rounded-xl shadow-md p-3 bg-baseColor text-gray-600 border border-gray-400 hover:border-secondary outline-none text-sm transition-shadow duration-300">
-                            <!-- Pesan error -->
-                            <p x-text="message" class="text-xs text-red-500 mt-1"></p>
-
-                            <div class="w-full flex items-center justify-center">
-                                <button type="button"
-                                    @click="tambahAnggota"
-                                    class="bg-primary text-white w-8 h-8 cursor-pointer rounded-full hover:bg-primary/90 transition-all">
-                                    +
-                                </button>
+                        <div class="max-w-xl w-full">
+                            <div class="w-full flex justify-between items-center">
+                                <label class="block text-lg font-medium text-primary mb-2">Anggota</label>
+                                <button type="button" @click="" class="text-white bg-primary hover:bg-primary/20 text-xs hover:underline px-2 py-1 rounded-md cursor-pointer">edit</button>
                             </div>
+                            <!-- Anggota -->
+                            <div class="flex flex-col gap-2 rounded-xl items-start w-full justify-start">
+                                <!-- List anggota yang sudah ditambahkan -->
+                                <table class="table-auto text-left border-collapse w-full">
+                                    <!-- Header -->
+                                    <thead class="text-primary">
+                                        <tr class="border-b border-gray-200 ">
+                                            <th class="px-3 py-3 text-xs font-semibold text-start">Nama</th>
+                                            <th class="px-3 py-3 text-xs font-semibold text-start">Role</th>
+                                            <th class="px-3 py-3 text-xs font-semibold text-start"></th>
+                                        </tr>
+                                    </thead>
+                                    <!-- Body -->
+                                    <tbody class="text-primary divide-y divide-gray-100">
+                                        <template x-for="(a, index) in listAnggota" :key="index">
+                                            <tr
+                                                class="hover:bg-gray-50 transition-colors duration-150 text-start">
+                                                <td x-text="`${a.name}`" class="text-gray-700 px-3 py-3 text-xs text-start "></td>
+                                                <td x-text="`${a.role}`" class="text-gray-700 px-3 py-3 text-xs text-start"></td>
+                                                <td class="px-3 py-3">
+                                                    <!-- action for delete anggota -->
+                                                    <button type="button" @click="deleteAnggota(index)" class="text-red text-xs hover:underline p-2 rounded-full hover:bg-red/5 cursor-pointer">
+                                                        <?php
+                                                        Icon::trash('w-5 h-5')
+                                                        ?>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
 
-                            <!-- Hidden input untuk mengirim data ke PHP -->
-                            <input type="hidden" name="list_anggota" :value="JSON.stringify(listAnggota)">
+                                <!-- Input tambah anggota -->
+                                <input type="text"
+                                    x-model="identifier"
+                                    placeholder="Masukkan NIM/NIP atau Email"
+                                    class="w-full rounded-xl shadow-md p-3 bg-baseColor text-gray-600 border border-gray-400 hover:border-secondary outline-none text-sm transition-shadow duration-300">
+                                <!-- Pesan error -->
+                                <p x-text="message" class="text-xs text-red mt-1"></p>
+
+                                <div class="w-full flex items-center justify-center">
+                                    <button type="button"
+                                        @click="tambahAnggota"
+                                        class="bg-primary text-white w-8 h-8 cursor-pointer rounded-full hover:bg-primary/90 transition-all">
+                                        +
+                                    </button>
+                                </div>
+
+                                <!-- Hidden input untuk mengirim data ke PHP -->
+                                <input type="hidden" name="list_anggota" :value="JSON.stringify(listAnggota)">
+                            </div>
                         </div>
                     </div>
                 </div>
                 <!-- action buttons -->
                 <div class="w-full flex flex-col gap-3">
-                    <?= Button::anchor(label: 'Edit Ruangan', color: 'secondary', class: 'w-full py-3 px-6') ?>
-                    <?= Button::button(label: 'Nonaktifkan Ruangan', color: 'red', class: 'w-full py-3 px-6') ?>
+                    <?= Button::anchor(label: 'Edit Data Peminjaman', color: 'primary', class: 'w-full py-3 px-6') ?>
                 </div>
             </div>
         </div>
@@ -124,7 +151,11 @@ use App\Components\Badge;
     function formAnggota() {
         return {
             identifier: '',
-            listAnggota: [],
+            listAnggota: [{
+                id: 'A10028',
+                name: 'Nugroho Nur Cahyo',
+                role: 'Mahasiswa'
+            }],
             message: '',
             async tambahAnggota() {
                 if (this.identifier.trim() === '') {

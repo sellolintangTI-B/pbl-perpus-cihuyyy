@@ -26,4 +26,13 @@ class BookingController extends Controller
             header('location:');
         }
     }
+    public function create()
+    {
+        try {
+            $this->view('admin/booking/create', layoutType: $this::$layoutType['admin']);
+        } catch (CustomException $e) {
+            ResponseHandler::setResponse($e->getErrorMessages(), 'error');
+            header('location:');
+        }
+    }
 }

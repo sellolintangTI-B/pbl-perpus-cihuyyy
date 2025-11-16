@@ -34,7 +34,7 @@ $options = [
     ],
 ];
 ?>
-<div class="w-full h-full max-h-full flex flex-col items-start justify-start gap-5">
+<div class="w-full h-full max-h-full flex flex-col items-start justify-start gap-5 ">
     <div class="w-full flex items-center justify-start">
         <h1 class="text-2xl font-medium text-primary">
             Tambah Akun Admin
