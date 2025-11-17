@@ -4,7 +4,7 @@ use App\Components\Icon\Icon;
 use App\Components\Button;
 use App\Components\Badge;
 ?>
-<div class="w-full h-full flex flex-col gap-4">
+<div class="w-full h-full flex flex-col gap-4 ">
     <h1 class="text-2xl font-medium text-primary">
         Detail Ruangan
     </h1>
@@ -14,7 +14,7 @@ use App\Components\Badge;
             Back
         </a>
         <div class="w-full h-full overflow-y-auto overflow-hidden">
-            <div class="flex flex-col items-start justify-start gap-6 w-full px-2">
+            <div class="flex flex-col items-start justify-start w-full max-w-5xl mx-auto gap-6 px-2">
                 <!-- informasi ruangan -->
                 <div class="w-full h-fit flex gap-6">
                     <!-- gambar -->

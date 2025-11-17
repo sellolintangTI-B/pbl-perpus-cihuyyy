@@ -26,7 +26,7 @@ use Carbon\Carbon;
                     <?= Icon::global('w-10 h-10') ?>
                 </div>
                 <div class="flex-1">
-                    <h3 class="font-medium text-lg mb-1"><?=   ($data['detail']->requires_special_approval) ? "Ruangan Khusus" : "Ruangan Umum"  ?></h3>
+                    <h3 class="font-medium text-lg mb-1"><?= ($data['detail']->requires_special_approval) ? "Ruangan Khusus" : "Ruangan Umum"  ?></h3>
                     <p class="text-sm opacity-90">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod ad, nostrum dicta doloremque totam pariatur officia doloribus id soluta ea?</p>
                 </div>
             </div>
@@ -63,7 +63,7 @@ use Carbon\Carbon;
                 <svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
                 </svg>
-                <span>Minimal <?=  $data['detail']->min_capacity ?> orang - Maksimal <?= $data['detail']->max_capacity ?> orang</span>
+                <span>Minimal <?= $data['detail']->min_capacity ?> orang - Maksimal <?= $data['detail']->max_capacity ?> orang</span>
             </div>
 
             <!-- Location -->
@@ -108,11 +108,11 @@ use Carbon\Carbon;
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200">
-                        <?php foreach($data['schedule'] as $schedule) : ?>
-                        <tr>
-                            <td class="px-4 py-3 text-gray-600"><?= Carbon::parse($schedule->start_time)->toTimeString() ?> - <?= Carbon::parse($schedule->end_time)->toTimeString() ?></td>
-                            <td class="px-4 py-3 text-gray-600"><?= $schedule->pic_name ?></td>
-                        </tr>
+                        <?php foreach ($data['schedule'] as $schedule) : ?>
+                            <tr>
+                                <td class="px-4 py-3 text-gray-600"><?= Carbon::parse($schedule->start_time)->toTimeString() ?> - <?= Carbon::parse($schedule->end_time)->toTimeString() ?></td>
+                                <td class="px-4 py-3 text-gray-600"><?= $schedule->pic_name ?></td>
+                            </tr>
                         <?php endforeach ?>
                     </tbody>
                 </table>
@@ -134,42 +134,45 @@ use Carbon\Carbon;
                         <label class="block text-sm font-medium text-primary mb-2">Durasi</label>
                         <?php FormInput::input(id: "duration", name: "duration", type: "time", required: true); ?>
                     </div>
-                    <label class="block text-sm font-medium text-primary mb-2">Anggota</label>
-                    <!-- Anggota -->
-                    <div class="flex flex-col gap-2 p-4 bg-white border border-gray-400 rounded-xl items-start">
-                        <!-- List anggota yang sudah ditambahkan -->
-                        <template x-for="(a, index) in listAnggota" :key="index">
-                            <div class="flex items-center justify-between w-full">
-                                <span x-text="`${index + 1}. ${a.name} (${index == 0?'PJ':'Partitipants'})`" class="text-gray-700 text-sm"></span>
-                                <button type="button" @click="deleteAnggota(index)" class="text-red-500 text-xs hover:underline" :class="index==0?'hidden':'block'">hapus</button>
-                            </div>
-                        </template>
-                        <!-- Input tambah anggota -->
-                        <input type="text"
-                            x-model="identifier"
-                            placeholder="Masukkan NIM/NIP atau Email"
-                            class="w-full rounded-xl shadow-md p-3 bg-baseColor text-gray-600 border border-gray-400 hover:border-secondary outline-none text-sm transition-shadow duration-300">
-                        <!-- Pesan error -->
-                        <p x-text="message" class="text-xs text-red-500 mt-1"></p>
 
-                        <div class="w-full flex items-center justify-center">
-                            <button type="button"
-                                @click="tambahAnggota"
-                                class="bg-primary text-white w-8 h-8 cursor-pointer rounded-full hover:bg-primary/90 transition-all">
-                                +
-                            </button>
+                    <?php if ($data['detail']->requires_special_approval): ?>
+                        <!-- Upload surat resmi  -->
+                        <div>
+                            <label class="block text-sm font-medium text-primary mb-2">Upload Surat Resmi</label>
+                            <?php FormInput::fileInput(id: "surat", name: "file_surat", placeholder: "Surat Izin Peminjaman", accept: 'image/*', required: true)
+                            ?>
                         </div>
+                    <?php else: ?>
+                        <label class="block text-sm font-medium text-primary mb-2">Anggota</label>
+                        <!-- Anggota -->
+                        <div class="flex flex-col gap-2 p-4 bg-white border border-gray-400 rounded-xl items-start">
+                            <!-- List anggota yang sudah ditambahkan -->
+                            <template x-for="(a, index) in listAnggota" :key="index">
+                                <div class="flex items-center justify-between w-full">
+                                    <span x-text="`${index + 1}. ${a.name} (${index == 0?'PJ':'Partitipants'})`" class="text-gray-700 text-sm"></span>
+                                    <button type="button" @click="deleteAnggota(index)" class="text-red-500 text-xs hover:underline" :class="index==0?'hidden':'block'">hapus</button>
+                                </div>
+                            </template>
+                            <!-- Input tambah anggota -->
+                            <input type="text"
+                                x-model="identifier"
+                                placeholder="Masukkan NIM/NIP atau Email"
+                                class="w-full rounded-xl shadow-md p-3 bg-baseColor text-gray-600 border border-gray-400 hover:border-secondary outline-none text-sm transition-shadow duration-300">
+                            <!-- Pesan error -->
+                            <p x-text="message" class="text-xs text-red-500 mt-1"></p>
 
-                        <!-- Hidden input untuk mengirim data ke PHP -->
-                        <input type="hidden" name="list_anggota" :value="JSON.stringify(listAnggota)">
-                    </div>
+                            <div class="w-full flex items-center justify-center">
+                                <button type="button"
+                                    @click="tambahAnggota"
+                                    class="bg-primary text-white w-8 h-8 cursor-pointer rounded-full hover:bg-primary/90 transition-all">
+                                    +
+                                </button>
+                            </div>
 
-                    <!-- Upload surat resmi -->
-                    <!-- <div>
-                        <label class="block text-sm font-medium text-primary mb-2">Upload Surat Resmi</label> -->
-                        <?php //FormInput::fileInput(id: "surat", name: "file_surat", placeholder: "Surat Izin Peminjaman", accept: 'image/*', required: true) ?>
-                    <!-- </div> -->
-
+                            <!-- Hidden input untuk mengirim data ke PHP -->
+                            <input type="hidden" name="list_anggota" :value="JSON.stringify(listAnggota)">
+                        </div>
+                    <?php endif; ?>
                     <!-- Tombol submit -->
                     <button type="submit"
                         class="w-full bg-linear-to-r from-primary to-secondary text-white py-3 rounded-xl font-medium text-sm hover:shadow-lg transition-all duration-300">

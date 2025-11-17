@@ -102,10 +102,6 @@ use App\Components\Icon\Icon;
                                     <?= Icon::eye('w-3.5 h-3.5') ?> Detail
                                 </a>
 
-                                <a class="flex items-center gap-2 px-3 py-2 text-xs text-secondary hover:bg-secondary/5 transition">
-                                    <?= Icon::lock('w-3.5 h-3.5') ?> Aktivasi
-                                </a>
-
                                 <a href="<?= URL . "/admin/room/edit/" . $room->id ?>"
                                     class="flex items-center gap-2 px-3 py-2 text-xs text-primary hover:bg-primary/5 transition">
                                     <?= Icon::pencil('w-3.5 h-3.5') ?> Edit

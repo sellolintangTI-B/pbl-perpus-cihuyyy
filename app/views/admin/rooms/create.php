@@ -3,7 +3,7 @@
 use App\Components\Icon\Icon;
 use App\Components\FormInput;
 ?>
-<div class="w-full h-full flex flex-col items-start justify-start gap-5">
+<div class="w-full h-full flex flex-col items-start justify-start gap-5 ">
     <div class="w-full flex items-center justify-start">
         <h1 class="text-2xl font-medium text-primary">
             Tambah Ruangan
@@ -17,7 +17,7 @@ use App\Components\FormInput;
             </a>
         </div>
         <div class="flex-1 w-full overflow-y-auto">
-            <div class="flex items-center justify-center">
+            <div class="flex items-center justify-center  w-full max-w-5xl mx-auto">
                 <form class="w-full max-w-3xl grid grid-cols-1 sm:grid-cols-2 gap-6" action="<?= URL . "/admin/room/store" ?>" method="post" enctype="multipart/form-data">
                     <?php
                     FormInput::input(id: 'nama', name: 'name', label: 'Nama', placeholder: "masukkan nama ruangan", required: true);

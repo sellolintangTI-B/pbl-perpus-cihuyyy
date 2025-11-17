@@ -71,7 +71,8 @@ use App\Components\RoomCard;
                     'rating' => '4.85',
                     'min' => $room->min_capacity,
                     'max' => $room->max_capacity,
-                    'description' => $room->description
+                    'description' => $room->description,
+                    'isSpecial' => $room->requires_special_approval
                 ];
                 RoomCard::card($r);
             }
