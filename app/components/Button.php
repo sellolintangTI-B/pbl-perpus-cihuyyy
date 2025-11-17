@@ -16,7 +16,7 @@ class Button
     {
         include __DIR__ . '/html/gradient-anchor.php';
     }
-    public static function buttonGradient($label = '', $icon = null, $onClick = '', $class = '')
+    public static function buttonGradient($label = '', $icon = null, $onClick = '', $class = '', $type = '', $alpineClick = '')
     {
         include __DIR__ . '/html/gradient-button.php';
     }

@@ -98,15 +98,15 @@
                                         class="absolute right-0 mt-1 w-36 bg-white border border-gray-200 rounded-md shadow-md overflow-hidden z-50 text-left"
                                         style="display: none;">
                                         <?php
-                                        $checked_in = true;
-                                        if (!$checked_in):
+
+                                        if ($value->status == 'created'):
                                         ?>
-                                            <a href="<?= URL . '/admin/booking/details/1' ?>"
+                                            <a href="<?= URL . '/admin/booking/check_in/' . $value->id ?>"
                                                 class="flex items-center gap-2 px-3 py-2 text-xs text-secondary hover:bg-secondary/5 transition">
                                                 <?= Icon::calendar_pencil('w-4 h-4') ?> Check In
                                             </a>
-                                        <?php else: ?>
-                                            <a href="<?= URL . '/admin/booking/details/1' ?>"
+                                        <?php elseif ($value->status == 'checked_in'): ?>
+                                            <a href="<?= URL . '/admin/booking/check_out/' . $value->id ?>"
                                                 class="flex items-center gap-2 px-3 py-2 text-xs text-tertiary hover:bg-tertiary/5 transition">
                                                 <?= Icon::logout('w-4 h-4') ?> Finish
                                             </a>
