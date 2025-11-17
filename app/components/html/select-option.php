@@ -1,4 +1,4 @@
-<div class="<?= $classGlobal ?> flex flex-col gap-2 font-poppins">
+<div class="<?= $classGlobal ?> flex flex-col gap-1 font-poppins">
     <label for="<?= $id ?? ($name ?? '') ?>" class="<?= empty($label) ? 'hidden' : 'block text-lg font-normal text-primary' ?>">
         <?= $label ?? '' ?>
     </label>
