@@ -3,18 +3,26 @@
 use App\Components\Icon\Icon;
 use App\Components\Button;
 use App\Components\Badge;
+use App\Components\FormInput;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
+use App\Components\Modal;
 
 $bookingCode = $_GET['code'] ?? '#AA682358';
 $status = $_GET['status'] ?? 'berlangsung';
 $statusEnum = [
-    "berlangsung" => "berlangsung",
-    "dibatalkan" => "dibatalkan",
-    "selesai" => "selesai"
+    "berlangsung" => "created" || 'checked_in',
+    "dibatalkan" => "cancelled",
+    "selesai" => "finished"
 ];
-
+$statusLabel = [
+    "created" => "berlangsung",
+    "checked_in" => "berlangsung",
+    "cancelled" => "dibatalkan",
+    "finished" => "selesai"
+];
 $bookingDetail = [
+    'id' => $data['booking']->id,
     'code' => $data['booking']->booking_code,
     'status' => $data['booking']->status,
     'pic' => $data['booking']->pic,
@@ -28,7 +36,7 @@ $bookingDetail = [
 ?>
 
 
-<div class="bg-baseColor font-poppins">
+<div class="bg-baseColor font-poppins" x-data="{ onModalShow: false }">
     <div class="max-w-6xl mx-auto p-4">
         <!-- Header -->
         <div class="flex items-center gap-3 mb-6">
@@ -45,9 +53,9 @@ $bookingDetail = [
             <!-- Header with Code and Status -->
             <div class="flex justify-between items-start w-full">
                 <div>
-                    <h3 class="text-lg font-bold text-primary">Kode Booking: #<?= $bookingDetail['code'] ?></h3>
+                    <h3 class="text-2xl font-medium text-primary">Kode Booking: #<?= $bookingDetail['code'] ?></h3>
                 </div>
-                <?= Badge::badge(label: $bookingDetail['status'], color: $bookingDetail['status'] === $statusEnum["berlangsung"] ? 'tertiary' : ($bookingDetail['status'] ===  $statusEnum["selesai"] ? 'secondary' : 'red')) ?>
+                <?= Badge::badge(label: $statusLabel[$bookingDetail['status']], color: $bookingDetail['status'] == $statusEnum["berlangsung"] ? 'tertiary' : ($bookingDetail['status'] ==  $statusEnum["selesai"] ? 'secondary' : 'red')) ?>
             </div>
 
             <!-- Booking Information -->
@@ -66,14 +74,14 @@ $bookingDetail = [
 
                 <div class="flex items-start gap-3">
                     <?= Icon::calendar_pencil('w-5 h-5 text-black/80') ?>
-                    <span class="text-sm text-gray-700">Location: <?= $bookingDetail['date'] ?></span>
+                    <span class="text-sm text-gray-700">Tanggal: <?= $bookingDetail['date'] ?></span>
                 </div>
 
                 <div class="flex items-start gap-3">
                     <?= Icon::clock('w-5 h-5 text-black/80') ?>
-                    <span class="text-sm text-gray-700">Tempat: <?= $bookingDetail['time'] ?></span>
+                    <span class="text-sm text-gray-700">Waktu: <?= $bookingDetail['time'] ?></span>
                 </div>
-                <?php if ($bookingDetail['status'] === $statusEnum['selesai']): ?>
+                <?php if ($bookingDetail['status'] == $statusEnum['selesai']): ?>
                     <div class="flex items-start gap-3">
                         <?= Icon::clock('w-5 h-5 text-black/80') ?>
                         <span class="text-sm text-gray-700">Check in: 13.05 &bull; Check out: 15.05</span>
@@ -84,8 +92,8 @@ $bookingDetail = [
             <!-- Members Section -->
             <div class=" pt-4">
                 <h4 class="text-base font-semibold text-primary mb-3">Anggota:</h4>
-                <ul class="space-y-2">
-                    <?php  foreach ($bookingDetail['members'] as $member): ?>
+                <ul class="space-y-2 px-2">
+                    <?php foreach ($bookingDetail['members'] as $member): ?>
                         <li class="flex items-start gap-3">
                             <span class="text-secondary font-medium shrink-0">•</span>
                             <span class="text-sm text-gray-700"><?= $member->name ?></span>
@@ -94,7 +102,7 @@ $bookingDetail = [
                 </ul>
             </div>
 
-            <?php if ($bookingDetail['status'] === $statusEnum['berlangsung']): ?>
+            <?php if ($bookingDetail['status'] != $statusEnum['berlangsung']): ?>
                 <div class="flex flex-col gap-2 pt-4">
                     <h4 class="text-base font-semibold text-primary">Detail Pembatalan:</h4>
                     <div class="w-full flex flex-col gap-4">
@@ -115,12 +123,33 @@ $bookingDetail = [
                     </p>
                 </div>
             <?php endif; ?>
-
-
-            <?php if ($bookingDetail['status'] === $statusEnum['berlangsung']): ?>
-                <?= Button::button(label: 'Cancel', type: 'submit', color: 'red', class: 'w-full py-2 rounded-full!') ?>
+            <?php if ($bookingDetail['status'] == $statusEnum['berlangsung']): ?>
+                <?= Button::button(label: 'Cancel', type: 'button', color: 'red', class: 'w-full py-2 rounded-full!', alpineClick: "onModalShow=true") ?>
             <?php endif; ?>
         </div>
 
     </div>
+    <?php
+    ob_start();
+    ?>
+    <form action="" method="POST" class="w-full flex flex-col gap-2">
+        <?= FormInput::textarea(id: 'reason', name: 'reason', label: 'Alasan:', class: 'h-18', maxlength: 100) ?>
+        <!-- opsional misal idnya mau disatuin ama form -->
+        <input type="text" name="id" value="<?= $bookingDetail['id'] ?>" class="hidden" />
+        <div class="flex gap-4 w-full ">
+            <?php
+            Button::button(label: 'Iya', color: 'red', type: 'submit', class: 'w-full py-3');
+            Button::button(label: 'Tidak', color: 'white', type: 'button', alpineClick: "onModalShow=false", class: 'w-full py-3');
+            ?>
+        </div>
+    </form>
+    <?php $content = ob_get_clean(); ?>
+    <?= Modal::render(
+        title: 'Yakin ingin membatalkan booking?',
+        color: 'red',
+        message: 'Pembatalan booking akan menambah suspend point. Jika total suspend point Anda lebih dari 3, Anda akan diblokir dari peminjaman ruangan selama 2 minggu.',
+        customContent: $content,
+        alpineShow: 'onModalShow',
+        height: 'h-[24rem]'
+    ) ?>
 </div>

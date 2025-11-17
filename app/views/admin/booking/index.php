@@ -5,11 +5,12 @@
     use App\Components\Badge;
     use App\Components\Icon\Icon;
     use Carbon\Carbon;
+    use App\Components\Modal;
 
     $no = 1;
     ?>
 
-    <div class="w-full h-full" x-data="{ showAlert: false, deleteUserId: null }" @delete-peminjaman.window="showAlert = true; deletePeminjamanId = $event.detail.id">
+    <div class="w-full h-full" x-data="{ showAlert: false, cancelPeminjamanId: null }" @cancel-peminjaman.window="showAlert = true; cancelPeminjamanId = $event.detail.id">
         <div class="w-full h-full flex flex-col items-start justify-start gap-5 ">
             <div class="w-full flex items-center justify-start">
                 <h1 class="text-2xl font-medium text-primary">
@@ -119,7 +120,7 @@
                                             <?= Icon::pencil('w-4 h-4') ?> Edit
                                         </a>
                                         <button
-                                            @click=""
+                                            @click="$dispatch('cancel-peminjaman', { cancelPeminjamanId: '<?= $value->id ?>' }); showAlert = true;"
                                             class="flex items-center gap-2 px-3 py-2 text-xs text-red-600 hover:bg-red/5 border-t border-gray-100 w-full text-left transition">
                                             <?= Icon::trash('w-4 h-4') ?> Cancel
                                         </button>
@@ -130,37 +131,36 @@
                     </tbody>
                 </table>
             </div>
-            <!-- modal -->
-            <div class="h-full w-full absolute inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs" x-show="showAlert" x-cloak @click.outside="showAlert = false">
-                <div
-                    class="w-1/2 h-1/2 bg-baseColor rounded-xl shadow-xl flex items-center justify-center border-red absolute transition-all duration-300 ease-in-out"
-                    x-show="showAlert" x-cloak @click.outside="showAlert = false"
-                    x-transition:enter="transition ease-out duration-200"
-                    x-transition:enter-start="opacity-0 scale-95"
-                    x-transition:enter-end="opacity-100 scale-100"
-                    x-transition:leave="transition ease-in duration-150"
-                    x-transition:leave-start="opacity-100 scale-100"
-                    x-transition:leave-end="opacity-0 scale-95">
-                    <div class="flex flex-col gap-8 items-center justify-center max-w-4xl w-full">
-                        <h1 class="text-red font-medium text-2xl">
-                            Yakin ingin membatalkan booking?
-                        </h1>
-                        <div class="flex gap-4 items-center justify-center h-10">
-                            <form x-bind:action="`<?= URL . "/admin/user/delete/" ?>${deleteUserId}`" method="delete">
-                                <button class="p-2 text-baseColor bg-red shadow-sm rounded-md h-full w-24 cursor-pointer">
-                                    ya
-                                </button>
-                            </form>
-                            <button class="p-2 text-black/80 bg-baseColor shadow-sm rounded-md h-full w-24 cursor-pointer" @click="showAlert = false">
-                                Tidak
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
-        <style>
-            [x-cloak] {
-                display: none !important;
-            }
-        </style>
+
+        <!-- modal -->
+        <?php
+        ob_start();
+        ?>
+        <form action="" method="POST" class="w-full flex flex-col gap-2">
+            <?= FormInput::textarea(id: 'reason', name: 'reason', label: 'Alasan:', class: 'h-18', maxlength: 100) ?>
+            <!-- opsional misal idnya mau disatuin ama form -->
+            <input type="text" name="id" x-bind:value="cancelPeminjamanId" class="hidden" />
+            <div class="flex gap-4 w-full ">
+                <?php
+                Button::button(label: 'Iya', color: 'red', type: 'submit', class: 'w-full py-3');
+                Button::button(label: 'Tidak', color: 'white', type: 'button', alpineClick: "showAlert=false", class: 'w-full py-3');
+                ?>
+            </div>
+        </form>
+        <?php $content = ob_get_clean(); ?>
+
+        <?= Modal::render(
+            title: 'Yakin ingin membatalkan booking?',
+            color: 'red',
+            message: 'Booking akan dibatalkan. Pastikan keputusan Anda sudah benar sebelum melanjutkan.',
+            customContent: $content,
+            alpineShow: 'showAlert',
+            height: 'h-[24rem]'
+        ) ?>
+    </div>
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
