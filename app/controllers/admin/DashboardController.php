@@ -3,6 +3,7 @@
 namespace App\Controllers\Admin;
 
 use App\Core\Controller;
+use App\Models\Booking;
 use App\Utils\Authentication;
 use App\Utils\DB;
 
@@ -17,10 +18,12 @@ class DashboardController extends Controller
     }
     public function index()
     {
-
-        if (isset($_GET['search'])) {
+        $activeBooking = [];
+        if(isset($_GET['search'])) {
+            $bookingCode = $_GET['search'];
+            $activeBooking = Booking::getActiveBookingByBookingCode($bookingCode);
         }
-        return $this->view('admin/dashboard/index', layoutType: $this::$layoutType['admin']);
+        return $this->view('admin/dashboard/index', $activeBooking ,layoutType: $this::$layoutType['admin']);
     }
 
 

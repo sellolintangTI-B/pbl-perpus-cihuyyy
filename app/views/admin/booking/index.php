@@ -4,7 +4,9 @@
     use App\Components\FormInput;
     use App\Components\Badge;
     use App\Components\Icon\Icon;
+    use Carbon\Carbon;
 
+    $no = 1;
     ?>
 
     <div class="w-full h-full" x-data="{ showAlert: false, deleteUserId: null }" @delete-peminjaman.window="showAlert = true; deletePeminjamanId = $event.detail.id">
@@ -46,116 +48,119 @@
 
                     <!-- Body -->
                     <tbody class="text-primary divide-y divide-gray-100">
-                        <tr
-                            x-data="{ open: false }"
-                            class="hover:bg-gray-50 transition-colors duration-150 text-center">
-                            <td class="px-3 py-3 text-xs text-gray-600">1</td>
+                        <?php foreach ($data as $value) :
+                            $startTime = Carbon::parse($value->start_time);
+                            $endTime = Carbon::parse($value->end_time);
+                            $hours = $startTime->diff($endTime);
+                        ?>
+                            <tr
+                                x-data="{ open: false }"
+                                class="hover:bg-gray-50 transition-colors duration-150 text-center">
+                                <td class="px-3 py-3 text-xs text-gray-600"><?= $no++ ?></td>
 
-                            <td class="px-3 py-3 text-xs font-medium text-gray-800 text-start">
-                                <?= htmlspecialchars("Fahri" . ' ' . "Faizul") ?>
-                            </td>
+                                <td class="px-3 py-3 text-xs font-medium text-gray-800 text-start">
+                                    <?= htmlspecialchars($value->pic_name) ?>
+                                </td>
 
-                            <td class="px-3 py-3 text-xs text-gray-700 text-start"><?= htmlspecialchars("Ruangan 1") ?></td>
-                            <td class="px-3 py-3 text-xs text-gray-700 text-start"><?= htmlspecialchars("2 Oktober 2025") ?></td>
-                            <td class="px-3 py-3 text-xs text-gray-700 text-start"><?= htmlspecialchars("3 jam" ?? "") ?></td>
+                                <td class="px-3 py-3 text-xs text-gray-700 text-start"><?= htmlspecialchars($value->name) ?></td>
+                                <td class="px-3 py-3 text-xs text-gray-700 text-start"><?= htmlspecialchars(Carbon::parse($value->start_time)->translatedFormat('D, d M Y')) ?></td>
+                                <td class="px-3 py-3 text-xs text-gray-700 text-start"><?= htmlspecialchars($hours->h . ' jam ' . $hours->i . ' menit ') ?></td>
 
-                            <td class="px-3 py-3 text-xs">
-                                <div class="flex justify-center">
-                                    <?= Badge::badge(
-                                        label: true ? "• Approved" : "• Declined",
-                                        color: true ? "secondary" : "red",
-                                        class: "w-24 text-xs!"
-                                    ) ?>
-                                </div>
-                            </td>
+                                <td class="px-3 py-3 text-xs">
+                                    <div class="flex justify-center">
+                                        <?= Badge::badge(
+                                            label: true ? "• Approved" : "• Declined",
+                                            color: true ? "secondary" : "red",
+                                            class: "w-24 text-xs!"
+                                        ) ?>
+                                    </div>
+                                </td>
 
-                            <!-- Aksi -->
-                            <td class="px-3 py-3 relative">
-                                <button
-                                    @click="open = !open"
-                                    class="p-1.5 rounded-full hover:bg-gray-100 transition-colors duration-200 cursor-pointer">
-                                    <?= Icon::dotMenu('w-5 h-5') ?>
-                                </button>
-
-                                <!-- Dropdown -->
-                                <div
-                                    x-show="open"
-                                    @click.outside="open = false"
-                                    x-transition:enter="transition ease-out duration-200"
-                                    x-transition:enter-start="opacity-0 scale-95"
-                                    x-transition:enter-end="opacity-100 scale-100"
-                                    x-transition:leave="transition ease-in duration-150"
-                                    x-transition:leave-start="opacity-100 scale-100"
-                                    x-transition:leave-end="opacity-0 scale-95"
-                                    class="absolute right-0 mt-1 w-36 bg-white border border-gray-200 rounded-md shadow-md overflow-hidden z-50 text-left"
-                                    style="display: none;">
-                                    <?php
-                                    $checked_in = true;
-                                    if (!$checked_in):
-                                    ?>
-                                        <a href="<?= URL . '/admin/booking/details/1' ?>"
-                                            class="flex items-center gap-2 px-3 py-2 text-xs text-secondary hover:bg-secondary/5 transition">
-                                            <?= Icon::calendar_pencil('w-4 h-4') ?> Check In
-                                        </a>
-                                    <?php else: ?>
-                                        <a href="<?= URL . '/admin/booking/details/1' ?>"
-                                            class="flex items-center gap-2 px-3 py-2 text-xs text-tertiary hover:bg-tertiary/5 transition">
-                                            <?= Icon::logout('w-4 h-4') ?> Finish
-                                        </a>
-                                    <?php endif; ?>
-                                    <a href="<?= URL . '/admin/booking/details/1' ?>"
-                                        class="flex items-center gap-2 px-3 py-2 text-xs text-gray-700 hover:bg-gray-50 transition">
-                                        <?= Icon::eye('w-4 h-4') ?> Detail
-                                    </a>
-                                    <a href=""
-                                        class="flex items-center gap-2 px-3 py-2 text-xs text-primary hover:bg-primary/5 transition">
-                                        <?= Icon::pencil('w-4 h-4') ?> Edit
-                                    </a>
-                                    <!-- jangan lupa diganti IDnya -->
+                                <!-- Aksi -->
+                                <td class="px-3 py-3 relative">
                                     <button
-                                        @click="$dispatch('delete-peminjaman', { id: '1' }); open = false;"
-                                        class="flex items-center gap-2 px-3 py-2 text-xs text-red-600 hover:bg-red/5 border-t border-gray-100 w-full text-left transition">
-                                        <?= Icon::trash('w-4 h-4') ?> Cancel
+                                        @click="open = !open"
+                                        class="p-1.5 rounded-full hover:bg-gray-100 transition-colors duration-200 cursor-pointer">
+                                        <?= Icon::dotMenu('w-5 h-5') ?>
                                     </button>
-                                </div>
-                            </td>
-                        </tr>
+
+                                    <!-- Dropdown -->
+                                    <div
+                                        x-show="open"
+                                        @click.outside="open = false"
+                                        x-transition:enter="transition ease-out duration-200"
+                                        x-transition:enter-start="opacity-0 scale-95"
+                                        x-transition:enter-end="opacity-100 scale-100"
+                                        x-transition:leave="transition ease-in duration-150"
+                                        x-transition:leave-start="opacity-100 scale-100"
+                                        x-transition:leave-end="opacity-0 scale-95"
+                                        class="absolute right-0 mt-1 w-36 bg-white border border-gray-200 rounded-md shadow-md overflow-hidden z-50 text-left"
+                                        style="display: none;">
+                                        <?php
+                                        $checked_in = true;
+                                        if (!$checked_in):
+                                        ?>
+                                            <a href="<?= URL . '/admin/booking/details/1' ?>"
+                                                class="flex items-center gap-2 px-3 py-2 text-xs text-secondary hover:bg-secondary/5 transition">
+                                                <?= Icon::calendar_pencil('w-4 h-4') ?> Check In
+                                            </a>
+                                        <?php else: ?>
+                                            <a href="<?= URL . '/admin/booking/details/1' ?>"
+                                                class="flex items-center gap-2 px-3 py-2 text-xs text-tertiary hover:bg-tertiary/5 transition">
+                                                <?= Icon::logout('w-4 h-4') ?> Finish
+                                            </a>
+                                        <?php endif; ?>
+                                        <a href="<?= URL . '/admin/booking/details/1' ?>"
+                                            class="flex items-center gap-2 px-3 py-2 text-xs text-gray-700 hover:bg-gray-50 transition">
+                                            <?= Icon::eye('w-4 h-4') ?> Detail
+                                        </a>
+                                        <a href=""
+                                            class="flex items-center gap-2 px-3 py-2 text-xs text-primary hover:bg-primary/5 transition">
+                                            <?= Icon::pencil('w-4 h-4') ?> Edit
+                                        </a>
+                                        <button
+                                            @click=""
+                                            class="flex items-center gap-2 px-3 py-2 text-xs text-red-600 hover:bg-red/5 border-t border-gray-100 w-full text-left transition">
+                                            <?= Icon::trash('w-4 h-4') ?> Cancel
+                                        </button>
+                                    </div>
+                                </td>
+                            <?php endforeach  ?>
+                            </tr>
                     </tbody>
                 </table>
             </div>
-
-        </div>
-        <!-- modal -->
-        <div class="h-full w-full absolute inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs" x-show="showAlert" x-cloak @click.outside="showAlert = false">
-            <div
-                class="w-1/2 h-1/2 bg-baseColor rounded-xl shadow-xl flex items-center justify-center border-red absolute transition-all duration-300 ease-in-out"
-                x-show="showAlert" x-cloak @click.outside="showAlert = false"
-                x-transition:enter="transition ease-out duration-200"
-                x-transition:enter-start="opacity-0 scale-95"
-                x-transition:enter-end="opacity-100 scale-100"
-                x-transition:leave="transition ease-in duration-150"
-                x-transition:leave-start="opacity-100 scale-100"
-                x-transition:leave-end="opacity-0 scale-95">
-                <div class="flex flex-col gap-8 items-center justify-center max-w-4xl w-full">
-                    <h1 class="text-red font-medium text-2xl">
-                        Yakin ingin membatalkan booking?
-                    </h1>
-                    <div class="flex gap-4 items-center justify-center h-10">
-                        <form x-bind:action="`<?= URL . "/admin/user/delete/" ?>${deleteUserId}`" method="delete">
-                            <button class="p-2 text-baseColor bg-red shadow-sm rounded-md h-full w-24 cursor-pointer">
-                                ya
+            <!-- modal -->
+            <div class="h-full w-full absolute inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs" x-show="showAlert" x-cloak @click.outside="showAlert = false">
+                <div
+                    class="w-1/2 h-1/2 bg-baseColor rounded-xl shadow-xl flex items-center justify-center border-red absolute transition-all duration-300 ease-in-out"
+                    x-show="showAlert" x-cloak @click.outside="showAlert = false"
+                    x-transition:enter="transition ease-out duration-200"
+                    x-transition:enter-start="opacity-0 scale-95"
+                    x-transition:enter-end="opacity-100 scale-100"
+                    x-transition:leave="transition ease-in duration-150"
+                    x-transition:leave-start="opacity-100 scale-100"
+                    x-transition:leave-end="opacity-0 scale-95">
+                    <div class="flex flex-col gap-8 items-center justify-center max-w-4xl w-full">
+                        <h1 class="text-red font-medium text-2xl">
+                            Yakin ingin membatalkan booking?
+                        </h1>
+                        <div class="flex gap-4 items-center justify-center h-10">
+                            <form x-bind:action="`<?= URL . "/admin/user/delete/" ?>${deleteUserId}`" method="delete">
+                                <button class="p-2 text-baseColor bg-red shadow-sm rounded-md h-full w-24 cursor-pointer">
+                                    ya
+                                </button>
+                            </form>
+                            <button class="p-2 text-black/80 bg-baseColor shadow-sm rounded-md h-full w-24 cursor-pointer" @click="showAlert = false">
+                                Tidak
                             </button>
-                        </form>
-                        <button class="p-2 text-black/80 bg-baseColor shadow-sm rounded-md h-full w-24 cursor-pointer" @click="showAlert = false">
-                            Tidak
-                        </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <style>
-        [x-cloak] {
-            display: none !important;
-        }
-    </style>
+        <style>
+            [x-cloak] {
+                display: none !important;
+            }
+        </style>
