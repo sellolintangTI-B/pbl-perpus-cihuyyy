@@ -135,7 +135,7 @@ use Carbon\Carbon;
                         <?php FormInput::input(id: "duration", name: "duration", type: "time", required: true); ?>
                     </div>
 
-                    <?php if (true): ?>
+                    <?php if ($data['detail']->requires_special_approval): ?>
                         <!-- Upload surat resmi  -->
                         <div>
                             <label class="block text-sm font-medium text-primary mb-2">Upload Surat Resmi</label>

@@ -2,6 +2,7 @@
 
 use App\Components\Button;
 use App\Components\Icon\Icon;
+use App\Components\Badge;
 use Soap\Url;
 
 ?>
@@ -9,6 +10,11 @@ use Soap\Url;
     <!-- Room Image -->
     <div class="relative w-full h-48 overflow-hidden rounded-lg">
         <img src="<?= URL . '/public/' . $room['image'] ?>" alt="<?= $room['name'] ?? 'Room' ?>" class="w-full h-full object-cover">
+        <?php if ($room['isSpecial']):
+            Badge::badge(label: 'Special Room', color: 'secondary', class: 'absolute inset-0 m-2 w-fit h-fit ms-auto bg-secondary/40!');
+        endif;
+        ?>
+
     </div>
 
     <!-- Room Info -->

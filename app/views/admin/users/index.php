@@ -20,13 +20,19 @@
                 <!-- form action -->
                 <div class="flex items-center justify-end gap-2 h-full w-full max-w-[24rem]">
                     <form method="GET" class="flex items-center gap-2  w-full h-full flex-1">
-                        <?= FormInput::select(name: "type", options: [
-                            ['value' => '', 'display' => 'Semua'],
-                            ['value' => 'Admin', 'display' => 'Admin'],
-                            ['value' => 'Mahasiswa', 'display' => 'Mahasiswa'],
-                            ['value' => 'Dosen', 'display' => 'Dosen'],
-                            ['value' => 'Tamu', 'display' => 'Tamu'],
-                        ], class: "h-full !p-0 !px-4 !border-primary", classGlobal: "h-full") ?>
+                        <?= FormInput::select(
+                            name: "type",
+                            options: [
+                                ['value' => '', 'display' => 'Semua'],
+                                ['value' => 'Admin', 'display' => 'Admin'],
+                                ['value' => 'Mahasiswa', 'display' => 'Mahasiswa'],
+                                ['value' => 'Dosen', 'display' => 'Dosen'],
+                                ['value' => 'Tamu', 'display' => 'Tamu'],
+                            ],
+                            class: "h-full !p-0 !px-4 !border-primary",
+                            classGlobal: "h-full",
+                            selected: isset($_GET['type']) ? $_GET['type'] : ""
+                        ) ?>
                         <div class="h-full flex-1">
                             <?= FormInput::input(type: "text", name: "search", placeholder: "Cari Pengguna...", value: $_GET['search'] ?? '', class: "h-full !w-full !border-primary", classGlobal: "h-full !w-full") ?>
                         </div>
