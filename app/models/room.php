@@ -20,7 +20,7 @@ class Room extends Database
             $paramValues['startTime'] = $params['startTime'];
             $paramValues['duration']  = $params['duration'];
             if (!empty($params['room'])) {
-                $stmt .= " AND name LIKE :roomName";
+                $stmt .= " AND name ILIKE :roomName";
                 $paramValues['roomName'] = "%{$params['room']}%";
             }
         }

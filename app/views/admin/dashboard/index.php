@@ -29,6 +29,8 @@ use App\Components\Badge;
 
     <!-- give some shit condition here ... -->
     <?php
-    include __DIR__ . '/sections/BookingCard.php';
+    if(!empty($data)) {
+        include __DIR__ . '/sections/BookingCard.php';
+    }
     ?>
 </div>

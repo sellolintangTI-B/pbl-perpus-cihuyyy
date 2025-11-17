@@ -4,7 +4,9 @@
     use App\Components\FormInput;
     use App\Components\Badge;
     use App\Components\Icon\Icon;
+use Carbon\Carbon;
 
+    $no = 1;
     ?>
 
     <div class="w-full h-full flex flex-col items-start justify-start gap-5 " x-data="{ showAlert: false, deleteUserId: null }" @delete-user.window="showAlert = true; deleteUserId = $event.detail.id">
@@ -45,18 +47,23 @@
 
                 <!-- Body -->
                 <tbody class="text-primary divide-y divide-gray-100">
+                    <?php foreach($data as $value) :  
+                        $startTime = Carbon::parse($value->start_time);
+                        $endTime = Carbon::parse($value->end_time);
+                        $hours = $startTime->diff($endTime);
+                    ?>
                     <tr
                         x-data="{ open: false }"
                         class="hover:bg-gray-50 transition-colors duration-150 text-center">
-                        <td class="px-3 py-3 text-xs text-gray-600">1</td>
+                        <td class="px-3 py-3 text-xs text-gray-600"><?= $no++ ?></td>
 
                         <td class="px-3 py-3 text-xs font-medium text-gray-800 text-start">
-                            <?= htmlspecialchars("Fahri" . ' ' . "Faizul") ?>
+                            <?= htmlspecialchars($value->pic_name) ?>
                         </td>
 
-                        <td class="px-3 py-3 text-xs text-gray-700 text-start"><?= htmlspecialchars("Ruangan 1") ?></td>
-                        <td class="px-3 py-3 text-xs text-gray-700 text-start"><?= htmlspecialchars("2 Oktober 2025") ?></td>
-                        <td class="px-3 py-3 text-xs text-gray-700 text-start"><?= htmlspecialchars("3 jam" ?? "") ?></td>
+                        <td class="px-3 py-3 text-xs text-gray-700 text-start"><?= htmlspecialchars($value->name) ?></td>
+                        <td class="px-3 py-3 text-xs text-gray-700 text-start"><?= htmlspecialchars(Carbon::parse($value->start_time)->translatedFormat('D, d M Y')) ?></td>
+                        <td class="px-3 py-3 text-xs text-gray-700 text-start"><?= htmlspecialchars($hours->h . ' jam ' . $hours->i . ' menit ') ?></td>
 
                         <td class="px-3 py-3 text-xs">
                             <div class="flex justify-center">
@@ -117,6 +124,7 @@
                                 </button>
                             </div>
                         </td>
+                    <?php endforeach  ?>
                     </tr>
                 </tbody>
             </table>

@@ -2,6 +2,8 @@
 
 use App\Components\Icon\Icon;
 use App\Components\Badge;
+use Carbon\Carbon;
+
 ?>
 <div class="w-full p-6 flex flex-col gap-4 bg-white border-gray-200 border rounded-lg font-medium">
     <div class="w-full flex justify-between">
@@ -10,7 +12,7 @@ use App\Components\Badge;
                 Kode Booking:
             </span>
             <span id="kode_booking" class="text-secondary">
-                #AA682358
+                #<?= $data->booking_code ?>
             </span>
             <!-- copy button -->
             <button class="p-1.5 rounded-md hover:bg-gray-100 transition-colors duration-150 cursor-pointer">
@@ -18,7 +20,7 @@ use App\Components\Badge;
             </button>
         </div>
         <?php
-        Badge::badge('Created', color: 'primary')
+        Badge::badge($data->status, color: 'primary')
         ?>
     </div>
     <div class="flex gap-2 text-black/80">
@@ -28,7 +30,7 @@ use App\Components\Badge;
             ?>
         </span>
         <span>
-            Tempat: <span class="text-primary">Ruang Perancis</span>, Perpustakaan PNJ, LT. 4
+            Tempat: <span class="text-primary"><?= $data->name ?></span>, Perpustakaan PNJ, LT. <?= $data->floor ?>
         </span>
     </div>
     <div class="flex gap-2 text-black/80">
@@ -38,7 +40,7 @@ use App\Components\Badge;
             ?>
         </span>
         <span>
-            Tanggal : 8 - 11 - 2025
+            <?= Carbon::parse($data->start_time)->translatedFormat('l, d M Y') ?>
         </span>
     </div>
     <div class="flex justify-between">
@@ -49,7 +51,7 @@ use App\Components\Badge;
                 ?>
             </span>
             <span>
-                Jam: 13:00 - 15:00
+                Jam: <?= Carbon::parse($data->start_time)->toTimeString() ?> - <?= Carbon::parse($data->end_time)->toTimeString() ?>
             </span>
         </div>
         <!-- get some fuckin action here -->
@@ -72,21 +74,29 @@ use App\Components\Badge;
                 x-transition:leave-end="opacity-0 scale-95"
                 class="absolute right-0 mt-1 w-32 bg-white border border-gray-200 rounded-md shadow-md text-left z-50 overflow-hidden"
                 style="display: none;">
+                <?php if($data->status == 'created') : ?>
                 <button
                     @click=""
                     class="flex items-center gap-2 px-3 py-2 text-xs text-secondary hover:bg-secondary/5 border-t border-gray-100 w-full transition cursor-pointer">
                     Check In
                 </button>
-                <button
-                    @click=""
-                    class="flex items-center gap-2 px-3 py-2 text-xs text-primary hover:bg-primary/5 border-t border-gray-100 w-full transition cursor-pointer">
-                    Check Out
-                </button>
+                <?php endif ?>
+
+                <?php if($data->status == 'checked_in') : ?>
+                    <button
+                        @click=""
+                        class="flex items-center gap-2 px-3 py-2 text-xs text-primary hover:bg-primary/5 border-t border-gray-100 w-full transition cursor-pointer">
+                        Check Out
+                    </button>
+                <?php endif?>
+
+                <?php if($data->status == 'created') : ?>
                 <button
                     @click=""
                     class="flex items-center gap-2 px-3 py-2 text-xs text-red hover:bg-red/5 border-t border-gray-100 w-full transition cursor-pointer">
                     Cancel
                 </button>
+                <?php endif?>
             </div>
         </div>
     </div>

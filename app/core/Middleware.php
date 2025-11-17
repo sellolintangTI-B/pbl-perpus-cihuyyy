@@ -14,6 +14,7 @@ class Middleware
             "/admin/booking/index",
             "/admin/booking/details",
             "/admin/booking/create",
+            "/admin/booking/check_in",
             //ROOM
             "/admin/room/index",
             "/admin/room/store",
