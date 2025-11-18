@@ -199,11 +199,11 @@ class UserController extends Controller
             $data = User::delete($id);
             if ($data) {
                 ResponseHandler::setResponse('Berhasil menghapus data');
-                header('location:' . URL . '/user/index');
+                header('location:' . URL . '/admin/user/index');
             }
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), 'error');
-            header('location:' . URL . '/admin/user');
+            header('location:' . URL . '/admin/user/index');
         }
     }
 

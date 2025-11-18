@@ -4,6 +4,10 @@ use App\Components\FormInput;
 use App\Components\Icon\Icon;
 use Carbon\Carbon;
 
+if (isset($_SESSION['old_input'])) {
+    $oldData = $_SESSION['old_input'];
+}
+
 ?>
 
 <div class="max-w-6xl mx-auto p-4 justify-center items-start flex flex-col gap-6" x-data="formAnggota()">
@@ -126,13 +130,13 @@ use Carbon\Carbon;
                     <!-- Kapan -->
                     <div>
                         <label class="block text-sm font-medium text-primary mb-2">Kapan</label>
-                        <?php FormInput::input(id: "date", name: "datetime", type: "datetime-local", required: true); ?>
+                        <?php FormInput::input(id: "date", name: "datetime", type: "datetime-local", required: true, value: $oldData['datetime'] ?? null); ?>
                     </div>
 
                     <!-- Durasi -->
                     <div>
                         <label class="block text-sm font-medium text-primary mb-2">Durasi</label>
-                        <?php FormInput::input(id: "duration", name: "duration", type: "time", required: true); ?>
+                        <?php FormInput::input(id: "duration", name: "duration", type: "time", required: true, value: $oldData['duration'] ?? null); ?>
                     </div>
 
                     <?php if ($data['detail']->requires_special_approval): ?>
@@ -188,52 +192,69 @@ use Carbon\Carbon;
     function formAnggota() {
         return {
             identifier: '',
-            listAnggota: [],
+            listAnggota: <?= !empty($oldData['list_anggota']) ? $oldData['list_anggota'] : '[]' ?>,
             message: '',
+            tanggal: '',
 
             async tambahAnggota() {
                 if (this.identifier.trim() === '') {
                     this.message = '* NIM/NIP atau Email tidak boleh kosong';
                     return;
                 }
-                let isExist = this.listAnggota.find(anggota => anggota.id_number === this.identifier)
+
+                let isExist = this.listAnggota.find(anggota => anggota.id_number === this.identifier || anggota.id === this.identifier);
 
                 if (isExist) {
                     this.message = '* Anggota sudah ditambahkan';
                     return;
                 }
+
                 try {
                     // request ke server untuk validasi NIM
-                    let res = await fetch(`<?= URL ?>/user/booking/search_user/${this.identifier}`);
+                    let res = await fetch(`<?= URL ?>/user/booking/search_user/${encodeURIComponent(this.identifier)}`);
+
+                    if (!res.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+
                     let data = await res.json();
-                    console.log(data);
 
                     if (data.success) {
                         this.listAnggota.push({
                             id: data.data.id,
-                            name: data.data.first_name + " " + data.data.last_name
+                            name: data.data.first_name + " " + data.data.last_name,
+                            id_number: this.identifier
                         });
                         this.identifier = '';
                         this.message = '';
                     } else {
-                        this.message = '* Data tidak ditemukan!';
+                        this.message = data.message || '* Data tidak ditemukan!';
                     }
                 } catch (err) {
-                    console.log(err);
+                    console.error('Error:', err);
                     this.message = '* Terjadi kesalahan server.';
                 }
             },
 
             deleteAnggota(index) {
-                if (index >= 0) this.listAnggota.splice(index, 1);
+                if (index > 0 && index < this.listAnggota.length) {
+                    this.listAnggota.splice(index, 1);
+                }
             },
 
             prepareData(event) {
-                // const min_capacity = <?php /*echo $data['detail']["min_capacity"]; */ ?>;
-                // if (this.listAnggota.length < min_capacity) {
-                //     event.preventDefault();
-                //     this.message = `Minimal ${min_capacity} anggota diperlukan.`;
-                // }
+                const min_capacity = <?= $data['detail']->min_capacity ?? 1 ?>;
+
+                <?php if (!$data['detail']->requires_special_approval): ?>
+                    if (this.listAnggota.length < min_capacity) {
+                        event.preventDefault();
+                        this.message = `* Minimal ${min_capacity} anggota diperlukan.`;
+                        return false;
+                    }
+                <?php endif; ?>
+
+                // Validasi tambahan jika diperlukan
+                return true;
             }
         }
     }

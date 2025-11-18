@@ -28,7 +28,7 @@ use App\Components\RoomCard;
                     <label class="px-1 bg-transparent text-xs font-medium text-black/70">
                         Kapan
                     </label>
-                    <input type="datetime-local" name="date" placeholder="Tanggal dan jam peminjaman" class="w-full h-full rounded-lg border-0 focus:outline-none focus:ring-0 transition-colors duration-200 text-sm text-black/70 px-4">
+                    <input type="datetime-local" name="date" placeholder="Tanggal dan jam peminjaman" value="<?= isset($_GET['date']) ? $_GET['date'] : null ?>" class="w-full h-full rounded-lg border-0 focus:outline-none focus:ring-0 transition-colors duration-200 text-sm text-black/70 px-4">
                 </div>
                 <div class="h-12 w-[1px] rounded-full bg-black/20">
 
@@ -38,7 +38,7 @@ use App\Components\RoomCard;
                     <label class="px-1 bg-transparent text-xs font-medium text-black/70">
                         Durasi
                     </label>
-                    <input type="time" name="duration" placeholder="Lama peminjaman ruangan" class="w-full h-full rounded-lg border-0 focus:outline-none focus:ring-0 transition-colors duration-200 text-sm text-black/70 px-4">
+                    <input type="time" name="duration" placeholder="Lama peminjaman ruangan" value="<?= isset($_GET['duration']) ? $_GET['duration'] : null ?>" class="w-full h-full rounded-lg border-0 focus:outline-none focus:ring-0 transition-colors duration-200 text-sm text-black/70 px-4">
                 </div>
 
                 <!-- Search Button -->

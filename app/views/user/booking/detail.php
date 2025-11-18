@@ -3,18 +3,27 @@
 use App\Components\Icon\Icon;
 use App\Components\Button;
 use App\Components\Badge;
+use App\Components\FormInput;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
+use App\Components\Modal;
 
 $bookingCode = $_GET['code'] ?? '#AA682358';
 $status = $_GET['status'] ?? 'berlangsung';
 $statusEnum = [
-    "berlangsung" => "berlangsung",
-    "dibatalkan" => "dibatalkan",
-    "selesai" => "selesai"
+    "created" => "created",
+    "checked_in" => "checked_in",
+    "dibatalkan" => "cancelled",
+    "selesai" => "finished"
 ];
-
+$statusLabel = [
+    "created" => "berlangsung",
+    "checked_in" => "berlangsung",
+    "cancelled" => "dibatalkan",
+    "finished" => "selesai"
+];
 $bookingDetail = [
+    'id' => $data['booking']->id,
     'code' => $data['booking']->booking_code,
     'status' => $data['booking']->status,
     'pic' => $data['booking']->pic,
@@ -28,7 +37,7 @@ $bookingDetail = [
 ?>
 
 
-<div class="bg-baseColor font-poppins">
+<div class="bg-baseColor font-poppins" x-data="{ onModalShow: false, showFeedback: false }">
     <div class="max-w-6xl mx-auto p-4">
         <!-- Header -->
         <div class="flex items-center gap-3 mb-6">
@@ -45,9 +54,9 @@ $bookingDetail = [
             <!-- Header with Code and Status -->
             <div class="flex justify-between items-start w-full">
                 <div>
-                    <h3 class="text-lg font-bold text-primary">Kode Booking: #<?= $bookingDetail['code'] ?></h3>
+                    <h3 class="text-2xl font-medium text-primary">Kode Booking: #<?= $bookingDetail['code'] ?></h3>
                 </div>
-                <?= Badge::badge(label: $bookingDetail['status'], color: $bookingDetail['status'] === $statusEnum["berlangsung"] ? 'tertiary' : ($bookingDetail['status'] ===  $statusEnum["selesai"] ? 'secondary' : 'red')) ?>
+                <?= Badge::badge(label: $statusLabel[$bookingDetail['status']], color: ($bookingDetail['status'] == $statusEnum["created"] || $bookingDetail['status'] == $statusEnum["checked_in"]) ? 'tertiary' : ($bookingDetail['status'] ==  $statusEnum["selesai"] ? 'secondary' : 'red')) ?>
             </div>
 
             <!-- Booking Information -->
@@ -66,14 +75,14 @@ $bookingDetail = [
 
                 <div class="flex items-start gap-3">
                     <?= Icon::calendar_pencil('w-5 h-5 text-black/80') ?>
-                    <span class="text-sm text-gray-700">Location: <?= $bookingDetail['date'] ?></span>
+                    <span class="text-sm text-gray-700">Tanggal: <?= $bookingDetail['date'] ?></span>
                 </div>
 
                 <div class="flex items-start gap-3">
                     <?= Icon::clock('w-5 h-5 text-black/80') ?>
-                    <span class="text-sm text-gray-700">Tempat: <?= $bookingDetail['time'] ?></span>
+                    <span class="text-sm text-gray-700">Waktu: <?= $bookingDetail['time'] ?></span>
                 </div>
-                <?php if ($bookingDetail['status'] === $statusEnum['selesai']): ?>
+                <?php if ($bookingDetail['status'] == $statusEnum['selesai']): ?>
                     <div class="flex items-start gap-3">
                         <?= Icon::clock('w-5 h-5 text-black/80') ?>
                         <span class="text-sm text-gray-700">Check in: 13.05 &bull; Check out: 15.05</span>
@@ -84,8 +93,8 @@ $bookingDetail = [
             <!-- Members Section -->
             <div class=" pt-4">
                 <h4 class="text-base font-semibold text-primary mb-3">Anggota:</h4>
-                <ul class="space-y-2">
-                    <?php  foreach ($bookingDetail['members'] as $member): ?>
+                <ul class="space-y-2 px-2">
+                    <?php foreach ($bookingDetail['members'] as $member): ?>
                         <li class="flex items-start gap-3">
                             <span class="text-secondary font-medium shrink-0">•</span>
                             <span class="text-sm text-gray-700"><?= $member->name ?></span>
@@ -94,7 +103,7 @@ $bookingDetail = [
                 </ul>
             </div>
 
-            <?php if ($bookingDetail['status'] === $statusEnum['berlangsung']): ?>
+            <?php if ($bookingDetail['status'] == $statusEnum['dibatalkan']): ?>
                 <div class="flex flex-col gap-2 pt-4">
                     <h4 class="text-base font-semibold text-primary">Detail Pembatalan:</h4>
                     <div class="w-full flex flex-col gap-4">
@@ -116,11 +125,120 @@ $bookingDetail = [
                 </div>
             <?php endif; ?>
 
+            <?php if (($bookingDetail['status'] == $statusEnum["created"] || $bookingDetail['status'] == $statusEnum["checked_in"])): ?>
+                <?= Button::button(label: 'Cancel', type: 'button', color: 'red', class: 'w-full py-2 rounded-full!', alpineClick: "onModalShow=true") ?>
+            <?php endif; ?>
 
-            <?php if ($bookingDetail['status'] === $statusEnum['berlangsung']): ?>
-                <?= Button::button(label: 'Cancel', type: 'submit', color: 'red', class: 'w-full py-2 rounded-full!') ?>
+            <?php if ($bookingDetail['status'] == $statusEnum['selesai']): ?>
+                <?= Button::buttonGradient(label: 'Send Feedback', type: 'button', class: 'w-full py-2 rounded-full!', alpineClick: "showFeedback=true") ?>
             <?php endif; ?>
         </div>
 
     </div>
+
+    <!-- cancel dialog -->
+    <?php
+    ob_start();
+    ?>
+    <form action="" method="POST" class="w-full flex flex-col gap-2">
+        <?= FormInput::textarea(id: 'reason', name: 'reason', label: 'Alasan:', class: 'h-18', maxlength: 100) ?>
+        <!-- opsional misal idnya mau disatuin ama form -->
+        <input type="text" name="id" value="<?= $bookingDetail['id'] ?>" class="hidden" />
+        <div class="flex gap-4 w-full ">
+            <?php
+            Button::button(label: 'Iya', color: 'red', type: 'submit', class: 'w-full py-3');
+            Button::button(label: 'Tidak', color: 'white', type: 'button', alpineClick: "onModalShow=false", class: 'w-full py-3');
+            ?>
+        </div>
+    </form>
+    <?php $content = ob_get_clean(); ?>
+    <?= Modal::render(
+        title: 'Yakin ingin membatalkan booking?',
+        color: 'red',
+        message: 'Pembatalan booking akan menambah suspend point. Jika total suspend point Anda lebih dari 3, Anda akan diblokir dari peminjaman ruangan selama 2 minggu.',
+        customContent: $content,
+        alpineShow: 'onModalShow',
+        height: 'h-[24rem]'
+    ) ?>
+
+    <!-- send feedback dialog -->
+
+    <?php
+    ob_start();
+    ?>
+    <form action="" method="POST" class="w-full flex flex-col gap-6" x-data="{ rating: 0 }">
+        <!-- Booking Information -->
+        <div class="w-full flex flex-col gap-3 text-left font-medium text-black/80">
+            <h3 class="text-2xl font-medium text-primary">Kode Booking: <span class="text-secondary">#<?= $bookingDetail['code'] ?></span></h3>
+            <div class="flex flex-col gap-1">
+                <span class="text-sm ">
+                    Tempat: <span class="text-secondary font-medium"><?= $bookingDetail['room'] ?></span>, Perpustakaan PNJ, LT. <?= $bookingDetail['floor'] ?>
+                </span>
+            </div>
+            <div class="flex flex-col gap-1">
+                <span class="text-sm ">
+                    Tanggal: <?= $bookingDetail['date'] ?>
+                </span>
+            </div>
+            <div class="flex flex-col gap-1">
+                <span class="text-sm ">
+                    Jam: <?= $bookingDetail['time'] ?>
+                </span>
+            </div>
+        </div>
+
+        <!-- Star Rating -->
+        <div class="w-full flex flex-col gap-3 items-center">
+            <div class="flex gap-2 justify-center">
+                <template x-for="star in 5" :key="star">
+                    <button
+                        type="button"
+                        @click="rating = star"
+                        class="focus:outline-none transition-transform hover:scale-110">
+                        <svg
+                            class="w-12 h-12 transition-colors duration-200"
+                            :class="star <= rating ? 'text-primary' : 'text-gray-300'"
+                            fill="currentColor"
+                            viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                    </button>
+                </template>
+            </div>
+            <input type="hidden" name="rating" :value="rating" required>
+        </div>
+
+        <!-- Textarea for feedback -->
+        <div class="w-full">
+            <?=
+            FormInput::textarea(
+                label: 'Alasan',
+                name: 'feedback',
+                maxlength: 500,
+                rows: 4,
+                placeholder: 'masukkan deskripsi',
+                required: true,
+            );
+            ?>
+        </div>
+        <!-- Hidden input for booking ID -->
+        <!-- <input type="hidden" name="booking_id" x-bind:value="bookingId" /> -->
+
+        <!-- Submit Button -->
+        <?= Button::buttonGradient(label: 'submit', type: 'submit') ?>
+    </form>
+
+    <?php
+    $feedbackContent = ob_get_clean();
+    ?>
+
+    <?= Modal::render(
+        title: 'Feedback',
+        color: 'primary',
+        message: '',
+        customContent: $feedbackContent,
+        alpineShow: 'showFeedback',
+        class: 'max-w-2xl p-8',
+        height: 'h-fit'
+    ) ?>
 </div>

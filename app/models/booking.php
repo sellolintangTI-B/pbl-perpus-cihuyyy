@@ -7,6 +7,18 @@ use PDO;
 
 class Booking extends Database
 {
+
+    public static function get()
+    {
+        $conn = parent::getConnection();
+        $q = $conn->prepare("SELECT DISTINCT ON (b.id) b.id, u.first_name || ' ' || u.last_name AS pic_name, r.name, b.start_time, b.end_time, bl.status
+        FROM bookings AS b JOIN users AS u ON b.user_id = u.id
+        JOIN rooms AS r ON b.room_id = r.id
+		JOIN booking_logs AS bl ON b.id = bl.booking_id ORDER BY b.id, bl.created_at DESC");
+        $q->execute();
+        $data = $q->fetchAll(PDO::FETCH_OBJ);
+        return $data;
+    }
     public static function create($data)
     {
         $conn = parent::getConnection();
@@ -100,19 +112,28 @@ class Booking extends Database
     public static function getById($id)
     {
         $conn = parent::getConnection();
-        $q = $conn->prepare("SELECT DISTINCT ON (b.id) b.booking_code, bl.status, u.first_name || ' ' || u.last_name AS pic, r.name, r.floor, b.start_time, b.end_time, b.user_id AS pic_id
+        $q = $conn->prepare("SELECT DISTINCT ON (b.id) b.id,b.booking_code, bl.status, u.first_name || ' ' || u.last_name AS pic, r.name, r.floor, b.start_time, b.end_time, b.user_id AS pic_id, bl.created_at
         FROM bookings AS b JOIN booking_logs AS bl ON b.id = bl.booking_id
         JOIN users AS u ON b.user_id = u.id
         JOIN booking_participants AS bp ON b.id = bp.booking_id 
-        JOIN rooms AS r ON b.room_id = r.id WHERE b.id = :id ");
+        JOIN rooms AS r ON b.room_id = r.id WHERE b.id = :id ORDER BY b.id, bl.created_at DESC");
         $q->bindValue(':id', $id);
         $q->execute();
         $data = $q->fetch(PDO::FETCH_OBJ);
         return $data;
     }
 
-    public static function getBooksByDate($date)
+    public static function getActiveBookingByBookingCode($bookingCode)
     {
-        
+        $conn = parent::getConnection();
+        $q = $conn->prepare("SELECT * FROM 
+            (SELECT DISTINCT ON (b.id) b.booking_code, bl.status, b.start_time, b.end_time, r.name, r.floor FROM bookings AS b JOIN booking_logs AS bl ON b.id = bl.booking_id
+            JOIN rooms AS r ON b.room_id = r.id
+            ORDER BY b.id, bl.created_at DESC) 
+            AS active WHERE active.booking_code = :bookingCode");
+        $q->bindValue(":bookingCode", $bookingCode);
+        $q->execute();
+        $data = $q->fetch(PDO::FETCH_OBJ);
+        return $data;
     }
 }

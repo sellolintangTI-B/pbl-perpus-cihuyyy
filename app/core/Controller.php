@@ -1,26 +1,34 @@
 <?php
+
 namespace App\Core;
-class Controller {
+
+class Controller
+{
     static $layoutType = [
         "civitas" => "Civitas",
         "admin" => "Admin",
         "default" => "default",
     ];
 
-    public function model($model) 
+    public function model($model)
     {
         require_once('app/models/' . $model . '.php');
         $class = "app\\models\\" . $model;
         return new $class;
-    }    
-
-    public function view($view, $data = [], $layoutType = "default") 
-    {   
+    }
+    public function redirectWithOldInput($url, $oldData)
+    {
+        $_SESSION['old_input'] = $oldData;
+        header('Location: ' . URL . $url);
+        exit;
+    }
+    public function view($view, $data = [], $layoutType = "default")
+    {
         // extract($data);
         ob_start();
         require_once('app/views/' . $view . '.php');
         $content = ob_get_clean();
-        switch($layoutType) {
+        switch ($layoutType) {
             case $this::$layoutType["admin"]:
                 require('app/components/layout/Admin.php');
                 break;
@@ -33,4 +41,3 @@ class Controller {
         }
     }
 }
-?>

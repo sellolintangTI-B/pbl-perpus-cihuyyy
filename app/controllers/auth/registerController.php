@@ -53,7 +53,6 @@ class RegisterController extends Controller
             $validator->field("email", ["required", "email"]);
             $validator->field("password", ["required"]);
             $validator->field("first_name", ["required"]);
-            $validator->field("last_name", ["required"]);
             $validator->field("institution", ["required"]);
             $validator->field("phone_number", ["required"]);
             $validator->field("role", ["required"]);
@@ -79,7 +78,7 @@ class RegisterController extends Controller
             }
 
             $newPath = 'storage/users/' . $_FILES['file_upload']['name'];
-            move_uploaded_file($file, __DIR__ . "/../../public/" . $newPath); 
+            move_uploaded_file($file, dirname(__DIR__) . "/../../public/" . $newPath); 
             $data['image'] = $newPath;
             $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
             $insertData = User::insert($data);

@@ -23,18 +23,18 @@ class RoomController extends Controller
     {
         try {
             $params = [];
-            
-            if(isset($_GET['date'])) {
+
+            if (isset($_GET['date'])) {
                 $start = Carbon::parse($_GET['date']);
                 $params['startTime'] = $start;
             }
 
-            if(isset($_GET['duration'])) {
+            if (isset($_GET['duration'])) {
                 $duration = Carbon::parse($_GET['duration'])->setDateFrom($start)->toDateTimeString();
                 $params['duration'] = $start->diffInMinutes($duration);
             }
 
-            if(isset($_GET['room'])) {
+            if (isset($_GET['room'])) {
                 $params['room'] = $_GET['room'];
             }
 
@@ -50,9 +50,9 @@ class RoomController extends Controller
     {
         try {
             $date = Carbon::now('Asia/Jakarta')->toDateString();
-            if(isset($_GET['date'])) {
+            if (isset($_GET['date'])) {
                 $date = Carbon::parse($_GET['date'])->toDateString();
-            } 
+            }
             $room = Room::getById($id);
             if (!$room) throw new CustomException("Data ruangan tidak ditemukan");
             $bookingSchedule = Booking::getByRoomId($id, $date);
@@ -84,5 +84,4 @@ class RoomController extends Controller
             var_dump($error);
         }
     }
-
 }

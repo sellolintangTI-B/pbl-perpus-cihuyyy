@@ -35,4 +35,24 @@ class BookingLog extends Database {
         return false;
     }
 
+    public static function checkIn($bookingId)
+    {
+        $conn = parent::getConnection();
+        $q = $conn->prepare("INSERT INTO booking_logs (status, booking_id) VALUES ('checked_in', ?)");
+        $q->bindValue(1, $bookingId);
+        $q->execute();
+        if($q) return true;
+        return false;
+    }
+
+    public static function checkOut($bookingId)
+    {
+        $conn = parent::getConnection();
+        $q = $conn->prepare("INSERT INTO booking_logs (status, booking_id) VALUES ('finished', ?)");
+        $q->bindValue(1, $bookingId);
+        $q->execute();
+        if($q) return true;
+        return false;
+    }
+
 }
