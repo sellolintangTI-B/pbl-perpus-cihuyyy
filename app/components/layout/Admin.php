@@ -17,13 +17,14 @@
 use App\Components\NavThings;
 
 $items = [
-    ['label' => 'Dashboard', 'url' => '/admin/dashboard/index', 'icon' => 'home'],
-    ['label' => 'Data Peminjaman', 'url' => '/admin/booking/index', 'icon' => 'calendar_pencil'],
-    ['label' => 'Data Pengguna', 'url' => '/admin/user/index', 'icon' => 'person'],
-    ['label' => 'Data Ruangan', 'url' => '/admin/room/index', 'icon' => 'room'],
+    ['label' => 'Dashboard', 'url' => URL.'/admin/dashboard/index', 'icon' => 'home'],
+    ['label' => 'Data Peminjaman', 'url' => URL.'/admin/booking/index', 'icon' => 'calendar_pencil'],
+    ['label' => 'Data Pengguna', 'url' => URL.'/admin/user/index', 'icon' => 'person'],
+    ['label' => 'Data Ruangan', 'url' => URL.'/admin/room/index', 'icon' => 'room'],
 
 ];
-$activeItem = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+ $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? "https" : "http";
+  $activeItem = "{$protocol}://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
 ?>
 
 <body class="font-poppins">
