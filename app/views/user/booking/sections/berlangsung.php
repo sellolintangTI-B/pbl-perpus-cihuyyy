@@ -28,7 +28,7 @@ if ($data) {
     <div class="bg-white rounded-xl shadow-lg  mb-4 p-4 w-full">
         <div class="flex gap-4 mb-4">
             <!-- Room Image -->
-            <img src="<?= $currentBooking['image'] ?>"
+            <img src="<?= URL . '/public/' . $currentBooking['image'] ?>"
                 alt="<?= $currentBooking['room'] ?>"
                 class="w-44 h-48 object-cover rounded-lg shrink-0">
             <!-- Booking Info -->
@@ -80,7 +80,7 @@ if ($data) {
             <?php
             Button::anchorGradient(label: 'See Details', link: URL . '/user/booking/detail/' . htmlspecialchars($currentBooking['id']), class: 'rounded-full!');
             if ($authUser->user['id'] === $data->pic_id) {
-                Button::button(label: 'Cancel Booking', color: 'red', class: 'w-full py-3 rounded-full!', onClick: 'confirmCancel()');
+                Button::button(label: 'Cancel Booking', color: 'red', class: 'w-full py-3 rounded-full!', alpineClick: "showCancel=true; cancelPeminjamanId='" . htmlspecialchars($currentBooking['id']) . "'; ");
             }
             ?>
         </div>
@@ -104,12 +104,5 @@ if ($data) {
         }).catch(err => {
             console.error('Gagal menyalin:', err);
         });
-    }
-
-    function confirmCancel() {
-        if (confirm('Apakah Anda yakin ingin membatalkan booking ini?')) {
-            // Redirect to cancel handler
-            window.location.href = '<?= URL ?>/user/booking/cancel_booking/<?= $currentBooking['id'] ?>';
-        }
     }
 </script>
