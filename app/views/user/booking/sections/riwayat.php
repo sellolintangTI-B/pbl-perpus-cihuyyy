@@ -26,8 +26,8 @@ $historyBookings = [
     ],
 ];
 
-$filter = ["Semua", "Selesai", "Dibatalkan"];
-$currentStatus = !empty($_GET['status']) ? $_GET['status'] : 'Semua';
+$filter = ["semua", "finished", "cancelled"];
+$currentStatus = !empty($_GET['status']) ? $_GET['status'] : 'semua';
 
 // Filter bookings based on status
 if ($currentStatus !== 'Semua') {
@@ -49,7 +49,7 @@ if ($currentStatus !== 'Semua') {
         <?php foreach ($filter as $f):
             $color = match (strtolower($f)) {
                 'semua' => 'primary',
-                'selesai' => 'secondary',
+                'finished' => 'secondary',
                 default => 'red'
             };
 

@@ -16,9 +16,12 @@ switch ($color) {
     case 'red':
         $customClass = "bg-red text-sm text-baseColor rounded-xl flex gap-2 items-center justify-center border-2 border-red hover:text-red hover:bg-red/5 transition-all duration-500";
         break;
+    case 'white':
+        $customClass = "bg-white text-sm text-black/80 rounded-xl flex gap-2 items-center justify-center border-2 shadow-sm border-white hover:border-black/80 hover:shadow-lg transition-all  duration-500";
+        break;
 }
 
 ?>
-<button class=" <?= $customClass ?> <?= $class ?> cursor-pointer" type="<?= $type ?>" onclick="<?= $onClick ?>" id="<?= $id ?>" name="<?= $name ?>">
+<button class=" <?= $customClass ?> <?= $class ?> cursor-pointer" type="<?= $type ?>" onclick="<?= $onClick ?>" id="<?= $id ?>" name="<?= $name ?>" @click="<?= $alpineClick ?>">
     <?php $icon ? Icon::{$icon}('w-6 h-6') : null; ?> <?= $label ?>
 </button>
