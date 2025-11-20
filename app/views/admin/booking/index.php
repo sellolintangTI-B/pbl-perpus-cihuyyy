@@ -16,7 +16,7 @@
         "finished" => "tertiary"
     ];
     $statusLabel = [
-        "created" => "berlangsung",
+        "created" => "created",
         "checked_in" => "berlangsung",
         "cancelled" => "dibatalkan",
         "finished" => "selesai"
@@ -131,11 +131,17 @@
                                             class="flex items-center gap-2 px-3 py-2 text-xs text-primary hover:bg-primary/5 transition">
                                             <?= Icon::pencil('w-4 h-4') ?> Edit
                                         </a>
-                                        <button
-                                            @click="$dispatch('cancel-peminjaman', { cancelPeminjamanId: '<?= $value->id ?>' }); showAlert = true;"
-                                            class="flex items-center gap-2 px-3 py-2 text-xs text-red-600 hover:bg-red/5 border-t border-gray-100 w-full text-left transition">
-                                            <?= Icon::trash('w-4 h-4') ?> Cancel
-                                        </button>
+                                        <?php
+
+                                        if ($value->status == 'created'):
+                                        ?>
+                                            <button
+                                                @click="$dispatch('cancel-peminjaman', { cancelPeminjamanId: '<?= $value->id ?>' }); showAlert = true;"
+                                                class="flex items-center gap-2 px-3 py-2 text-xs text-red-600 hover:bg-red/5 border-t border-gray-100 w-full text-left transition">
+                                                <?= Icon::trash('w-4 h-4') ?> Cancel
+                                            </button>
+                                        <?php endif; ?>
+
                                     </div>
                                 </td>
                             <?php endforeach  ?>
