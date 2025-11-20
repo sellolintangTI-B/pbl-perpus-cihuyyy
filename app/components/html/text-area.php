@@ -1,5 +1,16 @@
+<?php
+
+$classColor = match ($color) {
+    'primary' => 'focus:shadow-primary/40 focus:border-primary hover:border-primary',
+    'secondary' => 'focus:shadow-secondary/40 focus:border-secondary hover:border-secondary',
+    'red' => 'focus:shadow-red/40 focus:border-red hover:border-red',
+    'tertiary' => 'focus:shadow-tertiary/40  focus:border-tertiary hover:border-tertiary',
+    default => 'focus:shadow-primary/40 focus:border-primary hover:border-primary',
+};
+?>
+
 <div class="<?= $classGlobal ?> flex flex-col gap-1 font-poppins focus-within:text-secondary">
-    <label for="<?= $id ?? ($name ?? '') ?>" class="<?= empty($label) ? 'hidden' : 'block text-lg font-normal text-primary' ?>">
+    <label for="<?= $id ?? ($name ?? '') ?>" class="<?= empty($label) ? 'hidden' : 'block font-normal text-black/80' ?>">
         <?= $label ?? '' ?>
     </label>
     <div class="relative w-full h-full">
@@ -8,7 +19,7 @@
             id="<?= $id ?? ($name ?? '') ?>"
             placeholder="<?= $placeholder ?? '' ?>"
             rows="<?= $rows ?? 4 ?>"
-            class="<?= $class ?> rounded-xl shadow-md p-3 bg-baseColor text-gray-600 border border-gray-400 hover:border-secondary outline-none text-sm focus:shadow-md focus:shadow-secondary transition-shadow duration-300 w-full resize-y"
+            class="<?= $class ?> <?= $classColor ?> rounded-xl shadow-md p-3 bg-baseColor text-gray-600 border border-gray-400  outline-none text-sm focus:shadow-md transition-shadow duration-300 w-full resize-y"
             <?= isset($required) && $required ? 'required' : '' ?>
             <?= isset($readonly) && $readonly ? 'readonly' : '' ?>
             <?= isset($disabled) && $disabled ? 'disabled' : '' ?>

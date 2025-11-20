@@ -37,5 +37,7 @@ use App\Components\Modal;
         message: 'Anda akan keluar dari akun ini. Pastikan semua pekerjaan sudah disimpan sebelum logout.',
         method: 'POST',
         alpineShow: 'logoutAlert',
+        height: 'h-fit',
+        class: 'max-w-xl w-full p-8'
     ) ?>
 </div>

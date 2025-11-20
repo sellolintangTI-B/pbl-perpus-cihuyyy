@@ -138,7 +138,7 @@
         ob_start();
         ?>
         <form action="" method="POST" class="w-full flex flex-col gap-2">
-            <?= FormInput::textarea(id: 'reason', name: 'reason', label: 'Alasan:', class: 'h-18', maxlength: 100) ?>
+            <?= FormInput::textarea(id: 'reason', name: 'reason', label: 'Alasan:', class: 'h-18', maxlength: 100, color: 'red') ?>
             <!-- opsional misal idnya mau disatuin ama form -->
             <input type="text" name="id" x-bind:value="cancelPeminjamanId" class="hidden" />
             <div class="flex gap-4 w-full ">

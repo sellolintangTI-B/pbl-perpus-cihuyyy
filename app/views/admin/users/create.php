@@ -105,14 +105,11 @@ $prodiPnj = [
                     options: []
                 );
                 FormInput::input(id: 'phone_number', name: 'phone_number', type: 'tel', label: 'Nomor Whatsapp', required: true);
-                FormInput::input(id: 'password', name: 'password', type: 'password', label: 'Password', required: true);
-                FormInput::input(id: 'password_confirmation', name: 'password_confirmation', type: 'password', label: 'Konfirmasi Password', required: true);
                 FormInput::select(
                     id: 'role',
                     name: 'role',
                     label: 'Jenis Civitas',
                     required: true,
-                    classGlobal: 'sm:col-span-2',
                     placeholder: "Pilih jenis civitas",
                     options: [
                         [
@@ -129,6 +126,9 @@ $prodiPnj = [
                         ],
                     ]
                 );
+                FormInput::input(id: 'password', name: 'password', type: 'password', label: 'Password', required: true);
+                FormInput::input(id: 'password_confirmation', name: 'password_confirmation', type: 'password', label: 'Konfirmasi Password', required: true);
+
                 ?>
                 <div class="sm:col-span-2 mt-4">
                     <button type="submit" name="register" class="w-full bg-primary text-white px-4 py-2 rounded-xl cursor-pointer shadow-sm shadow-gray-400 hover:shadow-md hover:shadow-primary-100 duration-300 transition-all font-medium">
