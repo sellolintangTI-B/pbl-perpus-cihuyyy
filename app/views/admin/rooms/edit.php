@@ -11,7 +11,8 @@ use App\Components\Button;
     <?= Button::button(
         label: 'ya',
         class: 'w-full py-3',
-        type: 'submit',
+        type: 'button',
+        alpineClick: 'submitUpdateForm()',
         color: 'secondary',
     ) ?>
     <?= Button::button(
@@ -39,7 +40,7 @@ use App\Components\Button;
 
         <div class="flex-1 w-full overflow-y-auto">
             <div class="flex items-center justify-center  w-full max-w-5xl mx-auto">
-                <form class="w-full max-w-3xl grid grid-cols-1 sm:grid-cols-2 gap-6" x-data="{updateAlert: false}" action="<?= URL . "/admin/room/update/" . $data->id ?>" method="post" enctype="multipart/form-data">
+                <form class="w-full max-w-3xl grid grid-cols-1 sm:grid-cols-2 gap-6" x-data="updateRoomForm()" @submit.prevent="validateAndShowUpdateAlert" action="<?= URL . "/admin/room/update/" . $data->id ?>" method="post" enctype="multipart/form-data">
                     <?php
                     FormInput::input(id: 'nama', name: 'name', label: 'Nama', placeholder: "masukkan nama ruangan", required: true, value: $data->name);
                     FormInput::input(id: 'lantai', name: 'floor', type: 'number', label: 'Lantai', placeholder: "contoh: 1", required: true, value: $data->floor);
@@ -75,7 +76,7 @@ use App\Components\Button;
                     FormInput::checkbox(id: 'isOperational', name: 'isOperational', label: 'Ruangan Beroperasi', checked: $data->is_operational == 1);
                     ?>
                     <div class="sm:col-span-2 mt-4">
-                        <button type="button" @click="updateAlert = true" name="register" class="w-full bg-primary text-white px-4 py-2 rounded-xl cursor-pointer shadow-sm shadow-gray-400 hover:shadow-md hover:shadow-primary-100 duration-300 transition-all font-medium">
+                        <button type="submit" name="register" class="w-full bg-primary text-white px-4 py-2 rounded-xl cursor-pointer shadow-sm shadow-gray-400 hover:shadow-md hover:shadow-primary-100 duration-300 transition-all font-medium">
                             Simpan Perubahan
                         </button>
                     </div>
@@ -92,3 +93,22 @@ use App\Components\Button;
         </div>
     </div>
 </div>
+<script>
+    function updateRoomForm() {
+        return {
+            updateAlert: false,
+            validateAndShowUpdateAlert(event) {
+                const form = event.target;
+                if (form.checkValidity()) {
+                    this.updateAlert = true;
+                } else {
+                    form.reportValidity();
+                }
+            },
+
+            submitUpdateForm() {
+                document.getElementById('updateRoomForm').submit();
+            },
+        }
+    }
+</script>

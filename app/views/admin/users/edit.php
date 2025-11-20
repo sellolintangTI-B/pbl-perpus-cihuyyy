@@ -78,13 +78,14 @@ $roleOptions = [
     ],
 ];
 ?>
-<!-- show modal simpan perubahan -->
+<!-- show modal update data akun -->
 <?php ob_start() ?>
 <div class="w-full flex gap-4">
     <?= Button::button(
         label: 'ya',
         class: 'w-full py-3',
-        type: 'submit',
+        type: 'button',
+        alpineClick: "submitUpdateForm()",
         color: 'secondary',
     ) ?>
     <?= Button::button(
@@ -96,7 +97,28 @@ $roleOptions = [
     ) ?>
 </div>
 <?php $updateAccountContent = ob_get_clean() ?>
-<div class="w-full h-full">
+
+<!-- show modal ganti password -->
+<?php ob_start() ?>
+<div class="flex gap-4 w-full">
+    <?= Button::button(
+        label: 'ya',
+        class: 'w-full py-3',
+        alpineClick: "submitPasswordForm()",
+        type: 'button',
+        color: 'red',
+    ) ?>
+    <?= Button::button(
+        label: 'tidak',
+        type: 'button',
+        alpineClick: 'updatePasswordAlert = false',
+        class: 'w-full py-3',
+        color: 'white',
+    ) ?>
+</div>
+<?php $updatePasswordContent = ob_get_clean() ?>
+
+<div class="w-full h-full" x-data="editUserForm()">
     <div class=" w-full h-full flex flex-col items-start justify-start gap-5 ">
         <div class=" w-full flex items-center justify-start">
             <h1 class="text-2xl font-medium text-primary">
@@ -119,7 +141,13 @@ $roleOptions = [
                 <div class="w-full">
                     <h2 class="text-xl font-medium text-gray-800 mb-4">Informasi Pengguna</h2>
                     <div class="w-full p-6 shadow-md border border-gray-300 rounded-xl bg-gray-50">
-                        <form class="w-full grid grid-cols-1 sm:grid-cols-2 gap-6" action="<?= URL ?>/admin/user/update/<?= $data->id ?>" method="post" enctype="multipart/form-data" x-data="{updateAlert: false}">
+                        <form
+                            id="updateUserForm"
+                            class="w-full grid grid-cols-1 sm:grid-cols-2 gap-6"
+                            @submit.prevent="validateAndShowUpdateAlert"
+                            action="<?= URL ?>/admin/user/update/<?= $data->id ?>"
+                            method="post"
+                            enctype="multipart/form-data">
                             <?php
                             FormInput::input(
                                 id: 'id_number',
@@ -214,7 +242,6 @@ $roleOptions = [
                                 ],
                                 selected: $data->is_active,
                                 required: true,
-                                classGlobal: 'sm:col-span-2 col-span-1'
                             );
                             FormInput::fileInput(
                                 id: 'image',
@@ -226,7 +253,7 @@ $roleOptions = [
                             ?>
 
                             <div class="sm:col-span-2 mt-4">
-                                <button type="button" @click="updateAlert = true" class="w-full bg-primary text-white px-4 py-3 rounded-xl cursor-pointer shadow-sm shadow-gray-400 hover:shadow-md hover:shadow-primary transition-all duration-300 font-medium text-baseColor">
+                                <button type="submit" class="w-full bg-primary text-white px-4 py-3 rounded-xl cursor-pointer shadow-sm shadow-gray-400 hover:shadow-md hover:shadow-primary transition-all duration-300 font-medium text-baseColor">
                                     Simpan Perubahan
                                 </button>
                             </div>
@@ -247,24 +274,12 @@ $roleOptions = [
                 <div class="w-full">
                     <h2 class="text-xl font-medium text-gray-800 mb-4">Keamanan Akun</h2>
                     <div class="w-full p-6 shadow-md border border-gray-300 rounded-xl bg-gray-50">
-                        <form class="w-full grid grid-cols-1 gap-6"
-                            @submit.prevent="validateAndShowAlert"
+                        <form
+                            id="updatePasswordForm"
+                            class="w-full grid grid-cols-1 gap-6"
+                            @submit.prevent="validateAndShowPasswordAlert"
                             action="<?= URL ?>/admin/user/reset_password/<?= $data->id ?>"
-                            method="post"
-                            x-data="{
-                                updatePasswordAlert: false,
-                                validateAndShowAlert(event) {
-                                    const form = event.target;
-                                    if (form.checkValidity()) {
-                                        this.updatePasswordAlert = true;
-                                    } else {
-                                        form.reportValidity();
-                                    }
-                                },
-                                submitForm() {
-                                    $el.submit();
-                                }
-                            }">
+                            method="post">
                             <?php
                             FormInput::input(
                                 id: 'password',
@@ -292,27 +307,6 @@ $roleOptions = [
                             </div>
 
                             <!-- modal -->
-                            <?php
-                            ob_start();
-                            ?>
-                            <div class="flex gap-4 w-full">
-                                <?= Button::button(
-                                    label: 'ya',
-                                    class: 'w-full py-3',
-                                    alpineClick: "submitForm()",
-                                    type: 'submit',
-                                    color: 'red',
-                                ) ?>
-                                <?= Button::button(
-                                    label: 'tidak',
-                                    type: 'button',
-                                    alpineClick: 'updatePasswordAlert = false',
-                                    class: 'w-full py-3',
-                                    color: 'white',
-                                ) ?>
-                            </div>
-                            <?php $updatePasswordContent = ob_get_clean(); ?>
-
                             <?= Modal::render(
                                 title: 'Yakin ingin mengubah password?',
                                 color: 'red',
@@ -327,7 +321,41 @@ $roleOptions = [
         </div>
     </div>
 </div>
+
 <script>
+    function editUserForm() {
+        return {
+            updateAlert: false,
+            updatePasswordAlert: false,
+            validateAndShowUpdateAlert(event) {
+                const form = event.target;
+                if (form.checkValidity()) {
+                    this.updateAlert = true;
+                } else {
+                    form.reportValidity();
+                }
+            },
+
+            submitUpdateForm() {
+                document.getElementById('updateUserForm').submit();
+            },
+
+            validateAndShowPasswordAlert(event) {
+                const form = event.target;
+                if (form.checkValidity()) {
+                    this.updatePasswordAlert = true;
+                } else {
+                    form.reportValidity();
+                }
+            },
+
+            submitPasswordForm() {
+                document.getElementById('updatePasswordForm').submit();
+            }
+        }
+    }
+
+    // Prodi Data Handler
     const prodiData = <?= json_encode($prodiPnj) ?>;
 
     const jurusanSelect = document.getElementById('jurusan');
@@ -339,6 +367,7 @@ $roleOptions = [
         setProdi(selectedJurusan);
         prodiSelect.value = '<?= $data->study_program ?>';
     }
+
     jurusanSelect.addEventListener('change', function() {
         selectedJurusan = this.value;
         prodiSelect.innerHTML = '<option value="">Pilih Program Studi</option>';
