@@ -8,9 +8,22 @@
     use App\Components\Modal;
 
     $no = 1;
+
+    $statusColor = [
+        "created" => "primary",
+        "checked_in" => "secondary",
+        "cancelled" => "red",
+        "finished" => "tertiary"
+    ];
+    $statusLabel = [
+        "created" => "berlangsung",
+        "checked_in" => "berlangsung",
+        "cancelled" => "dibatalkan",
+        "finished" => "selesai"
+    ];
     ?>
 
-    <div class="w-full h-full" x-data="{ showAlert: false, cancelPeminjamanId: null }" @cancel-peminjaman.window="showAlert = true; cancelPeminjamanId = $event.detail.id">
+    <div class="w-full h-full" x-data="{ showAlert: false, cancelPeminjamanId: null }" @cancel-peminjaman.window="showAlert = true; cancelPeminjamanId = $event.detail.cancelPeminjamanId">
         <div class="w-full h-full flex flex-col items-start justify-start gap-5 ">
             <div class="w-full flex items-center justify-start">
                 <h1 class="text-2xl font-medium text-primary">
@@ -46,7 +59,6 @@
                             <th class="px-3 py-3 text-xs font-semibold text-center">Aksi</th>
                         </tr>
                     </thead>
-
                     <!-- Body -->
                     <tbody class="text-primary divide-y divide-gray-100">
                         <?php foreach ($data as $value) :
@@ -70,8 +82,8 @@
                                 <td class="px-3 py-3 text-xs">
                                     <div class="flex justify-center">
                                         <?= Badge::badge(
-                                            label: true ? "• Approved" : "• Declined",
-                                            color: true ? "secondary" : "red",
+                                            label: $statusLabel[$value->status],
+                                            color: $statusColor[$value->status],
                                             class: "w-24 text-xs!"
                                         ) ?>
                                     </div>
@@ -132,15 +144,17 @@
                 </table>
             </div>
         </div>
-
         <!-- modal -->
         <?php
         ob_start();
         ?>
-        <form action="" method="POST" class="w-full flex flex-col gap-2">
+        <form
+            x-bind:action="`<?= URL ?>/admin/booking/cancel/${cancelPeminjamanId}`"
+            method="POST"
+            class="w-full flex flex-col gap-2">
             <?= FormInput::textarea(id: 'reason', name: 'reason', label: 'Alasan:', class: 'h-18', maxlength: 100, color: 'red') ?>
             <!-- opsional misal idnya mau disatuin ama form -->
-            <input type="text" name="id" x-bind:value="cancelPeminjamanId" class="hidden" />
+            <!-- <input type="text" name="id" x-bind:value="cancelPeminjamanId" class="hidden" /> -->
             <div class="flex gap-4 w-full ">
                 <?php
                 Button::button(label: 'Iya', color: 'red', type: 'submit', class: 'w-full py-3');

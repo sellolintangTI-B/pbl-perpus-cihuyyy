@@ -16,9 +16,11 @@ class Controller
         $class = "app\\models\\" . $model;
         return new $class;
     }
-    public function redirectWithOldInput($url, $oldData)
+    public function redirectWithOldInput($url, $oldData = [])
     {
-        $_SESSION['old_input'] = $oldData;
+        if (!empty($oldData)) {
+            $_SESSION['old'] = $oldData;
+        }
         header('Location: ' . URL . $url);
         exit;
     }

@@ -76,21 +76,25 @@ class BookingController extends Controller
 
     public function cancel($bookingId)
     {
+        if (empty($bookingId)) {
+            ResponseHandler::setResponse('booking id tidak ditemukan! ' . $bookingId, 'error');
+            $this->redirectWithOldInput('/admin/booking/index');
+        }
         try {
             $user = new Authentication;
             $data = [
                 'user_id' => $user->user['id'],
-                'reason' => 'Pengguna malas',
+                'reason' => $_POST['reason'],
                 'booking_id' => $bookingId
             ];
             $cancel = BookingLog::cancel($data);
             if ($cancel) {
                 ResponseHandler::setResponse('Berhasil membatalkan peminjaman ruangan');
-                header('location:' . URL . '/admin/dashboard/index');
+                header('location:' . URL . '/admin/booking/index');
             }
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), 'error');
-            header('location:' . URL . '/admin/dashboard/index');
+            header('location:' . URL . '/admin/booking/index');
         }
     }
 }
