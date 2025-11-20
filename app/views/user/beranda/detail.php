@@ -3,6 +3,9 @@
 use App\Components\FormInput;
 use App\Components\Icon\Icon;
 use Carbon\Carbon;
+use App\Utils\Authentication;
+
+$authUser = new Authentication;
 
 if (isset($_SESSION['old_input'])) {
     $oldData = $_SESSION['old_input'];
@@ -122,11 +125,14 @@ if (isset($_SESSION['old_input'])) {
                 </table>
             </div>
         </div>
+
         <!-- form kanan -->
         <div class="flex-2 flex flex-col gap-4 justify-start items-center">
             <!-- Form Section -->
             <div class="bg-white rounded-xl p-4 shadow-md w-full">
-                <form method="POST" action="<?= URL  ?>/user/booking/store/<?= $data['detail']->id ?>" @submit="prepareData" enctype="multipart/form-data" class="space-y-4 w-full">
+                <form method="POST"
+
+                    @submit="prepareData" enctype="multipart/form-data" class="space-y-4 w-full">
                     <!-- Kapan -->
                     <div>
                         <label class="block text-sm font-medium text-primary mb-2">Kapan</label>
@@ -187,14 +193,27 @@ if (isset($_SESSION['old_input'])) {
         </div>
     </div>
 </div>
-
 <script>
     function formAnggota() {
         return {
             identifier: '',
-            listAnggota: <?= !empty($oldData['list_anggota']) ? $oldData['list_anggota'] : '[]' ?>,
+            listAnggota: <?php
+                            if (!empty($oldData['list_anggota'])) {
+                                echo $oldData['list_anggota'];
+                            } else {
+                                if ($authUser->user) {
+                                    echo json_encode([[
+                                        'id' => $authUser->user['id'],
+                                        'name' => $authUser->user['username'],
+                                        'id_number' => $authUser->user['id_number'] ?? $authUser->user['email'] ?? ''
+                                    ]]);
+                                } else {
+                                    echo '[]';
+                                }
+                            }
+                            ?>,
             message: '',
-            tanggal: '',
+            tanggal: '<?= $_GET['date'] ?? '' ?>',
 
             async tambahAnggota() {
                 if (this.identifier.trim() === '') {
@@ -202,7 +221,10 @@ if (isset($_SESSION['old_input'])) {
                     return;
                 }
 
-                let isExist = this.listAnggota.find(anggota => anggota.id_number === this.identifier || anggota.id === this.identifier);
+                let isExist = this.listAnggota.find(anggota =>
+                    anggota.id_number === this.identifier ||
+                    anggota.id === this.identifier
+                );
 
                 if (isExist) {
                     this.message = '* Anggota sudah ditambahkan';
@@ -210,7 +232,6 @@ if (isset($_SESSION['old_input'])) {
                 }
 
                 try {
-                    // request ke server untuk validasi NIM
                     let res = await fetch(`<?= URL ?>/user/booking/search_user/${encodeURIComponent(this.identifier)}`);
 
                     if (!res.ok) {
@@ -253,7 +274,6 @@ if (isset($_SESSION['old_input'])) {
                     }
                 <?php endif; ?>
 
-                // Validasi tambahan jika diperlukan
                 return true;
             }
         }
