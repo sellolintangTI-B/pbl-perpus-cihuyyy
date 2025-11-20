@@ -140,10 +140,8 @@ $bookingDetail = [
     <?php
     ob_start();
     ?>
-    <form action="" method="POST" class="w-full flex flex-col gap-2">
+    <form action="<?= URL ?>/user/booking/cancel_booking/<?= $bookingDetail['id'] ?>" method="POST" class="w-full flex flex-col gap-2">
         <?= FormInput::textarea(id: 'reason', name: 'reason', label: 'Alasan:', class: 'h-18', maxlength: 100) ?>
-        <!-- opsional misal idnya mau disatuin ama form -->
-        <input type="text" name="id" value="<?= $bookingDetail['id'] ?>" class="hidden" />
         <div class="flex gap-4 w-full ">
             <?php
             Button::button(label: 'Iya', color: 'red', type: 'submit', class: 'w-full py-3');
@@ -166,7 +164,7 @@ $bookingDetail = [
     <?php
     ob_start();
     ?>
-    <form action="" method="POST" class="w-full flex flex-col gap-6" x-data="{ rating: 0 }">
+    <form action="<?= URL ?>/user/booking/send_feedback/<?= $bookingDetail['id'] ?>" method="POST" class="w-full flex flex-col gap-6" x-data="{ rating: 0 }">
         <!-- Booking Information -->
         <div class="w-full flex flex-col gap-3 text-left font-medium text-black/80">
             <h3 class="text-2xl font-medium text-primary">Kode Booking: <span class="text-secondary">#<?= $bookingDetail['code'] ?></span></h3>
