@@ -18,19 +18,24 @@ use App\Components\FormInput;
         </div>
         <div class="flex-1 w-full overflow-y-auto">
             <div class="flex items-center justify-center  w-full max-w-5xl mx-auto">
-                <form class="w-full max-w-3xl grid grid-cols-1 sm:grid-cols-2 gap-6" action="<?= URL . "/admin/room/store" ?>" method="post" enctype="multipart/form-data" x-data="formAnggota()">
+                <form class="w-full max-w-3xl grid grid-cols-1 sm:grid-cols-2 gap-6" action="<?= URL . "/admin/booking/store" ?>" method="post" enctype="multipart/form-data" x-data="formAnggota()">
                     <?php
+                    $options = [];
+                    foreach($data as $value) {
+                        $options[] = [
+                            'display' => $value->name,
+                            'value' => $value->id,
+                        ];
+                    }
                     FormInput::select(
                         id: 'room',
                         name: 'room',
                         label: 'Ruangan',
                         placeholder: "Pilih Ruangan",
                         required: true,
-                        options: [
-                            ['display' => 'ruang baru', 'value' => 'id_ruangan']
-                        ]
+                        options: $options
                     );
-                    FormInput::input(id: 'pic', name: 'pic_id', type: 'text', label: 'Penanggung Jawab', placeholder: "Masukkan NIM/NIP dari penanggung jawab", required: true);
+                    // FormInput::input(id: 'pic', name: 'pic_id', type: 'text', label: 'Penanggung Jawab', placeholder: "Masukkan NIM/NIP dari penanggung jawab", required: true);
                     FormInput::input(id: 'datetime', name: 'datetime', type: 'datetime-local', label: 'Tanggal Peminjaman', placeholder: 'Masukkan tanggal peminjaman', required: true);
                     FormInput::input(id: 'duration', name: 'duration', type: 'time', label: 'Durasi', placeholder: 'Masukkan durasi peminjaman',  required: true);
                     ?>
@@ -104,11 +109,7 @@ use App\Components\FormInput;
         // inisialisasikan anggotanya disini terlebih dahulu
         return {
             identifier: '',
-            listAnggota: [{
-                id: '1',
-                name: 'Nugroho Nur Cahyo',
-                role: 'Mahasiswa'
-            }],
+            listAnggota: [],
             message: '',
             async tambahAnggota() {
                 if (this.identifier.trim() === '') {
@@ -123,7 +124,7 @@ use App\Components\FormInput;
                 }
                 try {
                     // request ke server untuk validasi NIM
-                    let res = await fetch(`<?= URL ?>/user/booking/search_user/${this.identifier}`);
+                    let res = await fetch(`<?= URL ?>/admin/booking/search_user/${this.identifier}`);
                     let data = await res.json();
                     console.log(data);
 
@@ -135,6 +136,7 @@ use App\Components\FormInput;
                         this.identifier = '';
                         this.message = '';
                     } else {
+                        throw data;
                         this.message = '* Data tidak ditemukan!';
                     }
                 } catch (err) {

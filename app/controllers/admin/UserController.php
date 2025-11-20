@@ -83,21 +83,25 @@ class UserController extends Controller
             $data = [
                 "id_number" => $_POST["id_number"],
                 "email" => $_POST["email"],
+                "password_hash" => $_POST["password"],
                 "first_name" => $_POST["first_name"],
                 "last_name" => $_POST["last_name"],
-                "password" => $_POST["password"],
-                "phone_number" => $_POST["phone_number"],
                 "institution" => "Politeknik Negeri Jakarta",
-                "role" => "Admin",
+                "study_program" => $_POST['prodi'],
+                "phone_number" => $_POST["phone_number"],
+                "major" => $_POST["major"],
+                "role" => $_POST['role'],
             ];
 
             $validator = new Validator($data);
             $validator->field('id_number', ['required']);
             $validator->field('email', ['required']);
+            $validator->field('password_hash', ['required']);
             $validator->field('first_name', ['required']);
             $validator->field('last_name', ['required']);
-            $validator->field('password', ['required']);
+            $validator->field('study_program', ['required']);
             $validator->field('phone_number', ['required']);
+            $validator->field('major', ['required']);
 
             if ($validator->error()) throw new CustomException($validator->getErrors());
 
@@ -107,7 +111,7 @@ class UserController extends Controller
             if ($checkByIdNumber) throw new CustomException('NIM / NIP sudah terdaftar');
             if ($checkByEmail) throw new CustomException('Email sudah terdaftar');
 
-            $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
+            $data['password_hash'] = password_hash($data['password_hash'], PASSWORD_BCRYPT);
             $insert = User::insert($data);
             if ($insert) {
                 ResponseHandler::setResponse("Berhasil menambahkan akun admin");
