@@ -3,6 +3,7 @@
 use App\Components\Button;
 use App\Components\Icon\Icon;
 use App\Components\Badge;
+
 ?>
 <div class="flex flex-col justify-start items-start h-full w-full p-4 gap-5">
     <h1 class="text-2xl font-medium text-primary">
@@ -29,7 +30,7 @@ use App\Components\Badge;
 
     <!-- give some shit condition here ... -->
     <?php
-    if(!empty($data)) {
+    if (!empty($data)) {
         include __DIR__ . '/sections/BookingCard.php';
     }
     ?>

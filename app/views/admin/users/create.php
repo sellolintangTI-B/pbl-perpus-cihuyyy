@@ -61,6 +61,7 @@ $prodiPnj = [
     ]
 ];
 ?>
+
 <div class="w-full h-full max-h-full flex flex-col items-start justify-start gap-5 ">
     <div class="w-full flex items-center justify-start">
         <h1 class="text-2xl font-medium text-primary">
@@ -90,7 +91,7 @@ $prodiPnj = [
                 }
                 FormInput::select(
                     id: 'jurusan',
-                    name: 'jurusan',
+                    name: 'major',
                     label: 'Jurusan',
                     placeholder: 'Jurusan',
                     required: true,
@@ -98,7 +99,7 @@ $prodiPnj = [
                 );
                 FormInput::select(
                     id: 'prodi',
-                    name: 'prodi',
+                    name: 'study_program',
                     label: 'Program Studi',
                     placeholder: 'Pilih Jurusan terlebih dahulu',
                     required: true,
@@ -126,6 +127,7 @@ $prodiPnj = [
                         ],
                     ]
                 );
+
                 FormInput::input(id: 'password', name: 'password', type: 'password', label: 'Password', required: true);
                 FormInput::input(id: 'password_confirmation', name: 'password_confirmation', type: 'password', label: 'Konfirmasi Password', required: true);
 

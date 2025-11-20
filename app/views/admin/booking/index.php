@@ -158,7 +158,7 @@
             x-bind:action="`<?= URL ?>/admin/booking/cancel/${cancelPeminjamanId}`"
             method="POST"
             class="w-full flex flex-col gap-2">
-            <?= FormInput::textarea(id: 'reason', name: 'reason', label: 'Alasan:', class: 'h-18', maxlength: 100, color: 'red') ?>
+            <?= FormInput::textarea(id: 'reason', name: 'reason', label: 'Alasan:', class: 'h-18', maxlength: 100, color: 'red', required: true) ?>
             <!-- opsional misal idnya mau disatuin ama form -->
             <!-- <input type="text" name="id" x-bind:value="cancelPeminjamanId" class="hidden" /> -->
             <div class="flex gap-4 w-full ">

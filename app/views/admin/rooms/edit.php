@@ -2,7 +2,28 @@
 
 use App\Components\Icon\Icon;
 use App\Components\FormInput;
+use App\Components\Modal;
+use App\Components\Button;
 ?>
+<!-- show modal simpan perubahan -->
+<?php ob_start() ?>
+<div class="w-full flex gap-4">
+    <?= Button::button(
+        label: 'ya',
+        class: 'w-full py-3',
+        type: 'button',
+        alpineClick: 'submitUpdateForm()',
+        color: 'secondary',
+    ) ?>
+    <?= Button::button(
+        label: 'tidak',
+        type: 'button',
+        alpineClick: 'updateAlert = false',
+        class: 'w-full py-3',
+        color: 'white',
+    ) ?>
+</div>
+<?php $updateRoomContent = ob_get_clean() ?>
 <div class="w-full h-full flex flex-col items-start justify-start gap-5 ">
     <div class="w-full flex items-center justify-start">
         <h1 class="text-2xl font-medium text-primary">
@@ -19,7 +40,7 @@ use App\Components\FormInput;
 
         <div class="flex-1 w-full overflow-y-auto">
             <div class="flex items-center justify-center  w-full max-w-5xl mx-auto">
-                <form class="w-full max-w-3xl grid grid-cols-1 sm:grid-cols-2 gap-6" action="<?= URL . "/admin/room/update/" . $data->id ?>" method="post" enctype="multipart/form-data">
+                <form class="w-full max-w-3xl grid grid-cols-1 sm:grid-cols-2 gap-6" x-data="updateRoomForm()" @submit.prevent="validateAndShowUpdateAlert" action="<?= URL . "/admin/room/update/" . $data->id ?>" method="post" enctype="multipart/form-data">
                     <?php
                     FormInput::input(id: 'nama', name: 'name', label: 'Nama', placeholder: "masukkan nama ruangan", required: true, value: $data->name);
                     FormInput::input(id: 'lantai', name: 'floor', type: 'number', label: 'Lantai', placeholder: "contoh: 1", required: true, value: $data->floor);
@@ -59,8 +80,35 @@ use App\Components\FormInput;
                             Simpan Perubahan
                         </button>
                     </div>
+                    <!-- modal -->
+                    <?= Modal::render(
+                        title: 'Yakin ingin menyimpan perubahan?',
+                        color: 'secondary',
+                        message: 'Perubahan akan langsung tersimpan di database. Tidak ada riwayat edit, jadi harap berhati-hati.',
+                        customContent: $updateRoomContent,
+                        alpineShow: 'updateAlert',
+                    ) ?>
                 </form>
             </div>
         </div>
     </div>
 </div>
+<script>
+    function updateRoomForm() {
+        return {
+            updateAlert: false,
+            validateAndShowUpdateAlert(event) {
+                const form = event.target;
+                if (form.checkValidity()) {
+                    this.updateAlert = true;
+                } else {
+                    form.reportValidity();
+                }
+            },
+
+            submitUpdateForm() {
+                document.getElementById('updateRoomForm').submit();
+            },
+        }
+    }
+</script>

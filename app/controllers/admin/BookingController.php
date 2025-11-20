@@ -19,7 +19,7 @@ class BookingController extends Controller
             $this->view('admin/booking/index', $data, layoutType: "Admin");
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), 'error');
-            header('location:' . URL . '/admin/dashboard/index');
+            header('location:' . URL . '/admin/booking/index');
         }
     }
     public function details($id)
@@ -49,14 +49,14 @@ class BookingController extends Controller
             $checkIn = BookingLog::checkIn($bookingId);
             if ($checkIn) {
                 ResponseHandler::setResponse('Checkin berhasil');
-                header('location:' . URL . '/admin/dashboard/index');
+                header('location:' . URL . '/admin/booking/index');
             } else {
                 ResponseHandler::setResponse('Gagal checkin');
-                header('location:' . URL . '/admin/dashboard/index');
+                header('location:' . URL . '/admin/booking/index');
             }
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), 'error');
-            header('location:' . URL . '/admin/dashboard/index');
+            header('location:' . URL . '/admin/booking/index');
         }
     }
 
@@ -66,14 +66,14 @@ class BookingController extends Controller
             $checkOut = BookingLog::checkOut($bookingId);
             if ($checkOut) {
                 ResponseHandler::setResponse('Checkout berhasil');
-                header('location:' . URL . '/admin/dashboard/index');
+                header('location:' . URL . '/admin/booking/index');
             } else {
                 ResponseHandler::setResponse('Gagal checkout');
-                header('location:' . URL . '/admin/dashboard/index');
+                header('location:' . URL . '/admin/booking/index');
             }
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), 'error');
-            header('location:' . URL . '/admin/dashboard/index');
+            header('location:' . URL . '/admin/booking/index');
         }
     }
 

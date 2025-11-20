@@ -94,9 +94,9 @@ class User extends Database
     public static function update($id, $data)
     {
         $conn = parent::getConnection();
-        $query = "UPDATE users SET id_number = ?, email = ?, first_name = ?, last_name = ?, major = ?, phone_number = ?, institution = ?, role = ? WHERE id = ?";
+        $query = "UPDATE users SET id_number = ?, email = ?, first_name = ?, last_name = ?, major = ?, study_program = ?, phone_number = ?, institution = ?, role = ? WHERE id = ?";
         if (isset($data['image'])) {
-            $query = "UPDATE users SET id_number = ?, email = ?, first_name = ?, last_name = ?, major = ?, phone_number = ?, institution = ?, role = ?, profile_picture_url = ? WHERE id = ?";
+            $query = "UPDATE users SET id_number = ?, email = ?, first_name = ?, last_name = ?, major = ?, study_program = ?, phone_number = ?, institution = ?, role = ?, profile_picture_url = ? WHERE id = ?";
         }
         $q = $conn->prepare($query);
         $i = 1;
@@ -160,10 +160,11 @@ class User extends Database
         $q = $conn->prepare("UPDATE users SET is_suspend = true, suspend_untill = (NOW() AT TIME ZONE 'Asia/Jakarta') + INTERVAL '7 days' WHERE id = :userId RETURNING suspend_untill");
         $q->bindValue(':userId', $userId);
         $q->execute();
-        if($q) {
+        if ($q) {
             $data = $q->fetch(PDO::FETCH_OBJ);
             return $data;
-        } return false;
+        }
+        return false;
     }
 
     public static function checkUserSuspend($userId)

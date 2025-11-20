@@ -69,7 +69,8 @@ class LoginController extends Controller
                 "role" => $checkIfUserExist['role'],
                 "id_number" => $checkIfUserExist['id_number'],
                 "email" => $checkIfUserExist['email'],
-                "id" => $checkIfUserExist['id']
+                "id" => $checkIfUserExist['id'],
+                "img_url" => $checkIfUserExist['profile_picture_url'],
             ];
 
             if ($checkIfUserExist['role'] === 'Admin') {
