@@ -91,7 +91,7 @@ class Booking extends Database
             ");
         $q->bindValue(':userId', $userId);
         $q->execute();
-        $data = $q->fetch(PDO::FETCH_OBJ);
+        $data = $q->fetchAll(PDO::FETCH_OBJ);
         return $data;
     }
 
