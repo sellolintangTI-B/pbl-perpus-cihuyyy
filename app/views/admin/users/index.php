@@ -50,7 +50,7 @@
                             <th class="px-3 py-3 text-xs font-semibold">Nama</th>
                             <th class="px-3 py-3 text-xs font-semibold">Email</th>
                             <th class="px-3 py-3 text-xs font-semibold">Role</th>
-                            <th class="px-3 py-3 text-xs font-semibold">Institusi</th>
+                            <th class="px-3 py-3 text-xs font-semibold">Jurusan</th>
                             <th class="px-3 py-3 text-xs font-semibold text-center">Status</th>
                             <th class="px-3 py-3 text-xs font-semibold text-center">Aksi</th>
                         </tr>
@@ -70,7 +70,7 @@
 
                                 <td class="px-3 py-3 text-xs text-gray-700 text-start"><?= htmlspecialchars($user->email) ?></td>
                                 <td class="px-3 py-3 text-xs text-gray-700 text-start"><?= htmlspecialchars($user->role) ?></td>
-                                <td class="px-3 py-3 text-xs text-gray-700 text-start"><?= htmlspecialchars($user->institution ?? "") ?></td>
+                                <td class="px-3 py-3 text-xs text-gray-700 text-start"><?= htmlspecialchars($user->major ?? "") ?></td>
 
                                 <td class="px-3 py-3 text-xs">
                                     <div class="flex justify-center">

@@ -8,6 +8,7 @@ use App\Error\CustomException;
 use App\Models\Booking;
 use App\Models\BookingLog;
 use App\Models\BookingParticipant;
+use App\Models\Feedback;
 use App\Models\Room;
 use App\Models\Suspension;
 use App\Models\User;
@@ -94,7 +95,8 @@ class BookingController extends Controller
             $checkUserActiveBooking = Booking::checkUserActiveBooking($userId);
             if ($checkUserActiveBooking) throw new CustomException('Tolong selesaikan peminjaman anda terlebih dahulu sebelum meminjam ruangan lain');
             $roomDetail = Room::getById($roomId);
-            if (Carbon::parse($data['datetime'])->lt(Carbon::now('Asia/Jakarta'))) throw new CustomException('Tidak bisa booking di kemarin hari');
+
+            if (Carbon::parse($data['datetime'])->lt(Carbon::now('Asia/Jakarta')->toDateString())) throw new CustomException('Tidak bisa booking di kemarin hari');
 
             if (Carbon::today('Asia/Jakarta')->diffInDays($data['datetime']) >= 7) throw new CustomException('Tidak bisa booking untuk jadwal lebih dari 7 hari per hari ini');
 
@@ -130,13 +132,18 @@ class BookingController extends Controller
     public function detail($id)
     {
         try {
+            $authUser = new Authentication;
             $booking = Booking::getById($id);
             if (!$booking) throw new CustomException('Data tidak ditemukan');
             $bookingParticipants = BookingParticipant::getParticipantsByBookingId($id);
+            $feedback = Feedback::getByBookingIdAndUserId($id, $authUser->user['id']);
+
             $data  = [
                 "booking" => $booking,
-                "participants" => $bookingParticipants
+                "participants" => $bookingParticipants,
+                "feeback" => $feedback
             ];
+
             $this->view('user/booking/detail', $data, layoutType: $this::$layoutType['civitas']);
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages());
@@ -168,7 +175,7 @@ class BookingController extends Controller
             $data = [
                 'user_id' => $user->user['id'],
                 'booking_id' => $id,
-                'reason' => 'saya malas'
+                'reason' => $_POST['reason']
             ];
             $bookingCheck = Booking::getById($data['booking_id']);
             if (!$bookingCheck) throw new CustomException('Booking tidak tersedia');
@@ -213,5 +220,36 @@ class BookingController extends Controller
             $code .= $characters[rand(0, strlen($characters) - 1)];
         }
         return $code;
+    }
+    
+    public function send_feedback($id)
+    {
+        try {
+            $authUser = new Authentication;
+            $data = [
+                'rating' => $_POST['rating'],
+                'feedback' => $_POST['feedback'],
+                'booking_id' => $id,
+                'user_id' => $authUser->user['id']
+            ];
+
+            $validator = new Validator($data);
+            $validator->field('feedback', ['required']);
+            if($validator->error()) throw new CustomException($validator->getErrors());
+
+            $feedback = Feedback::create($data);
+            if($feedback) {
+                ResponseHandler::setResponse('Terima kasih sudah memberikan feedback anda');
+                header('location:' . URL . '/user/booking/index');
+            } else {
+                ResponseHandler::setResponse('Gagal memberikan feedback');
+                header('location:' . URL . '/user/booking/index');
+            }
+
+
+        }catch(CustomException $e) {
+            ResponseHandler::setResponse($e->getErrorMessages(), 'error');
+            header('location:');
+        }
     }
 }

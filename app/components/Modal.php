@@ -14,11 +14,11 @@ class Modal
         string $cancelText = 'Tidak',
         string $method = 'DELETE',
         string $color = 'red',
-        string $alpineShow = 'showAlert',
-        string $alpineId = 'deleteUserId',
-        string $class = '',
-        string $width = 'w-1/2',
-        string $height = 'h-1/2',
+        string $alpineShow = '',
+        string $alpineId = '',
+        string $class = 'p-8',
+        string $width = 'w-full max-w-2xl',
+        string $height = 'h-fit',
     ): string {
         $colorClasses = [
             'red' => [
@@ -79,7 +79,16 @@ class Modal
                     if ($customContent == null || is_null($customContent)):
                     ?>
                         <div class="flex gap-4 items-center justify-center h-10">
-                            <form x-bind:action="`<?= $actionUrl ?>${<?= $alpineId ?>}`" method="<?= strtolower($method) ?>">
+
+                            <form
+
+                                <?php if ($alpineId || $alpineId != ''): ?>
+                                x-bind:action="`<?= $actionUrl ?>${<?= $alpineId ?>}`"
+                                <?php else: ?>
+                                action="<?= $actionUrl ?>"
+                                <?php endif; ?>
+
+                                method="<?= strtolower($method) ?>">
                                 <button type="submit" class="p-2 text-baseColor <?= $selectedColor['bg'] ?> shadow-sm rounded-md h-full w-24 cursor-pointer hover:opacity-90 transition-opacity">
                                     <?= htmlspecialchars($confirmText) ?>
                                 </button>

@@ -1,8 +1,12 @@
 <?php
 $tab = !empty($_GET['tab']) ? $_GET['tab'] : 'berlangsung';
+
+use App\Components\Button;
+use App\Components\FormInput;
+use App\Components\Modal;
 ?>
 
-<div class="bg-baseColor font-poppins w-full">
+<div class="bg-baseColor font-poppins w-full" x-data="{showCancel: false, cancelPeminjamanId: null }">
     <div class="max-w-6xl mx-auto">
         <!-- Header -->
         <h1 class="text-2xl font-bold text-primary mb-6">Booking</h1>
@@ -37,6 +41,32 @@ $tab = !empty($_GET['tab']) ? $_GET['tab'] : 'berlangsung';
             </div>
         </div>
     </div>
+    <!-- modal -->
+    <?php
+    ob_start();
+    ?>
+    <form action="" method="POST" class="w-full flex flex-col gap-2">
+        <?= FormInput::textarea(id: 'reason', name: 'reason', label: 'Alasan:', class: 'h-18', maxlength: 100, color: 'red') ?>
+        <!-- opsional misal idnya mau disatuin ama form -->
+        <input type="text" name="id" x-bind:value="cancelPeminjamanId" class="hidden" />
+        <div class="flex gap-4 w-full ">
+            <?php
+            Button::button(label: 'Iya', color: 'red', type: 'submit', class: 'w-full py-3');
+            Button::button(label: 'Tidak', color: 'white', type: 'button', alpineClick: "showCancel=false", class: 'w-full py-3');
+            ?>
+        </div>
+    </form>
+    <?php $content = ob_get_clean(); ?>
+
+    <?= Modal::render(
+        title: 'Yakin ingin membatalkan booking?',
+        color: 'red',
+        message: 'Booking akan dibatalkan. Pastikan keputusan Anda sudah benar sebelum melanjutkan.',
+        customContent: $content,
+        alpineShow: 'showCancel',
+        class: 'max-w-2xl p-8',
+        height: 'h-fit'
+    ) ?>
 </div>
 
 <style>

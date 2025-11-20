@@ -16,6 +16,7 @@ class Middleware
             "/admin/booking/create",
             "/admin/booking/check_in",
             "/admin/booking/check_out",
+            "/admin/booking/cancel",
             //ROOM
             "/admin/room/index",
             "/admin/room/store",
@@ -54,6 +55,7 @@ class Middleware
             "/user/booking/index",
             "/user/booking/detail",
             "/user/booking/cancel_booking",
+            "/user/booking/send_feedback",
             //LOGOUT
             "/auth/logout/logout",
             //GUIDE
@@ -71,6 +73,7 @@ class Middleware
             "/user/booking/index",
             "/user/booking/detail",
             "/user/booking/cancel_booking",
+            "/user/booking/send_feedback",
             //LOGOUT
             "/auth/logout/logout",
             //GUIDE

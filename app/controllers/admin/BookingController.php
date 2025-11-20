@@ -7,6 +7,7 @@ use App\Core\ResponseHandler;
 use app\error\CustomException;
 use App\Models\Booking;
 use App\Models\BookingLog;
+use App\Models\BookingParticipant;
 use App\Utils\Authentication;
 
 class BookingController extends Controller
@@ -18,12 +19,14 @@ class BookingController extends Controller
             $this->view('admin/booking/index', $data, layoutType: "Admin");
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), 'error');
-            header('location:' . URL . '/admin/dashboard/index');
+            header('location:' . URL . '/admin/booking/index');
         }
     }
     public function details($id)
     {
         try {
+            $booking = Booking::getById($id);
+            $bookingParticipants = BookingParticipant::getParticipantsByBookingId($id);
             $this->view('admin/booking/detail', layoutType: $this::$layoutType['admin']);
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), 'error');
@@ -46,14 +49,14 @@ class BookingController extends Controller
             $checkIn = BookingLog::checkIn($bookingId);
             if ($checkIn) {
                 ResponseHandler::setResponse('Checkin berhasil');
-                header('location:' . URL . '/admin/dashboard/index');
+                header('location:' . URL . '/admin/booking/index');
             } else {
                 ResponseHandler::setResponse('Gagal checkin');
-                header('location:' . URL . '/admin/dashboard/index');
+                header('location:' . URL . '/admin/booking/index');
             }
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), 'error');
-            header('location:' . URL . '/admin/dashboard/index');
+            header('location:' . URL . '/admin/booking/index');
         }
     }
 
@@ -63,34 +66,38 @@ class BookingController extends Controller
             $checkOut = BookingLog::checkOut($bookingId);
             if ($checkOut) {
                 ResponseHandler::setResponse('Checkout berhasil');
-                header('location:' . URL . '/admin/dashboard/index');
+                header('location:' . URL . '/admin/booking/index');
             } else {
                 ResponseHandler::setResponse('Gagal checkout');
-                header('location:' . URL . '/admin/dashboard/index');
+                header('location:' . URL . '/admin/booking/index');
             }
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), 'error');
-            header('location:' . URL . '/admin/dashboard/index');
+            header('location:' . URL . '/admin/booking/index');
         }
     }
 
     public function cancel($bookingId)
     {
+        if (empty($bookingId)) {
+            ResponseHandler::setResponse('booking id tidak ditemukan! ' . $bookingId, 'error');
+            $this->redirectWithOldInput('/admin/booking/index');
+        }
         try {
             $user = new Authentication;
             $data = [
                 'user_id' => $user->user['id'],
-                'reason' => 'Pengguna malas',
+                'reason' => $_POST['reason'],
                 'booking_id' => $bookingId
             ];
             $cancel = BookingLog::cancel($data);
             if ($cancel) {
                 ResponseHandler::setResponse('Berhasil membatalkan peminjaman ruangan');
-                header('location:' . URL . '/admin/dashboard/index');
+                header('location:' . URL . '/admin/booking/index');
             }
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), 'error');
-            header('location:' . URL . '/admin/dashboard/index');
+            header('location:' . URL . '/admin/booking/index');
         }
     }
 }
