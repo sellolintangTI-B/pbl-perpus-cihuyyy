@@ -123,7 +123,7 @@
                                                 <?= Icon::logout('w-4 h-4') ?> Finish
                                             </a>
                                         <?php endif; ?>
-                                        <a href="<?= URL . '/admin/booking/details/1' ?>"
+                                        <a href="<?= URL . '/admin/booking/details/' . $value->id ?>"
                                             class="flex items-center gap-2 px-3 py-2 text-xs text-gray-700 hover:bg-gray-50 transition">
                                             <?= Icon::eye('w-4 h-4') ?> Detail
                                         </a>

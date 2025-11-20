@@ -34,7 +34,7 @@ if (isset($_SESSION['old_input'])) {
                 </div>
                 <div class="flex-1">
                     <h3 class="font-medium text-lg mb-1"><?= ($data['detail']->requires_special_approval) ? "Ruangan Khusus" : "Ruangan Umum"  ?></h3>
-                    <p class="text-sm opacity-90">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod ad, nostrum dicta doloremque totam pariatur officia doloribus id soluta ea?</p>
+                    <p class="text-sm opacity-90">Lorem ipsum dolor sit amet consdtaectetur adipisicing elit. Quod ad, nostrum dicta doloremque totam pariatur officia doloribus id soluta ea?</p>
                 </div>
             </div>
         </div>
@@ -130,9 +130,7 @@ if (isset($_SESSION['old_input'])) {
         <div class="flex-2 flex flex-col gap-4 justify-start items-center">
             <!-- Form Section -->
             <div class="bg-white rounded-xl p-4 shadow-md w-full">
-                <form method="POST"
-
-                    @submit="prepareData" enctype="multipart/form-data" class="space-y-4 w-full">
+                <form method="POST" action="<?= URL ?>/user/booking/store/<?= $data['detail']->id ?>" @submit="prepareData" enctype="multipart/form-data" class="space-y-4 w-full">
                     <!-- Kapan -->
                     <div>
                         <label class="block text-sm font-medium text-primary mb-2">Kapan</label>

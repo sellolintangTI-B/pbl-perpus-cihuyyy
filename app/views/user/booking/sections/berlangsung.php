@@ -8,84 +8,71 @@ use App\Utils\Authentication;
 
 $authUser = new Authentication;
 
-if ($data) {
-    $currentBooking = [
-        'id' => $data->booking_id,
-        'code' => $data->booking_code,
-        'room' => $data->room_name,
-        'pic' => "P.J $data->pic",
-        'capacity' => '5 orang',
-        'location' => "Tempat: Perpustakaan PNJ, LT. $data->floor",
-        'date' => "Tanggal : " . Carbon::parse($data->start_time)->translatedFormat('l, d F Y'),
-        'time' => "Jam : " . Carbon::parse($data->start_time)->toTimeString() . ' - ' . Carbon::parse($data->end_time)->toTimeString(),
-        'image' => $data->room_img_url
-    ];
-}
-
-
 ?>
-<?php if (!empty($currentBooking)): ?>
-    <div class="bg-white rounded-xl shadow-lg  mb-4 p-4 w-full">
-        <div class="flex gap-4 mb-4">
-            <!-- Room Image -->
-            <img src="<?= URL . '/public/' . $currentBooking['image'] ?>"
-                alt="<?= $currentBooking['room'] ?>"
-                class="w-44 h-48 object-cover rounded-lg shrink-0">
-            <!-- Booking Info -->
-            <div class="flex-1">
-                <div class="flex justify-between items-start mb-3">
-                    <h3 class="text-xl font-bold text-primary"><?= $currentBooking['room'] ?></h3>
-                    <button class="text-secondary hover:text-tertiary transition-colors">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </button>
-                </div>
+<?php if (!empty($data)): ?>
+    <?php foreach ($data as $value) :  ?>
+        <div class="bg-white rounded-xl shadow-lg  mb-4 p-4 w-full">
+            <div class="flex gap-4 mb-4">
+                <!-- Room Image -->
+                <img src="<?= URL . '/public/' . $value->room_img_url ?>"
+                    alt="<?= $value->room_name ?>"
+                    class="w-44 h-48 object-cover rounded-lg shrink-0">
+                <!-- Booking Info -->
+                <div class="flex-1">
+                    <div class="flex justify-between items-start mb-3">
+                        <h3 class="text-xl font-bold text-primary"><?= $value->room_name ?></h3>
+                        <button class="text-secondary hover:text-tertiary transition-colors">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </button>
+                    </div>
 
-                <div class="space-y-2 text-sm text-gray-700">
-                    <div class="flex items-center gap-2">
-                        <?php Icon::person('w-5 h-5 text-primary') ?>
-                        <span><?= $currentBooking['pic'] ?> • (<?= $currentBooking['capacity'] ?>)</span>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <?php Icon::location('w-5 h-5 text-primary') ?>
-                        <span><?= $currentBooking['location'] ?></span>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <?php Icon::calendar_pencil('w-5 h-5 text-primary') ?>
-                        <span><?= $currentBooking['date'] ?></span>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <?php Icon::clock('w-5 h-5 text-primary') ?>
-                        <span><?= $currentBooking['time'] ?></span>
+                    <div class="space-y-2 text-sm text-gray-700">
+                        <div class="flex items-center gap-2">
+                            <?php Icon::person('w-5 h-5 text-primary') ?>
+                            <span><?= $value->pic ?></span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <?php Icon::location('w-5 h-5 text-primary') ?>
+                            <span>Perpustakaan Politeknik Negeri Jakarta Lt. <?= $value->floor  ?></span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <?php Icon::calendar_pencil('w-5 h-5 text-primary') ?>
+                            <span><?= Carbon::parse($value->start_time)->translatedFormat('l, d M Y') ?></span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <?php Icon::clock('w-5 h-5 text-primary') ?>
+                            <span><?= Carbon::parse($value->start_time)->toTimeString() ?> - <?= Carbon::parse($value->end_time)->toTimeString() ?></span>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Booking Code -->
-        <div class="border-tertiary border rounded-xl p-3 mb-4 flex items-center justify-between">
-            <div class="flex items-center justify-start gap-4">
-                <span class="text-lg font-medium text-black/80">Booking Code:</span>
-                <span class="p-1 bg-tertiary/20 border border-tertiary text-tertiary rounded-lg text-lg font-medium"><?= $currentBooking['code'] ?></span>
+            <!-- Booking Code -->
+            <div class="border-tertiary border rounded-xl p-3 mb-4 flex items-center justify-between">
+                <div class="flex items-center justify-start gap-4">
+                    <span class="text-lg font-medium text-black/80">Booking Code:</span>
+                    <span class="p-1 bg-tertiary/20 border border-tertiary text-tertiary rounded-lg text-lg font-medium"><?= $value->booking_code ?></span>
+                </div>
+                <button onclick="copyToClipboard('<?= $value->booking_code ?>')"
+                    class="p-1 bg-tertiary/20 border border-tertiary text-tertiary rounded-lg cursor-pointer">
+                    <?php Icon::copy('w-6 h-6 text-tertiary') ?>
+                </button>
             </div>
-            <button onclick="copyToClipboard('<?= $currentBooking['code'] ?>')"
-                class="p-1 bg-tertiary/20 border border-tertiary text-tertiary rounded-lg cursor-pointer">
-                <?php Icon::copy('w-6 h-6 text-tertiary') ?>
-            </button>
-        </div>
 
-        <!-- Action Buttons -->
-        <div class="space-y-3">
-            <?php
-            Button::anchorGradient(label: 'See Details', link: URL . '/user/booking/detail/' . htmlspecialchars($currentBooking['id']), class: 'rounded-full!');
-            if ($authUser->user['id'] === $data->pic_id) {
-                Button::button(label: 'Cancel Booking', color: 'red', class: 'w-full py-3 rounded-full!', alpineClick: "showCancel=true; cancelPeminjamanId='" . htmlspecialchars($currentBooking['id']) . "'; ");
-            }
-            ?>
-        </div>
+            <!-- Action Buttons -->
+            <div class="space-y-3">
+                <?php
+                Button::anchorGradient(label: 'See Details', link: URL . '/user/booking/detail/' . htmlspecialchars($value->booking_id), class: 'rounded-full!');
+                if ($authUser->user['id'] === $value->pic_id && $value->latest_status === "created") {
+                    Button::button(label: 'Cancel Booking', color: 'red', class: 'w-full py-3 rounded-full!', alpineClick: "showCancel=true; cancelPeminjamanId='" . htmlspecialchars($value->booking_id) . "'; ");
+                }
+                ?>
+            </div>
 
-    </div>
+        </div>
+    <?php endforeach ?>
 <?php else: ?>
     <div class="w-full h-[28rem] flex items-center justify-center">
         <div>

@@ -7,6 +7,7 @@ use App\Core\ResponseHandler;
 use app\error\CustomException;
 use App\Models\Booking;
 use App\Models\BookingLog;
+use App\Models\BookingParticipant;
 use App\Utils\Authentication;
 
 class BookingController extends Controller
@@ -24,6 +25,8 @@ class BookingController extends Controller
     public function details($id)
     {
         try {
+            $booking = Booking::getById($id);
+            $bookingParticipants = BookingParticipant::getParticipantsByBookingId($id);
             $this->view('admin/booking/detail', layoutType: $this::$layoutType['admin']);
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), 'error');
