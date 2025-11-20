@@ -2,36 +2,65 @@
 
 use App\Components\Icon\Icon;
 use App\Components\FormInput;
+use App\Components\Modal;
+use App\Components\Button;
 
-$options = [
+$prodiPnj = [
     [
-        "display" => "Teknik Sipil",
-        "value" => "Teknik Sipil"
+        "jurusan" => "Akuntansi",
+        "prodi" => [
+            "Keuangan dan Perbankan Syariah",
+            "Akuntansi Keuangan",
+            "Keuangan dan Perbankan",
+            "Manajemen Keuangan"
+        ]
     ],
     [
-        "display" => "Teknik Mesin",
-        "value" => "Teknik Mesin"
+        "jurusan" => "Administrasi Niaga",
+        "prodi" => [
+            "Usaha Jasa Konvensi, Perjalanan Insentif dan Pameran / MICE",
+            "Administrasi Bisnis Terapan",
+        ]
     ],
     [
-        "display" => "Teknik Elektro",
-        "value" => "Teknik Elektro"
+        "jurusan" => "Teknik Grafika & Penerbitan",
+        "prodi" => [
+            "Teknologi Industri Cetak dan Kemasan",
+            "Desain Grafis"
+        ]
     ],
     [
-        "display" => "Teknik Informatika dan Komputer",
-        "value" => "Teknik Informatika dan Komputer"
+        "jurusan" => "Teknik Sipil",
+        "prodi" => [
+            "Teknik Perancangan Jalan dan Jembatan",
+            "Teknik Perancangan Jalan dan Jembatan - Konsentrasi Jalan Tol",
+            "Teknik Konstruksi Gedung"
+        ]
     ],
     [
-        "display" => "Akuntansi",
-        "value" => "Akuntansi"
+        "jurusan" => "Teknik Mesin",
+        "prodi" => [
+            "Manufaktur",
+            "Pembangkit Tenaga Listrik",
+            "Manufaktur - PSDKU Pekalongan"
+        ]
     ],
     [
-        "display" => "Administrasi Niaga",
-        "value" => "Administrasi Niaga"
+        "jurusan" => "Teknik Elektro",
+        "prodi" => [
+            "Instrumentasi dan Kontrol Industri",
+            "Broadband Multimedia",
+            "Teknik Otomasi Listrik Industri"
+        ]
     ],
     [
-        "display" => "Teknik Grafika dan Penerbitan",
-        "value" => "Teknik Grafika dan Penerbitan"
-    ],
+        "jurusan" => "Teknik Informatika dan Komputer",
+        "prodi" => [
+            "Teknik Informatika",
+            "Teknik Multimedia dan Jaringan",
+            "Teknik Multimedia Digital"
+        ]
+    ]
 ];
 
 $roleOptions = [
@@ -49,159 +78,288 @@ $roleOptions = [
     ],
 ];
 ?>
-<div class="w-full h-full flex flex-col items-start justify-start gap-5 ">
-    <div class="w-full flex items-center justify-start">
-        <h1 class="text-2xl font-medium text-primary">
-            Edit Akun
-        </h1>
-    </div>
-
-    <div class="p-6 bg-white shadow-sm shadow-gray-600 rounded-xl w-full flex-1 border border-gray-200 overflow-hidden flex flex-col items-start justify-start">
-        <!-- Back Button -->
-        <div class="w-full flex-shrink-0 flex items-center justify-start mb-4">
-            <a class="flex gap-2 text-primary items-center cursor-pointer hover:bg-primary/5 px-3 py-1 rounded-full" href="<?= URL . "/admin/user/index" ?>">
-                <?= Icon::arrowLeft('w-4 h-4') ?>
-                Back
-            </a>
+<!-- show modal simpan perubahan -->
+<?php ob_start() ?>
+<div class="w-full flex gap-4">
+    <?= Button::button(
+        label: 'ya',
+        class: 'w-full py-3',
+        type: 'submit',
+        color: 'secondary',
+    ) ?>
+    <?= Button::button(
+        label: 'tidak',
+        type: 'button',
+        alpineClick: 'updateAlert = false',
+        class: 'w-full py-3',
+        color: 'white',
+    ) ?>
+</div>
+<?php $updateAccountContent = ob_get_clean() ?>
+<div class="w-full h-full">
+    <div class=" w-full h-full flex flex-col items-start justify-start gap-5 ">
+        <div class=" w-full flex items-center justify-start">
+            <h1 class="text-2xl font-medium text-primary">
+                Edit Akun
+            </h1>
         </div>
 
-        <!-- Forms Container -->
-        <div class="flex-1 flex flex-col gap-8 w-full overflow-y-auto p-4">
-            <!-- Form Data Pengguna -->
-            <div class="w-full">
-                <h2 class="text-xl font-medium text-gray-800 mb-4">Informasi Pengguna</h2>
-                <div class="w-full p-6 shadow-md border border-gray-300 rounded-xl bg-gray-50">
-                    <form class="w-full grid grid-cols-1 sm:grid-cols-2 gap-6" action="<?= URL ?>/admin/user/update/<?= $data->id ?>" method="post" enctype="multipart/form-data">
-                        <?php
-                        FormInput::input(
-                            id: 'id_number',
-                            name: 'id_number',
-                            label: 'NIM/NIP',
-                            value: $data->id_number,
-                            required: true
-                        );
-
-                        FormInput::input(
-                            id: 'email',
-                            name: 'email',
-                            type: 'email',
-                            label: 'Email',
-                            value: $data->email,
-                            required: true
-                        );
-
-                        FormInput::input(
-                            id: 'first_name',
-                            name: 'first_name',
-                            label: 'Nama Depan',
-                            value: $data->first_name,
-                            required: true
-                        );
-
-                        FormInput::input(
-                            id: 'last_name',
-                            name: 'last_name',
-                            label: 'Nama Belakang',
-                            value: $data->last_name ?? ""
-                        );
-
-                        FormInput::select(
-                            id: 'major',
-                            name: 'major',
-                            label: 'Jurusan',
-                            options: $options,
-                            selected: $data->major ?? "",
-                            required: true
-                        );
-
-                        FormInput::input(
-                            id: 'phone_number',
-                            name: 'phone_number',
-                            type: 'tel',
-                            label: 'Nomor Whatsapp',
-                            value: $data->phone_number,
-                            required: true
-                        );
-
-                        FormInput::input(
-                            id: 'institution',
-                            name: 'institution',
-                            label: 'Institusi',
-                            value: $data->institution,
-                            required: true
-                        );
-
-                        FormInput::select(
-                            id: 'role',
-                            name: 'role',
-                            label: 'Jenis Civitas',
-                            options: $roleOptions,
-                            selected: $data->role,
-                            required: true
-                        );
-                        FormInput::select(
-                            id: 'status',
-                            name: 'status',
-                            label: 'Status',
-                            options: [
-                                ["display" => "Aktif", "value" => 1],
-                                ["display" => "Inactive", "value" => 0]
-                            ],
-                            selected: $data->is_active,
-                            required: true,
-                            classGlobal: 'sm:col-span-2 col-span-1'
-                        );
-                        FormInput::fileInput(
-                            id: 'image',
-                            name: 'image',
-                            label: 'Image',
-                            required: false,
-                            classGlobal: 'col-span-2'
-                        );
-                        ?>
-
-                        <div class="sm:col-span-2 mt-4">
-                            <button type="submit" name="register" class="w-full bg-primary text-white px-4 py-3 rounded-xl cursor-pointer shadow-sm shadow-gray-400 hover:shadow-md hover:shadow-primary transition-all duration-300 font-medium text-baseColor">
-                                Simpan Perubahan
-                            </button>
-                        </div>
-                    </form>
-                </div>
+        <div class="p-6 bg-white shadow-sm shadow-gray-600 rounded-xl w-full flex-1 border border-gray-200 overflow-hidden flex flex-col items-start justify-start">
+            <!-- Back Button -->
+            <div class="w-full flex-shrink-0 flex items-center justify-start mb-4">
+                <a class="flex gap-2 text-primary items-center cursor-pointer hover:bg-primary/5 px-3 py-1 rounded-full" href="<?= URL . "/admin/user/index" ?>">
+                    <?= Icon::arrowLeft('w-4 h-4') ?>
+                    Back
+                </a>
             </div>
 
-            <!-- Form Ganti Password -->
-            <div class="w-full">
-                <h2 class="text-xl font-medium text-gray-800 mb-4">Keamanan Akun</h2>
-                <div class="w-full p-6 shadow-md border border-gray-300 rounded-xl bg-gray-50">
-                    <form class="w-full grid grid-cols-1 gap-6" action="<?= URL ?>/admin/user/reset_password/<?= $data->id ?>" method="post">
-                        <?php
-                        FormInput::input(
-                            id: 'password',
-                            name: 'password',
-                            type: 'password',
-                            label: 'Password Baru',
-                            placeholder: 'Masukkan password baru',
-                            required: false,
-                        );
+            <!-- Forms Container -->
+            <div class="flex-1 flex flex-col gap-8 w-full overflow-y-auto p-4">
+                <!-- Form Data Pengguna -->
+                <div class="w-full">
+                    <h2 class="text-xl font-medium text-gray-800 mb-4">Informasi Pengguna</h2>
+                    <div class="w-full p-6 shadow-md border border-gray-300 rounded-xl bg-gray-50">
+                        <form class="w-full grid grid-cols-1 sm:grid-cols-2 gap-6" action="<?= URL ?>/admin/user/update/<?= $data->id ?>" method="post" enctype="multipart/form-data" x-data="{updateAlert: false}">
+                            <?php
+                            FormInput::input(
+                                id: 'id_number',
+                                name: 'id_number',
+                                label: 'NIM/NIP',
+                                value: $data->id_number,
+                                required: true
+                            );
 
-                        FormInput::input(
-                            id: 'password_confirmation',
-                            name: 'password_confirmation',
-                            type: 'password',
-                            label: 'Konfirmasi Password',
-                            placeholder: 'Ulangi password baru',
-                            required: false
-                        );
-                        ?>
+                            FormInput::input(
+                                id: 'email',
+                                name: 'email',
+                                type: 'email',
+                                label: 'Email',
+                                value: $data->email,
+                                required: true
+                            );
 
-                        <div class="mt-4">
-                            <button type="submit" name="change_password" class="w-full bg-red text-white px-4 py-3 rounded-xl cursor-pointer shadow-sm shadow-gray-400 hover:shadow-md hover:shadow-red-300 transition-all duration-300 font-medium text-baseColor">
-                                Ganti Password
-                            </button>
-                        </div>
-                    </form>
+                            FormInput::input(
+                                id: 'first_name',
+                                name: 'first_name',
+                                label: 'Nama Depan',
+                                value: $data->first_name,
+                                required: true
+                            );
+
+                            FormInput::input(
+                                id: 'last_name',
+                                name: 'last_name',
+                                label: 'Nama Belakang',
+                                value: $data->last_name ?? ""
+                            );
+
+                            $options = [];
+                            foreach ($prodiPnj as $prod) {
+                                $options[] = [
+                                    'display' => $prod['jurusan'],
+                                    'value' => $prod['jurusan'],
+                                ];
+                            }
+                            FormInput::select(
+                                id: 'jurusan',
+                                name: 'major',
+                                label: 'Jurusan',
+                                placeholder: 'Jurusan',
+                                required: true,
+                                options: $options,
+                                value: $data->major
+                            );
+                            FormInput::select(
+                                id: 'prodi',
+                                name: 'study_program',
+                                label: 'Program Studi',
+                                placeholder: 'Pilih Jurusan terlebih dahulu',
+                                required: true,
+                                value: $data->study_program,
+                                options: []
+                            );
+
+                            FormInput::input(
+                                id: 'phone_number',
+                                name: 'phone_number',
+                                type: 'tel',
+                                label: 'Nomor Whatsapp',
+                                value: $data->phone_number,
+                                required: true
+                            );
+
+                            FormInput::input(
+                                id: 'institution',
+                                name: 'institution',
+                                label: 'Institusi',
+                                value: $data->institution,
+                                required: true
+                            );
+
+                            FormInput::select(
+                                id: 'role',
+                                name: 'role',
+                                label: 'Jenis Civitas',
+                                options: $roleOptions,
+                                selected: $data->role,
+                                required: true
+                            );
+                            FormInput::select(
+                                id: 'status',
+                                name: 'status',
+                                label: 'Status',
+                                options: [
+                                    ["display" => "Aktif", "value" => 1],
+                                    ["display" => "Inactive", "value" => 0]
+                                ],
+                                selected: $data->is_active,
+                                required: true,
+                                classGlobal: 'sm:col-span-2 col-span-1'
+                            );
+                            FormInput::fileInput(
+                                id: 'image',
+                                name: 'image',
+                                label: 'Image',
+                                required: false,
+                                classGlobal: 'col-span-2'
+                            );
+                            ?>
+
+                            <div class="sm:col-span-2 mt-4">
+                                <button type="button" @click="updateAlert = true" class="w-full bg-primary text-white px-4 py-3 rounded-xl cursor-pointer shadow-sm shadow-gray-400 hover:shadow-md hover:shadow-primary transition-all duration-300 font-medium text-baseColor">
+                                    Simpan Perubahan
+                                </button>
+                            </div>
+
+                            <!-- modal -->
+                            <?= Modal::render(
+                                title: 'Yakin ingin menyimpan perubahan?',
+                                color: 'secondary',
+                                message: 'Perubahan akan langsung tersimpan di database. Tidak ada riwayat edit, jadi harap berhati-hati.',
+                                customContent: $updateAccountContent,
+                                alpineShow: 'updateAlert',
+                            ) ?>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Form Ganti Password -->
+                <div class="w-full">
+                    <h2 class="text-xl font-medium text-gray-800 mb-4">Keamanan Akun</h2>
+                    <div class="w-full p-6 shadow-md border border-gray-300 rounded-xl bg-gray-50">
+                        <form class="w-full grid grid-cols-1 gap-6"
+                            @submit.prevent="validateAndShowAlert"
+                            action="<?= URL ?>/admin/user/reset_password/<?= $data->id ?>"
+                            method="post"
+                            x-data="{
+                                updatePasswordAlert: false,
+                                validateAndShowAlert(event) {
+                                    const form = event.target;
+                                    if (form.checkValidity()) {
+                                        this.updatePasswordAlert = true;
+                                    } else {
+                                        form.reportValidity();
+                                    }
+                                },
+                                submitForm() {
+                                    $el.submit();
+                                }
+                            }">
+                            <?php
+                            FormInput::input(
+                                id: 'password',
+                                name: 'password',
+                                type: 'password',
+                                label: 'Password Baru',
+                                placeholder: 'Masukkan password baru',
+                                required: true,
+                            );
+
+                            FormInput::input(
+                                id: 'password_confirmation',
+                                name: 'password_confirmation',
+                                type: 'password',
+                                label: 'Konfirmasi Password',
+                                placeholder: 'Ulangi password baru',
+                                required: true
+                            );
+                            ?>
+
+                            <div class="mt-4">
+                                <button type="submit" class="w-full bg-red text-white px-4 py-3 rounded-xl cursor-pointer shadow-sm shadow-gray-400 hover:shadow-md hover:shadow-red-300 transition-all duration-300 font-medium">
+                                    Ganti Password
+                                </button>
+                            </div>
+
+                            <!-- modal -->
+                            <?php
+                            ob_start();
+                            ?>
+                            <div class="flex gap-4 w-full">
+                                <?= Button::button(
+                                    label: 'ya',
+                                    class: 'w-full py-3',
+                                    alpineClick: "submitForm()",
+                                    type: 'submit',
+                                    color: 'red',
+                                ) ?>
+                                <?= Button::button(
+                                    label: 'tidak',
+                                    type: 'button',
+                                    alpineClick: 'updatePasswordAlert = false',
+                                    class: 'w-full py-3',
+                                    color: 'white',
+                                ) ?>
+                            </div>
+                            <?php $updatePasswordContent = ob_get_clean(); ?>
+
+                            <?= Modal::render(
+                                title: 'Yakin ingin mengubah password?',
+                                color: 'red',
+                                message: 'Perubahan password akan langsung diterapkan. Gunakan password yang kuat dan mudah diingat.',
+                                customContent: $updatePasswordContent,
+                                alpineShow: 'updatePasswordAlert',
+                            ) ?>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<script>
+    const prodiData = <?= json_encode($prodiPnj) ?>;
+
+    const jurusanSelect = document.getElementById('jurusan');
+    const prodiSelect = document.getElementById('prodi');
+    prodiSelect.ariaReadOnly = true;
+
+    var selectedJurusan = '<?= $data->major ?>';
+    if (selectedJurusan) {
+        setProdi(selectedJurusan);
+        prodiSelect.value = '<?= $data->study_program ?>';
+    }
+    jurusanSelect.addEventListener('change', function() {
+        selectedJurusan = this.value;
+        prodiSelect.innerHTML = '<option value="">Pilih Program Studi</option>';
+        if (selectedJurusan) {
+            setProdi(selectedJurusan);
+        } else {
+            prodiSelect.disabled = true;
+        }
+    });
+
+    function setProdi(selectedJurusan) {
+        const jurusanData = prodiData.find(item => item.jurusan === selectedJurusan);
+        console.log(jurusanData.prodi);
+        if (jurusanData && jurusanData.prodi) {
+            prodiSelect.disabled = false;
+            jurusanData.prodi.forEach(prodi => {
+                const option = document.createElement('option');
+                option.value = prodi;
+                option.textContent = prodi;
+                prodiSelect.appendChild(option);
+            });
+        }
+    }
+</script>

@@ -16,9 +16,9 @@ class Modal
         string $color = 'red',
         string $alpineShow = '',
         string $alpineId = '',
-        string $class = '',
-        string $width = 'w-full max-w-4xl',
-        string $height = 'h-[32rem]',
+        string $class = 'p-8',
+        string $width = 'w-full max-w-2xl',
+        string $height = 'h-fit',
     ): string {
         $colorClasses = [
             'red' => [
