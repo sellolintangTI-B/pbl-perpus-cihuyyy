@@ -64,7 +64,7 @@ class RegisterController extends Controller
             $errors = $validator->error();
             if ($errors) throw new CustomException($validator->getErrors());
             
-            // if($_SESSION['captcha'] !== $data['captcha']) throw new CustomException('Captcha tidak valid');
+            if($_SESSION['captcha'] !== $data['captcha']) throw new CustomException('Captcha tidak valid');
 
             $checkByIdNumber = User::getByIdNumber($data['id_number']);
             $checkByEmail = User::getByEmail($data['email']);

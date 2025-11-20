@@ -46,7 +46,7 @@ class LoginController extends Controller
             $errors = $validator->error();
             if ($errors) throw new CustomException($validator->getErrors());
 
-            // if($_SESSION['captcha'] !== $data['captcha']) throw new CustomException('Captcha tidak valid');
+            if($_SESSION['captcha'] !== $data['captcha']) throw new CustomException('Captcha tidak valid');
 
             $checkIfUserExist = User::getByEmailOrIdNumber($data['identifier']);
             if (!$checkIfUserExist) throw new CustomException('Credentials not match');
