@@ -9,7 +9,6 @@ use App\Models\Booking;
 use App\Models\BookingLog;
 use App\Models\BookingParticipant;
 use App\Models\Feedback;
-use App\Models\Feedbacks;
 use App\Models\Room;
 use App\Models\Suspension;
 use App\Models\User;
@@ -138,7 +137,7 @@ class BookingController extends Controller
             if (!$booking) throw new CustomException('Data tidak ditemukan');
             $bookingParticipants = BookingParticipant::getParticipantsByBookingId($id);
             $feedback = Feedback::getByBookingIdAndUserId($id, $authUser->user['id']);
-                
+
             $data  = [
                 "booking" => $booking,
                 "participants" => $bookingParticipants,
