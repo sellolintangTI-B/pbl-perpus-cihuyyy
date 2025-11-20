@@ -77,7 +77,7 @@ class UserController extends Controller
         }
     }
 
-    public function store_admin()
+    public function store()
     {
         try {
             $data = [

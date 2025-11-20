@@ -27,8 +27,8 @@ class User extends Database
         $q->bindParam(4, $data['first_name'], PDO::PARAM_STR);
         $q->bindParam(5, $data['last_name'], PDO::PARAM_STR);
         $q->bindParam(6, $data['institution'], PDO::PARAM_STR);
-        $q->bindParam(7, $data['institution'], PDO::PARAM_STR);
-        $q->bindParam(8, $data['study_program'], PDO::PARAM_STR);
+        $q->bindParam(7, $data['study_program'], PDO::PARAM_STR);
+        $q->bindParam(8, $data['phone_number'], PDO::PARAM_STR);
         $q->bindParam(9, $data['role'], PDO::PARAM_STR);
         $q->bindParam(10, $data['image'], PDO::PARAM_STR);
         $q->bindParam(11, $data['major'], PDO::PARAM_STR);
