@@ -4,12 +4,15 @@ namespace App\Controllers\admin;
 
 use App\Core\Controller;
 use App\Core\ResponseHandler;
-use app\error\CustomException;
+use App\Error\CustomException;
 use App\Models\Booking;
 use App\Models\BookingLog;
 use App\Models\BookingParticipant;
 use App\Models\Room;
+use App\Models\User;
 use App\Utils\Authentication;
+use App\Utils\Validator;
+use Carbon\Carbon;
 
 class BookingController extends Controller
 {
@@ -48,13 +51,120 @@ class BookingController extends Controller
             header('location:' . URL . '/admin/booking/index');
         }
     }
+
     public function create()
     {
         try {
-            $this->view('admin/booking/create', layoutType: $this::$layoutType['admin']);
+            $rooms = Room::get();
+            $this->view('admin/booking/create', $rooms, layoutType: $this::$layoutType['admin']);
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), 'error');
             header('location:' . URL . '/admin/booking/create');
+        }
+    }
+
+    public function store()
+    {
+        try {
+            $data = [
+                "user_id" => "",
+                'room_id' => $_POST['room'],
+                "datetime" => $_POST['datetime'],
+                "duration" => $_POST['duration'],
+                "end_time" => "",
+                "list_anggota" => json_decode($_POST['list_anggota'], true)
+            ];
+            $data['user_id'] = $data['list_anggota'][0]['id'];
+
+            $validator = new Validator($data);
+            $validator->field('datetime', ['required']);
+            $validator->field('duration', ['required']);
+            if ($validator->error()) throw new CustomException($validator->getErrors());
+
+            $start = Carbon::parse($data['datetime']);
+            $end = Carbon::parse($data['duration'])->setDateFrom($start);
+            $data['datetime'] = $start->toDateTimeString();
+            $data['duration'] = $start->diffInMinutes($end);
+            $data['end_time'] = $start->copy()->addMinutes($start->diffInMinutes($end))->toDateTimeString();
+
+            $rules = $this->validationBookingRules($data['room_id'], $data);
+            if (!$rules['status']) throw new CustomException($rules['message']);
+
+            $members = $data['list_anggota'];
+            $data['booking_code'] = $this->generateBookingCode();
+            unset($data['list_anggota']);
+
+            $booking = Booking::create($data);
+            $members = $this->addBookingIdToMembersData($members, $booking->id);
+            $bookingLog = BookingLog::create($booking->id);
+            $bookingParticipants = BookingParticipant::bulkInsert($members);
+
+            ResponseHandler::setResponse("Berhasil menambahkan data");
+            header("location:" . URL . '/admin/booking/index');
+        } catch (CustomException $e) {
+            ResponseHandler::setResponse($e->getErrorMessages(), 'error');
+            header('location:' . URL . '/admin/booking/create');
+        }
+    }
+
+    private function generateBookingCode()
+    {
+        $characters = 'ABCDFGHIJKLN01234567890';
+        $code = '';
+
+        for ($i = 0; $i < 5; $i++) {
+            $code .= $characters[rand(0, strlen($characters) - 1)];
+        }
+        return $code;
+    }
+
+    private function addBookingIdToMembersData($members, $bookingId)
+    {
+        $members = array_map(function ($item) use ($bookingId) {
+            $item['booking_id'] = $bookingId;
+            return $item;
+        }, $members);
+        return $members;
+    }
+
+    private function validationBookingRules($roomId, $data)
+    {
+        try {
+            $roomDetail = Room::getById($roomId);
+            if (Carbon::parse($data['datetime'])->lt(Carbon::now('Asia/Jakarta')->toDateString())) throw new CustomException('Tidak bisa booking di kemarin hari');
+            if ($data['duration'] < 60) throw new CustomException('Minimal durasi pinjam ruangan 1 jam');
+            if ($data['duration'] > 180) throw new CustomException('Maximal durasi pinjam ruangan 3 jam');
+
+            $checkIfScheduleExists = Booking::checkSchedule($data['datetime'], $data['duration'], $roomId);
+            if ($checkIfScheduleExists) throw new CustomException('Jadwal sudah dibooking');
+
+            if (count($data['list_anggota']) < $roomDetail->min_capacity) throw new CustomException("Minimal kapasitas adalah $roomDetail->min_capacity orang");
+            if (count($data['list_anggota']) > $roomDetail->max_capacity) throw new CustomException("Maximal kapasitas adalah $roomDetail->max_capacity orang");
+
+            return [
+                'status' => true
+            ];
+        } catch (CustomException $e) {
+            return [
+                "status" => false,
+                "message" => $e->getErrorMessages()
+            ];
+        }
+    }
+    public function search_user($identifier)
+    {
+        try {
+            $user = User::getByIdNumber($identifier);
+            if (!$user) throw new CustomException("data user tidak tersedia");
+            $data = [
+                "success" => true,
+                "data" => $user
+            ];
+            header('Content-Type: application/json');
+            echo json_encode($data);
+        } catch (CustomException $e) {
+            $error = json_encode($e->getErrorMessages());
+            echo $error;
         }
     }
 

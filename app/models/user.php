@@ -19,20 +19,20 @@ class User extends Database
 
     public static function insert($data)
     {
+        $values = [];
+        $fields = [];
+        $params = [];
         $conn = parent::getConnection();
-        $q = $conn->prepare("INSERT INTO users (id_number, email, password_hash, first_name, last_name, institution, study_program, phone_number, role, activation_proof_url, major) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $q->bindParam(1, $data['id_number'], PDO::PARAM_STR);
-        $q->bindParam(2, $data['email'], PDO::PARAM_STR);
-        $q->bindParam(3, $data['password'], PDO::PARAM_STR);
-        $q->bindParam(4, $data['first_name'], PDO::PARAM_STR);
-        $q->bindParam(5, $data['last_name'], PDO::PARAM_STR);
-        $q->bindParam(6, $data['institution'], PDO::PARAM_STR);
-        $q->bindParam(7, $data['institution'], PDO::PARAM_STR);
-        $q->bindParam(8, $data['study_program'], PDO::PARAM_STR);
-        $q->bindParam(9, $data['role'], PDO::PARAM_STR);
-        $q->bindParam(10, $data['image'], PDO::PARAM_STR);
-        $q->bindParam(11, $data['major'], PDO::PARAM_STR);
-        $q->execute();
+        foreach($data as $key => $value) {
+            $fields[] = $key;
+            $params[] = ":$key";
+            $values[] = $value;
+        }
+
+        $implodedFields = implode(', ' , $fields);
+        $implodedParams = implode(', ' , $params);
+        $q = $conn->prepare("INSERT INTO users ($implodedFields) VALUES ($implodedParams)");
+        $q->execute($values);
 
         if ($q) {
             return true;

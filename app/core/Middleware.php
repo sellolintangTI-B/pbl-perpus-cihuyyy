@@ -17,6 +17,8 @@ class Middleware
             "/admin/booking/check_in",
             "/admin/booking/check_out",
             "/admin/booking/cancel",
+            "/admin/booking/search_user",
+            "/admin/booking/store",
             //ROOM
             "/admin/room/index",
             "/admin/room/store",
@@ -31,7 +33,7 @@ class Middleware
             //USER
             "/admin/user/approve",
             "/admin/user/index",
-            "/admin/user/store_admin",
+            "/admin/user/store",
             "/admin/user/add_admin",
             "/admin/user/approve_user",
             "/admin/user/update",
