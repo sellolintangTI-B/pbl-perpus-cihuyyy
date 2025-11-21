@@ -4,6 +4,7 @@ use App\Components\FormInput;
 use App\Components\Icon\Icon;
 use Carbon\Carbon;
 use App\Utils\Authentication;
+use App\Components\Button;
 
 $authUser = new Authentication;
 
@@ -91,12 +92,14 @@ if (isset($_SESSION['old_input'])) {
             <form class="w-full flex justify-between items-center h-8" method="get">
                 <div class="flex items-center shrink gap-2 h-full">
                     <label class="block text-sm font-medium text-primary">Tanggal:</label>
-                    <input type="date"
-                        name="date"
-                        x-model="tanggal"
-                        placeholder="YYYY-MM-DD"
-                        class="w-full h-full rounded-xl p-2 text-gray-600 outline-none border-none"
-                        required>
+                    <?php FormInput::input(
+                        id: "date_check",
+                        name: "date_check",
+                        type: "date",
+                        required: true,
+                        classGlobal: 'h-full p-0!',
+                        class: 'h-full rounded-none! border-none! p-0! focus:ring-0! focus:border-0! focus:bg-transparent!',
+                    ); ?>
                 </div>
                 <button
                     type="submit"
@@ -158,31 +161,44 @@ if (isset($_SESSION['old_input'])) {
                             <template x-for="(a, index) in listAnggota" :key="index">
                                 <div class="flex items-center justify-between w-full">
                                     <span x-text="`${index + 1}. ${a.name} (${index == 0?'PJ':'Partitipants'})`" class="text-gray-700 text-sm"></span>
-                                    <button type="button" @click="deleteAnggota(index)" class="text-red-500 text-xs hover:underline" :class="index==0?'hidden':'block'">hapus</button>
+                                    <button type="button" @click="deleteAnggota(index)" class="text-red text-xs hover:underline cursor-pointer" :class="index==0?'hidden':'block'">
+                                        <?= Icon::trash('w-5 h-5') ?>
+                                    </button>
                                 </div>
                             </template>
                             <!-- Input tambah anggota -->
-                            <?php
-                            FormInput::input(
-                                id: 'anggota_input',
-                                name: 'anggota_input',
-                                type: 'text',
-                                label: 'Tambah Anggota',
-                                placeholder: 'Masukkan NIM/NIP atau Email',
-                                classGlobal: 'w-full',
-                                alpine_xmodel: 'identifier'
-                            );
-                            ?>
+                            <div class="w-full flex items-center justify-center h-12 gap-2 mt-4">
+                                <?php
+                                FormInput::input(
+                                    id: 'anggota_input',
+                                    name: 'anggota_input',
+                                    type: 'text',
+                                    placeholder: 'Masukkan NIM/NIP atau Email',
+                                    classGlobal: 'w-full',
+                                    alpine_xmodel: 'identifier',
+                                );
+                                ?>
+                                <?php
+                                Button::button(
+                                    type: 'button',
+                                    icon: 'plus',
+                                    color: 'primary',
+                                    class: 'h-full w-16 flex items-center justify-center text-sm font-medium',
+                                    btn_icon_size: 'w-5 h-5',
+                                    alpineClick: 'tambahAnggota()'
+                                )
+                                ?>
+                            </div>
                             <!-- Pesan error -->
                             <p x-text="message" class="text-xs text-red-500 mt-1"></p>
 
-                            <div class="w-full flex items-center justify-center">
+                            <!-- <div class="w-full flex items-center justify-center">
                                 <button type="button"
                                     @click="tambahAnggota"
                                     class="bg-primary text-white w-8 h-8 cursor-pointer rounded-full hover:bg-primary/90 transition-all">
                                     +
                                 </button>
-                            </div>
+                            </div> -->
 
                             <!-- Hidden input untuk mengirim data ke PHP -->
                             <input type="hidden" name="list_anggota" :value="JSON.stringify(listAnggota)">
@@ -200,6 +216,8 @@ if (isset($_SESSION['old_input'])) {
 </div>
 <script>
     function formAnggota() {
+        const min_capacity = <?= $data['detail']->min_capacity ?? 1 ?>;
+        const max_capacity = <?= $data['detail']->max_capacity ?>;
         return {
             identifier: '',
             listAnggota: <?php
@@ -218,14 +236,17 @@ if (isset($_SESSION['old_input'])) {
                             }
                             ?>,
             message: '',
-            tanggal: '<?= $_GET['date'] ?? '' ?>',
 
             async tambahAnggota() {
                 if (this.identifier.trim() === '') {
                     this.message = '* NIM/NIP atau Email tidak boleh kosong';
                     return;
                 }
-
+                if (this.listAnggota.length >= max_capacity) {
+                    event.preventDefault();
+                    this.message = `* Maksimal ${max_capacity} anggota diperbolehkan.`;
+                    return false;
+                }
                 let isExist = this.listAnggota.find(anggota =>
                     anggota.id_number === this.identifier ||
                     anggota.id === this.identifier
@@ -269,12 +290,16 @@ if (isset($_SESSION['old_input'])) {
             },
 
             prepareData(event) {
-                const min_capacity = <?= $data['detail']->min_capacity ?? 1 ?>;
-
-                <?php if (!$data['detail']->requires_special_approval): ?>
+                console.log(max_capacity)
+                <?php if (!($data['detail']->requires_special_approval)): ?>
                     if (this.listAnggota.length < min_capacity) {
                         event.preventDefault();
                         this.message = `* Minimal ${min_capacity} anggota diperlukan.`;
+                        return false;
+                    }
+                    if (this.listAnggota.length > max_capacity) {
+                        event.preventDefault();
+                        this.message = `* Maksimal ${max_capacity} anggota diperbolehkan.`;
                         return false;
                     }
                 <?php endif; ?>

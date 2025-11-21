@@ -62,7 +62,7 @@ $currentPath = URL . parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
                     x-cloak
                     class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50"
                     style="display: none;">
-                    <a href="<?= URL . '/profile' ?>" class="flex items-center gap-3 px-4 py-2 text-sm text-black/80 hover:bg-gray-50 transition-colors duration-200">
+                    <a href="<?= URL . '/user/user/profile' ?>" class="flex items-center gap-3 px-4 py-2 text-sm text-black/80 hover:bg-gray-50 transition-colors duration-200">
                         <?= Icon::person('w-4 h-4') ?>
                         <span>Profile</span>
                     </a>

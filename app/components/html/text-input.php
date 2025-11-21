@@ -1,27 +1,29 @@
 <?php
-
-
 $classColor = match ($color) {
     'primary' => 'focus:border-primary hover:border-primary',
     'secondary' => 'focus:border-secondary hover:border-secondary',
-    'red' => ' focus:border-red hover:border-red',
+    'red' => 'focus:border-red hover:border-red',
     'tertiary' => 'focus:border-tertiary hover:border-tertiary',
-    default => ' focus:border-primary hover:border-primary',
+    default => 'focus:border-primary hover:border-primary',
 };
 ?>
 <div class="<?= $classGlobal ?> flex flex-col gap-1 font-poppins focus-within:text-secondary">
-    <label for="<?= $id ?? ($name ?? '') ?>" class="<?= empty($label) ? 'hidden' : 'block font-normal text-black/80' ?>">
+    <label for="<?= $id ?? ($name ?? '') ?>" class="<?= empty($label) ? 'hidden' : 'block font-medium text-primary mb-2' ?>">
         <?= $label ?? '' ?>
     </label>
     <div class="relative w-full h-full">
         <input
+            <?php if (!empty($alpine_xmodel)): ?>
             x-model="<?= $alpine_xmodel ?>"
+            <?php endif; ?>
             type="<?= $type ?? 'text' ?>"
             name="<?= $name ?? '' ?>"
             id="<?= $id ?? ($name ?? '') ?>"
+            <?php if (empty($alpine_xmodel) && !empty($value)): ?>
             value="<?= $value ?? '' ?>"
+            <?php endif; ?>
             placeholder="<?= $placeholder ?? '' ?>"
-            class="<?= $class ?> <?= $classColor ?> rounded-xl p-3 bg-baseColor text-gray-600 border border-gray-400  outline-none text-sm  transition-shadow duration-300 w-full <?= $type == 'password' ? 'pr-10' : '' ?>"
+            class="<?= $class ?> <?= $classColor ?> rounded-xl p-3 bg-baseColor text-gray-600 border border-gray-400 outline-none text-sm transition-shadow duration-300 w-full <?= $type == 'password' ? 'pr-10' : '' ?>"
             <?= isset($required) && $required ? 'required' : '' ?>
             <?= isset($readonly) && $readonly ? 'readonly' : '' ?>
             <?= isset($disabled) && $disabled ? 'disabled' : '' ?> />

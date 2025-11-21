@@ -162,7 +162,7 @@ use Carbon\Carbon;
                                         <p class="font-medium text-sm">
                                             Alasan Pembatalan:
                                         </p>
-                                        <p class="text-sm text-black/80 pl-7">
+                                        <p class="text-sm text-black/80">
                                             <?= !empty($data['detailCancel']->reason) ? $data['detailCancel']->reason : "Pembatalan otomatis dari system, karena peminjam tidak melakukan check in" ?>
                                         </p>
                                     </div>

@@ -335,7 +335,6 @@ $roleOptions = [
                     form.reportValidity();
                 }
             },
-
             submitUpdateForm() {
                 document.getElementById('updateUserForm').submit();
             },
@@ -360,11 +359,12 @@ $roleOptions = [
 
     const jurusanSelect = document.getElementById('jurusan');
     const prodiSelect = document.getElementById('prodi');
-    prodiSelect.ariaReadOnly = true;
+    prodiSelect.disabled = true;
 
     var selectedJurusan = '<?= $data->major ?>';
     if (selectedJurusan) {
         setProdi(selectedJurusan);
+        prodiSelect.disabled = false;
         prodiSelect.value = '<?= $data->study_program ?>';
     }
 
@@ -379,8 +379,8 @@ $roleOptions = [
     });
 
     function setProdi(selectedJurusan) {
+        prodiSelect.innerHTML = '<option value="">Pilih Program Studi</option>';
         const jurusanData = prodiData.find(item => item.jurusan === selectedJurusan);
-        console.log(jurusanData.prodi);
         if (jurusanData && jurusanData.prodi) {
             prodiSelect.disabled = false;
             jurusanData.prodi.forEach(prodi => {
