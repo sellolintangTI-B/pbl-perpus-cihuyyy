@@ -112,7 +112,7 @@ class Booking extends Database
     public static function getById($id)
     {
         $conn = parent::getConnection();
-        $q = $conn->prepare("SELECT DISTINCT ON (b.id) b.id,b.booking_code, bl.status, u.first_name || ' ' || u.last_name AS pic, r.name, r.floor, b.start_time, b.end_time, b.user_id AS pic_id, bl.created_at
+        $q = $conn->prepare("SELECT DISTINCT ON (b.id) b.id,b.booking_code, bl.status, u.first_name || ' ' || u.last_name AS pic,r.room_img_url, r.name, r.floor, r.requires_special_approval, b.start_time, b.end_time, b.user_id AS pic_id, bl.created_at
         FROM bookings AS b JOIN booking_logs AS bl ON b.id = bl.booking_id
         JOIN users AS u ON b.user_id = u.id
         JOIN booking_participants AS bp ON b.id = bp.booking_id 

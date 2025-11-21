@@ -162,10 +162,17 @@ if (isset($_SESSION['old_input'])) {
                                 </div>
                             </template>
                             <!-- Input tambah anggota -->
-                            <input type="text"
-                                x-model="identifier"
-                                placeholder="Masukkan NIM/NIP atau Email"
-                                class="w-full rounded-xl shadow-md p-3 bg-baseColor text-gray-600 border border-gray-400 hover:border-secondary outline-none text-sm transition-shadow duration-300">
+                            <?php
+                            FormInput::input(
+                                id: 'anggota_input',
+                                name: 'anggota_input',
+                                type: 'text',
+                                label: 'Tambah Anggota',
+                                placeholder: 'Masukkan NIM/NIP atau Email',
+                                classGlobal: 'w-full',
+                                alpine_xmodel: 'identifier'
+                            );
+                            ?>
                             <!-- Pesan error -->
                             <p x-text="message" class="text-xs text-red-500 mt-1"></p>
 

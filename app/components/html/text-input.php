@@ -2,11 +2,11 @@
 
 
 $classColor = match ($color) {
-    'primary' => 'focus:shadow-primary/40 focus:border-primary hover:border-primary',
-    'secondary' => 'focus:shadow-secondary/40 focus:border-secondary hover:border-secondary',
-    'red' => 'focus:shadow-red/40 focus:border-red hover:border-red',
-    'tertiary' => 'focus:shadow-tertiary/40  focus:border-tertiary hover:border-tertiary',
-    default => 'focus:shadow-primary/40 focus:border-primary hover:border-primary',
+    'primary' => 'focus:border-primary hover:border-primary',
+    'secondary' => 'focus:border-secondary hover:border-secondary',
+    'red' => ' focus:border-red hover:border-red',
+    'tertiary' => 'focus:border-tertiary hover:border-tertiary',
+    default => ' focus:border-primary hover:border-primary',
 };
 ?>
 <div class="<?= $classGlobal ?> flex flex-col gap-1 font-poppins focus-within:text-secondary">
@@ -15,12 +15,13 @@ $classColor = match ($color) {
     </label>
     <div class="relative w-full h-full">
         <input
+            x-model="<?= $alpine_xmodel ?>"
             type="<?= $type ?? 'text' ?>"
             name="<?= $name ?? '' ?>"
             id="<?= $id ?? ($name ?? '') ?>"
             value="<?= $value ?? '' ?>"
             placeholder="<?= $placeholder ?? '' ?>"
-            class="<?= $class ?> <?= $classColor ?> rounded-xl shadow-md p-3 bg-baseColor text-gray-600 border border-gray-400  outline-none text-sm focus:shadow-md  transition-shadow duration-300 w-full <?= $type == 'password' ? 'pr-10' : '' ?>"
+            class="<?= $class ?> <?= $classColor ?> rounded-xl p-3 bg-baseColor text-gray-600 border border-gray-400  outline-none text-sm  transition-shadow duration-300 w-full <?= $type == 'password' ? 'pr-10' : '' ?>"
             <?= isset($required) && $required ? 'required' : '' ?>
             <?= isset($readonly) && $readonly ? 'readonly' : '' ?>
             <?= isset($disabled) && $disabled ? 'disabled' : '' ?> />

@@ -76,7 +76,7 @@ $prodiPnj = [
             </a>
         </div>
         <div class="h-full w-full flex-1 overflow-y-auto">
-            <form class="w-full max-w-3xl grid grid-cols-1 sm:grid-cols-2 gap-6 mx-auto" action=<?= URL . "/admin/user/store_admin" ?> method="post" enctype="multipart/form-data">
+            <form class="w-full max-w-3xl grid grid-cols-1 sm:grid-cols-2 gap-6 mx-auto" action=<?= URL . "/admin/user/store" ?> method="post" enctype="multipart/form-data">
                 <?php
                 FormInput::input(id: 'id_number', name: 'id_number', label: 'NIM/NIP', required: true);
                 FormInput::input(id: 'email', name: 'email', type: 'email', label: 'Email', required: true);
@@ -99,7 +99,7 @@ $prodiPnj = [
                 );
                 FormInput::select(
                     id: 'prodi',
-                    name: 'study_program',
+                    name: 'prodi',
                     label: 'Program Studi',
                     placeholder: 'Pilih Jurusan terlebih dahulu',
                     required: true,
