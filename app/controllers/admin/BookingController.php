@@ -8,6 +8,7 @@ use app\error\CustomException;
 use App\Models\Booking;
 use App\Models\BookingLog;
 use App\Models\BookingParticipant;
+use App\Models\Room;
 use App\Utils\Authentication;
 
 class BookingController extends Controller
@@ -27,7 +28,21 @@ class BookingController extends Controller
         try {
             $booking = Booking::getById($id);
             $bookingParticipants = BookingParticipant::getParticipantsByBookingId($id);
-            $this->view('admin/booking/detail', layoutType: $this::$layoutType['admin']);
+            if ($booking->status == 'cancelled') {
+                $detailCancel = BookingLog::getCancelDetailByBookingId($id);
+            }
+            if ($booking->status == 'finished') {
+                $detailFinished = BookingLog::getFinishedDetailByBookingId($id);
+            }
+            $data = [
+                'booking' => $booking,
+                'status' => $booking->status,
+                'bookingParticipants' => $bookingParticipants,
+                'detailCancel' => $detailCancel[0] ?? null,
+                'detailFinished' => $detailFinished ?? null,
+            ];
+
+            $this->view('admin/booking/detail', $data, layoutType: $this::$layoutType['admin']);
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), 'error');
             header('location:' . URL . '/admin/booking/index');
