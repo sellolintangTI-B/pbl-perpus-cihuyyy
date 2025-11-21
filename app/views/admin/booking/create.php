@@ -1,5 +1,6 @@
 <?php
 
+use App\Components\Button;
 use App\Components\Icon\Icon;
 use App\Components\FormInput;
 ?>
@@ -21,7 +22,7 @@ use App\Components\FormInput;
                 <form class="w-full max-w-3xl grid grid-cols-1 sm:grid-cols-2 gap-6" action="<?= URL . "/admin/booking/store" ?>" method="post" enctype="multipart/form-data" x-data="formAnggota()">
                     <?php
                     $options = [];
-                    foreach($data as $value) {
+                    foreach ($data as $value) {
                         $options[] = [
                             'display' => $value->name,
                             'value' => $value->id,
@@ -71,20 +72,30 @@ use App\Components\FormInput;
                                 </template>
 
                                 <!-- Input tambah anggota -->
-                                <input type="text"
-                                    x-model="identifier"
-                                    placeholder="Masukkan NIM/NIP atau Email"
-                                    class="w-full rounded-xl shadow-md p-3 bg-baseColor text-gray-600 border border-gray-400 hover:border-secondary outline-none text-sm transition-shadow duration-300">
+                                <div class="w-full flex items-center justify-center h-12 gap-2">
+                                    <?php
+                                    FormInput::input(
+                                        id: 'anggota_input',
+                                        name: 'anggota_input',
+                                        type: 'text',
+                                        placeholder: 'Masukkan NIM/NIP atau Email',
+                                        classGlobal: 'w-full',
+                                        alpine_xmodel: 'identifier',
+                                    );
+                                    ?>
+                                    <?php
+                                    Button::button(
+                                        type: 'button',
+                                        icon: 'plus',
+                                        color: 'primary',
+                                        class: 'h-full w-16 flex items-center justify-center text-sm font-medium',
+                                        btn_icon_size: 'w-4 h-4',
+                                        alpineClick: 'tambahAnggota()'
+                                    )
+                                    ?>
+                                </div>
                                 <!-- Pesan error -->
                                 <p x-text="message" class="text-xs text-red-500 mt-1"></p>
-
-                                <div class="w-full flex items-center justify-center">
-                                    <button type="button"
-                                        @click="tambahAnggota"
-                                        class="bg-primary text-white w-8 h-8 cursor-pointer rounded-full hover:bg-primary/90 transition-all">
-                                        +
-                                    </button>
-                                </div>
                                 <!-- Hidden input untuk mengirim data ke PHP -->
                                 <input type="hidden" name="list_anggota" :value="JSON.stringify(listAnggota)">
                             </div>
@@ -94,9 +105,15 @@ use App\Components\FormInput;
                     endif;
                     ?>
                     <div class="sm:col-span-2 mt-4">
-                        <button type="submit" name="register" class="w-full bg-primary text-white px-4 py-2 rounded-xl cursor-pointer shadow-sm shadow-gray-400 hover:shadow-md hover:shadow-primary-100 duration-300 transition-all font-medium">
-                            Tambah Peminjaman
-                        </button>
+                        <?php
+                        Button::button(
+                            type: 'submit',
+                            label: 'Tambah Peminjaman',
+                            color: 'primary',
+                            class: 'w-full py-3',
+                        )
+                        ?>
+
                     </div>
                 </form>
             </div>

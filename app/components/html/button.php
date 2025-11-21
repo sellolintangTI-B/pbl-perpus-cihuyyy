@@ -22,6 +22,6 @@ switch ($color) {
 }
 
 ?>
-<button class=" <?= $customClass ?> <?= $class ?> cursor-pointer" type="<?= $type ?>" onclick="<?= $onClick ?>" id="<?= $id ?>" name="<?= $name ?>" @click="<?= $alpineClick ?>">
-    <?php $icon ? Icon::{$icon}('w-6 h-6') : null; ?> <?= $label ?>
+<button class=" <?= $customClass ?> <?= $class ?> shadow-md shadow-black/25 cursor-pointer" type="<?= $type ?>" onclick="<?= $onClick ?>" id="<?= $id ?>" name="<?= $name ?>" @click="<?= $alpineClick ?>">
+    <?php $icon ? Icon::{$icon}($btn_icon_size) : null; ?> <?= $label ?>
 </button>

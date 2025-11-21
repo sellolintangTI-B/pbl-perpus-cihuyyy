@@ -38,11 +38,13 @@ use Carbon\Carbon;
                                 </span>
                             </h1>
                             <!-- badge tipe ruangan dan beroperasi -->
-                            <?php
-                            if ($data['booking']->requires_special_approval ?? false) {
-                                Badge::badge(label: "Ruangan Khusus", color: "secondary", class: 'border-none!');
-                            }
-                            ?>
+                            <div class="flex items-center gap-2">
+                                <?php
+                                if ($data['booking']->requires_special_approval ?? false) {
+                                    Badge::badge(label: "Ruangan Khusus", color: "secondary", class: 'border-none!');
+                                }
+                                ?>
+                            </div>
                         </div>
 
                         <div class="flex gap-2 items-center justify-start text-black/80">
