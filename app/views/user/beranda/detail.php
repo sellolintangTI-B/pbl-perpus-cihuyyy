@@ -11,6 +11,7 @@ $authUser = new Authentication;
 if (isset($_SESSION['old_input'])) {
     $oldData = $_SESSION['old_input'];
 }
+
 ?>
 
 <div class="max-w-6xl mx-auto p-4 justify-center items-start flex flex-col gap-6" x-data="formAnggota()">
@@ -138,16 +139,21 @@ if (isset($_SESSION['old_input'])) {
                     </div>
                 <?php else: ?>
                     <form method=" POST" action="<?= URL ?>/user/booking/store/<?= $data['detail']->id ?>" @submit="prepareData" enctype="multipart/form-data" class="space-y-4 w-full">
-                        <!-- Kapan -->
+                        <!-- tanggal -->
                         <div>
                             <label class="block text-sm font-medium text-primary mb-2">Kapan</label>
-                            <?php FormInput::input(id: "date", name: "datetime", type: "datetime-local", required: true, value: $oldData['datetime'] ?? null); ?>
+                            <?php FormInput::input(id: "date", name: "datetime", type: "date", required: true, value: $oldData['datetime'] ?? null); ?>
                         </div>
 
-                        <!-- Durasi -->
+                        <!-- start time -->
                         <div>
-                            <label class="block text-sm font-medium text-primary mb-2">Durasi</label>
-                            <?php FormInput::input(id: "duration", name: "duration", type: "time", required: true, value: $oldData['duration'] ?? null); ?>
+                            <label class="block text-sm font-medium text-primary mb-2">Waktu mulai</label>
+                            <?php FormInput::input(id: "start_time", name: "start_time", type: "time", required: true, value: $oldData['duration'] ?? null); ?>
+                        </div>
+                        <!-- end time -->
+                        <div>
+                            <label class="block text-sm font-medium text-primary mb-2">Waktu berakhir</label>
+                            <?php FormInput::input(id: "end_time", name: "end_time", type: "time", required: true, value: $oldData['duration'] ?? null); ?>
                         </div>
                         <!-- Anggota -->
                         <label class="block text-sm font-medium text-primary mb-2">Anggota</label>
