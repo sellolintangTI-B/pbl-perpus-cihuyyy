@@ -102,7 +102,7 @@ class Booking extends Database
         FROM bookings AS b JOIN booking_logs AS bl ON b.id = bl.booking_id
         JOIN booking_participants AS bp ON b.id = bp.booking_id 
         JOIN rooms AS r ON b.room_id = r.id WHERE bp.user_id = :userId
-        AND bl.status IN ('finished', 'cancelled')");
+        AND bl.status IN ('finished', 'cancelled') ORDER BY b.id, bl.created_at");
         $q->bindValue(':userId', $userId);
         $q->execute();
         $data = $q->fetchAll(PDO::FETCH_OBJ);

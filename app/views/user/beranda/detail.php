@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Utils\Authentication;
 
 $authUser = new Authentication;
+var_dump($data['date']);
 
 if (isset($_SESSION['old_input'])) {
     $oldData = $_SESSION['old_input'];
@@ -94,8 +95,8 @@ if (isset($_SESSION['old_input'])) {
                     <input type="date"
                         name="date"
                         x-model="tanggal"
-                        placeholder="YYYY-MM-DD"
                         class="w-full h-full rounded-xl p-2 text-gray-600 outline-none border-none"
+                        value="<?= $data['date'] ?>"
                         required>
                 </div>
                 <button

@@ -92,14 +92,19 @@ class BookingController extends Controller
             if ($checkIsUserSupended->is_suspend) {
                 throw new CustomException("Anda sedang dalam masa suspension. Tidak bisa meminjam ruangan sampai " . $checkIsUserSupended->suspend_date);
             }
+
             $checkUserActiveBooking = Booking::checkUserActiveBooking($userId);
             if ($checkUserActiveBooking) throw new CustomException('Tolong selesaikan peminjaman anda terlebih dahulu sebelum meminjam ruangan lain');
             $roomDetail = Room::getById($roomId);
 
-            if (Carbon::parse($data['datetime'])->lt(Carbon::now('Asia/Jakarta')->toDateString())) throw new CustomException('Tidak bisa booking di kemarin hari');
-
+            if (Carbon::parse($data['datetime'])->isWeekend()) throw new CustomException('Tidak bisa booking di weekend');
+            if (Carbon::parse($data['datetime'])->lt(Carbon::now('Asia/Jakarta'))) throw new CustomException('Tidak bisa booking di kemarin hari');
             if (Carbon::today('Asia/Jakarta')->diffInDays($data['datetime']) >= 7) throw new CustomException('Tidak bisa booking untuk jadwal lebih dari 7 hari per hari ini');
 
+            $startHour = Carbon::parse($data['datetime'])->format('H:i:s');
+            $nowHour = Carbon::now('Asia/Jakarta')->format('H:i:s');
+
+            if($startHour < $nowHour) throw new CustomException('Tidak bisa booking pada jam yang sudah lewat');
             if ($data['duration'] < 60) throw new CustomException('Minimal durasi pinjam ruangan 1 jam');
             if ($data['duration'] > 180) throw new CustomException('Maximal durasi pinjam ruangan 3 jam');
 
@@ -221,7 +226,7 @@ class BookingController extends Controller
         }
         return $code;
     }
-    
+
     public function send_feedback($id)
     {
         try {
@@ -235,19 +240,17 @@ class BookingController extends Controller
 
             $validator = new Validator($data);
             $validator->field('feedback', ['required']);
-            if($validator->error()) throw new CustomException($validator->getErrors());
+            if ($validator->error()) throw new CustomException($validator->getErrors());
 
             $feedback = Feedback::create($data);
-            if($feedback) {
+            if ($feedback) {
                 ResponseHandler::setResponse('Terima kasih sudah memberikan feedback anda');
-                header('location:' . URL . '/user/booking/index');
+                header('location:' . URL . '/user/booking/index?tab=riwayat');
             } else {
                 ResponseHandler::setResponse('Gagal memberikan feedback');
-                header('location:' . URL . '/user/booking/index');
+                header('location:' . URL . "/user/booking/detail/$id");
             }
-
-
-        }catch(CustomException $e) {
+        } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), 'error');
             header('location:');
         }

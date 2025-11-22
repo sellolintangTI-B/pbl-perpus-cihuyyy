@@ -58,7 +58,8 @@ class RoomController extends Controller
             $bookingSchedule = Booking::getByRoomId($id, $date);
             $data = [
                 "detail" => $room,
-                "schedule" => $bookingSchedule
+                "schedule" => $bookingSchedule,
+                "date" => $date
             ];
             $this->view('user/beranda/detail', $data, layoutType: $this::$layoutType['civitas']);
         } catch (CustomException $e) {
