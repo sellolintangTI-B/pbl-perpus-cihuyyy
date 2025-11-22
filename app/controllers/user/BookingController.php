@@ -143,10 +143,18 @@ class BookingController extends Controller
             $bookingParticipants = BookingParticipant::getParticipantsByBookingId($id);
             $feedback = Feedback::getByBookingIdAndUserId($id, $authUser->user['id']);
 
+            if ($booking->status == 'cancelled') {
+                $detailCancel = BookingLog::getCancelDetailByBookingId($id);
+            }
+            if ($booking->status == 'finished') {
+                $detailFinished = BookingLog::getFinishedDetailByBookingId($id);
+            }
             $data  = [
                 "booking" => $booking,
                 "participants" => $bookingParticipants,
-                "feeback" => $feedback
+                "feeback" => $feedback,
+                'detailCancel' => $detailCancel[0] ?? null,
+                'detailFinished' => $detailFinished ?? null,
             ];
 
             $this->view('user/booking/detail', $data, layoutType: $this::$layoutType['civitas']);

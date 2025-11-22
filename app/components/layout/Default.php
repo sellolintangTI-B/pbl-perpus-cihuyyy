@@ -12,7 +12,7 @@
     <script src="//unpkg.com/alpinejs" defer></script>
 </head>
 
-<body class="font-poppins bg-gray-100">
+<body class="font-poppins bg-gray-100 bg-[url('<?= URL . "/public/storage/bg-pattern/pattern.webp" ?>')]">
     <?php include_once 'app/components/response-banner.php'; ?>
     <!-- Main Content -->
     <div>

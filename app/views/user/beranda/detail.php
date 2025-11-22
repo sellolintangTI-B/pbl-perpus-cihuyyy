@@ -4,6 +4,7 @@ use App\Components\FormInput;
 use App\Components\Icon\Icon;
 use Carbon\Carbon;
 use App\Utils\Authentication;
+use App\Components\Button;
 
 $authUser = new Authentication;
 var_dump($data['date']);
@@ -92,12 +93,14 @@ if (isset($_SESSION['old_input'])) {
             <form class="w-full flex justify-between items-center h-8" method="get">
                 <div class="flex items-center shrink gap-2 h-full">
                     <label class="block text-sm font-medium text-primary">Tanggal:</label>
-                    <input type="date"
-                        name="date"
-                        x-model="tanggal"
-                        class="w-full h-full rounded-xl p-2 text-gray-600 outline-none border-none"
-                        value="<?= $data['date'] ?>"
-                        required>
+                    <?php FormInput::input(
+                        id: "date_check",
+                        name: "date_check",
+                        type: "date",
+                        required: true,
+                        classGlobal: 'h-full p-0!',
+                        class: 'h-full rounded-none! border-none! p-0! focus:ring-0! focus:border-0! focus:bg-transparent!',
+                    ); ?>
                 </div>
                 <button
                     type="submit"
@@ -131,69 +134,104 @@ if (isset($_SESSION['old_input'])) {
         <div class="flex-2 flex flex-col gap-4 justify-start items-center">
             <!-- Form Section -->
             <div class="bg-white rounded-xl p-4 shadow-md w-full">
-                <form method="POST" action="<?= URL ?>/user/booking/store/<?= $data['detail']->id ?>" @submit="prepareData" enctype="multipart/form-data" class="space-y-4 w-full">
-                    <!-- Kapan -->
-                    <div>
-                        <label class="block text-sm font-medium text-primary mb-2">Kapan</label>
-                        <?php FormInput::input(id: "date", name: "datetime", type: "datetime-local", required: true, value: $oldData['datetime'] ?? null); ?>
+                <?php if ($data['detail']->requires_special_approval): ?>
+                    <div class="flex flex-col gap-4">
+                        <p class="text-sm text-black/80">Ruangan ini memerlukan persetujuan khusus dari pihak administrasi.
                     </div>
-
-                    <!-- Durasi -->
-                    <div>
-                        <label class="block text-sm font-medium text-primary mb-2">Durasi</label>
-                        <?php FormInput::input(id: "duration", name: "duration", type: "time", required: true, value: $oldData['duration'] ?? null); ?>
-                    </div>
-
-                    <?php if ($data['detail']->requires_special_approval): ?>
-                        <!-- Upload surat resmi  -->
+                <?php else: ?>
+                    <form method=" POST" action="<?= URL ?>/user/booking/store/<?= $data['detail']->id ?>" @submit="prepareData" enctype="multipart/form-data" class="space-y-4 w-full">
+                        <!-- tanggal -->
                         <div>
-                            <label class="block text-sm font-medium text-primary mb-2">Upload Surat Resmi</label>
-                            <?php FormInput::fileInput(id: "surat", name: "file_surat", placeholder: "Surat Izin Peminjaman", accept: 'image/*', required: true)
-                            ?>
+                            <label class="block text-sm font-medium text-primary mb-2">Kapan</label>
+                            <?php FormInput::input(id: "date", name: "datetime", type: "date", required: true, value: $oldData['datetime'] ?? null); ?>
                         </div>
-                    <?php else: ?>
-                        <label class="block text-sm font-medium text-primary mb-2">Anggota</label>
+
+                        <!-- start time -->
+                        <div>
+                            <label class="block text-sm font-medium text-primary mb-2">Waktu mulai</label>
+                            <?php FormInput::input(id: "start_time", name: "start_time", type: "time", required: true, value: $oldData['duration'] ?? null); ?>
+                        </div>
+                        <!-- end time -->
+                        <div>
+                            <label class="block text-sm font-medium text-primary mb-2">Waktu berakhir</label>
+                            <?php FormInput::input(id: "end_time", name: "end_time", type: "time", required: true, value: $oldData['duration'] ?? null); ?>
+                        </div>
                         <!-- Anggota -->
+                        <label class="block text-sm font-medium text-primary mb-2">Anggota</label>
                         <div class="flex flex-col gap-2 p-4 bg-white border border-gray-400 rounded-xl items-start">
                             <!-- List anggota yang sudah ditambahkan -->
                             <template x-for="(a, index) in listAnggota" :key="index">
                                 <div class="flex items-center justify-between w-full">
                                     <span x-text="`${index + 1}. ${a.name} (${index == 0?'PJ':'Partitipants'})`" class="text-gray-700 text-sm"></span>
-                                    <button type="button" @click="deleteAnggota(index)" class="text-red-500 text-xs hover:underline" :class="index==0?'hidden':'block'">hapus</button>
+                                    <button type="button" @click="deleteAnggota(index)" class="text-red text-xs hover:underline cursor-pointer" :class="index==0?'hidden':'block'">
+                                        <?= Icon::trash('w-5 h-5') ?>
+                                    </button>
                                 </div>
                             </template>
                             <!-- Input tambah anggota -->
-                            <input type="text"
-                                x-model="identifier"
-                                placeholder="Masukkan NIM/NIP atau Email"
-                                class="w-full rounded-xl shadow-md p-3 bg-baseColor text-gray-600 border border-gray-400 hover:border-secondary outline-none text-sm transition-shadow duration-300">
+                            <div class="w-full flex items-center justify-center h-12 gap-2 mt-4">
+                                <?php
+                                FormInput::input(
+                                    id: 'anggota_input',
+                                    name: 'anggota_input',
+                                    type: 'text',
+                                    placeholder: 'Masukkan NIM/NIP atau Email',
+                                    classGlobal: 'w-full',
+                                    alpine_xmodel: 'identifier',
+                                );
+                                ?>
+                                <?php
+                                Button::button(
+                                    type: 'button',
+                                    icon: 'plus',
+                                    color: 'primary',
+                                    class: 'h-full w-16 flex items-center justify-center text-sm font-medium',
+                                    btn_icon_size: 'w-5 h-5',
+                                    alpineClick: 'tambahAnggota()'
+                                )
+                                ?>
+                            </div>
                             <!-- Pesan error -->
                             <p x-text="message" class="text-xs text-red-500 mt-1"></p>
 
-                            <div class="w-full flex items-center justify-center">
+                            <!-- <div class="w-full flex items-center justify-center">
                                 <button type="button"
                                     @click="tambahAnggota"
                                     class="bg-primary text-white w-8 h-8 cursor-pointer rounded-full hover:bg-primary/90 transition-all">
                                     +
                                 </button>
-                            </div>
+                            </div> -->
 
                             <!-- Hidden input untuk mengirim data ke PHP -->
                             <input type="hidden" name="list_anggota" :value="JSON.stringify(listAnggota)">
                         </div>
-                    <?php endif; ?>
-                    <!-- Tombol submit -->
-                    <button type="submit"
-                        class="w-full bg-linear-to-r from-primary to-secondary text-white py-3 rounded-xl font-medium text-sm hover:shadow-lg transition-all duration-300">
-                        Booking Ruangan Ini
-                    </button>
-                </form>
+
+                        <!-- Upload surat resmi 
+                        <div>
+                            <label class="block text-sm font-medium text-primary mb-2">Upload Surat Resmi</label>
+                            <?php //FormInput::fileInput(id: "surat", name: "file_surat", placeholder: "Surat Izin Peminjaman", accept: 'image/*', required: true)
+                            ?>
+                        </div> -->
+
+
+
+
+
+                        <!-- Tombol submit -->
+                        <button type="submit"
+                            class="w-full bg-linear-to-r from-primary to-secondary text-white py-3 rounded-xl font-medium text-sm hover:shadow-lg transition-all duration-300">
+                            Booking Ruangan Ini
+                        </button>
+                    </form>
+                <?php endif; ?>
             </div>
         </div>
     </div>
 </div>
 <script>
     function formAnggota() {
+        const min_capacity = <?= $data['detail']->min_capacity ?? 1 ?>;
+        const max_capacity = <?= $data['detail']->max_capacity ?>;
         return {
             identifier: '',
             listAnggota: <?php
@@ -212,14 +250,17 @@ if (isset($_SESSION['old_input'])) {
                             }
                             ?>,
             message: '',
-            tanggal: '<?= $_GET['date'] ?? '' ?>',
 
             async tambahAnggota() {
                 if (this.identifier.trim() === '') {
                     this.message = '* NIM/NIP atau Email tidak boleh kosong';
                     return;
                 }
-
+                if (this.listAnggota.length >= max_capacity) {
+                    event.preventDefault();
+                    this.message = `* Maksimal ${max_capacity} anggota diperbolehkan.`;
+                    return false;
+                }
                 let isExist = this.listAnggota.find(anggota =>
                     anggota.id_number === this.identifier ||
                     anggota.id === this.identifier
@@ -263,12 +304,16 @@ if (isset($_SESSION['old_input'])) {
             },
 
             prepareData(event) {
-                const min_capacity = <?= $data['detail']->min_capacity ?? 1 ?>;
-
-                <?php if (!$data['detail']->requires_special_approval): ?>
+                console.log(max_capacity)
+                <?php if (!($data['detail']->requires_special_approval)): ?>
                     if (this.listAnggota.length < min_capacity) {
                         event.preventDefault();
                         this.message = `* Minimal ${min_capacity} anggota diperlukan.`;
+                        return false;
+                    }
+                    if (this.listAnggota.length > max_capacity) {
+                        event.preventDefault();
+                        this.message = `* Maksimal ${max_capacity} anggota diperbolehkan.`;
                         return false;
                     }
                 <?php endif; ?>

@@ -38,11 +38,13 @@ use Carbon\Carbon;
                                 </span>
                             </h1>
                             <!-- badge tipe ruangan dan beroperasi -->
-                            <?php
-                            if ($data['booking']->requires_special_approval ?? false) {
-                                Badge::badge(label: "Ruangan Khusus", color: "secondary", class: 'border-none!');
-                            }
-                            ?>
+                            <div class="flex items-center gap-2">
+                                <?php
+                                if ($data['booking']->requires_special_approval ?? false) {
+                                    Badge::badge(label: "Ruangan Khusus", color: "secondary", class: 'border-none!');
+                                }
+                                ?>
+                            </div>
                         </div>
 
                         <div class="flex gap-2 items-center justify-start text-black/80">
@@ -160,7 +162,7 @@ use Carbon\Carbon;
                                         <p class="font-medium text-sm">
                                             Alasan Pembatalan:
                                         </p>
-                                        <p class="text-sm text-black/80 pl-7">
+                                        <p class="text-sm text-black/80">
                                             <?= !empty($data['detailCancel']->reason) ? $data['detailCancel']->reason : "Pembatalan otomatis dari system, karena peminjam tidak melakukan check in" ?>
                                         </p>
                                     </div>

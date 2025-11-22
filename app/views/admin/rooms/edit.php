@@ -11,7 +11,7 @@ use App\Components\Button;
     <?= Button::button(
         label: 'ya',
         class: 'w-full py-3',
-        type: 'button',
+        type: 'submit',
         alpineClick: 'submitUpdateForm()',
         color: 'secondary',
     ) ?>
@@ -40,7 +40,7 @@ use App\Components\Button;
 
         <div class="flex-1 w-full overflow-y-auto">
             <div class="flex items-center justify-center  w-full max-w-5xl mx-auto">
-                <form class="w-full max-w-3xl grid grid-cols-1 sm:grid-cols-2 gap-6" x-data="updateRoomForm()" @submit.prevent="validateAndShowUpdateAlert" action="<?= URL . "/admin/room/update/" . $data->id ?>" method="post" enctype="multipart/form-data">
+                <form class="w-full max-w-3xl grid grid-cols-1 sm:grid-cols-2 gap-6" id="updateRoomForm" x-data="updateRoomForm()" @submit.prevent="validateAndShowUpdateAlert" action="<?= URL . "/admin/room/update/" . $data->id ?>" method="post" enctype="multipart/form-data">
                     <?php
                     FormInput::input(id: 'nama', name: 'name', label: 'Nama', placeholder: "masukkan nama ruangan", required: true, value: $data->name);
                     FormInput::input(id: 'lantai', name: 'floor', type: 'number', label: 'Lantai', placeholder: "contoh: 1", required: true, value: $data->floor);

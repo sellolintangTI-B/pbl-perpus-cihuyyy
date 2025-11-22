@@ -61,7 +61,9 @@ class Middleware
             //LOGOUT
             "/auth/logout/logout",
             //GUIDE
-            "/user/guide/index"
+            "/user/guide/index",
+            //PROFILE
+            "/user/user/profile"
         ],
         "Dosen" => [
             "/user/user/index",

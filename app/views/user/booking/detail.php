@@ -7,6 +7,9 @@ use App\Components\FormInput;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use App\Components\Modal;
+use App\Utils\Authentication;
+
+$authUser = new Authentication;
 
 $bookingCode = $_GET['code'] ?? '#AA682358';
 $status = $_GET['status'] ?? 'berlangsung';
@@ -33,10 +36,7 @@ $bookingDetail = [
     'time' => Carbon::parse($data['booking']->start_time)->toTimeString() . ' - ' . Carbon::parse($data['booking']->end_time)->toTimeString(),
     'members' => $data['participants']
 ];
-
 ?>
-
-
 <div class="bg-baseColor font-poppins" x-data="{ onModalShow: false, showFeedback: false }">
     <div class="max-w-6xl mx-auto p-4">
         <!-- Header -->
@@ -63,31 +63,42 @@ $bookingDetail = [
             <div class="space-y-3">
                 <div class="flex items-start gap-3">
                     <?= Icon::person('w-5 h-5 text-black/80') ?>
-                    <span class="text-sm text-black/80">Nama: <?= $bookingDetail['pic'] ?></span>
+                    <span class="text-sm text-black/80 font-medium">Nama: <?= $bookingDetail['pic'] ?></span>
                 </div>
 
                 <div class="flex items-start gap-3">
                     <?= Icon::location('w-5 h-5 text-black/80') ?>
-                    <span class="text-sm text-gray-700">
+                    <span class="text-sm text-black/80 font-medium">
                         Tempat: <span class="text-secondary font-medium"><?= $bookingDetail['room'] ?></span>, Perpustakaan PNJ, LT. <?= $bookingDetail['floor'] ?>
                     </span>
                 </div>
 
                 <div class="flex items-start gap-3">
                     <?= Icon::calendar_pencil('w-5 h-5 text-black/80') ?>
-                    <span class="text-sm text-gray-700">Tanggal: <?= $bookingDetail['date'] ?></span>
+                    <span class="text-sm text-black/80 font-medium">Tanggal: <?= $bookingDetail['date'] ?></span>
                 </div>
 
                 <div class="flex items-start gap-3">
                     <?= Icon::clock('w-5 h-5 text-black/80') ?>
-                    <span class="text-sm text-gray-700">Waktu: <?= $bookingDetail['time'] ?></span>
+                    <span class="text-sm text-black/80 font-medium">Waktu: <?= $bookingDetail['time'] ?></span>
                 </div>
-                <?php if ($bookingDetail['status'] == $statusEnum['selesai']): ?>
-                    <div class="flex items-start gap-3">
-                        <?= Icon::clock('w-5 h-5 text-black/80') ?>
-                        <span class="text-sm text-gray-700">Check in: 13.05 &bull; Check out: 15.05</span>
+                <?php
+                if ($data['detailFinished'] && $bookingDetail['status'] == $statusEnum['selesai']) {
+                ?>
+                    <div class="flex gap-2 items-center justify-start text-black/80">
+                        <?= Icon::clock("w-5 h-5") ?>
+                        <p class="font-medium text-sm">
+
+                            <?php
+                            foreach ($data['detailFinished'] as $detail): ?>
+                                <?= $detail->status == 'checked_in' ? 'Check In' : ' &bull; Check Out' ?>:
+                                <?= Carbon::parse($detail->created_at)->translatedFormat(' H:i:A') ?>
+                            <?php endforeach ?>
+                        </p>
                     </div>
-                <?php endif; ?>
+                <?php
+                }
+                ?>
             </div>
 
             <!-- Members Section -->
@@ -103,29 +114,39 @@ $bookingDetail = [
                 </ul>
             </div>
 
-            <?php if ($bookingDetail['status'] == $statusEnum['dibatalkan']): ?>
-                <div class="flex flex-col gap-2 pt-4">
-                    <h4 class="text-base font-semibold text-primary">Detail Pembatalan:</h4>
-                    <div class="w-full flex flex-col gap-4">
-                        <div class="flex items-start gap-3">
-                            <?= Icon::person('w-5 h-5 text-black/80') ?>
-                            <span class="text-sm text-gray-700">dibatalkan oleh: nugiman</span>
-                        </div>
-                        <div class="flex items-start gap-3">
-                            <?= Icon::clock('w-5 h-5 text-black/80') ?>
-                            <span class="text-sm text-gray-700">Jam: 15.05</span>
+            <?php if ($data['detailCancel'] && $bookingDetail['status'] == $statusEnum['dibatalkan']): ?>
+                <div class="w-full flex flex-col gap-2 mt-4">
+                    <div class="flex flex-col gap-1  items-start justify-certer w-full">
+                        <label class="block text-lg font-medium text-primary">Detail Pembatalan</label>
+                        <div class="w-full h-px bg-black/40"></div>
+                    </div>
+                    <div class="flex gap-2 items-center justify-start text-black/80 mt-2">
+                        <?= Icon::person("w-5 h-5") ?>
+                        <p class="font-medium text-sm">
+                            Actor: <?= $data['detailCancel']->cancel_actor ?>
+                        </p>
+                    </div>
+                    <div class="flex gap-2 items-center justify-start text-black/80 mt-2">
+                        <?= Icon::clock("w-5 h-5") ?>
+                        <p class="font-medium text-sm">
+                            Jam Pembatalan: <?= Carbon::parse($data['detailCancel']->created_at)->translatedFormat('H:i A') ?>
+                        </p>
+                    </div>
+                    <div class="flex gap-2 items-start mt-2">
+                        <?= Icon::file("w-5 h-5") ?>
+                        <div class="flex flex-col gap-2 items-start justify-center text-black/80 ">
+                            <p class="font-medium text-sm">
+                                Alasan Pembatalan:
+                            </p>
+                            <p class="text-sm text-black/80 "><?= !empty($data['detailCancel']->reason) ? $data['detailCancel']->reason : "Pembatalan otomatis dari system, karena peminjam tidak melakukan check in" ?>
+                            </p>
                         </div>
                     </div>
-                    <p>
-                        Alasan:
-                    </p>
-                    <p class="text-sm">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab accusamus doloribus sunt. Labore exercitationem fugit eos assumenda repudiandae voluptas similique!
-                    </p>
                 </div>
             <?php endif; ?>
 
-            <?php if (($bookingDetail['status'] == $statusEnum["created"] || $bookingDetail['status'] == $statusEnum["checked_in"])): ?>
+            <?php if (($bookingDetail['status'] == $statusEnum["created"] || $bookingDetail['status'] == $statusEnum["checked_in"]) && $authUser->user['id'] === $data['booking']->pic_id): ?>
+
                 <?= Button::button(label: 'Cancel', type: 'button', color: 'red', class: 'w-full py-2 rounded-full!', alpineClick: "onModalShow=true") ?>
             <?php endif; ?>
 
@@ -141,7 +162,7 @@ $bookingDetail = [
     ob_start();
     ?>
     <form action="<?= URL ?>/user/booking/cancel_booking/<?= $bookingDetail['id'] ?>" method="POST" class="w-full flex flex-col gap-2">
-        <?= FormInput::textarea(id: 'reason', name: 'reason', label: 'Alasan:', class: 'h-18', maxlength: 100) ?>
+        <?= FormInput::textarea(id: 'reason', name: 'reason', required: true, label: 'Alasan:', class: 'h-18', maxlength: 100) ?>
         <div class="flex gap-4 w-full ">
             <?php
             Button::button(label: 'Iya', color: 'red', type: 'submit', class: 'w-full py-3');

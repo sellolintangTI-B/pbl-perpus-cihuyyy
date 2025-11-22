@@ -1,13 +1,13 @@
 <?php
 
 use App\Components\RoomCard;
+
+$rooms = $data['data'] ?? [];
 ?>
 <main class="w-full max-w-7xl mx-auto px-8 py-8 pb-16 h-fit">
+
     <!-- Greeting Section -->
     <div class="w-full flex flex-col items-center gap-6 mb-8">
-        <h1 class="text-2xl font-semibold text-black/90">
-            Halo, mau pinjam ruangan apa?
-        </h1>
 
         <!-- Search & Filter Section -->
         <form class="w-full max-w-4xl justify-center items-center flex flex-col gap-4 m-3" method="get">
@@ -62,15 +62,11 @@ use App\Components\RoomCard;
 
     <!-- Available Rooms Section -->
     <div class="w-full h-fit mt-12">
-        <h2 class="text-xl font-medium text-black/90 mb-6 text-center">
-            Ruangan yang tersedia
-        </h2>
-
         <!-- Room Cards Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
             <?php
             // Dummy data ruangan
-            foreach ($data as $room) {
+            foreach ($rooms as $room) {
                 $r = [
                     'id' => $room->id,
                     'name' => $room->name,
@@ -80,7 +76,7 @@ use App\Components\RoomCard;
                     'max' => $room->max_capacity,
                     'description' => $room->description,
                     'isSpecial' => $room->requires_special_approval,
-                    'room_url' => '/user/room/detail/' . $room->id,
+                    'room_url' => '/admin/booking/create?state=detail&id=' . $room->id,
                 ];
                 RoomCard::card($r);
             }
