@@ -55,10 +55,39 @@ class BookingController extends Controller
     public function create()
     {
         try {
-            $rooms = Room::get();
-            $this->view('admin/booking/create', $rooms, layoutType: $this::$layoutType['admin']);
+            $params = [];
+            $state = 'room';
+            $data = [
+                'data' => null,
+                'state' => $state,
+                'roomList' => []
+            ];
+
+            if (isset($_GET['date'])) {
+                $start = Carbon::parse($_GET['date']);
+                $params['startTime'] = $start;
+            }
+
+            if (isset($_GET['duration'])) {
+                $duration = Carbon::parse($_GET['duration'])->setDateFrom($start)->toDateTimeString();
+                $params['duration'] = $start->diffInMinutes($duration);
+            }
+
+            if (isset($_GET['room'])) {
+                $params['room'] = $_GET['room'];
+            }
+
+            if (isset($_GET['state']) && $_GET['state'] == 'detail' && isset($_GET['id'])) {
+                $data['data'] = Room::getById($_GET['id']);
+                $data['roomList'] = Room::get();
+                $data['state'] = 'detail';
+            } else {
+                $data['data'] = Room::get($params);
+                $data['state'] = 'room';
+            };
+            $this->view('admin/booking/create/create', $data, layoutType: $this::$layoutType['admin']);
         } catch (CustomException $e) {
-            ResponseHandler::setResponse($e->getErrorMessages(), 'error');
+            ResponseHandler::setResponse($e->getMessage(), "error");
             header('location:' . URL . '/admin/booking/create');
         }
     }

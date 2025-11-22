@@ -28,17 +28,24 @@ use App\Components\RoomCard;
                     <label class="px-1 bg-transparent text-xs font-medium text-black/70">
                         Kapan
                     </label>
-                    <input type="datetime-local" name="date" placeholder="Tanggal dan jam peminjaman" value="<?= isset($_GET['date']) ? $_GET['date'] : null ?>" class="w-full h-full rounded-lg border-0 focus:outline-none focus:ring-0 transition-colors duration-200 text-sm text-black/70 px-4">
+                    <input type="date" name="date" placeholder="Tanggal dan jam peminjaman" value="<?= isset($_GET['date']) ? $_GET['date'] : null ?>" class="w-full h-full rounded-lg border-0 focus:outline-none focus:ring-0 transition-colors duration-200 text-sm text-black/70 px-4">
                 </div>
                 <div class="h-12 w-[1px] rounded-full bg-black/20">
 
                 </div>
-                <!-- Durasi Filter -->
+                <!-- start time Filter -->
                 <div class="flex-1 relative flex flex-col gap-3 justify-center items-start h-full">
                     <label class="px-1 bg-transparent text-xs font-medium text-black/70">
-                        Durasi
+                        Waktu mulai
                     </label>
-                    <input type="time" name="duration" placeholder="Lama peminjaman ruangan" value="<?= isset($_GET['duration']) ? $_GET['duration'] : null ?>" class="w-full h-full rounded-lg border-0 focus:outline-none focus:ring-0 transition-colors duration-200 text-sm text-black/70 px-4">
+                    <input type="time" name="start_time" placeholder="Jam mulai peminjaman" value="<?= isset($_GET['duration']) ? $_GET['duration'] : null ?>" class="w-full h-full rounded-lg border-0 focus:outline-none focus:ring-0 transition-colors duration-200 text-sm text-black/70 px-4">
+                </div>
+                <!-- end time Filter -->
+                <div class="flex-1 relative flex flex-col gap-3 justify-center items-start h-full">
+                    <label class="px-1 bg-transparent text-xs font-medium text-black/70">
+                        Waktu berakhir
+                    </label>
+                    <input type="time" name="end_time" placeholder="Jam peminjaman berakhir" value="<?= isset($_GET['duration']) ? $_GET['duration'] : null ?>" class="w-full h-full rounded-lg border-0 focus:outline-none focus:ring-0 transition-colors duration-200 text-sm text-black/70 px-4">
                 </div>
 
                 <!-- Search Button -->
@@ -72,7 +79,8 @@ use App\Components\RoomCard;
                     'min' => $room->min_capacity,
                     'max' => $room->max_capacity,
                     'description' => $room->description,
-                    'isSpecial' => $room->requires_special_approval
+                    'isSpecial' => $room->requires_special_approval,
+                    'room_url' => '/user/room/detail/' . $room->id,
                 ];
                 RoomCard::card($r);
             }

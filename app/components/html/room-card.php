@@ -49,7 +49,7 @@ use Soap\Url;
                 label: 'Book This Room',
                 color: 'primary',
                 class: 'w-full py-2 text-sm',
-                href: "/user/room/detail/" . $room['id']
+                href: $room['room_url']
             ) ?>
         </div>
     </div>

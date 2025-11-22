@@ -11,7 +11,6 @@ $authUser = new Authentication;
 if (isset($_SESSION['old_input'])) {
     $oldData = $_SESSION['old_input'];
 }
-
 ?>
 
 <div class="max-w-6xl mx-auto p-4 justify-center items-start flex flex-col gap-6" x-data="formAnggota()">
@@ -133,29 +132,25 @@ if (isset($_SESSION['old_input'])) {
         <div class="flex-2 flex flex-col gap-4 justify-start items-center">
             <!-- Form Section -->
             <div class="bg-white rounded-xl p-4 shadow-md w-full">
-                <form method="POST" action="<?= URL ?>/user/booking/store/<?= $data['detail']->id ?>" @submit="prepareData" enctype="multipart/form-data" class="space-y-4 w-full">
-                    <!-- Kapan -->
-                    <div>
-                        <label class="block text-sm font-medium text-primary mb-2">Kapan</label>
-                        <?php FormInput::input(id: "date", name: "datetime", type: "datetime-local", required: true, value: $oldData['datetime'] ?? null); ?>
+                <?php if ($data['detail']->requires_special_approval): ?>
+                    <div class="flex flex-col gap-4">
+                        <p class="text-sm text-black/80">Ruangan ini memerlukan persetujuan khusus dari pihak administrasi.
                     </div>
-
-                    <!-- Durasi -->
-                    <div>
-                        <label class="block text-sm font-medium text-primary mb-2">Durasi</label>
-                        <?php FormInput::input(id: "duration", name: "duration", type: "time", required: true, value: $oldData['duration'] ?? null); ?>
-                    </div>
-
-                    <?php if ($data['detail']->requires_special_approval): ?>
-                        <!-- Upload surat resmi  -->
+                <?php else: ?>
+                    <form method=" POST" action="<?= URL ?>/user/booking/store/<?= $data['detail']->id ?>" @submit="prepareData" enctype="multipart/form-data" class="space-y-4 w-full">
+                        <!-- Kapan -->
                         <div>
-                            <label class="block text-sm font-medium text-primary mb-2">Upload Surat Resmi</label>
-                            <?php FormInput::fileInput(id: "surat", name: "file_surat", placeholder: "Surat Izin Peminjaman", accept: 'image/*', required: true)
-                            ?>
+                            <label class="block text-sm font-medium text-primary mb-2">Kapan</label>
+                            <?php FormInput::input(id: "date", name: "datetime", type: "datetime-local", required: true, value: $oldData['datetime'] ?? null); ?>
                         </div>
-                    <?php else: ?>
-                        <label class="block text-sm font-medium text-primary mb-2">Anggota</label>
+
+                        <!-- Durasi -->
+                        <div>
+                            <label class="block text-sm font-medium text-primary mb-2">Durasi</label>
+                            <?php FormInput::input(id: "duration", name: "duration", type: "time", required: true, value: $oldData['duration'] ?? null); ?>
+                        </div>
                         <!-- Anggota -->
+                        <label class="block text-sm font-medium text-primary mb-2">Anggota</label>
                         <div class="flex flex-col gap-2 p-4 bg-white border border-gray-400 rounded-xl items-start">
                             <!-- List anggota yang sudah ditambahkan -->
                             <template x-for="(a, index) in listAnggota" :key="index">
@@ -203,13 +198,25 @@ if (isset($_SESSION['old_input'])) {
                             <!-- Hidden input untuk mengirim data ke PHP -->
                             <input type="hidden" name="list_anggota" :value="JSON.stringify(listAnggota)">
                         </div>
-                    <?php endif; ?>
-                    <!-- Tombol submit -->
-                    <button type="submit"
-                        class="w-full bg-linear-to-r from-primary to-secondary text-white py-3 rounded-xl font-medium text-sm hover:shadow-lg transition-all duration-300">
-                        Booking Ruangan Ini
-                    </button>
-                </form>
+
+                        <!-- Upload surat resmi 
+                        <div>
+                            <label class="block text-sm font-medium text-primary mb-2">Upload Surat Resmi</label>
+                            <?php //FormInput::fileInput(id: "surat", name: "file_surat", placeholder: "Surat Izin Peminjaman", accept: 'image/*', required: true)
+                            ?>
+                        </div> -->
+
+
+
+
+
+                        <!-- Tombol submit -->
+                        <button type="submit"
+                            class="w-full bg-linear-to-r from-primary to-secondary text-white py-3 rounded-xl font-medium text-sm hover:shadow-lg transition-all duration-300">
+                            Booking Ruangan Ini
+                        </button>
+                    </form>
+                <?php endif; ?>
             </div>
         </div>
     </div>
