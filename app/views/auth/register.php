@@ -134,8 +134,8 @@ $prodiPnj = [
                     ?>
                     <!-- CAPTCHA Section -->
                     <div class="w-full col-span-2">
-                        <label class="block text-primary mb-2 font-poppins">
-                            Kode Verifikasi
+                        <label class="block text-primary mb-2 font-poppins font-medium">
+                            Kode verifikasi
                         </label>
                         <div class="flex gap-3 items-center mb-2">
                             <img id="captcha-image"

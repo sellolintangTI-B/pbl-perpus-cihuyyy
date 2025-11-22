@@ -6,7 +6,7 @@ use App\Components\FormInput;
 use App\Components\Modal;
 ?>
 
-<div class="bg-baseColor font-poppins w-full" x-data="{showCancel: false, cancelPeminjamanId: null }">
+<div class=" font-poppins w-full" x-data="{showCancel: false, cancelPeminjamanId: null }">
     <div class="max-w-6xl mx-auto">
         <!-- Header -->
         <h1 class="text-2xl font-bold text-primary mb-6">Booking</h1>
@@ -30,7 +30,7 @@ use App\Components\Modal;
         <!-- Container for main content with fixed height and scroll -->
         <div
             class="w-full">
-            <div class="relative w-full">
+            <div class=" w-full">
                 <?php
                 if ($tab == 'berlangsung') {
                     include __DIR__ . "/sections/berlangsung.php";
@@ -45,8 +45,8 @@ use App\Components\Modal;
     <?php
     ob_start();
     ?>
-    <form action="" method="POST" class="w-full flex flex-col gap-2">
-        <?= FormInput::textarea(id: 'reason', name: 'reason', label: 'Alasan:', class: 'h-18', maxlength: 100, color: 'red') ?>
+    <form x-bind:action="`<?= URL ?>/user/booking/cancel_booking/${cancelPeminjamanId}`" method="POST" class="w-full flex flex-col gap-2">
+        <?= FormInput::textarea(id: 'reason', name: 'reason', label: 'Alasan:', required: true, class: 'h-18', maxlength: 100, color: 'red') ?>
         <!-- opsional misal idnya mau disatuin ama form -->
         <input type="text" name="id" x-bind:value="cancelPeminjamanId" class="hidden" />
         <div class="flex gap-4 w-full ">

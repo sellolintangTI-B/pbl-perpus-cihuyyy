@@ -3,6 +3,20 @@
 use App\Components\Badge;
 use App\Components\Button;
 use App\Components\Icon\Icon;
+
+$statusColor = [
+    "created" => "primary",
+    "checked_in" => "secondary",
+    "cancelled" => "red",
+    "finished" => "tertiary"
+];
+
+$statusLabel = [
+    "created" => "berlangsung",
+    "checked_in" => "berlangsung",
+    "cancelled" => "dibatalkan",
+    "finished" => "selesai"
+];
 ?>
 
 <div class="bg-white rounded-xl shadow-md p-4">
@@ -12,7 +26,7 @@ use App\Components\Icon\Icon;
             <h3 class="text-base font-bold text-primary mb-1">Kode Booking: <?= $booking['code'] ?></h3>
         </div>
         <?php
-        Badge::badge(label: $booking['status'], active: false, color: $booking['status'] == 'finished' ? 'secondary' : 'red');
+        Badge::badge(label: $statusLabel[$booking['status']], active: false, color: $statusColor[$booking['status']]);
         ?>
     </div>
 
@@ -35,7 +49,14 @@ use App\Components\Icon\Icon;
     </div>
 
     <!-- Action Button -->
-    <?php
-    Button::anchorGradient(label: "See Details", link: $booking['url'], class: 'rounded-full!')
-    ?>
+    <div class="flex w-full justify-end">
+        <div class="flex gap-2">
+            <?php
+            if ($booking['status'] == 'finished') {
+                Button::buttonGradient(label: "Beri Feedback",  alpineClick: $booking['alpineClick'], class: 'rounded-full! w-fit! text-sm! py-2! px-4!');
+            }
+            Button::anchorGradient(label: "See Details", link: $booking['url'], class: 'rounded-full! w-fit! text-sm! py-2! px-4!');
+            ?>
+        </div>
+    </div>
 </div>

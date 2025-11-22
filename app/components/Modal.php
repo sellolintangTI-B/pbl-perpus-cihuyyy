@@ -79,7 +79,6 @@ class Modal
                     if ($customContent == null || is_null($customContent)):
                     ?>
                         <div class="flex gap-4 items-center justify-center h-10">
-
                             <form
 
                                 <?php if ($alpineId || $alpineId != ''): ?>

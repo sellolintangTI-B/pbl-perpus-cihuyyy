@@ -138,10 +138,18 @@ class BookingController extends Controller
             $bookingParticipants = BookingParticipant::getParticipantsByBookingId($id);
             $feedback = Feedback::getByBookingIdAndUserId($id, $authUser->user['id']);
 
+            if ($booking->status == 'cancelled') {
+                $detailCancel = BookingLog::getCancelDetailByBookingId($id);
+            }
+            if ($booking->status == 'finished') {
+                $detailFinished = BookingLog::getFinishedDetailByBookingId($id);
+            }
             $data  = [
                 "booking" => $booking,
                 "participants" => $bookingParticipants,
-                "feeback" => $feedback
+                "feeback" => $feedback,
+                'detailCancel' => $detailCancel[0] ?? null,
+                'detailFinished' => $detailFinished ?? null,
             ];
 
             $this->view('user/booking/detail', $data, layoutType: $this::$layoutType['civitas']);
@@ -221,7 +229,7 @@ class BookingController extends Controller
         }
         return $code;
     }
-    
+
     public function send_feedback($id)
     {
         try {
@@ -235,19 +243,17 @@ class BookingController extends Controller
 
             $validator = new Validator($data);
             $validator->field('feedback', ['required']);
-            if($validator->error()) throw new CustomException($validator->getErrors());
+            if ($validator->error()) throw new CustomException($validator->getErrors());
 
             $feedback = Feedback::create($data);
-            if($feedback) {
+            if ($feedback) {
                 ResponseHandler::setResponse('Terima kasih sudah memberikan feedback anda');
                 header('location:' . URL . '/user/booking/index');
             } else {
                 ResponseHandler::setResponse('Gagal memberikan feedback');
                 header('location:' . URL . '/user/booking/index');
             }
-
-
-        }catch(CustomException $e) {
+        } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), 'error');
             header('location:');
         }

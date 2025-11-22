@@ -15,13 +15,13 @@ use App\Components\icon\Icon;
                 </h1>
                 <form class="w-full grid grid-cols-1 gap-4" action="<?= URL ?>/auth/login/signin" method="post" enctype="multipart/form-data">
                     <?php
-                    FormInput::input(id: 'username', name: 'username', type: 'text', label: 'username', required: true, value: $_COOKIE['remember_username'] ?? "" , placeholder: "Masukkan email atau NIM/NIP anda");
+                    FormInput::input(id: 'username', name: 'username', type: 'text', label: 'username', required: true, value: $_COOKIE['remember_username'] ?? "", placeholder: "Masukkan email atau NIM/NIP anda");
                     FormInput::input(id: 'password', name: 'password', type: 'password', label: 'password', required: true, placeholder: "Masukkan password anda");
                     ?>
                     <!-- CAPTCHA Section -->
                     <div class="w-full">
-                        <label class="block text-primary mb-2 font-poppins">
-                            Kode Verifikasi
+                        <label class="block text-primary mb-2 font-poppins font-medium">
+                            Kode verifikasi
                         </label>
                         <div class="flex gap-3 items-center mb-2">
                             <img id="captcha-image"
@@ -67,14 +67,14 @@ use App\Components\icon\Icon;
                     <div class="w-3/4 h-px bg-secondary-40 rounded-full mx-auto">
 
                     </div>
-                    <div class="flex flex-col gap-2 items-center justify-center text-sm text-primary">
+                    <!-- <div class="flex flex-col gap-2 items-center justify-center text-sm text-primary">
                         <a class="w-12 h-12 flex items-center justify-center shadow-md bg-white text-primary text-xl cursor-pointer rounded-full" href='<?= URL ?>/guest'>
                             <?php Icon::person(); ?>
                         </a>
                         <p>
                             Guest mode
                         </p>
-                    </div>
+                    </div> -->
                 </form>
             </div>
         </div>

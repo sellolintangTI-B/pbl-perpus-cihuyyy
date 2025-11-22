@@ -10,7 +10,7 @@ $classColor = match ($color) {
 ?>
 
 <div class="<?= $classGlobal ?> flex flex-col gap-1 font-poppins focus-within:text-secondary">
-    <label for="<?= $id ?? ($name ?? '') ?>" class="<?= empty($label) ? 'hidden' : 'block font-normal text-black/80' ?>">
+    <label for="<?= $id ?? ($name ?? '') ?>" class="<?= empty($label) ? 'hidden' : 'block font-medium  text-primary mb-2' ?>">
         <?= $label ?? '' ?>
     </label>
     <div class="relative w-full h-full">

@@ -2,7 +2,7 @@
 
 use App\Components\Icon\Icon;
 ?>
-<div class="bg-baseColor font-poppins w-full">
+<div class=" font-poppins w-full">
     <div class="max-w-5xl mx-auto flex flex-col gap-4 pb-8">
         <h1 class="text-2xl text-black/80 font-semibold">
             Panduan
