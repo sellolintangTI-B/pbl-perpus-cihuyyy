@@ -21,7 +21,7 @@ class LoginController extends Controller
             if ($auth->user['role'] === 'Admin') {
                 header('location:' . URL . '/admin/dashboard/index');
             } elseif ($auth->user['role'] === 'Mahasiswa' || $auth->user['role'] === 'Dosen') {
-                header('location:' . URL . '/user/user/index');
+                header('location:' . URL . '/user/room/index');
             }
         }
     }

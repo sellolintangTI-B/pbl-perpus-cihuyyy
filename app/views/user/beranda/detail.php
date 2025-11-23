@@ -7,7 +7,6 @@ use App\Utils\Authentication;
 use App\Components\Button;
 
 $authUser = new Authentication;
-var_dump($data['date']);
 
 if (isset($_SESSION['old_input'])) {
     $oldData = $_SESSION['old_input'];
@@ -139,7 +138,7 @@ if (isset($_SESSION['old_input'])) {
                         <p class="text-sm text-black/80">Ruangan ini memerlukan persetujuan khusus dari pihak administrasi.
                     </div>
                 <?php else: ?>
-                    <form method=" POST" action="<?= URL ?>/user/booking/store/<?= $data['detail']->id ?>" @submit="prepareData" enctype="multipart/form-data" class="space-y-4 w-full">
+                    <form method="POST" action="<?= URL ?>/user/booking/store/<?= $data['detail']->id ?>" @submit="prepareData" enctype="multipart/form-data" class="space-y-4 w-full">
                         <!-- tanggal -->
                         <div>
                             <label class="block text-sm font-medium text-primary mb-2">Kapan</label>
@@ -212,11 +211,6 @@ if (isset($_SESSION['old_input'])) {
                             <?php //FormInput::fileInput(id: "surat", name: "file_surat", placeholder: "Surat Izin Peminjaman", accept: 'image/*', required: true)
                             ?>
                         </div> -->
-
-
-
-
-
                         <!-- Tombol submit -->
                         <button type="submit"
                             class="w-full bg-linear-to-r from-primary to-secondary text-white py-3 rounded-xl font-medium text-sm hover:shadow-lg transition-all duration-300">
