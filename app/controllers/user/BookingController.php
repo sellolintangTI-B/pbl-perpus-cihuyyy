@@ -93,6 +93,7 @@ class BookingController extends Controller
         }
     }
 
+
     private function validationBookingRules($roomId, $data, $userId)
     {
         try {
@@ -112,23 +113,23 @@ class BookingController extends Controller
             if ($data['datetime']->lt(Carbon::now('Asia/Jakarta'))) throw new CustomException('Tidak bisa booking di kemarin hari');
             if (Carbon::today('Asia/Jakarta')->diffInDays($data['datetime']) >= 7) throw new CustomException('Tidak bisa booking untuk jadwal lebih dari 7 hari per hari ini');
 
-            if($data['datetime']->isToday()) {
+            if ($data['datetime']->isToday()) {
                 $startHour = $data['datetime']->format('H:i:s');
                 $nowHour = Carbon::now('Asia/Jakarta')->format('H:i:s');
-                if($startHour < $nowHour) throw new CustomException('Tidak bisa booking pada jam yang sudah lewat');
+                if ($startHour < $nowHour) throw new CustomException('Tidak bisa booking pada jam yang sudah lewat');
             }
 
             $dayCheck = $scheduleJson[$data['datetime']->dayOfWeek()];
             $isValid = false;
-            foreach($dayCheck as $slot) {
+            foreach ($dayCheck as $slot) {
                 $startSchedule = Carbon::parse($data['datetime'])->setTimeFromTimeString($slot["start"]);
                 $endSchedule = Carbon::parse($data['datetime'])->setTimeFromTimeString($slot["end"]);
-                if($data['datetime']->gte($startSchedule) && $data['end_time']->lte($endSchedule)) {
+                if ($data['datetime']->gte($startSchedule) && $data['end_time']->lte($endSchedule)) {
                     $isValid = true;
                     break;
-                } 
+                }
             }
-            if(!$isValid) throw new CustomException('Tidak bisa booking di waktu yang anda masukan, harap lihat jadwal perpustakaan');
+            if (!$isValid) throw new CustomException('Tidak bisa booking di waktu yang anda masukan, harap lihat jadwal perpustakaan');
 
             if ($data['duration'] < 60) throw new CustomException('Minimal durasi pinjam ruangan 1 jam');
             if ($data['duration'] > 180) throw new CustomException('Maximal durasi pinjam ruangan 3 jam');

@@ -51,6 +51,27 @@ class BookingController extends Controller
             header('location:' . URL . '/admin/booking/index');
         }
     }
+    public function edit($id)
+    {
+        try {
+            $booking = Booking::getById($id);
+            if (!$booking) throw new CustomException('Data tidak ditemukan');
+            $bookingParticipants = BookingParticipant::getParticipantsByBookingId($id);
+            $roomDetail = Room::getById($booking->room_id);
+
+            $data  = [
+                "booking" => $booking,
+                "participants" => $bookingParticipants,
+                'roomList' => [],
+                'roomDetail' => $roomDetail
+            ];
+            $data['roomList'] = Room::get();
+            $this->view('admin/booking/edit', $data, layoutType: $this::$layoutType['admin']);
+        } catch (CustomException $e) {
+            ResponseHandler::setResponse($e->getErrorMessages());
+            header('location:' . URL . '/admin/booking/index');
+        }
+    }
 
     public function create()
     {
@@ -179,6 +200,9 @@ class BookingController extends Controller
             ];
         }
     }
+
+
+
     public function search_user($identifier)
     {
         try {
