@@ -5,7 +5,6 @@ DROP TABLE IF EXISTS booking_logs;
 DROP TABLE IF EXISTS bookings;
 DROP TABLE IF EXISTS suspensions;
 DROP TABLE IF EXISTS users;
-SET TIMEZONE = 'Asia/Jakarta';
 CREATE TABLE IF NOT EXISTS users  (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     id_number VARCHAR(50) UNIQUE NOT NULL,
@@ -24,5 +23,5 @@ CREATE TABLE IF NOT EXISTS users  (
     profile_picture_url VARCHAR(255),
     activation_proof_url VARCHAR(255),
     is_active BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMPTZ DEFAULT NOW() 
+    created_at TIMESTAMP DEFAULT (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Jakarta')
 );

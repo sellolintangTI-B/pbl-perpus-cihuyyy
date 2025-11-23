@@ -11,5 +11,5 @@ CREATE TABLE IF NOT EXISTS booking_logs (
     reason TEXT,
     FOREIGN KEY (booking_id) REFERENCES bookings(id) ON DELETE CASCADE,
     FOREIGN KEY (cancelled_by) REFERENCES users(id),
-    created_at TIMESTAMPTZ DEFAULT NOW() 
+    created_at TIMESTAMP DEFAULT (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Jakarta')
 );

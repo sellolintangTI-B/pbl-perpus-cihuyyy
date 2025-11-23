@@ -81,7 +81,7 @@ class RegisterController extends Controller
 
             $newPath = 'storage/users/' . $_FILES['file_upload']['name'];
             move_uploaded_file($file, dirname(__DIR__) . "/../../public/" . $newPath); 
-            $data['image'] = $newPath;
+            $data['activation_proof_url'] = $newPath;
             $data['password_hash'] = password_hash($data['password_hash'], PASSWORD_BCRYPT);
             $insertData = User::insert($data);
             if($insertData) {
