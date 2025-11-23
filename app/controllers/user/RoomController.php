@@ -26,17 +26,19 @@ class RoomController extends Controller
 
             if (isset($_GET['date'])) {
                 $start = Carbon::parse($_GET['date']);
-                $params['startTime'] = $start;
+                $params['start_time'] = $start->setTimeFromTimeString($_GET['start_time'])->toDateTimeString();
             }
 
-            if (isset($_GET['duration'])) {
-                $duration = Carbon::parse($_GET['duration'])->setDateFrom($start)->toDateTimeString();
-                $params['duration'] = $start->diffInMinutes($duration);
+            if (isset($_GET['end_time'])) {
+                $duration = $start->setTimeFromTimeString($_GET['end_time']);
+                $params['duration'] = Carbon::parse($params['start_time'])->diffInMinutes($duration);
             }
 
             if (isset($_GET['room'])) {
                 $params['room'] = $_GET['room'];
             }
+
+            if(!empty($params)) $params['start_time'] = $params['start_time'];
 
             $data = Room::get($params);
             $this->view('user/beranda/index', $data, layoutType: $this::$layoutType['civitas']);
