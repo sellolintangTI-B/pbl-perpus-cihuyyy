@@ -89,7 +89,7 @@ use Carbon\Carbon;
                                     <?php
                                     foreach ($data['detailFinished'] as $detail): ?>
                                         <?= $detail->status == 'checked_in' ? 'Check In' : ' &bull; Check Out' ?>:
-                                        <?= Carbon::parse($detail->created_at)->translatedFormat(' H:i:A') ?>
+                                        <?= Carbon::parse($detail->created_at)->translatedFormat(' H:i A') ?>
                                     <?php endforeach ?>
                                 </p>
                             </div>

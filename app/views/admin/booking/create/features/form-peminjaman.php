@@ -105,7 +105,7 @@ use App\Components\FormInput;
                             </template>
 
                             <!-- Add Member Input -->
-                            <div class="w-full flex items-center justify-center h-12 gap-2">
+                            <div class="w-full flex items-center justify-center h-12 gap-2 mt-12">
                                 <?php
                                 FormInput::input(
                                     id: 'anggota_input',
