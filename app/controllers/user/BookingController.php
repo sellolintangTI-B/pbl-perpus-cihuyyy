@@ -70,7 +70,6 @@ class BookingController extends Controller
 
             $members = $data['list_anggota'];
             $data['booking_code'] = $this->generateBookingCode();
-            unset($data['list_anggota']);
 
             $booking = Booking::create([
                 'user_id' => $data['user_id'],

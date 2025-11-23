@@ -37,7 +37,7 @@ class RegisterController extends Controller
             $data = [
                 "id_number" => $_POST['id_number'],
                 "email" => $_POST['email'],
-                "password" => $_POST['password'],
+                "password_hash" => $_POST['password'],
                 "first_name" => $_POST['first_name'],
                 "last_name" => $_POST['last_name'],
                 "institution" => "Politeknik Negeri Jakarta",
@@ -52,7 +52,7 @@ class RegisterController extends Controller
             $validator = new Validator($data);
             $validator->field("id_number", ["required"]);
             $validator->field("email", ["required", "email"]);
-            $validator->field("password", ["required"]);
+            $validator->field("password_hash", ["required"]);
             $validator->field("first_name", ["required"]);
             $validator->field("institution", ["required"]);
             $validator->field("study_program", ["required"]);
@@ -64,7 +64,7 @@ class RegisterController extends Controller
             $errors = $validator->error();
             if ($errors) throw new CustomException($validator->getErrors());
             
-            if($_SESSION['captcha'] !== $data['captcha']) throw new CustomException('Captcha tidak valid');
+            // if($_SESSION['captcha'] !== $data['captcha']) throw new CustomException('Captcha tidak valid');
 
             $checkByIdNumber = User::getByIdNumber($data['id_number']);
             $checkByEmail = User::getByEmail($data['email']);
@@ -82,7 +82,7 @@ class RegisterController extends Controller
             $newPath = 'storage/users/' . $_FILES['file_upload']['name'];
             move_uploaded_file($file, dirname(__DIR__) . "/../../public/" . $newPath); 
             $data['image'] = $newPath;
-            $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
+            $data['password_hash'] = password_hash($data['password_hash'], PASSWORD_BCRYPT);
             $insertData = User::insert($data);
             if($insertData) {
                 ResponseHandler::setResponse("Registrasi berhasil, tunggu verifikasi admin");

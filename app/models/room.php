@@ -14,10 +14,10 @@ class Room extends Database
         $conn = parent::getConnection();
         $stmt = " SELECT * FROM rooms WHERE is_deleted = FALSE ";
         if (!empty($params)) {
-            $stmt .= " AND id NOT IN ( SELECT room_id FROM bookings WHERE 
-                start_time < TO_TIMESTAMP(:startTime, 'YYYY-MM-DD HH24:MI:SS') + (:duration || ' minutes')::INTERVAL
-                AND end_time > TO_TIMESTAMP(:startTime, 'YYYY-MM-DD HH24:MI:SS'))";
-            $paramValues['startTime'] = $params['startTime'];
+            $stmt .= " AND id NOT IN (SELECT room_id FROM bookings WHERE 
+                start_time < TO_TIMESTAMP(:start_time, 'YYYY-MM-DD HH24:MI:SS') + (:duration || ' minutes')::INTERVAL
+                AND end_time > TO_TIMESTAMP(:start_time, 'YYYY-MM-DD HH24:MI:SS'))";
+            $paramValues['start_time'] = $params['start_time'];
             $paramValues['duration']  = $params['duration'];
             if (!empty($params['room'])) {
                 $stmt .= " AND name ILIKE :roomName";
@@ -27,8 +27,8 @@ class Room extends Database
 
         $q = $conn->prepare($stmt);
         $q->execute($paramValues);
-
-        return $q->fetchAll(PDO::FETCH_OBJ);
+        $data = $q->fetchAll(PDO::FETCH_OBJ);
+        return $data;
     }
 
     public static function create($data)
