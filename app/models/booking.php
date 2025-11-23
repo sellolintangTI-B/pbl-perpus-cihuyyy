@@ -136,4 +136,24 @@ class Booking extends Database
         $data = $q->fetch(PDO::FETCH_OBJ);
         return $data;
     }
+
+    public static function edit($id, $data)
+    {
+        $values = [];
+        $field = [];
+        $conn = parent::getConnection();
+        $stmt = "UPDATE bookings SET ";
+
+        foreach($data as $key => $value) {
+            $field[] = "$key = :$key";
+            $values[] = $value; 
+        }
+
+        $implodedField = implode(', ', $field);
+        $stmt .= "$implodedField WHERE id = '$id' RETURNING id";
+        $q = $conn->prepare($stmt);
+        $q->execute($values);
+        $id = $q->fetch(PDO::FETCH_OBJ);
+        return $data;
+    }
 }

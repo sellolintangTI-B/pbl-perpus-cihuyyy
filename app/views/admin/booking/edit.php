@@ -41,7 +41,7 @@ use App\Components\Modal;
             <div class="flex items-center justify-center w-full max-w-5xl mx-auto">
                 <form
                     class="w-full max-w-3xl flex flex-col gap-2"
-                    action=""
+                    action="<?= URL ?>/admin/booking/update/<?= $data['booking']->id ?>"
                     id="updateRoomForm"
                     method="post"
                     enctype="multipart/form-data"
@@ -65,7 +65,7 @@ use App\Components\Modal;
                             name: 'room',
                             label: 'Ruangan',
                             placeholder: "Pilih Ruangan",
-                            disabled: true,
+                            disabled: false,
                             required: true,
                             options: $options,
                             value: $data['roomDetail']->id,

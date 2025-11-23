@@ -164,6 +164,51 @@ class BookingController extends Controller
         }
     }
 
+    public function update($id)
+    {
+        try {
+            $data = [
+                'room_id' => $_POST['room'],
+                'datetime' => $_POST['datetime'],
+                'start_time' => $_POST['start_time'],
+                'end_time' => $_POST['end_time'],
+                'list_anggota' => json_decode($_POST['list_anggota'], true)
+            ];
+
+            $validator = new Validator($data);
+            $validator->field('datetime', ['required']);
+            $validator->field('start_time', ['required']);
+            $validator->field('end_time', ['required']);
+            if($validator->error()) throw new CustomException($validator->getErrors());
+
+            $start = Carbon::parse($data['datetime'])->setTimeFromTimeString($data['start_time']);
+            $end = Carbon::parse($data['datetime'])->setTimeFromTimeString($data['end_time']);
+            $data['datetime'] = $start;
+            $data['duration'] = $start->diffInMinutes($end);
+            $data['end_time'] = $end;
+
+            $rules = $this->validationBookingRules($data['room_id'], $data);
+            if (!$rules['status']) throw new CustomException($rules['message']);
+
+            $editedBook = Booking::edit($id ,[
+                'room_id' => $data['room_id'],
+                'start_time' => $data['datetime']->toDateTimeString(),
+                'duration' => $data['duration'],
+                'end_time' => $data['end_time']->toDateTimeString(),
+            ]);
+
+            if($editedBook) {
+                ResponseHandler::setResponse('Berhasil mengubah data');
+                header("location:" . URL . '/admin/booking/index');
+            }
+
+
+        } catch (CustomException $e) {
+            ResponseHandler::setResponse($e->getErrorMessages(), 'error');
+            header('location:' . URL . "/admin/booking/edit/$id");
+        }
+    }
+
     private function validationBookingRules($roomId, $data)
     {
         try {
