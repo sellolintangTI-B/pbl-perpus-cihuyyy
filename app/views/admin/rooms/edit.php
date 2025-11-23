@@ -5,7 +5,7 @@ use App\Components\FormInput;
 use App\Components\Modal;
 use App\Components\Button;
 ?>
-<!-- show modal simpan perubahan -->
+<!-- button action modal simpan perubahan -->
 <?php ob_start() ?>
 <div class="w-full flex gap-4">
     <?= Button::button(

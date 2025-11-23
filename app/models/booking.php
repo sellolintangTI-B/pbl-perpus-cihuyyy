@@ -112,7 +112,7 @@ class Booking extends Database
     public static function getById($id)
     {
         $conn = parent::getConnection();
-        $q = $conn->prepare("SELECT DISTINCT ON (b.id) b.id,b.booking_code, bl.status, u.first_name || ' ' || u.last_name AS pic,r.room_img_url, r.name, r.floor, r.requires_special_approval, b.start_time, b.end_time, b.user_id AS pic_id, bl.created_at
+        $q = $conn->prepare("SELECT DISTINCT ON (b.id) b.id,b.booking_code, bl.status, u.first_name || ' ' || u.last_name AS pic,r.room_img_url, r.name, r.floor, r.requires_special_approval, b.start_time, b.end_time, b.user_id AS pic_id, bl.created_at, r.id as room_id
         FROM bookings AS b JOIN booking_logs AS bl ON b.id = bl.booking_id
         JOIN users AS u ON b.user_id = u.id
         JOIN booking_participants AS bp ON b.id = bp.booking_id 
@@ -134,6 +134,26 @@ class Booking extends Database
         $q->bindValue(":bookingCode", $bookingCode);
         $q->execute();
         $data = $q->fetch(PDO::FETCH_OBJ);
+        return $data;
+    }
+
+    public static function edit($id, $data)
+    {
+        $values = [];
+        $field = [];
+        $conn = parent::getConnection();
+        $stmt = "UPDATE bookings SET ";
+
+        foreach($data as $key => $value) {
+            $field[] = "$key = :$key";
+            $values[] = $value; 
+        }
+
+        $implodedField = implode(', ', $field);
+        $stmt .= "$implodedField WHERE id = '$id' RETURNING id";
+        $q = $conn->prepare($stmt);
+        $q->execute($values);
+        $id = $q->fetch(PDO::FETCH_OBJ);
         return $data;
     }
 }

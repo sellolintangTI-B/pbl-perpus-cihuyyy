@@ -8,5 +8,5 @@ CREATE TABLE feedbacks(
     feedback TEXT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (booking_id) REFERENCES bookings(id),
-    created_at TIMESTAMPTZ DEFAULT NOW() 
+    created_at TIMESTAMP DEFAULT (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Jakarta')
 );

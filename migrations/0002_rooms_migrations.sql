@@ -12,5 +12,5 @@ CREATE TABLE rooms (
     is_operational BOOLEAN DEFAULT TRUE,
     requires_special_approval BOOLEAN DEFAULT FALSE,
     room_img_url VARCHAR(255),
-    created_at TIMESTAMPTZ DEFAULT NOW() 
+    created_at TIMESTAMP DEFAULT (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Jakarta')
 );

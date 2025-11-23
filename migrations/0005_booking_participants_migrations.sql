@@ -7,5 +7,5 @@ CREATE TABLE booking_participants(
     user_id UUID NOT NULL,
     FOREIGN KEY (booking_id) REFERENCES bookings(id),
     FOREIGN KEY (user_id) REFERENCES users(id),
-    created_at TIMESTAMPTZ DEFAULT NOW() 
+    created_at TIMESTAMP DEFAULT (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Jakarta')
 );

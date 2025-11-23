@@ -117,10 +117,7 @@
                                                 class="flex items-center gap-2 px-3 py-2 text-xs text-secondary hover:bg-secondary/5 transition">
                                                 <?= Icon::calendar_pencil('w-4 h-4') ?> Check In
                                             </a>
-                                            <a href=""
-                                                class="flex items-center gap-2 px-3 py-2 text-xs text-primary hover:bg-primary/5 transition">
-                                                <?= Icon::pencil('w-4 h-4') ?> Edit
-                                            </a>
+
                                         <?php elseif ($value->status == 'checked_in'): ?>
                                             <a href="<?= URL . '/admin/booking/check_out/' . $value->id ?>"
                                                 class="flex items-center gap-2 px-3 py-2 text-xs text-tertiary hover:bg-tertiary/5 transition">
@@ -130,6 +127,10 @@
                                         <a href="<?= URL . '/admin/booking/details/' . $value->id ?>"
                                             class="flex items-center gap-2 px-3 py-2 text-xs text-gray-700 hover:bg-gray-50 transition">
                                             <?= Icon::eye('w-4 h-4') ?> Detail
+                                        </a>
+                                        <a href="<?= URL . '/admin/booking/edit/' . $value->id ?>"
+                                            class="flex items-center gap-2 px-3 py-2 text-xs text-primary hover:bg-primary/5 transition">
+                                            <?= Icon::pencil('w-4 h-4') ?> Edit
                                         </a>
                                         <?php
 

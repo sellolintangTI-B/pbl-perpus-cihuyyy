@@ -98,7 +98,6 @@ class UserController extends Controller
             $validator->field('email', ['required']);
             $validator->field('password_hash', ['required']);
             $validator->field('first_name', ['required']);
-            $validator->field('last_name', ['required']);
             $validator->field('study_program', ['required']);
             $validator->field('phone_number', ['required']);
             $validator->field('major', ['required']);
@@ -154,7 +153,6 @@ class UserController extends Controller
 
             $validator = new Validator($data);
             $validator->field("first_name", ['required']);
-            $validator->field("last_name", ['required']);
             $validator->field("email", ['required']);
             $validator->field("phone_number", ['required']);
             $validator->field("institution", ['required']);
