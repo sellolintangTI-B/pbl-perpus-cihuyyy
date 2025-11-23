@@ -92,18 +92,17 @@ class BookingController extends Controller
         }
     }
 
-    public function store()
+    public function store($id)
     {
         try {
             $data = [
-                "user_id" => "",
+                "user_id" => $id,
                 'room_id' => $_POST['room'],
                 "datetime" => $_POST['datetime'],
                 "duration" => $_POST['duration'],
                 "end_time" => "",
                 "list_anggota" => json_decode($_POST['list_anggota'], true)
             ];
-            $data['user_id'] = $data['list_anggota'][0]['id'];
 
             $validator = new Validator($data);
             $validator->field('datetime', ['required']);

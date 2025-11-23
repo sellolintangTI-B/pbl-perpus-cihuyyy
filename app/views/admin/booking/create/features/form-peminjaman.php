@@ -9,7 +9,7 @@ use App\Components\FormInput;
     <div class="flex items-center justify-center w-full max-w-5xl mx-auto">
         <form
             class="w-full max-w-3xl flex flex-col gap-2"
-            action=""
+            action="<?= URL ?>/admin/booking/store/<?= $data['data']->id ?>"
             method="post"
             enctype="multipart/form-data"
             x-data="formAnggota()"
