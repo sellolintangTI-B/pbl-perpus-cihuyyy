@@ -86,17 +86,19 @@ class BookingController extends Controller
 
             if (isset($_GET['date'])) {
                 $start = Carbon::parse($_GET['date']);
-                $params['startTime'] = $start;
+                $params['start_time'] = $start->setTimeFromTimeString($_GET['start_time'])->toDateTimeString();
             }
 
-            if (isset($_GET['duration'])) {
-                $duration = Carbon::parse($_GET['duration'])->setDateFrom($start)->toDateTimeString();
-                $params['duration'] = $start->diffInMinutes($duration);
+            if (isset($_GET['end_time'])) {
+                $duration = $start->setTimeFromTimeString($_GET['end_time']);
+                $params['duration'] = Carbon::parse($params['start_time'])->diffInMinutes($duration);
             }
 
             if (isset($_GET['room'])) {
                 $params['room'] = $_GET['room'];
             }
+
+            if (!empty($params)) $params['start_time'] = $params['start_time'];
 
             if (isset($_GET['state']) && $_GET['state'] == 'detail' && isset($_GET['id'])) {
                 $data['data'] = Room::getById($_GET['id']);
@@ -117,33 +119,39 @@ class BookingController extends Controller
     {
         try {
             $data = [
-                "user_id" => $id,
-                'room_id' => $_POST['room'],
-                "datetime" => $_POST['datetime'],
-                "duration" => $_POST['duration'],
-                "end_time" => "",
+                'room_id' => $id,
+                "start_time" => $_POST['start_time'],
+                'datetime' => $_POST['datetime'],
+                "end_time" => $_POST['end_time'],
                 "list_anggota" => json_decode($_POST['list_anggota'], true)
             ];
 
             $validator = new Validator($data);
+            $validator->field('start_time', ['required']);
             $validator->field('datetime', ['required']);
-            $validator->field('duration', ['required']);
+            $validator->field('end_time', ['required']);
             if ($validator->error()) throw new CustomException($validator->getErrors());
 
-            $start = Carbon::parse($data['datetime']);
-            $end = Carbon::parse($data['duration'])->setDateFrom($start);
-            $data['datetime'] = $start->toDateTimeString();
+            $start = Carbon::parse($data['datetime'])->setTimeFromTimeString($data['start_time']);
+            $end = Carbon::parse($data['datetime'])->setTimeFromTimeString($data['end_time']);
+            $data['datetime'] = $start;
             $data['duration'] = $start->diffInMinutes($end);
-            $data['end_time'] = $start->copy()->addMinutes($start->diffInMinutes($end))->toDateTimeString();
+            $data['end_time'] = $end;
 
             $rules = $this->validationBookingRules($data['room_id'], $data);
             if (!$rules['status']) throw new CustomException($rules['message']);
 
             $members = $data['list_anggota'];
             $data['booking_code'] = $this->generateBookingCode();
-            unset($data['list_anggota']);
 
-            $booking = Booking::create($data);
+            $booking = Booking::create([
+                'user_id' => $data['list_anggota'][0]['id'],
+                'room_id' => $data['room_id'],
+                'start_time' => $data['datetime'],
+                'duration' => $data['duration'],
+                'end_time' => $data['end_time'],
+                'booking_code' => $data['booking_code']
+            ]);
             $members = $this->addBookingIdToMembersData($members, $booking->id);
             $bookingLog = BookingLog::create($booking->id);
             $bookingParticipants = BookingParticipant::bulkInsert($members);
@@ -152,7 +160,56 @@ class BookingController extends Controller
             header("location:" . URL . '/admin/booking/index');
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), 'error');
-            header('location:' . URL . '/admin/booking/create');
+            header('location:' . URL . "/admin/booking/create?state=detail&id=$id");
+        }
+    }
+
+    private function validationBookingRules($roomId, $data)
+    {
+        try {
+            $readSchedule = file_get_contents(dirname(__DIR__) . '/../../schedule.json');
+            $scheduleJson = json_decode($readSchedule, true);
+
+            if ($data['datetime']->isWeekend()) throw new CustomException('Tidak bisa booking di weekend');
+            if ($data['datetime']->lt(Carbon::now('Asia/Jakarta')->toDateString())) throw new CustomException('Tidak bisa booking di kemarin hari');
+            if (Carbon::today('Asia/Jakarta')->diffInDays($data['datetime']) >= 7) throw new CustomException('Tidak bisa booking untuk jadwal lebih dari 7 hari per hari ini');
+
+            if ($data['datetime']->isToday()) {
+                $startHour = $data['datetime']->format('H:i:s');
+                $nowHour = Carbon::now('Asia/Jakarta')->format('H:i:s');
+                if ($startHour < $nowHour) throw new CustomException('Tidak bisa booking pada jam yang sudah lewat');
+            }
+
+            $dayCheck = $scheduleJson[$data['datetime']->dayOfWeek()];
+            $isValid = false;
+            foreach ($dayCheck as $slot) {
+                $startSchedule = Carbon::parse($data['datetime'])->setTimeFromTimeString($slot["start"]);
+                $endSchedule = Carbon::parse($data['datetime'])->setTimeFromTimeString($slot["end"]);
+                if ($data['datetime']->gte($startSchedule) && $data['end_time']->lte($endSchedule)) {
+                    $isValid = true;
+                    break;
+                }
+            }
+            if (!$isValid) throw new CustomException('Tidak bisa booking di waktu yang anda masukan, harap lihat jadwal perpustakaan');
+
+            if ($data['duration'] < 60) throw new CustomException('Minimal durasi pinjam ruangan 1 jam');
+            if ($data['duration'] > 180) throw new CustomException('Maximal durasi pinjam ruangan 3 jam');
+
+            $checkIfScheduleExists = Booking::checkSchedule($data['datetime'], $data['duration'], $roomId);
+            if ($checkIfScheduleExists) throw new CustomException('Jadwal sudah dibooking');
+
+            $roomDetail = Room::getById($roomId);
+            if (count($data['list_anggota']) < $roomDetail->min_capacity) throw new CustomException("Minimal kapasitas adalah $roomDetail->min_capacity orang");
+            if (count($data['list_anggota']) > $roomDetail->max_capacity) throw new CustomException("Maximal kapasitas adalah $roomDetail->max_capacity orang");
+
+            return [
+                'status' => true
+            ];
+        } catch (CustomException $e) {
+            return [
+                "status" => false,
+                "message" => $e->getErrorMessages()
+            ];
         }
     }
 
@@ -175,33 +232,6 @@ class BookingController extends Controller
         }, $members);
         return $members;
     }
-
-    private function validationBookingRules($roomId, $data)
-    {
-        try {
-            $roomDetail = Room::getById($roomId);
-            if (Carbon::parse($data['datetime'])->lt(Carbon::now('Asia/Jakarta')->toDateString())) throw new CustomException('Tidak bisa booking di kemarin hari');
-            if ($data['duration'] < 60) throw new CustomException('Minimal durasi pinjam ruangan 1 jam');
-            if ($data['duration'] > 180) throw new CustomException('Maximal durasi pinjam ruangan 3 jam');
-
-            $checkIfScheduleExists = Booking::checkSchedule($data['datetime'], $data['duration'], $roomId);
-            if ($checkIfScheduleExists) throw new CustomException('Jadwal sudah dibooking');
-
-            if (count($data['list_anggota']) < $roomDetail->min_capacity) throw new CustomException("Minimal kapasitas adalah $roomDetail->min_capacity orang");
-            if (count($data['list_anggota']) > $roomDetail->max_capacity) throw new CustomException("Maximal kapasitas adalah $roomDetail->max_capacity orang");
-
-            return [
-                'status' => true
-            ];
-        } catch (CustomException $e) {
-            return [
-                "status" => false,
-                "message" => $e->getErrorMessages()
-            ];
-        }
-    }
-
-
 
     public function search_user($identifier)
     {
