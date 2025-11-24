@@ -63,7 +63,7 @@ class RoomController extends Controller {
             }
 
             $newPath = "storage/rooms/" . $data['image']['name'];
-            move_uploaded_file($data['image']['tmp_name'], dirname(__DIR__) . '/../public/' . $newPath);
+            move_uploaded_file($data['image']['tmp_name'], dirname(__DIR__) . '/../../public/' . $newPath);
             $data['image'] = $newPath;
             
             $insert = Room::create($data);
