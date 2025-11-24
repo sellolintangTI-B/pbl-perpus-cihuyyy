@@ -19,7 +19,7 @@ class FeedbackController extends Controller
             }
 
             if(isset($_GET['date'])) {
-                $params['date'] = $_GET['date'];
+                $params['date'] = Carbon::parse($_GET['date'])->format('Y-m-d');
             }
 
             $feedback = Feedback::get($params);
