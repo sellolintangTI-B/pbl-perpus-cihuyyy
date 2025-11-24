@@ -31,11 +31,32 @@ class Feedback extends Database
         return $data;
     }
 
-    public static function get()
+    public static function get($params = [])
     {
+        $where = [];
+        $values = [];
         $conn = parent::getConnection();
-        $q = $conn->prepare("SELECT * FROM feedbacks");
-        $q->execute();
+        $stmt = "SELECT u.first_name || ' ' || u.last_name AS name, r.name AS room_name, r.floor,
+        b.start_time, f.feedback, f.rating
+        FROM feedbacks AS f JOIN bookings AS b ON f.booking_id = b.id
+        JOIN rooms AS r ON b.room_id = r.id
+        JOIN users AS u ON f.user_id = u.id";
+
+        if(!empty($params)) {
+            foreach($params as $key => $value) {
+                if($key === 'room') $where[] = "r.id = :roomId";
+                if($key === 'date') $where[] = "TO_CHAR(b.start_time, 'YYYY-MM-DD') = :date";
+                $values[] = $value;
+            }
+        }
+
+        if(!empty($where)) {
+            $whereClauses = implode(' AND ', $where);
+            $stmt .= " WHERE $whereClauses ";
+        }
+
+        $q = $conn->prepare($stmt);
+        $q->execute($values);
         $data = $q->fetchAll(PDO::FETCH_OBJ);
         return $data;
     }
