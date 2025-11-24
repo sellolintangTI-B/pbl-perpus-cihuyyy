@@ -1,10 +1,12 @@
 <?php
 
 namespace App\Models;
+
 use App\Core\Database;
 use PDO;
 
-class Feedback extends Database {
+class Feedback extends Database
+{
     public static function create($data)
     {
         $conn = parent::getConnection();
@@ -14,7 +16,7 @@ class Feedback extends Database {
         $q->bindValue(':rating', $data['rating']);
         $q->bindValue(':feedback', $data['feedback']);
         $q->execute();
-        if($q) return true;
+        if ($q) return true;
         return false;
     }
 

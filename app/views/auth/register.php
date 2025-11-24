@@ -3,63 +3,9 @@
 use App\Components\FormInput;
 use Carbon\Traits\Options;
 
-$prodiPnj = [
-    [
-        "jurusan" => "Akuntansi",
-        "prodi" => [
-            "Keuangan dan Perbankan Syariah",
-            "Akuntansi Keuangan",
-            "Keuangan dan Perbankan",
-            "Manajemen Keuangan"
-        ]
-    ],
-    [
-        "jurusan" => "Administrasi Niaga",
-        "prodi" => [
-            "Usaha Jasa Konvensi, Perjalanan Insentif dan Pameran / MICE",
-            "Administrasi Bisnis Terapan",
-        ]
-    ],
-    [
-        "jurusan" => "Teknik Grafika & Penerbitan",
-        "prodi" => [
-            "Teknologi Industri Cetak dan Kemasan",
-            "Desain Grafis"
-        ]
-    ],
-    [
-        "jurusan" => "Teknik Sipil",
-        "prodi" => [
-            "Teknik Perancangan Jalan dan Jembatan",
-            "Teknik Perancangan Jalan dan Jembatan - Konsentrasi Jalan Tol",
-            "Teknik Konstruksi Gedung"
-        ]
-    ],
-    [
-        "jurusan" => "Teknik Mesin",
-        "prodi" => [
-            "Manufaktur",
-            "Pembangkit Tenaga Listrik",
-            "Manufaktur - PSDKU Pekalongan"
-        ]
-    ],
-    [
-        "jurusan" => "Teknik Elektro",
-        "prodi" => [
-            "Instrumentasi dan Kontrol Industri",
-            "Broadband Multimedia",
-            "Teknik Otomasi Listrik Industri"
-        ]
-    ],
-    [
-        "jurusan" => "Teknik Informatika dan Komputer",
-        "prodi" => [
-            "Teknik Informatika",
-            "Teknik Multimedia dan Jaringan",
-            "Teknik Multimedia Digital"
-        ]
-    ]
-];
+if (isset($_SESSION['old'])) {
+    $old_data = $_SESSION['old'];
+}
 
 ?>
 <div class="h-screen w-full  flex justify-center items-center p-4">
@@ -74,41 +20,31 @@ $prodiPnj = [
                 </h1>
                 <form class="w-full grid grid-cols-1 sm:grid-cols-2 gap-4" action="<?= URL ?>/auth/register/signup" method="post" enctype="multipart/form-data">
                     <?php
-                    FormInput::input(id: 'id_number', name: 'id_number', label: 'NIM/NIP', required: true);
-                    FormInput::input(id: 'email', name: 'email', type: 'email', label: 'Email', required: true);
-                    FormInput::input(id: 'first_name', name: 'first_name', label: 'Nama Depan', required: true);
-                    FormInput::input(id: 'last_name', name: 'last_name', label: 'Nama Belakang');
-                    $options = [];
-                    foreach ($prodiPnj as $prod) {
-                        $options[] = [
-                            'display' => $prod['jurusan'],
-                            'value' => $prod['jurusan'],
-                        ];
-                    }
+                    FormInput::input(id: 'id_number', name: 'id_number', label: 'NIM/NIP', required: true, value: $old_data['id_number'] ?? '');
+                    FormInput::input(id: 'email', name: 'email', type: 'email', label: 'Email', required: true, value: $old_data['email'] ?? '');
+                    FormInput::input(id: 'first_name', name: 'first_name', label: 'Nama Depan', required: true, value: $old_data['first_name'] ?? '');
+                    FormInput::input(id: 'last_name', name: 'last_name', label: 'Nama Belakang', value: $old_data['last_name'] ?? '');
                     FormInput::select(
                         id: 'jurusan',
                         name: 'jurusan',
                         label: 'Jurusan',
-                        placeholder: 'Jurusan',
                         required: true,
-                        options: $options
                     );
 
                     FormInput::select(
                         id: 'prodi',
                         name: 'prodi',
                         label: 'Program Studi',
-                        placeholder: 'Pilih Jurusan terlebih dahulu',
                         required: true,
-                        options: []
                     );
-                    FormInput::input(id: 'phone_number', name: 'phone_number', type: 'tel', label: 'Nomor Whatsapp', required: true);
+                    FormInput::input(id: 'phone_number', name: 'phone_number', type: 'tel', label: 'Nomor Whatsapp', required: true, value: $old_data['phone_number'] ?? '');
                     FormInput::select(
                         id: 'role',
                         name: 'role',
                         label: 'Jenis Civitas',
                         required: true,
                         placeholder: "Role",
+                        value: $old_data['role'] ?? '',
                         options: [
                             [
                                 "display" => "Mahasiswa",
@@ -129,7 +65,8 @@ $prodiPnj = [
                         label: 'Upload bukti download \'Kubaca PNJ\'',
                         required: true,
                         classGlobal: 'sm:col-span-2',
-                        accept: 'image/*'
+                        accept: 'image/*',
+                        value: $old_data['image'] ?? ''
                     );
                     ?>
                     <!-- CAPTCHA Section -->
@@ -177,33 +114,4 @@ $prodiPnj = [
         </div>
     </div>
 </div>
-<script>
-    const prodiData = <?= json_encode($prodiPnj) ?>;
-
-    const jurusanSelect = document.getElementById('jurusan');
-    const prodiSelect = document.getElementById('prodi');
-
-    prodiSelect.disabled = true;
-
-    jurusanSelect.addEventListener('change', function() {
-        const selectedJurusan = this.value;
-
-        prodiSelect.innerHTML = '<option value="">Pilih Program Studi</option>';
-
-        if (selectedJurusan) {
-            const jurusanData = prodiData.find(item => item.jurusan === selectedJurusan);
-
-            if (jurusanData && jurusanData.prodi) {
-                prodiSelect.disabled = false;
-                jurusanData.prodi.forEach(prodi => {
-                    const option = document.createElement('option');
-                    option.value = prodi;
-                    option.textContent = prodi;
-                    prodiSelect.appendChild(option);
-                });
-            }
-        } else {
-            prodiSelect.disabled = true;
-        }
-    });
-</script>
+<script src="<?= URL ?>/public/js/select-jurusan.js"></script>

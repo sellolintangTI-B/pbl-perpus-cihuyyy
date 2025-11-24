@@ -47,6 +47,8 @@ $activeItem = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 <style>
     .bg-image {
         background: url('<?= URL ?>/public/storage/bg-pattern/pattern.webp');
+        background-size: cover;
+        background-repeat: no-repeat;
     }
 </style>
 

@@ -63,14 +63,14 @@ class RegisterController extends Controller
 
             $errors = $validator->error();
             if ($errors) throw new CustomException($validator->getErrors());
-            
+
             // if($_SESSION['captcha'] !== $data['captcha']) throw new CustomException('Captcha tidak valid');
 
             $checkByIdNumber = User::getByIdNumber($data['id_number']);
             $checkByEmail = User::getByEmail($data['email']);
 
-            if($checkByIdNumber) throw new CustomException('NIM / NIP sudah terdaftar');
-            if($checkByEmail) throw new CustomException('Email sudah terdaftar');
+            if ($checkByIdNumber) throw new CustomException('NIM / NIP sudah terdaftar');
+            if ($checkByEmail) throw new CustomException('Email sudah terdaftar');
 
             $file = $_FILES['file_upload']['tmp_name'];
             $allowedMimes = ["image/jpeg", "image/png", "image/jpg"];
@@ -80,18 +80,17 @@ class RegisterController extends Controller
             }
 
             $newPath = 'storage/users/' . $_FILES['file_upload']['name'];
-            move_uploaded_file($file, dirname(__DIR__) . "/../../public/" . $newPath); 
+            move_uploaded_file($file, dirname(__DIR__) . "/../../public/" . $newPath);
             $data['activation_proof_url'] = $newPath;
             $data['password_hash'] = password_hash($data['password_hash'], PASSWORD_BCRYPT);
             $insertData = User::insert($data);
-            if($insertData) {
+            if ($insertData) {
                 ResponseHandler::setResponse("Registrasi berhasil, tunggu verifikasi admin");
-                header('location:'. URL . '/auth/login/index');
+                header('location:' . URL . '/auth/login/index');
             }
-
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), "error");
-            header('location:' . URL . '/auth/register/index');
+            $this->redirectWithOldInput('/auth/register/index', $data, 'register_old');
         }
     }
 }

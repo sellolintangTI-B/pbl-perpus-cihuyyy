@@ -11,7 +11,8 @@
             <?= isset($required) && $required ? 'required' : '' ?>
             <?= isset($disabled) && $disabled ? 'disabled' : '' ?>
             <?= isset($accept) && $accept ? 'accept="' . $accept . '"' : '' ?>
-            onchange="updateFileLabel(this)" />
+            onchange="updateFileLabel(this)"
+            x-bind:disabled="<?= $alpine_disabled ?>" />
         <label
             for="<?= $id ?? ($name ?? '') ?>"
             id="drop-area-<?= $id ?? ($name ?? '') ?>"
