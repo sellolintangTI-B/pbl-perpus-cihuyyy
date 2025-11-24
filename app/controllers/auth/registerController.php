@@ -39,7 +39,7 @@ class RegisterController extends Controller
                 "email" => $_POST['email'],
                 "password_hash" => $_POST['password'],
                 "first_name" => $_POST['first_name'],
-                "last_name" => $_POST['last_name'],
+                "last_name" => $_POST['last_name'] ?? "",
                 "institution" => "Politeknik Negeri Jakarta",
                 "study_program" => $_POST['prodi'],
                 "phone_number" => $_POST['phone_number'],
@@ -83,7 +83,21 @@ class RegisterController extends Controller
             move_uploaded_file($file, dirname(__DIR__) . "/../../public/" . $newPath); 
             $data['activation_proof_url'] = $newPath;
             $data['password_hash'] = password_hash($data['password_hash'], PASSWORD_BCRYPT);
-            $insertData = User::insert($data);
+
+            $insertData = User::insert([
+                'id_number' => $data['id_number'],
+                'email' => $data['email'],
+                'password_hash' => $data['password_hash'],
+                'first_name' => $data['first_name'],
+                'last_name' => $data['last_name'],
+                'institution' => $data['institution'],
+                'major' => $data['major'],
+                'study_program' => $data['study_program'],
+                'phone_number' => $data['phone_number'],
+                'role' => $data['role'],
+                'activation_proof_url' => $data['activation_proof_url']
+        ]);
+        
             if($insertData) {
                 ResponseHandler::setResponse("Registrasi berhasil, tunggu verifikasi admin");
                 header('location:'. URL . '/auth/login/index');
