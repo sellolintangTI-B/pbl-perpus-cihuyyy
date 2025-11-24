@@ -34,7 +34,7 @@ $user = new Authentication
         }"
         :class="scrolled ? 'p-0!' : 'p-2'"
         class="w-full h-screen max-h-full overflow-hidden bg-primary transition-all duration-300 p-2" x-cloak>
-        <div class="w-full h-full max-h-full overflow-hidden bg-[url('/public/storage/bg-pattern/pattern.webp')] bg-repeat bg-cover rounded-xl relative" :class="scrolled ? 'rounded-none!' : 'rounded-xl'">
+        <div class="w-full h-full max-h-full overflow-hidden bg-image bg-repeat bg-cover rounded-xl relative" :class="scrolled ? 'rounded-none!' : 'rounded-xl'">
             <div class="absolute inset-0 bg-baseColor/20 backdrop-blur-2xl -z-10 "></div>
             <?= UserNavbar::main(
                 activeMenu: 'beranda',
@@ -50,5 +50,10 @@ $user = new Authentication
         </div>
     </div>
 </body>
+<style>
+    .bg-image {
+        background: url('<?= URL ?>/public/storage/bg-pattern/pattern.webp');
+    }
+</style>
 
 </html>
