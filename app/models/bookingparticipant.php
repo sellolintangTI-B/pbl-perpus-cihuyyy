@@ -7,6 +7,36 @@ use PDO;
 
 class BookingParticipant extends Database
 {
+    public static function getUserIdByBookingId($id)
+    {
+        $conn = parent::getConnection();
+        $q = $conn->prepare("SELECT user_id FROM booking_participants WHERE booking_id = ?");
+        $q->bindValue(1, $id);
+        $q->execute();
+        $data = $q->fetchAll(PDO::FETCH_OBJ);
+        return $data;
+    }
+
+    public static function deleteParticipantsWhereInIds($id, $uuids = [])
+    {
+        $conn = parent::getConnection();
+        $placeholder = implode(',', array_fill(0, count($uuids), '?'));
+        $sql = "DELETE FROM booking_participants WHERE booking_id = '$id' AND user_id IN ($placeholder)";
+        $q = $conn->prepare($sql);
+        $q->execute($uuids);
+        if($q) return true;
+        return false;
+    }
+
+    public static function getByIds($id ,$ids = [])
+    {
+        $conn = parent::getConnection();
+        $placeholder = implode(',', array_fill(0, count($ids), '?'));
+        $q = $conn->prepare("SELECT user_id FROM booking_participants WHERE booking_id = '$id' AND user_id IN ($placeholder)");
+        $q->execute($ids);
+        $data = $q->fetchAll(PDO::FETCH_OBJ);
+        return $data;
+    }
     public static function bulkInsert($data)
     {
         $insertQuery = [];

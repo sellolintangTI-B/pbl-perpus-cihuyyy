@@ -157,9 +157,6 @@ class RoomController extends Controller {
 
         } catch(CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), "error");
-            $error = ResponseHandler::getResponse();
-            var_dump($error);
-            die;
             header('location:' . URL . '/admin/room/edit/' . $id);
         }
 

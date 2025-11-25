@@ -59,7 +59,7 @@ class Booking extends Database
         $q->bindValue(":startTime2", $startTime);
         $q->bindValue(":roomId", $roomId);
         $q->execute();
-        $data = $q->fetchAll(PDO::FETCH_OBJ);
+        $data = $q->fetch(PDO::FETCH_OBJ);
         return $data;
     }
 
