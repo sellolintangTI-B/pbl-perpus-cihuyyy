@@ -55,7 +55,7 @@ class BookingController extends Controller
     {
         try {
             $booking = Booking::getById($id);
-            if(in_array($booking->status, ['checked_in', 'finished', 'cancelled'])) throw new CustomException('Data tidak bisa diedit');
+            if (in_array($booking->status, ['checked_in', 'finished', 'cancelled'])) throw new CustomException('Data tidak bisa diedit');
             if (!$booking) throw new CustomException('Data tidak ditemukan');
             $bookingParticipants = BookingParticipant::getParticipantsByBookingId($id);
             $roomDetail = Room::getById($booking->room_id);
@@ -181,7 +181,7 @@ class BookingController extends Controller
             $validator->field('datetime', ['required']);
             $validator->field('start_time', ['required']);
             $validator->field('end_time', ['required']);
-            if($validator->error()) throw new CustomException($validator->getErrors());
+            if ($validator->error()) throw new CustomException($validator->getErrors());
 
             $start = Carbon::parse($data['datetime'])->setTimeFromTimeString($data['start_time']);
             $end = Carbon::parse($data['datetime'])->setTimeFromTimeString($data['end_time']);
@@ -192,14 +192,34 @@ class BookingController extends Controller
             $rules = $this->validationBookingRules($data['room_id'], $data);
             if (!$rules['status']) throw new CustomException($rules['message']);
 
-            $ids = [];
             $members = $data['list_anggota'];
-            foreach ($members as $key => $value) {
-                $ids[] = $value['id'];
+            $getParticipantsByBookingId = BookingParticipant::getUserIdByBookingId($id);
+
+            $existsMembers = array_map(function ($item) {
+                return $item->user_id;
+            }, $getParticipantsByBookingId);
+
+            $requestedMemberIds = array_map(function ($item) {
+                return $item['id'];
+            }, $members);
+
+            $deletedMembers = array_values(array_diff($existsMembers, $requestedMemberIds));
+
+            $addedMembers = array_values(array_diff($requestedMemberIds, $existsMembers));
+
+            if (!empty($deletedMembers)) {
+                $deleteParticipantsWhereNotInIds = BookingParticipant::deleteParticipantsWhereInIds($id, $deletedMembers);
             }
 
-            
-            $deleteParticipantsWhereNotInIds = BookingParticipant::deleteParticipantsWhereNotInIds($id, $ids);
+            if (!empty($addedMembers)) {
+                $formattingMembers = array_map(function ($userId) use ($id) {
+                    return [
+                        'id'    => $userId,
+                        'booking_id' => $id
+                    ];
+                }, $addedMembers);
+                $addParticipants = BookingParticipant::bulkInsert($formattingMembers);
+            }
 
             $editedBook = Booking::edit($id ,[
                 'room_id' => $data['room_id'],
@@ -245,7 +265,7 @@ class BookingController extends Controller
             if ($data['duration'] > 180) throw new CustomException('Maximal durasi pinjam ruangan 3 jam');
 
             $checkIfScheduleExists = Booking::checkSchedule($data['datetime'], $data['duration'], $roomId);
-            if($data['booking_id'] !== $checkIfScheduleExists->id) {
+            if ($data['booking_id'] !== $checkIfScheduleExists->id) {
                 throw new CustomException('Jadwal sudah dibooking');
             }
 
