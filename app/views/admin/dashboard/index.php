@@ -1,6 +1,7 @@
 <?php
 
 use App\Components\Button;
+use App\Components\FormInput;
 use App\Components\Icon\Icon;
 use App\Components\Badge;
 
@@ -16,12 +17,13 @@ use App\Components\Badge;
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
             </div>
+
             <input
                 type="text"
                 name="search"
                 id="search"
                 placeholder="Cari Kode Booking..."
-                class="rounded-xl shadow-md py-3 px-5 pl-12 bg-baseColor text-gray-600 border border-gray-400 hover:border-secondary outline-none text-sm focus:shadow-md focus:shadow-secondary transition-shadow duration-300 w-full" />
+                class="rounded-xl shadow-md py-3 px-5 pl-12 bg-baseColor text-gray-600 border border-gray-400 hover:border-primary outline-none text-sm focus:shadow-md focus:shadow-primary/20 transition-shadow duration-300 w-full" />
         </div>
         <?php
         Button::button(label: 'check', type: 'submit', class: 'py-3 px-4 rounded-lg!', color: 'primary')
@@ -32,6 +34,12 @@ use App\Components\Badge;
     <?php
     if (!empty($data)) {
         include __DIR__ . '/sections/BookingCard.php';
+    } else {
+        if (isset($_GET['search']) && !empty($_GET['search'])) {
+            include __DIR__ . '/sections/BookingNotFound.php';
+        }
     }
     ?>
+
+
 </div>

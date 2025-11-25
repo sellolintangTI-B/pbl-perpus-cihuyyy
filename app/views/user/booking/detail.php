@@ -150,7 +150,7 @@ $bookingDetail = [
                 <?= Button::button(label: 'Cancel', type: 'button', color: 'red', class: 'w-full py-2 rounded-full!', alpineClick: "onModalShow=true") ?>
             <?php endif; ?>
 
-            <?php if ($bookingDetail['status'] == $statusEnum['selesai']): ?>
+            <?php if ($bookingDetail['status'] == $statusEnum['selesai'] && !$data['feedback']): ?>
                 <?= Button::buttonGradient(label: 'Send Feedback', type: 'button', class: 'w-full py-2 rounded-full!', alpineClick: "showFeedback=true") ?>
             <?php endif; ?>
         </div>

@@ -1,4 +1,4 @@
-<div class="bg-linear-120 from-red to-white forbidden-pattern w-full flex items-center justify-center p-4">
+<div class="bg-linear-120 from-red to-red/20 forbidden-pattern w-full flex items-center justify-center p-4">
     <div class="max-w-4xl w-full">
         <div class="text-center">
             <!-- Ilustrasi 403 -->
@@ -10,7 +10,7 @@
                     <div class="lock-bounce">
                         <div class="relative">
                             <!-- Lock Icon -->
-                            <svg class="w-32 h-32 md:w-48 md:h-48 text-white glow-effect" fill="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-32 h-32 md:w-48 md:h-48 text-white glow-effect bg-transparent" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M12 2C9.243 2 7 4.243 7 7v3H6c-1.103 0-2 .897-2 2v8c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-8c0-1.103-.897-2-2-2h-1V7c0-2.757-2.243-5-5-5zM9 7c0-1.654 1.346-3 3-3s3 1.346 3 3v3H9V7zm4 10.723V20h-2v-2.277a1.993 1.993 0 0 1 .567-3.677A2.001 2.001 0 0 1 14 16a1.99 1.99 0 0 1-1 1.723z" />
                             </svg>
                             <!-- Warning Badge -->
@@ -68,10 +68,6 @@
                         <span class="text-white/60">•</span>
                         <span>Halaman ini hanya untuk pengguna dengan role tertentu</span>
                     </li>
-                    <li class="flex items-start gap-2">
-                        <span class="text-white/60">•</span>
-                        <span>Akun Anda mungkin telah diblokir atau dinonaktifkan</span>
-                    </li>
                 </ul>
             </div>
 
@@ -85,15 +81,7 @@
                     Kembali
                 </a>
 
-                <a href="/"
-                    class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm text-white px-8 py-3 rounded-full font-semibold border-2 border-white/30 hover:bg-white/20 hover:border-white/50 transform hover:scale-105 transition-all duration-300">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                    </svg>
-                    Ke Beranda
-                </a>
-
-                <a href="/login"
+                <a href="<?= URL ?>/auth/login"
                     class="inline-flex items-center gap-2 bg-yellow-400 text-red-800 px-8 py-3 rounded-full font-semibold hover:bg-yellow-300 hover:shadow-lg transform hover:scale-105 transition-all duration-300">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
@@ -180,17 +168,5 @@
 
     .glow-effect {
         animation: glow 2s ease-in-out infinite;
-    }
-
-    .gradient-bg {
-        background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
-    }
-
-    .forbidden-pattern {
-        background-image: repeating-linear-gradient(45deg,
-                transparent,
-                transparent 10px,
-                rgba(255, 255, 255, 0.03) 10px,
-                rgba(255, 255, 255, 0.03) 20px);
     }
 </style>

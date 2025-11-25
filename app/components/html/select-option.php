@@ -18,7 +18,8 @@ $classColor = match ($color) {
         id="<?= $id ?? ($name ?? '') ?>"
         class="<?= $class ?> <?= $classColor ?> rounded-xl p-3 bg-baseColor cursor-pointer border border-gray-400 text-gray-600 outline-none text-sm focus:shadow-md transition-shadow duration-300 w-full"
         <?= isset($required) && $required ? 'required' : '' ?>
-        <?= isset($disabled) && $disabled ? 'disabled' : '' ?>>
+        <?= isset($disabled) && $disabled ? 'disabled' : '' ?>
+        x-bind:disabled="<?= $alpine_disabled ?>">
         <?php if (!empty($placeholder)): ?>
             <option value="" disabled selected>
                 <?= $placeholder ?>

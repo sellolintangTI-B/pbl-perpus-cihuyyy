@@ -42,11 +42,14 @@ class Middleware
             "/admin/user/edit",
             "/admin/user/reset_password",
             "/admin/user/details",
+            //FEEBACK
+            "/admin/feedback/index",
             //ERROR
             "/error/forbidden/index",
             "/error/notfound/index",
             "/auth/logout/logout"
         ],
+            
         "Mahasiswa" => [
             "/user/user/index",
             "/error/forbidden/index",

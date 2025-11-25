@@ -53,6 +53,8 @@ $user = new Authentication
 <style>
     .bg-image {
         background: url('<?= URL ?>/public/storage/bg-pattern/pattern.webp');
+        background-size: cover;
+        background-repeat: no-repeat;
     }
 </style>
 
