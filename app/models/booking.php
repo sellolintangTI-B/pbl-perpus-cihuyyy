@@ -127,7 +127,7 @@ class Booking extends Database
     {
         $conn = parent::getConnection();
         $q = $conn->prepare("SELECT * FROM 
-            (SELECT DISTINCT ON (b.id) b.booking_code, bl.status, b.start_time, b.end_time, r.name, r.floor FROM bookings AS b JOIN booking_logs AS bl ON b.id = bl.booking_id
+            (SELECT DISTINCT ON (b.id) b.id, b.booking_code, bl.status, b.start_time, b.end_time, r.name, r.floor FROM bookings AS b JOIN booking_logs AS bl ON b.id = bl.booking_id
             JOIN rooms AS r ON b.room_id = r.id
             ORDER BY b.id, bl.created_at DESC) 
             AS active WHERE active.booking_code = :bookingCode");
@@ -144,9 +144,9 @@ class Booking extends Database
         $conn = parent::getConnection();
         $stmt = "UPDATE bookings SET ";
 
-        foreach($data as $key => $value) {
+        foreach ($data as $key => $value) {
             $field[] = "$key = :$key";
-            $values[] = $value; 
+            $values[] = $value;
         }
 
         $implodedField = implode(', ', $field);

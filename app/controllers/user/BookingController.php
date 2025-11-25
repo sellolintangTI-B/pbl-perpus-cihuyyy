@@ -178,7 +178,7 @@ class BookingController extends Controller
             $data  = [
                 "booking" => $booking,
                 "participants" => $bookingParticipants,
-                "feeback" => $feedback,
+                "feedback" => $feedback,
                 'detailCancel' => $detailCancel[0] ?? null,
                 'detailFinished' => $detailFinished ?? null,
             ];

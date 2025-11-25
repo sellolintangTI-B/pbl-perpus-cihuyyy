@@ -16,10 +16,10 @@ class Controller
         $class = "app\\models\\" . $model;
         return new $class;
     }
-    public function redirectWithOldInput($url, $oldData = [])
+    public function redirectWithOldInput($url, $oldData = [], $session_name = 'old')
     {
         if (!empty($oldData)) {
-            $_SESSION['old'] = $oldData;
+            $_SESSION[$session_name] = $oldData;
         }
         header('Location: ' . URL . $url);
         exit;

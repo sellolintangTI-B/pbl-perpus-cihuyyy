@@ -5,64 +5,6 @@ use App\Components\FormInput;
 use App\Components\Modal;
 use App\Components\Button;
 
-$prodiPnj = [
-    [
-        "jurusan" => "Akuntansi",
-        "prodi" => [
-            "Keuangan dan Perbankan Syariah",
-            "Akuntansi Keuangan",
-            "Keuangan dan Perbankan",
-            "Manajemen Keuangan"
-        ]
-    ],
-    [
-        "jurusan" => "Administrasi Niaga",
-        "prodi" => [
-            "Usaha Jasa Konvensi, Perjalanan Insentif dan Pameran / MICE",
-            "Administrasi Bisnis Terapan",
-        ]
-    ],
-    [
-        "jurusan" => "Teknik Grafika & Penerbitan",
-        "prodi" => [
-            "Teknologi Industri Cetak dan Kemasan",
-            "Desain Grafis"
-        ]
-    ],
-    [
-        "jurusan" => "Teknik Sipil",
-        "prodi" => [
-            "Teknik Perancangan Jalan dan Jembatan",
-            "Teknik Perancangan Jalan dan Jembatan - Konsentrasi Jalan Tol",
-            "Teknik Konstruksi Gedung"
-        ]
-    ],
-    [
-        "jurusan" => "Teknik Mesin",
-        "prodi" => [
-            "Manufaktur",
-            "Pembangkit Tenaga Listrik",
-            "Manufaktur - PSDKU Pekalongan"
-        ]
-    ],
-    [
-        "jurusan" => "Teknik Elektro",
-        "prodi" => [
-            "Instrumentasi dan Kontrol Industri",
-            "Broadband Multimedia",
-            "Teknik Otomasi Listrik Industri"
-        ]
-    ],
-    [
-        "jurusan" => "Teknik Informatika dan Komputer",
-        "prodi" => [
-            "Teknik Informatika",
-            "Teknik Multimedia dan Jaringan",
-            "Teknik Multimedia Digital"
-        ]
-    ]
-];
-
 $roleOptions = [
     [
         "display" => "Admin",
@@ -77,6 +19,7 @@ $roleOptions = [
         "value" => "Dosen"
     ],
 ];
+
 ?>
 <!-- show modal update data akun -->
 <?php ob_start() ?>
@@ -118,7 +61,7 @@ $roleOptions = [
 </div>
 <?php $updatePasswordContent = ob_get_clean() ?>
 
-<div class="w-full h-full" x-data="editUserForm()">
+<div class="w-full h-full" x-data="updateUserForm()">
     <div class=" w-full h-full flex flex-col items-start justify-start gap-5 ">
         <div class=" w-full flex items-center justify-start">
             <h1 class="text-2xl font-medium text-primary">
@@ -180,22 +123,12 @@ $roleOptions = [
                                 label: 'Nama Belakang',
                                 value: $data->last_name ?? ""
                             );
-
-                            $options = [];
-                            foreach ($prodiPnj as $prod) {
-                                $options[] = [
-                                    'display' => $prod['jurusan'],
-                                    'value' => $prod['jurusan'],
-                                ];
-                            }
                             FormInput::select(
                                 id: 'jurusan',
                                 name: 'major',
                                 label: 'Jurusan',
                                 placeholder: 'Jurusan',
                                 required: true,
-                                options: $options,
-                                value: $data->major
                             );
                             FormInput::select(
                                 id: 'prodi',
@@ -203,8 +136,6 @@ $roleOptions = [
                                 label: 'Program Studi',
                                 placeholder: 'Pilih Jurusan terlebih dahulu',
                                 required: true,
-                                value: $data->study_program,
-                                options: []
                             );
 
                             FormInput::input(
@@ -321,74 +252,20 @@ $roleOptions = [
         </div>
     </div>
 </div>
+<script src="<?= URL ?>/public/js/select-jurusan.js"></script>
+<script src="<?= URL ?>/public/js/update-user.js"></script>
 
 <script>
-    function editUserForm() {
-        return {
-            updateAlert: false,
-            updatePasswordAlert: false,
-            validateAndShowUpdateAlert(event) {
-                const form = event.target;
-                if (form.checkValidity()) {
-                    this.updateAlert = true;
-                } else {
-                    form.reportValidity();
-                }
-            },
-            submitUpdateForm() {
-                document.getElementById('updateUserForm').submit();
-            },
+    const dbJurusan = "<?= $data->major ?>";
+    const dbProdi = "<?= $data->study_program ?>";
 
-            validateAndShowPasswordAlert(event) {
-                const form = event.target;
-                if (form.checkValidity()) {
-                    this.updatePasswordAlert = true;
-                } else {
-                    form.reportValidity();
-                }
-            },
-
-            submitPasswordForm() {
-                document.getElementById('updatePasswordForm').submit();
-            }
-        }
+    if (dbJurusan) {
+        setInitialJurusan(dbJurusan);
     }
 
-    // Prodi Data Handler
-    const prodiData = <?= json_encode($prodiPnj) ?>;
-
-    const jurusanSelect = document.getElementById('jurusan');
-    const prodiSelect = document.getElementById('prodi');
-    prodiSelect.disabled = true;
-
-    var selectedJurusan = '<?= $data->major ?>';
-    if (selectedJurusan) {
-        setProdi(selectedJurusan);
-        prodiSelect.disabled = false;
-        prodiSelect.value = '<?= $data->study_program ?>';
-    }
-
-    jurusanSelect.addEventListener('change', function() {
-        selectedJurusan = this.value;
-        prodiSelect.innerHTML = '<option value="">Pilih Program Studi</option>';
-        if (selectedJurusan) {
-            setProdi(selectedJurusan);
-        } else {
-            prodiSelect.disabled = true;
-        }
-    });
-
-    function setProdi(selectedJurusan) {
-        prodiSelect.innerHTML = '<option value="">Pilih Program Studi</option>';
-        const jurusanData = prodiData.find(item => item.jurusan === selectedJurusan);
-        if (jurusanData && jurusanData.prodi) {
-            prodiSelect.disabled = false;
-            jurusanData.prodi.forEach(prodi => {
-                const option = document.createElement('option');
-                option.value = prodi;
-                option.textContent = prodi;
-                prodiSelect.appendChild(option);
-            });
-        }
+    if (dbProdi) {
+        setTimeout(() => {
+            setProdiValue(dbProdi);
+        }, 100);
     }
 </script>

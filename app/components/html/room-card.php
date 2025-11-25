@@ -6,7 +6,7 @@ use App\Components\Badge;
 use Soap\Url;
 
 ?>
-<div class="flex flex-col bg-transparent gap-4 rounded-lg overflow-hidden ">
+<div class="flex flex-col gap-4 rounded-lg overflow-hidden bg-baseColor p-2">
     <!-- Room Image -->
     <div class="relative w-full h-48 overflow-hidden rounded-lg">
         <img src="<?= URL . '/public/' . $room['image'] ?>" alt="<?= $room['name'] ?? 'Room' ?>" class="w-full h-full object-cover">

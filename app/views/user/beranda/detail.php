@@ -135,7 +135,17 @@ if (isset($_SESSION['old_input'])) {
             <div class="bg-white rounded-xl p-4 shadow-md w-full">
                 <?php if ($data['detail']->requires_special_approval): ?>
                     <div class="flex flex-col gap-4">
-                        <p class="text-sm text-black/80">Ruangan ini memerlukan persetujuan khusus dari pihak administrasi.
+                        <p class="text-sm text-black/80 flex flex-col gap-2">
+                            Panduan Peminjaman Ruang Rapat:
+                        <ul>
+                            <li> 1. Siapkan surat resmi peminjaman ruang rapat sesuai format yang berlaku.</li>
+                            <li> 2. Serahkan surat tersebut kepada Admin Perpustakaan.</li>
+                            <li> 3. Admin Perpustakaan akan memproses dan menginformasikan hasil peminjaman.</li>
+                        </ul>
+                        <b>
+                            Catatan: Format surat resmi dapat diminta langsung kepada Admin Perpustakaan
+                        </b>
+                        </p>
                     </div>
                 <?php else: ?>
                     <form method="POST" action="<?= URL ?>/user/booking/store/<?= $data['detail']->id ?>" @submit="prepareData" enctype="multipart/form-data" class="space-y-4 w-full">

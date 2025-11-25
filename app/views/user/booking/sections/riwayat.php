@@ -8,7 +8,23 @@ use App\Components\FormInput;
 use App\Components\Button;
 
 // Filter configuration
-$filter = ["semua", "finished", "cancelled"];
+$filter = [
+    [
+        'label' => 'semua',
+        'color' => 'primary',
+        'value' => 'semua'
+    ],
+    [
+        'label' => 'selesai',
+        'color' => 'secondary',
+        'value' => 'finished'
+    ],
+    [
+        'label' => 'dibatalkan',
+        'color' => 'red',
+        'value' => 'cancelled'
+    ],
+];
 $currentStatus = !empty($_GET['status']) ? $_GET['status'] : 'semua';
 ?>
 
@@ -16,29 +32,24 @@ $currentStatus = !empty($_GET['status']) ? $_GET['status'] : 'semua';
     <!-- Filter Form -->
     <form class="flex justify-start items-center gap-4" method="get">
         <!-- Preserve existing GET parameters -->
-        <?php foreach ($_GET as $key => $value): ?>
+        <input type="hidden" name="tab" value="<?= htmlspecialchars($_GET['tab']) ?>">
+        <!-- <?php foreach ($_GET as $key => $value): ?>
             <?php if ($key !== 'status'): ?>
-                <input type="hidden" name="<?= htmlspecialchars($key) ?>" value="<?= htmlspecialchars($value) ?>">
+                
             <?php endif; ?>
-        <?php endforeach; ?>
+        <?php endforeach; ?> -->
 
         <!-- Filter Badges -->
         <?php foreach ($filter as $f):
-            $color = match (strtolower($f)) {
-                'semua' => 'primary',
-                'finished' => 'secondary',
-                default => 'red'
-            };
-
-            $isActive = ($currentStatus === $f);
+            $isActive = ($currentStatus == $f['value']);
 
             Badge::badge(
-                label: $f,
-                color: $color,
+                label: $f['label'],
+                color: $f['color'],
                 active: $isActive,
                 type: 'submit',
                 name: 'status',
-                value: $f
+                value: htmlspecialchars($f['value'])
             );
         endforeach;
         ?>

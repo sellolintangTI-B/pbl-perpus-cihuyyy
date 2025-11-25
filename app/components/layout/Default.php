@@ -12,10 +12,10 @@
     <script src="//unpkg.com/alpinejs" defer></script>
 </head>
 
-<body class="font-poppins bg-gray-100 bg-[url('<?= URL . "/public/storage/bg-pattern/pattern.webp" ?>')]">
+<body class="font-poppins">
     <?php include_once 'app/components/response-banner.php'; ?>
     <!-- Main Content -->
-    <div>
+    <div class="h-screen w-full">
         <?= $content ?>
     </div>
 </body>
