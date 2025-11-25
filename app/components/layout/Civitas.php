@@ -10,6 +10,7 @@
     <link href="<?= URL ?>/public/css/global.css" rel="stylesheet">
     <script src="//unpkg.com/alpinejs" defer></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <?php
 

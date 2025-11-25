@@ -8,6 +8,7 @@ use App\Core\ResponseHandler;
 use App\Error\CustomException;
 use App\Utils\Validator;
 use App\Models\User;
+use App\Models\Suspension;
 
 class UserController extends Controller
 {
@@ -19,7 +20,12 @@ class UserController extends Controller
     public function profile()
     {
         $userId = $this->authUser->user['id'];
-        $data = User::getById($userId);
+
+        $suspension = Suspension::checkSupensionsByUserId($userId);
+        $data = [
+            'data' => User::getById($userId),
+            'suspension' => $suspension
+        ];
         $this->view('user/profile/index', $data, layoutType: $this::$layoutType['civitas']);
     }
     public function update($id)

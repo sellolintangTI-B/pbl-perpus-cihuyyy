@@ -37,20 +37,20 @@ class Feedback extends Database
         $values = [];
         $conn = parent::getConnection();
         $stmt = "SELECT u.first_name || ' ' || u.last_name AS name, r.name AS room_name, r.floor,
-        b.start_time, f.feedback, f.rating
+        b.start_time, f.feedback, f.rating, b.booking_code
         FROM feedbacks AS f JOIN bookings AS b ON f.booking_id = b.id
         JOIN rooms AS r ON b.room_id = r.id
         JOIN users AS u ON f.user_id = u.id";
 
-        if(!empty($params)) {
-            foreach($params as $key => $value) {
-                if($key === 'room') $where[] = "r.id = :roomId";
-                if($key === 'date') $where[] = "TO_CHAR(b.start_time, 'YYYY-MM-DD') = :date";
+        if (!empty($params)) {
+            foreach ($params as $key => $value) {
+                if ($key === 'room') $where[] = "r.id = :roomId";
+                if ($key === 'date') $where[] = "TO_CHAR(b.start_time, 'YYYY-MM-DD') = :date";
                 $values[] = $value;
             }
         }
 
-        if(!empty($where)) {
+        if (!empty($where)) {
             $whereClauses = implode(' AND ', $where);
             $stmt .= " WHERE $whereClauses ";
         }

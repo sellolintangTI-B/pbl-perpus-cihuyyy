@@ -11,6 +11,7 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="//unpkg.com/alpinejs" defer></script>
     <script src="<?= URL ?>/public/js/modal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <?php
 
@@ -21,8 +22,7 @@ $items = [
     ['label' => 'Data Peminjaman', 'url' => '/admin/booking/index', 'icon' => 'calendar_pencil'],
     ['label' => 'Data Pengguna', 'url' => '/admin/user/index', 'icon' => 'person'],
     ['label' => 'Data Ruangan', 'url' => '/admin/room/index', 'icon' => 'room'],
-    ['label' => 'Data Feedback', 'url' => '/admin/feedback/index', 'icon' => 'room'],
-    ['label' => 'Profile', 'url' => '/admin/profile/index', 'icon' => 'room'],
+    ['label' => 'Data Feedback', 'url' => '/admin/feedback/index', 'icon' => 'feedback'],
 
 ];
 $activeItem = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);

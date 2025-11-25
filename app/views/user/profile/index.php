@@ -22,6 +22,11 @@ $roleOptions = [
     ],
 ];
 
+$badgeSuspendColor = [
+    1 => 'tertiary',
+    2 => 'yellow',
+    3 => 'red',
+]
 ?>
 
 <!-- show modal update data akun -->
@@ -73,18 +78,18 @@ $roleOptions = [
 
             </div>
             <div class="flex justify-end items-center p-4">
-                <?= Badge::badge(label: 'Suspend Point: 1 point', color: 'secondary', class: 'px-2! py-1!') ?>
+                <?= Badge::badge(label: 'Suspend Point: ' . $data['suspension']->suspend_count . ' point', color: $badgeSuspendColor[$data['suspension']->suspend_count], class: 'px-2! py-1!') ?>
             </div>
             <div class="absolute p-4 inset-0 left-18 flex flex-col items-start justify-start gap-4">
                 <div class="flex flex-col items-center gap-2">
                     <div class="h-28 w-28 rounded-full bg-white p-1">
-                        <img src="<?= URL . "/public/" . $data->profile_picture_url ?>" class="h-full w-full rounded-full object-cover" />
+                        <img src="<?= URL . "/public/" . $data['data']->profile_picture_url ?>" class="h-full w-full rounded-full object-cover" />
                     </div>
                     <h1 class="text-xl font-medium text-primary">
-                        <?= $data->first_name . " " . $data->last_name ?>
+                        <?= $data['data']->first_name . " " . $data['data']->last_name ?>
                     </h1>
                     <p class="text-gray-700">
-                        <?= $data->role ?? " " ?>
+                        <?= $data['data']->role ?? " " ?>
                     </p>
                 </div>
             </div>
@@ -111,7 +116,7 @@ $roleOptions = [
                 id="updateUserForm"
                 class="w-full grid grid-cols-1 sm:grid-cols-2 gap-6"
                 @submit.prevent="validateAndShowUpdateAlert"
-                action="<?= URL ?>/user/user/update/<?= $data->id ?>"
+                action="<?= URL ?>/user/user/update/<?= $data['data']->id ?>"
                 method="post"
                 enctype="multipart/form-data">
                 <?php
@@ -119,7 +124,7 @@ $roleOptions = [
                     id: 'first_name',
                     name: 'first_name',
                     label: 'Nama Depan',
-                    value: $data->first_name,
+                    value: $data['data']->first_name,
                     required: true,
                     alpine_disabled: '!isEdit'
                 );
@@ -129,14 +134,14 @@ $roleOptions = [
                     name: 'last_name',
                     label: 'Nama Belakang',
                     alpine_disabled: '!isEdit',
-                    value: $data->last_name ?? ""
+                    value: $data['data']->last_name ?? ""
                 );
 
                 FormInput::input(
                     id: 'id_number',
                     name: 'id_number',
                     label: 'NIM/NIP',
-                    value: $data->id_number,
+                    value: $data['data']->id_number,
                     required: true,
                     alpine_disabled: '!isEdit'
                 );
@@ -146,7 +151,7 @@ $roleOptions = [
                     name: 'email',
                     type: 'email',
                     label: 'Email',
-                    value: $data->email,
+                    value: $data['data']->email,
                     required: true,
                     alpine_disabled: '!isEdit'
                 );
@@ -156,7 +161,7 @@ $roleOptions = [
                     label: 'Jurusan',
                     required: true,
                     alpine_disabled: '!isEdit',
-                    value: $data->major ?? ""
+                    value: $data['data']->major ?? ""
                 );
                 FormInput::select(
                     id: 'prodi',
@@ -164,7 +169,7 @@ $roleOptions = [
                     label: 'Program Studi',
                     placeholder: 'Pilih Jurusan terlebih dahulu',
                     required: true,
-                    value: $data->study_program ?? "",
+                    value: $data['data']->study_program ?? "",
                     // options: []
                     alpine_disabled: '!isEdit'
                 );
@@ -174,7 +179,7 @@ $roleOptions = [
                     name: 'phone_number',
                     type: 'tel',
                     label: 'Nomor Whatsapp',
-                    value: $data->phone_number ?? "",
+                    value: $data['data']->phone_number ?? "",
                     required: true,
                     alpine_disabled: '!isEdit'
                 );
@@ -183,7 +188,7 @@ $roleOptions = [
                     id: 'institution',
                     name: 'institution',
                     label: 'Institusi',
-                    value: $data->institution ?? "",
+                    value: $data['data']->institution ?? "",
                     required: true,
                     alpine_disabled: '!isEdit'
                 );
@@ -205,16 +210,16 @@ $roleOptions = [
                 id="updatePasswordForm"
                 class="w-full grid grid-cols-1 gap-6"
                 @submit.prevent="validateAndShowPasswordAlert"
-                action="<?= URL ?>/user/user/reset_password/<?= $data->id ?>"
+                action="<?= URL ?>/user/user/reset_password/<?= $data['data']->id ?>"
                 method="post">
                 <?php
-                $data = $_SESSION['reset_pass_old'] ?? null;
+                $old_data = $_SESSION['reset_pass_old'] ?? null;
                 FormInput::input(
                     id: 'current_password',
                     name: 'current_password',
                     type: 'password',
                     label: 'Password Saat ini',
-                    value: $data['current_password'] ?? "",
+                    value: $old_data['current_password'] ?? "",
                     placeholder: 'Masukkan password baru',
                     required: true,
                 );
@@ -225,7 +230,7 @@ $roleOptions = [
                     name: 'password',
                     type: 'password',
                     label: 'Password Baru',
-                    value: $data['password'] ?? "",
+                    value: $old_data['password'] ?? "",
                     placeholder: 'Masukkan password baru',
                     required: true,
                 );
@@ -237,7 +242,7 @@ $roleOptions = [
                 FormInput::input(
                     id: 'password_confirmation',
                     name: 'password_confirmation',
-                    value: $data['password_confirmation'] ?? "",
+                    value: $old_data['password_confirmation'] ?? "",
                     type: 'password',
                     label: 'Konfirmasi Password',
                     placeholder: 'Ulangi password baru',
@@ -277,8 +282,8 @@ $roleOptions = [
     const password = document.getElementById('password');
     const password_message = document.getElementById('check_password_message')
     document.addEventListener('DOMContentLoaded', function() {
-        const dbJurusan = "<?= $data->major ?? "" ?>";
-        const dbProdi = "<?= $data->study_program ?? "" ?>";
+        const dbJurusan = "<?= $data['data']->major ?? "" ?>";
+        const dbProdi = "<?= $data['data']->study_program ?? "" ?>";
 
         if (dbJurusan) {
             setInitialJurusan(dbJurusan);
