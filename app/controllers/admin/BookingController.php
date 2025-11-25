@@ -55,6 +55,7 @@ class BookingController extends Controller
     {
         try {
             $booking = Booking::getById($id);
+            if(in_array($booking->status, ['checked_in', 'finished', 'cancelled'])) throw new CustomException('Data tidak bisa diedit');
             if (!$booking) throw new CustomException('Data tidak ditemukan');
             $bookingParticipants = BookingParticipant::getParticipantsByBookingId($id);
             $roomDetail = Room::getById($booking->room_id);
@@ -68,7 +69,7 @@ class BookingController extends Controller
             $data['roomList'] = Room::get();
             $this->view('admin/booking/edit', $data, layoutType: $this::$layoutType['admin']);
         } catch (CustomException $e) {
-            ResponseHandler::setResponse($e->getErrorMessages());
+            ResponseHandler::setResponse($e->getErrorMessages(), 'error');
             header('location:' . URL . '/admin/booking/index');
         }
     }
@@ -168,6 +169,7 @@ class BookingController extends Controller
     {
         try {
             $data = [
+                'booking_id' => $id,
                 'room_id' => $_POST['room'],
                 'datetime' => $_POST['datetime'],
                 'start_time' => $_POST['start_time'],
@@ -190,6 +192,15 @@ class BookingController extends Controller
             $rules = $this->validationBookingRules($data['room_id'], $data);
             if (!$rules['status']) throw new CustomException($rules['message']);
 
+            $ids = [];
+            $members = $data['list_anggota'];
+            foreach ($members as $key => $value) {
+                $ids[] = $value['id'];
+            }
+
+            
+            $deleteParticipantsWhereNotInIds = BookingParticipant::deleteParticipantsWhereNotInIds($id, $ids);
+
             $editedBook = Booking::edit($id ,[
                 'room_id' => $data['room_id'],
                 'start_time' => $data['datetime']->toDateTimeString(),
@@ -201,7 +212,6 @@ class BookingController extends Controller
                 ResponseHandler::setResponse('Berhasil mengubah data');
                 header("location:" . URL . '/admin/booking/index');
             }
-
 
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), 'error');
@@ -219,12 +229,6 @@ class BookingController extends Controller
             if ($data['datetime']->lt(Carbon::now('Asia/Jakarta')->toDateString())) throw new CustomException('Tidak bisa booking di kemarin hari');
             if (Carbon::today('Asia/Jakarta')->diffInDays($data['datetime']) >= 7) throw new CustomException('Tidak bisa booking untuk jadwal lebih dari 7 hari per hari ini');
 
-            if ($data['datetime']->isToday()) {
-                $startHour = $data['datetime']->format('H:i:s');
-                $nowHour = Carbon::now('Asia/Jakarta')->format('H:i:s');
-                if ($startHour < $nowHour) throw new CustomException('Tidak bisa booking pada jam yang sudah lewat');
-            }
-
             $dayCheck = $scheduleJson[$data['datetime']->dayOfWeek()];
             $isValid = false;
             foreach ($dayCheck as $slot) {
@@ -241,7 +245,9 @@ class BookingController extends Controller
             if ($data['duration'] > 180) throw new CustomException('Maximal durasi pinjam ruangan 3 jam');
 
             $checkIfScheduleExists = Booking::checkSchedule($data['datetime'], $data['duration'], $roomId);
-            if ($checkIfScheduleExists) throw new CustomException('Jadwal sudah dibooking');
+            if($data['booking_id'] !== $checkIfScheduleExists->id) {
+                throw new CustomException('Jadwal sudah dibooking');
+            }
 
             $roomDetail = Room::getById($roomId);
             if (count($data['list_anggota']) < $roomDetail->min_capacity) throw new CustomException("Minimal kapasitas adalah $roomDetail->min_capacity orang");
