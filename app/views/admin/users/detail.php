@@ -37,7 +37,7 @@ $options_jurusan = [
                 if (!$data->is_active):
                 ?>
                     <div class="h-full w-[225px] bg-baseColor shadow-md overflow-hidden rounded-xl">
-                        <img src="<?= URL . '/public/storage/image18.png' ?>"
+                        <img src="<?= URL . "/public/" . $data->activation_proof_url ?>"
                             alt="Mockup"
                             class="w-full h-full object-fill" />
                     </div>
@@ -55,11 +55,13 @@ $options_jurusan = [
                                         <?= $data->first_name . " " . $data->last_name ?>
                                     </h2>
                                 </div>
-                                <form method="get">
-                                    <button class="p-2 text-primary hover:bg-primary/5 rounded-lg cursor-pointer transition-all duration-300 <?= $edit == 'true' ? 'bg-primary/10' : 'bg-transparent' ?>" name="edit" value="<?= $edit == 'true' ? 'false' : 'true' ?>">
-                                        <?= Icon::pencil('w-8 h-8') ?>
-                                    </button>
-                                </form>
+                                <?php if ($data->is_active): ?>
+                                    <form method="get">
+                                        <button class="p-2 text-primary hover:bg-primary/5 rounded-lg cursor-pointer transition-all duration-300 <?= $edit == 'true' ? 'bg-primary/10' : 'bg-transparent' ?>" name="edit" value="<?= $edit == 'true' ? 'false' : 'true' ?>">
+                                            <?= Icon::pencil('w-8 h-8') ?>
+                                        </button>
+                                    </form>
+                                <?php endif; ?>
                             </div>
 
                             <!-- Form -->
@@ -198,7 +200,7 @@ $options_jurusan = [
                                 <?php endif ?>
                             </form>
                             <?php if (!$data->is_active): ?>
-                                <div class="w-full flex justify-center items-center gap-6 rounded-full">
+                                <div class="w-full flex justify-center items-center gap-6 rounded-full mb-4">
                                     <form class="w-full h-10" action="<?= URL . '/admin/user/approve/' . $data->id ?>" method="get">
                                         <?php
                                         Button::button(label: 'aktivasi', color: 'secondary', class: 'w-full h-10 rounded-full!', type: 'submit');

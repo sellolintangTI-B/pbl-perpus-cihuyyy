@@ -36,14 +36,34 @@ $roleOptions = [
     <?= Button::button(
         label: 'tidak',
         type: 'button',
-        alpineClick: 'modalOpen = false',
+        alpineClick: 'updateAlert = false',
         class: 'w-full py-3',
         color: 'white',
     ) ?>
 </div>
 <?php $updateAccountContent = ob_get_clean() ?>
+
+<!-- show modal ganti password -->
+<?php ob_start() ?>
+<div class="flex gap-4 w-full">
+    <?= Button::button(
+        label: 'ya',
+        class: 'w-full py-3',
+        alpineClick: "submitPasswordForm()",
+        type: 'button',
+        color: 'red',
+    ) ?>
+    <?= Button::button(
+        label: 'tidak',
+        type: 'button',
+        alpineClick: 'updatePasswordAlert = false',
+        class: 'w-full py-3',
+        color: 'white',
+    ) ?>
+</div>
+<?php $updatePasswordContent = ob_get_clean() ?>
 <div class="w-full h-full">
-    <div class="max-w-6xl mx-auto flex flex-col gap-4">
+    <div class="max-w-6xl mx-auto flex flex-col gap-4" x-data="updateUserForm()">
         <h1 class="text-2xl text-black/80 font-medium">
             Tentang Saya
         </h1>
@@ -68,7 +88,7 @@ $roleOptions = [
                 </div>
             </div>
         </div>
-        <div class="w-full flex flex-col gap-4 p-4 h-fit bg-white rounded-lg shadow-sm shadow-black/40 overflow-hidden relative" x-data="updateUserForm()">
+        <div class="w-full flex flex-col gap-4 p-6 h-fit bg-white rounded-lg shadow-sm shadow-black/40 overflow-hidden relative">
             <div class="flex justify-between items-center ">
                 <h1 class="text-2xl font-medium text-black/80">
                     Data Pribadi
@@ -82,7 +102,7 @@ $roleOptions = [
                     </div>
                     <div class=" gap-2 items-center" :class="isEdit?'flex':'hidden'">
                         <?= Icon::cross('w-3 h-3') ?>
-                        Cancel Edit
+                        Batal
                     </div>
                 </button>
             </div>
@@ -205,20 +225,62 @@ $roleOptions = [
                         Simpan Perubahan
                     </button>
                 </div>
-
-                <!-- modal -->
-                <?= Modal::render(
-                    title: 'Yakin ingin menyimpan perubahan?',
-                    color: 'secondary',
-                    message: 'Perubahan akan langsung tersimpan di database. Tidak ada riwayat edit, jadi harap berhati-hati.',
-                    customContent: $updateAccountContent,
-                    alpineShow: 'modalOpen',
-                ) ?>
             </form>
         </div>
+        <!-- Form Ganti Password -->
+        <div class=" w-full flex flex-col gap-4 p-6 h-fit bg-white rounded-lg shadow-sm shadow-black/40 overflow-hidden relative">
+            <h2 class="text-2xl font-medium text-gray-800 mb-4">Keamanan Akun</h2>
+            <form
+                id="updatePasswordForm"
+                class="w-full grid grid-cols-1 gap-6"
+                @submit.prevent="validateAndShowPasswordAlert"
+                action="<?= URL ?>/admin/user/reset_password/?"
+                method="post">
+                <?php
+                FormInput::input(
+                    id: 'password',
+                    name: 'password',
+                    type: 'password',
+                    label: 'Password Baru',
+                    placeholder: 'Masukkan password baru',
+                    required: true,
+                );
+
+                FormInput::input(
+                    id: 'password_confirmation',
+                    name: 'password_confirmation',
+                    type: 'password',
+                    label: 'Konfirmasi Password',
+                    placeholder: 'Ulangi password baru',
+                    required: true
+                );
+                ?>
+
+                <div class="mt-4">
+                    <?= Button::button(label: 'Ganti Password', class: 'px-4 py-3 w-full', type: 'submit', color: 'red') ?>
+                </div>
+            </form>
+        </div>
+        <!-- modal -->
+        <?= Modal::render(
+            title: 'Yakin ingin menyimpan perubahan?',
+            color: 'secondary',
+            message: 'Perubahan akan langsung tersimpan di database. Tidak ada riwayat edit, jadi harap berhati-hati.',
+            customContent: $updateAccountContent,
+            alpineShow: 'updateAlert',
+        ) ?>
+        <?= Modal::render(
+            title: 'Yakin ingin mengubah password?',
+            color: 'red',
+            message: 'Perubahan password akan langsung diterapkan. Gunakan password yang kuat dan mudah diingat.',
+            customContent: $updatePasswordContent,
+            alpineShow: 'updatePasswordAlert',
+        ) ?>
     </div>
 </div>
 <script src="<?= URL ?>/public/js/select-jurusan.js"></script>
+<script src="<?= URL ?>/public/js/update-user.js"></script>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const dbJurusan = "Administrasi Niaga";
@@ -234,33 +296,4 @@ $roleOptions = [
             }, 100);
         }
     });
-
-    function updateUserForm() {
-        return {
-            modalOpen: false,
-            isEdit: false,
-
-            toggleEdit() {
-                this.isEdit = !this.isEdit;
-            },
-
-            validateAndShowUpdateAlert(event) {
-                const form = event.target;
-
-                // Cek validitas form
-                if (form.checkValidity()) {
-                    // Jika valid, tampilkan modal konfirmasi
-                    this.modalOpen = true;
-                } else {
-                    // Jika tidak valid, tampilkan pesan error browser
-                    form.reportValidity();
-                }
-            },
-
-            submitUpdateForm() {
-                // Submit form setelah user klik "Ya"
-                document.getElementById('updateUserForm').submit();
-            }
-        }
-    }
 </script>

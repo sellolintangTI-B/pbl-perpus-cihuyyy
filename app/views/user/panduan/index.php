@@ -8,8 +8,8 @@ $panduanList = [
         "content" => "
             <ul class='list-disc ml-6 space-y-1'>
                 <li>Peminjaman hanya dapat dilakukan selama jam <span class='font-medium'>operasional</span>.</li>
-                <li>Durasi minimal peminjaman: <span class='font-medium'>1 jam</span>.</li>
-                <li>Durasi maksimal peminjaman: <span class='font-medium'>3 jam</span>.</li>
+                <li>Durasi minimal peminjaman adalah <span class='font-medium'>1 jam</span>.</li>
+                <li>Durasi maksimal peminjaman adalah <span class='font-medium'>3 jam</span>.</li>
                 <li>Pembatalan hanya diperbolehkan dalam kondisi khusus sesuai kebijakan perpustakaan.</li>
                 <li>Pastikan menjaga <span class='font-medium'>kebersihan dan ketenangan</span> selama di perpustakaan.</li>
                 <li>Dilarang <span class='font-medium'>merusak fasilitas</span>, termasuk buku, komputer, dan ruangan.</li>

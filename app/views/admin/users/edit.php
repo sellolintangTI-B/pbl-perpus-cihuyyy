@@ -61,7 +61,7 @@ $roleOptions = [
 </div>
 <?php $updatePasswordContent = ob_get_clean() ?>
 
-<div class="w-full h-full" x-data="editUserForm()">
+<div class="w-full h-full" x-data="updateUserForm()">
     <div class=" w-full h-full flex flex-col items-start justify-start gap-5 ">
         <div class=" w-full flex items-center justify-start">
             <h1 class="text-2xl font-medium text-primary">
@@ -253,6 +253,7 @@ $roleOptions = [
     </div>
 </div>
 <script src="<?= URL ?>/public/js/select-jurusan.js"></script>
+<script src="<?= URL ?>/public/js/update-user.js"></script>
 
 <script>
     const dbJurusan = "<?= $data->major ?>";
@@ -266,36 +267,5 @@ $roleOptions = [
         setTimeout(() => {
             setProdiValue(dbProdi);
         }, 100);
-    }
-
-    function editUserForm() {
-        return {
-            updateAlert: false,
-            updatePasswordAlert: false,
-            validateAndShowUpdateAlert(event) {
-                const form = event.target;
-                if (form.checkValidity()) {
-                    this.updateAlert = true;
-                } else {
-                    form.reportValidity();
-                }
-            },
-            submitUpdateForm() {
-                document.getElementById('updateUserForm').submit();
-            },
-
-            validateAndShowPasswordAlert(event) {
-                const form = event.target;
-                if (form.checkValidity()) {
-                    this.updatePasswordAlert = true;
-                } else {
-                    form.reportValidity();
-                }
-            },
-
-            submitPasswordForm() {
-                document.getElementById('updatePasswordForm').submit();
-            }
-        }
     }
 </script>
