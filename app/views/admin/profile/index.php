@@ -21,7 +21,6 @@ $roleOptions = [
         "value" => "Dosen"
     ],
 ];
-
 ?>
 
 <!-- show modal update data akun -->
@@ -43,37 +42,14 @@ $roleOptions = [
     ) ?>
 </div>
 <?php $updateAccountContent = ob_get_clean() ?>
-
-<!-- show modal ganti password -->
-<?php ob_start() ?>
-<div class="flex gap-4 w-full">
-    <?= Button::button(
-        label: 'ya',
-        class: 'w-full py-3',
-        alpineClick: "submitPasswordForm()",
-        type: 'button',
-        color: 'red',
-    ) ?>
-    <?= Button::button(
-        label: 'tidak',
-        type: 'button',
-        alpineClick: 'updatePasswordAlert = false',
-        class: 'w-full py-3',
-        color: 'white',
-    ) ?>
-</div>
-<?php $updatePasswordContent = ob_get_clean() ?>
-<div class="w-full h-full">
-    <div class="max-w-6xl mx-auto flex flex-col gap-4" x-data="updateUserForm()">
-        <h1 class="text-2xl text-black/80 font-medium">
+<div class="w-full h-full p-6 overflow-y-auto">
+    <div class="w-full mx-auto flex flex-col gap-4" x-data="updateUserForm()">
+        <h1 class="text-2xl font-medium text-primary">
             Tentang Saya
         </h1>
         <div class="w-full h-56 bg-white rounded-lg shadow-sm shadow-black/40 overflow-hidden relative">
             <div class="h-1/2 bg-linear-120 from-primary to-secondary">
 
-            </div>
-            <div class="flex justify-end items-center p-4">
-                <?= Badge::badge(label: 'Suspend Point: 1 point', color: 'secondary', class: 'px-2! py-1!') ?>
             </div>
             <div class="absolute p-4 inset-0 left-18 flex flex-col items-start justify-start gap-4">
                 <div class="flex flex-col items-center gap-2">
@@ -111,7 +87,7 @@ $roleOptions = [
                 id="updateUserForm"
                 class="w-full grid grid-cols-1 sm:grid-cols-2 gap-6"
                 @submit.prevent="validateAndShowUpdateAlert"
-                action="<?= URL ?>/user/user/update/<?= $data->id ?>"
+                action="<?= URL ?>/admin/profile/update/<?= $data->id ?>"
                 method="post"
                 enctype="multipart/form-data">
                 <?php
@@ -198,58 +174,6 @@ $roleOptions = [
                 </div>
             </form>
         </div>
-        <!-- Form Ganti Password -->
-        <div class=" w-full flex flex-col gap-4 p-6 h-fit bg-white rounded-lg shadow-sm shadow-black/40 overflow-hidden relative">
-            <h2 class="text-2xl font-medium text-gray-800 mb-4">Keamanan Akun</h2>
-            <form
-                id="updatePasswordForm"
-                class="w-full grid grid-cols-1 gap-6"
-                @submit.prevent="validateAndShowPasswordAlert"
-                action="<?= URL ?>/user/user/reset_password/<?= $data->id ?>"
-                method="post">
-                <?php
-                $data = $_SESSION['reset_pass_old'] ?? null;
-                FormInput::input(
-                    id: 'current_password',
-                    name: 'current_password',
-                    type: 'password',
-                    label: 'Password Saat ini',
-                    value: $data['current_password'] ?? "",
-                    placeholder: 'Masukkan password baru',
-                    required: true,
-                );
-                ?>
-                <?php
-                FormInput::input(
-                    id: 'password',
-                    name: 'password',
-                    type: 'password',
-                    label: 'Password Baru',
-                    value: $data['password'] ?? "",
-                    placeholder: 'Masukkan password baru',
-                    required: true,
-                );
-                ?>
-                <ul id="check_password_message" class="list-disc text-red text-xs ">
-                </ul>
-
-                <?php
-                FormInput::input(
-                    id: 'password_confirmation',
-                    name: 'password_confirmation',
-                    value: $data['password_confirmation'] ?? "",
-                    type: 'password',
-                    label: 'Konfirmasi Password',
-                    placeholder: 'Ulangi password baru',
-                    required: true
-                );
-                ?>
-
-                <div class="mt-4">
-                    <?= Button::button(label: 'Ganti Password', class: 'px-4 py-3 w-full', type: 'submit', color: 'red') ?>
-                </div>
-            </form>
-        </div>
         <!-- modal -->
         <?= Modal::render(
             title: 'Yakin ingin menyimpan perubahan?',
@@ -257,13 +181,6 @@ $roleOptions = [
             message: 'Perubahan akan langsung tersimpan di database. Tidak ada riwayat edit, jadi harap berhati-hati.',
             customContent: $updateAccountContent,
             alpineShow: 'updateAlert',
-        ) ?>
-        <?= Modal::render(
-            title: 'Yakin ingin mengubah password?',
-            color: 'red',
-            message: 'Perubahan password akan langsung diterapkan. Gunakan password yang kuat dan mudah diingat.',
-            customContent: $updatePasswordContent,
-            alpineShow: 'updatePasswordAlert',
         ) ?>
     </div>
 </div>

@@ -23,14 +23,14 @@ class User extends Database
         $fields = [];
         $params = [];
         $conn = parent::getConnection();
-        foreach($data as $key => $value) {
+        foreach ($data as $key => $value) {
             $fields[] = $key;
             $params[] = ":$key";
             $values[] = $value;
         }
 
-        $implodedFields = implode(', ' , $fields);
-        $implodedParams = implode(', ' , $params);
+        $implodedFields = implode(', ', $fields);
+        $implodedParams = implode(', ', $params);
         $q = $conn->prepare("INSERT INTO users ($implodedFields) VALUES ($implodedParams)");
         $q->execute($values);
 
@@ -98,6 +98,21 @@ class User extends Database
         if (isset($data['image'])) {
             $query = "UPDATE users SET id_number = ?, email = ?, first_name = ?, last_name = ?, major = ?, study_program = ?, phone_number = ?, institution = ?, role = ?, profile_picture_url = ? WHERE id = ?";
         }
+        $q = $conn->prepare($query);
+        $i = 1;
+        foreach ($data as $key => $value) {
+            $q->bindParam($i, $data[$key]);
+            $i++;
+        }
+        $q->bindParam($i++, $id);
+        $q->execute();
+        if ($q) return true;
+        return false;
+    }
+    public static function updateProfile($id, $data)
+    {
+        $conn = parent::getConnection();
+        $query = "UPDATE users SET id_number = ?, email = ?, first_name = ?, last_name = ?, major = ?, study_program = ?, phone_number = ?, institution = ? WHERE id = ?";
         $q = $conn->prepare($query);
         $i = 1;
         foreach ($data as $key => $value) {

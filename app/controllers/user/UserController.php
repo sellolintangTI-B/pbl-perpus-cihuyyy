@@ -4,6 +4,10 @@ namespace App\Controllers\User;
 
 use App\Core\Controller;
 use App\Utils\Authentication;
+use App\Core\ResponseHandler;
+use App\Error\CustomException;
+use App\Utils\Validator;
+use App\Models\User;
 
 class UserController extends Controller
 {
@@ -14,7 +18,83 @@ class UserController extends Controller
     }
     public function profile()
     {
-        $data = $this->authUser->user;
+        $userId = $this->authUser->user['id'];
+        $data = User::getById($userId);
         $this->view('user/profile/index', $data, layoutType: $this::$layoutType['civitas']);
+    }
+    public function update($id)
+    {
+        try {
+            $data = [
+                "id_number" => $_POST["id_number"],
+                "email" => $_POST["email"],
+                "first_name" => $_POST["first_name"],
+                "last_name" => $_POST["last_name"],
+                "major" => $_POST['major'],
+                "study_program" => $_POST['study_program'],
+                "phone_number" => $_POST["phone_number"],
+                "institution" => $_POST['institution'],
+            ];
+
+            $validator = new Validator($data);
+            $validator->field("first_name", ['required']);
+            $validator->field("email", ['required']);
+            $validator->field("phone_number", ['required']);
+            $validator->field("institution", ['required']);
+
+            if ($validator->error()) throw new CustomException($validator->getErrors());
+
+            $checkById = User::checkIdNumberForUpdate($id, $data['id_number']);
+            $checkByEmail = User::checkEmailForUpdate($id, $data['email']);
+
+            if ($checkById) throw new CustomException('NIP / NIM sudah digunakan');
+            if ($checkByEmail) throw new CustomException('Email sudah digunakan');
+
+            $update = User::updateProfile($id, $data);
+            if ($update) {
+                ResponseHandler::setResponse('Berhasil mengubah data');
+                header('location:' . URL . '/user/user/profile');
+            } else {
+                throw new CustomException('Gagal mengubah data');
+            }
+        } catch (CustomException $e) {
+            ResponseHandler::setResponse($e->getErrorMessages(), "error");
+            header('location:' . URL . "/user/user/profile");
+        }
+    }
+
+    public function reset_password($id)
+    {
+        try {
+            $data = [
+                "current_password" => $_POST['current_password'],
+                "password" => $_POST['password'],
+                "confirm_password" => $_POST['password_confirmation']
+            ];
+            $validator = new Validator($data);
+            $validator->field('current_password', ['required']);
+            $validator->field('password', ['required']);
+            $validator->field('confirm_password', ['required']);
+            if ($validator->error()) throw new CustomException($validator->getErrors());
+
+            $checkIfUserExist = User::getById($id);
+            if (!$checkIfUserExist) throw new CustomException('User not found');
+            if (!password_verify($data['current_password'], $checkIfUserExist->password_hash)) throw new CustomException('Password yang anda masukkan salah!');
+
+            if ($data['password'] !== $data['confirm_password']) throw new CustomException('Konfirmasi Password tidak sama');
+            $checkById = User::getById($id);
+            if (!$checkById) throw new CustomException('Data tidak ditemukan');
+
+            $encryptedPass = password_hash($data['password'], PASSWORD_BCRYPT);
+            $update = User::resetPassword($id, $encryptedPass);
+            if ($update) {
+                ResponseHandler::setResponse('Berhasil mengubah password user');
+                $_SESSION['reset_pass_old'] = null;
+                $this->redirectWithOldInput('/user/user/profile');
+            }
+        } catch (CustomException $e) {
+            ResponseHandler::setResponse($e->getErrorMessages(), 'error');
+            $this->redirectWithOldInput('/user/user/profile', $_POST, session_name: 'reset_pass_old');
+        }
     }
 }
