@@ -1,6 +1,3 @@
-CREATE EXTENSION IF NOT EXISTS "pgcrypto";  
-SET TIMEZONE = 'Asia/Jakarta';
-DROP TABLE IF EXISTS booking_participants;
 CREATE TABLE booking_participants(
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     booking_id UUID NOT NULL,
