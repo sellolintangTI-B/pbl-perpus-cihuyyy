@@ -162,4 +162,13 @@ class Booking extends Database
         $id = $q->fetch(PDO::FETCH_OBJ);
         return $data;
     }
+
+    public static function getAllBookingsYear()
+    {
+        $conn = parent::getConnection();
+        $q = $conn->prepare("SELECT DISTINCT ON(TO_CHAR(start_time, 'YYYY')) TO_CHAR(start_time, 'YYYY') AS year FROM bookings");
+        $q->execute();
+        $data = $q->fetchAll(PDO::FETCH_OBJ);
+        return $data;   
+    }
 }
