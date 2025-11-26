@@ -23,6 +23,7 @@ $items = [
     ['label' => 'Data Pengguna', 'url' => '/admin/user/index', 'icon' => 'person'],
     ['label' => 'Data Ruangan', 'url' => '/admin/room/index', 'icon' => 'room'],
     ['label' => 'Data Feedback', 'url' => '/admin/feedback/index', 'icon' => 'feedback'],
+    ['label' => 'Jadwal Tutup', 'url' => '/admin/close/index', 'icon' => 'calendar'],
 
 ];
  $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? "https" : "http";

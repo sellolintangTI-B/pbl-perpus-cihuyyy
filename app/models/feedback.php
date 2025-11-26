@@ -44,9 +44,15 @@ class Feedback extends Database
 
         if (!empty($params)) {
             foreach ($params as $key => $value) {
-                if ($key === 'room') $where[] = "r.id = :roomId";
-                if ($key === 'date') $where[] = "TO_CHAR(b.start_time, 'YYYY-MM-DD') = :date";
-                $values[] = $value;
+                if ($key === 'ruangan' && !empty($value)) {
+                    $where[] = "r.id = :roomId";
+                    $values[] = $value; 
+                }
+
+                if ($key === 'date' && !empty($value)) {
+                    $where[] = "TO_CHAR(b.start_time, 'YYYY-MM') = :date";
+                    $values[] = $value; 
+                }
             }
         }
 
@@ -54,7 +60,7 @@ class Feedback extends Database
             $whereClauses = implode(' AND ', $where);
             $stmt .= " WHERE $whereClauses ";
         }
-
+        
         $q = $conn->prepare($stmt);
         $q->execute($values);
         $data = $q->fetchAll(PDO::FETCH_OBJ);

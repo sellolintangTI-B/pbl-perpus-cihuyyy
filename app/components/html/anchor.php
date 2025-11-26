@@ -20,5 +20,5 @@ switch ($color) {
 ?>
 
 <a class=" <?= $customClass ?> <?= $class ?> shadow-md shadow-black/25 cursor-pointer" id="<?= $id ?>" href="<?= URL . $href ?>">
-    <?= $icon ? Icon::{$icon}('w-3 h-3') : '' ?> <?= $label ?>
+    <?= $icon ? Icon::{$icon}($btn_icon_size) : '' ?> <?= $label ?>
 </a>

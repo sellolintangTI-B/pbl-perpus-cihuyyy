@@ -4,7 +4,7 @@ namespace App\Components;
 
 class Button
 {
-    public static function anchor($label = '', $icon = null,  $class = '', $id = '', $href = '', $color = 'primary')
+    public static function anchor($label = '', $icon = null,  $class = '', $id = '', $href = '', $color = 'primary', $btn_icon_size = 'w-6 h-6')
     {
         include __DIR__ . '/html/anchor.php';
     }

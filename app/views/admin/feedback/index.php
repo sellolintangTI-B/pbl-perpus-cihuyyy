@@ -5,9 +5,44 @@ use App\Components\FormInput;
 use App\Components\Badge;
 use App\Components\Icon\Icon;
 use Carbon\Carbon;
-use App\Components\Modal;
+use App\Components\CustomSelect;
 
 $no = 1;
+
+$feedback = $data['feedback'];
+$room = $data['room'];
+
+$Ruangan = ['' => 'Ruangan'];
+foreach ($room as $r) {
+    $Ruangan[$r->id] = $r->name;
+}
+
+$tahun = [
+    '' => 'Tahun',
+];
+
+foreach($data['years'] as $key => $value) {
+    $tahun[$value->year] = $value->year;
+}
+
+$bulan = [
+    '' => 'Bulan',
+    '01' => 'Januari',
+    '02' => 'Februari',
+    '03' => 'Maret',
+    '04' => 'April',
+    '05' => 'Mei',
+    '06' => 'Juni',
+    '07' => 'Juli',
+    '08' => 'Agustus',
+    '09' => 'September',
+    '10' => 'Oktober',
+    '11' => 'November',
+    '12' => 'Desember'
+];
+
+
+
 ?>
 
 <div class="w-full h-full">
@@ -19,11 +54,37 @@ $no = 1;
         </div>
         <!-- action section -->
         <div class="w-full h-10 flex items-center justify-between">
-            <div class="flex items-center justify-end gap-2 h-full w-full max-w-[24rem]">
-
+            <div class="flex items-center justify-start gap-2 h-full">
+                <?= Button::anchor(
+                    label: 'Export',
+                    icon: 'export',
+                    color: 'primary',
+                    class: 'px-3 py-2',
+                    btn_icon_size: 'w-4 h-4',
+                    href: '/admin/feedback/export?ruangan = ? & bulan = ? & tahun = ?'
+                ) ?>
             </div>
-            <div class="flex items-center justify-end gap-2 h-full w-full max-w-[24rem]">
-
+            <div class="flex items-start justify-end gap-2 h-full w-full">
+                <form class="flex items-start justify-center gap-2" method="get">
+                    <?= CustomSelect::render(
+                        name: 'ruangan',
+                        defaultLabel: 'Ruangan',
+                        options: $Ruangan,
+                        selectedValue: $_GET['ruangan'] ?? ''
+                    ) ?>
+                    <?= CustomSelect::render(
+                        name: 'bulan',
+                        defaultLabel: 'Bulan',
+                        options: $bulan,
+                        selectedValue: $_GET['bulan'] ?? ''
+                    ) ?>
+                    <?= CustomSelect::render(
+                        name: 'tahun',
+                        defaultLabel: 'Tahun',
+                        options: $tahun,
+                        selectedValue: $_GET['tahun'] ?? ''
+                    ) ?>
+                </form>
             </div>
         </div>
 
@@ -31,7 +92,7 @@ $no = 1;
         <div class="w-full h-full overflow-y-auto p-2">
             <div class="w-full grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <!-- mulai di fetch disini feedbacknnyaaaaa -->
-                <?php foreach ($data as $d): ?>
+                <?php foreach ($feedback as $d): ?>
                     <div class="w-full p-6 rounded-lg bg-baseColor shadow-md shadow-gray-200 flex flex-col gap-2">
                         <div class="flex justify-between items-center">
                             <h1 class="text-xl font-medium text-primary flex gap-2">
@@ -63,7 +124,7 @@ $no = 1;
                         <div class="flex gap-2 items-center justify-start text-black/80 mt-2">
                             <?= Icon::calendar_pencil("w-5 h-5") ?>
                             <p class="font-medium text-sm">
-                                Tanggal Booking: <?= Carbon::parse("$d->start_time")->translatedFormat('D - M - Y') ?>
+                                Tanggal Booking: <?= Carbon::parse("$d->start_time")->translatedFormat('l, d M Y') ?>
                             </p>
                         </div>
                         <div class="flex flex-col gap-2 items-start justify-center text-black/80 ">
