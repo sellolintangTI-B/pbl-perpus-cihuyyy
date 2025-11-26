@@ -22,13 +22,16 @@ class FeedbackController extends Controller
             $years = Booking::getAllBookingsYear();
             $params = [];
 
-            if (isset($_GET['room'])) {
-                $params['room'] = $_GET['room'];
+            if (isset($_GET['ruangan'])) {
+                $params['ruangan'] = $_GET['ruangan'];
             }
 
-            if(isset($_GET['month']) && isset($_GET['year'])) {
-                $params['date'] = Carbon::createFromDate($_GET['year'], $_GET['month'])->format('Y-m');
+            if(isset($_GET['bulan']) && isset($_GET['tahun'])) {
+                if(!empty($_GET['bulan']) && !empty($_GET['tahun'])) {
+                    $params['date'] = Carbon::createFromDate((int) $_GET['tahun'], (int) $_GET['bulan'])->format('Y-m');
+                }
             }
+
             $feedback = Feedback::get($params);
             $data = [
                 'feedback' => $feedback,

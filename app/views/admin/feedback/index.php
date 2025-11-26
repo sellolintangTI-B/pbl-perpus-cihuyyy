@@ -19,10 +19,11 @@ foreach ($room as $r) {
 
 $tahun = [
     '' => 'Tahun',
-    '2023' => '2023',
-    '2024' => '2024',
-    '2025' => '2025'
 ];
+
+foreach($data['years'] as $key => $value) {
+    $tahun[$value->year] = $value->year;
+}
 
 $bulan = [
     '' => 'Bulan',
@@ -60,7 +61,7 @@ $bulan = [
                     color: 'primary',
                     class: 'px-3 py-2',
                     btn_icon_size: 'w-4 h-4',
-                    href: '/path/untuk/export?ruangan = ? & bulan = ? & tahun = ?'
+                    href: '/admin/feedback/export?ruangan = ? & bulan = ? & tahun = ?'
                 ) ?>
             </div>
             <div class="flex items-start justify-end gap-2 h-full w-full">
