@@ -1,6 +1,3 @@
-CREATE EXTENSION IF NOT EXISTS "pgcrypto";
-DROP TABLE IF EXISTS rooms RESTRICT;
-SET TIMEZONE = 'Asia/Jakarta';
 CREATE TABLE rooms (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name VARCHAR(255) NOT NULL,

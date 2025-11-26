@@ -1,6 +1,3 @@
-CREATE EXTENSION IF NOT EXISTS "pgcrypto";
-SET TIMEZONE = 'Asia/Jakarta';
-DROP TYPE status;
 CREATE TYPE status AS ENUM ('checked_in', 'finished', 'cancelled', 'created');
 CREATE TABLE IF NOT EXISTS booking_logs (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),

@@ -44,6 +44,13 @@ class Middleware
             "/admin/user/details",
             //FEEBACK
             "/admin/feedback/index",
+            //CLOSE LOG 
+            "/admin/close/index",
+            "/admin/close/store",
+            "/admin/close/detail",
+            "/admin/close/update",
+            "/admin/close/delete",
+            "/admin/close/edit",
             //PROFILE
             "/admin/profile/index",
             "/admin/profile/update",
