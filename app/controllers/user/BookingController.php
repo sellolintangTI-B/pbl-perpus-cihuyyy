@@ -30,7 +30,7 @@ class BookingController extends Controller
             if ($params == 'berlangsung') {
                 $data = Booking::checkUserActiveBooking($user->user['id']);
             } elseif ($params = 'riwayat') {
-                $data = Booking::getUserBookingHistory($user->user['id']);
+                $data = Booking::getUserBookingHistory($user->user['id'], $status);
             }
 
             $this->view('user/booking/index', $data, layoutType: "Civitas");

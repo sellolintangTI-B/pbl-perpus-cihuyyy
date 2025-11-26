@@ -14,11 +14,15 @@ class Room extends Database
         $conn = parent::getConnection();
         $stmt = " SELECT * FROM rooms WHERE is_deleted = FALSE ";
         if (!empty($params)) {
-            $stmt .= " AND id NOT IN (SELECT room_id FROM bookings WHERE 
-                start_time < TO_TIMESTAMP(:start_time, 'YYYY-MM-DD HH24:MI:SS') + (:duration || ' minutes')::INTERVAL
-                AND end_time > TO_TIMESTAMP(:start_time, 'YYYY-MM-DD HH24:MI:SS'))";
-            $paramValues['start_time'] = $params['start_time'];
-            $paramValues['duration']  = $params['duration'];
+
+            if(!empty($params['start_time']) && !empty($params['duration'])) {
+                $stmt .= " AND id NOT IN (SELECT room_id FROM bookings WHERE 
+                    start_time < TO_TIMESTAMP(:start_time, 'YYYY-MM-DD HH24:MI:SS') + (:duration || ' minutes')::INTERVAL
+                    AND end_time > TO_TIMESTAMP(:start_time, 'YYYY-MM-DD HH24:MI:SS'))";
+                $paramValues['start_time'] = $params['start_time'];
+                $paramValues['duration']  = $params['duration'];
+            }
+            
             if (!empty($params['room'])) {
                 $stmt .= " AND name ILIKE :roomName";
                 $paramValues['roomName'] = "%{$params['room']}%";

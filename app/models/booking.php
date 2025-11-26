@@ -95,14 +95,20 @@ class Booking extends Database
         return $data;
     }
 
-    public static function getUserBookingHistory($userId)
+    public static function getUserBookingHistory($userId, $status = "")
     {
         $conn = parent::getConnection();
-        $q = $conn->prepare("SELECT DISTINCT ON (b.id) b.id, bl.status, r.name, b.start_time, b.end_time, b.booking_code, r.floor
+        $statusClause = "";
+        if($status == 'semua') $statusClause = "bl.status IN ('finished', 'cancelled')";
+        if($status == 'cancelled') $statusClause = "bl.status IN ('cancelled')";
+        if($status == 'finished') $statusClause = "bl.status IN ('finished')";
+        
+        $stmt = "SELECT DISTINCT ON (b.id) b.id, bl.status, r.name, b.start_time, b.end_time, b.booking_code, r.floor
         FROM bookings AS b JOIN booking_logs AS bl ON b.id = bl.booking_id
         JOIN booking_participants AS bp ON b.id = bp.booking_id 
         JOIN rooms AS r ON b.room_id = r.id WHERE bp.user_id = :userId
-        AND bl.status IN ('finished', 'cancelled') ORDER BY b.id, bl.created_at");
+        AND $statusClause ORDER BY b.id, bl.created_at";
+        $q = $conn->prepare($stmt);
         $q->bindValue(':userId', $userId);
         $q->execute();
         $data = $q->fetchAll(PDO::FETCH_OBJ);

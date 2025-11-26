@@ -195,20 +195,14 @@ class BookingController extends Controller
             $members = $data['list_anggota'];
             $getParticipantsByBookingId = BookingParticipant::getUserIdByBookingId($id);
 
-            $existsMembers = array_map(function ($item) {
-                return $item->user_id;
-            }, $getParticipantsByBookingId);
-
-            $requestedMemberIds = array_map(function ($item) {
-                return $item['id'];
-            }, $members);
+            $existsMembers = array_column($getParticipantsByBookingId, 'user_id');
+            $requestedMemberIds = array_column($data['list_anggota'], 'id');
 
             $deletedMembers = array_values(array_diff($existsMembers, $requestedMemberIds));
-
-            $addedMembers = array_values(array_diff($requestedMemberIds, $existsMembers));
+            $addedMembers   = array_values(array_diff($requestedMemberIds, $existsMembers));
 
             if (!empty($deletedMembers)) {
-                $deleteParticipantsWhereNotInIds = BookingParticipant::deleteParticipantsWhereInIds($id, $deletedMembers);
+                BookingParticipant::deleteParticipantsWhereInIds($id, $deletedMembers);
             }
 
             if (!empty($addedMembers)) {
@@ -221,18 +215,17 @@ class BookingController extends Controller
                 $addParticipants = BookingParticipant::bulkInsert($formattingMembers);
             }
 
-            $editedBook = Booking::edit($id ,[
+            $editedBook = Booking::edit($id, [
                 'room_id' => $data['room_id'],
                 'start_time' => $data['datetime']->toDateTimeString(),
                 'duration' => $data['duration'],
                 'end_time' => $data['end_time']->toDateTimeString(),
             ]);
 
-            if($editedBook) {
+            if ($editedBook) {
                 ResponseHandler::setResponse('Berhasil mengubah data');
                 header("location:" . URL . '/admin/booking/index');
             }
-
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), 'error');
             header('location:' . URL . "/admin/booking/edit/$id");
