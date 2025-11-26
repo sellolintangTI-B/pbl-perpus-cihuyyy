@@ -153,19 +153,19 @@ use App\Components\DashboardCard;
                             label: '2023',
                             data: [85, 42, 58, 35, 92, 52, 45, 75, 48, 95],
                             backgroundColor: 'rgba(139, 92, 246, 0.8)',
-                            borderRadius: 4
+
                         },
                         {
                             label: '2024',
                             data: [65, 78, 45, 88, 52, 68, 72, 58, 82, 62],
                             backgroundColor: 'rgba(236, 72, 153, 0.8)',
-                            borderRadius: 4
+
                         },
                         {
                             label: '2025',
                             data: [55, 48, 82, 62, 75, 58, 68, 85, 55, 88],
                             backgroundColor: 'rgba(59, 130, 246, 0.8)',
-                            borderRadius: 4
+
                         }
                     ]
                 },
@@ -203,19 +203,19 @@ use App\Components\DashboardCard;
                             label: '2023',
                             data: [4.5, 3.8, 4.2, 3.5, 4.8, 4.0, 3.9, 4.3, 4.1, 4.6],
                             backgroundColor: 'rgba(139, 92, 246, 0.8)',
-                            borderRadius: 4
+
                         },
                         {
                             label: '2024',
                             data: [4.2, 4.5, 3.7, 4.6, 4.0, 4.3, 4.4, 3.8, 4.7, 4.1],
                             backgroundColor: 'rgba(236, 72, 153, 0.8)',
-                            borderRadius: 4
+
                         },
                         {
                             label: '2025',
                             data: [4.0, 3.9, 4.6, 4.1, 4.4, 3.8, 4.2, 4.8, 4.0, 4.5],
                             backgroundColor: 'rgba(59, 130, 246, 0.8)',
-                            borderRadius: 4
+
                         }
                     ]
                 },

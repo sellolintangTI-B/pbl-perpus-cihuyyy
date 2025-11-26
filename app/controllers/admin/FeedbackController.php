@@ -29,7 +29,6 @@ class FeedbackController extends Controller
             if(isset($_GET['month']) && isset($_GET['year'])) {
                 $params['date'] = Carbon::createFromDate($_GET['year'], $_GET['month'])->format('Y-m');
             }
-
             $feedback = Feedback::get($params);
             $data = [
                 'feedback' => $feedback,
