@@ -21,12 +21,6 @@ $roleOptions = [
         "value" => "Dosen"
     ],
 ];
-
-$badgeSuspendColor = [
-    1 => 'tertiary',
-    2 => 'yellow',
-    3 => 'red',
-]
 ?>
 
 <!-- show modal update data akun -->
@@ -48,48 +42,25 @@ $badgeSuspendColor = [
     ) ?>
 </div>
 <?php $updateAccountContent = ob_get_clean() ?>
-
-<!-- show modal ganti password -->
-<?php ob_start() ?>
-<div class="flex gap-4 w-full">
-    <?= Button::button(
-        label: 'ya',
-        class: 'w-full py-3',
-        alpineClick: "submitPasswordForm()",
-        type: 'button',
-        color: 'red',
-    ) ?>
-    <?= Button::button(
-        label: 'tidak',
-        type: 'button',
-        alpineClick: 'updatePasswordAlert = false',
-        class: 'w-full py-3',
-        color: 'white',
-    ) ?>
-</div>
-<?php $updatePasswordContent = ob_get_clean() ?>
-<div class="w-full h-full">
-    <div class="max-w-6xl mx-auto flex flex-col gap-4" x-data="updateUserForm()">
-        <h1 class="text-2xl text-black/80 font-medium">
+<div class="w-full h-full p-6 overflow-y-auto">
+    <div class="w-full mx-auto flex flex-col gap-4" x-data="updateUserForm()">
+        <h1 class="text-2xl font-medium text-primary">
             Tentang Saya
         </h1>
         <div class="w-full h-56 bg-white rounded-lg shadow-sm shadow-black/40 overflow-hidden relative">
             <div class="h-1/2 bg-linear-120 from-primary to-secondary">
 
             </div>
-            <div class="flex justify-end items-center p-4">
-                <?= Badge::badge(label: 'Suspend Point: ' . $data['suspension']->suspend_count . ' point', color: $badgeSuspendColor[$data['suspension']->suspend_count], class: 'px-2! py-1!') ?>
-            </div>
             <div class="absolute p-4 inset-0 left-18 flex flex-col items-start justify-start gap-4">
                 <div class="flex flex-col items-center gap-2">
                     <div class="h-28 w-28 rounded-full bg-white p-1">
-                        <img src="<?= URL . "/public/" . $data['data']->profile_picture_url ?>" class="h-full w-full rounded-full object-cover" />
+                        <img src="<?= URL . "/public/" . $data->profile_picture_url ?>" class="h-full w-full rounded-full object-cover" />
                     </div>
                     <h1 class="text-xl font-medium text-primary">
-                        <?= $data['data']->first_name . " " . $data['data']->last_name ?>
+                        <?= $data->first_name . " " . $data->last_name ?>
                     </h1>
                     <p class="text-gray-700">
-                        <?= $data['data']->role ?? " " ?>
+                        <?= $data->role ?? " " ?>
                     </p>
                 </div>
             </div>
@@ -116,7 +87,7 @@ $badgeSuspendColor = [
                 id="updateUserForm"
                 class="w-full grid grid-cols-1 sm:grid-cols-2 gap-6"
                 @submit.prevent="validateAndShowUpdateAlert"
-                action="<?= URL ?>/user/user/update/<?= $data['data']->id ?>"
+                action="<?= URL ?>/admin/profile/update/<?= $data->id ?>"
                 method="post"
                 enctype="multipart/form-data">
                 <?php
@@ -124,7 +95,7 @@ $badgeSuspendColor = [
                     id: 'first_name',
                     name: 'first_name',
                     label: 'Nama Depan',
-                    value: $data['data']->first_name,
+                    value: $data->first_name,
                     required: true,
                     alpine_disabled: '!isEdit'
                 );
@@ -134,14 +105,14 @@ $badgeSuspendColor = [
                     name: 'last_name',
                     label: 'Nama Belakang',
                     alpine_disabled: '!isEdit',
-                    value: $data['data']->last_name ?? ""
+                    value: $data->last_name ?? ""
                 );
 
                 FormInput::input(
                     id: 'id_number',
                     name: 'id_number',
                     label: 'NIM/NIP',
-                    value: $data['data']->id_number,
+                    value: $data->id_number,
                     required: true,
                     alpine_disabled: '!isEdit'
                 );
@@ -151,7 +122,7 @@ $badgeSuspendColor = [
                     name: 'email',
                     type: 'email',
                     label: 'Email',
-                    value: $data['data']->email,
+                    value: $data->email,
                     required: true,
                     alpine_disabled: '!isEdit'
                 );
@@ -161,7 +132,7 @@ $badgeSuspendColor = [
                     label: 'Jurusan',
                     required: true,
                     alpine_disabled: '!isEdit',
-                    value: $data['data']->major ?? ""
+                    value: $data->major ?? ""
                 );
                 FormInput::select(
                     id: 'prodi',
@@ -169,7 +140,7 @@ $badgeSuspendColor = [
                     label: 'Program Studi',
                     placeholder: 'Pilih Jurusan terlebih dahulu',
                     required: true,
-                    value: $data['data']->study_program ?? "",
+                    value: $data->study_program ?? "",
                     // options: []
                     alpine_disabled: '!isEdit'
                 );
@@ -179,7 +150,7 @@ $badgeSuspendColor = [
                     name: 'phone_number',
                     type: 'tel',
                     label: 'Nomor Whatsapp',
-                    value: $data['data']->phone_number ?? "",
+                    value: $data->phone_number ?? "",
                     required: true,
                     alpine_disabled: '!isEdit'
                 );
@@ -188,7 +159,7 @@ $badgeSuspendColor = [
                     id: 'institution',
                     name: 'institution',
                     label: 'Institusi',
-                    value: $data['data']->institution ?? "",
+                    value: $data->institution ?? "",
                     required: true,
                     alpine_disabled: '!isEdit'
                 );
@@ -203,58 +174,6 @@ $badgeSuspendColor = [
                 </div>
             </form>
         </div>
-        <!-- Form Ganti Password -->
-        <div class=" w-full flex flex-col gap-4 p-6 h-fit bg-white rounded-lg shadow-sm shadow-black/40 overflow-hidden relative">
-            <h2 class="text-2xl font-medium text-gray-800 mb-4">Keamanan Akun</h2>
-            <form
-                id="updatePasswordForm"
-                class="w-full grid grid-cols-1 gap-6"
-                @submit.prevent="validateAndShowPasswordAlert"
-                action="<?= URL ?>/user/user/reset_password/<?= $data['data']->id ?>"
-                method="post">
-                <?php
-                $old_data = $_SESSION['reset_pass_old'] ?? null;
-                FormInput::input(
-                    id: 'current_password',
-                    name: 'current_password',
-                    type: 'password',
-                    label: 'Password Saat ini',
-                    value: $old_data['current_password'] ?? "",
-                    placeholder: 'Masukkan password baru',
-                    required: true,
-                );
-                ?>
-                <?php
-                FormInput::input(
-                    id: 'password',
-                    name: 'password',
-                    type: 'password',
-                    label: 'Password Baru',
-                    value: $old_data['password'] ?? "",
-                    placeholder: 'Masukkan password baru',
-                    required: true,
-                );
-                ?>
-                <ul id="check_password_message" class="list-disc text-red text-xs ">
-                </ul>
-
-                <?php
-                FormInput::input(
-                    id: 'password_confirmation',
-                    name: 'password_confirmation',
-                    value: $old_data['password_confirmation'] ?? "",
-                    type: 'password',
-                    label: 'Konfirmasi Password',
-                    placeholder: 'Ulangi password baru',
-                    required: true
-                );
-                ?>
-
-                <div class="mt-4">
-                    <?= Button::button(label: 'Ganti Password', class: 'px-4 py-3 w-full', type: 'submit', color: 'red') ?>
-                </div>
-            </form>
-        </div>
         <!-- modal -->
         <?= Modal::render(
             title: 'Yakin ingin menyimpan perubahan?',
@@ -262,13 +181,6 @@ $badgeSuspendColor = [
             message: 'Perubahan akan langsung tersimpan di database. Tidak ada riwayat edit, jadi harap berhati-hati.',
             customContent: $updateAccountContent,
             alpineShow: 'updateAlert',
-        ) ?>
-        <?= Modal::render(
-            title: 'Yakin ingin mengubah password?',
-            color: 'red',
-            message: 'Perubahan password akan langsung diterapkan. Gunakan password yang kuat dan mudah diingat.',
-            customContent: $updatePasswordContent,
-            alpineShow: 'updatePasswordAlert',
         ) ?>
     </div>
 </div>
@@ -282,8 +194,8 @@ $badgeSuspendColor = [
     const password = document.getElementById('password');
     const password_message = document.getElementById('check_password_message')
     document.addEventListener('DOMContentLoaded', function() {
-        const dbJurusan = "<?= $data['data']->major ?? "" ?>";
-        const dbProdi = "<?= $data['data']->study_program ?? "" ?>";
+        const dbJurusan = "<?= $data->major ?? "" ?>";
+        const dbProdi = "<?= $data->study_program ?? "" ?>";
 
         if (dbJurusan) {
             setInitialJurusan(dbJurusan);

@@ -25,14 +25,14 @@ $auth = new Authentication();
             </div>
         </div>
         <div class="flex items-center justify-center w-full ps-8 flex-col gap-4">
-            <div class="w-full p-2 items-center justify-start flex gap-2">
+            <a class="w-full p-2 items-center justify-start flex gap-2 bg-white/20 rounded-lg cursor-pointer hover:bg-white/40 transition-all duration-300" href="<?= URL . "/admin/profile/index" ?>">
                 <div class="rounded-full bg-baseColor/20 p-0.5 w-8 h-8">
                     <img src="<?= URL ?>/public/<?= $auth->user["img_url"] ?? "" ?>" class="w-full h-full object-cover rounded-full" />
                 </div>
                 <div class="flex-1 break-all">
                     <?= $auth->user["username"] ?>
                 </div>
-            </div>
+            </a>
             <?=
             Button::button(label: 'Logout', color: 'white', alpineClick: 'logoutAlert = true', icon: 'logout', class: 'w-full py-2 text-sm!')
             ?>

@@ -108,3 +108,4 @@ jurusanSelect.addEventListener('change', function() {
         prodiSelect.innerHTML = '<option value="">Pilih jurusan terlebih dahulu!</option>';
     }
 });
+

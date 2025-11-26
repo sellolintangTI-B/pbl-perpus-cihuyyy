@@ -44,12 +44,15 @@ class Middleware
             "/admin/user/details",
             //FEEBACK
             "/admin/feedback/index",
+            //PROFILE
+            "/admin/profile/index",
+            "/admin/profile/update",
             //ERROR
             "/error/forbidden/index",
             "/error/notfound/index",
             "/auth/logout/logout"
         ],
-            
+
         "Mahasiswa" => [
             "/user/user/index",
             "/error/forbidden/index",
@@ -68,7 +71,9 @@ class Middleware
             //GUIDE
             "/user/guide/index",
             //PROFILE
-            "/user/user/profile"
+            "/user/user/profile",
+            "/user/user/update",
+            "/user/user/reset_password",
         ],
         "Dosen" => [
             "/user/user/index",
@@ -86,7 +91,11 @@ class Middleware
             //LOGOUT
             "/auth/logout/logout",
             //GUIDE
-            "/user/guide/index"
+            "/user/guide/index",
+            //PROFILE
+            "/user/user/profile",
+            "/user/user/update",
+            "/user/user/reset_password",
         ]
     ];
 

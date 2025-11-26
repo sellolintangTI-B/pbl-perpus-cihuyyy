@@ -11,16 +11,18 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="//unpkg.com/alpinejs" defer></script>
     <script src="<?= URL ?>/public/js/modal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <?php
 
 use App\Components\NavThings;
 
 $items = [
-    ['label' => 'Dashboard', 'url' => URL.'/admin/dashboard/index', 'icon' => 'home'],
-    ['label' => 'Data Peminjaman', 'url' => URL.'/admin/booking/index', 'icon' => 'calendar_pencil'],
-    ['label' => 'Data Pengguna', 'url' => URL.'/admin/user/index', 'icon' => 'person'],
-    ['label' => 'Data Ruangan', 'url' => URL.'/admin/room/index', 'icon' => 'room'],
+    ['label' => 'Dashboard', 'url' => '/admin/dashboard/index', 'icon' => 'home'],
+    ['label' => 'Data Peminjaman', 'url' => '/admin/booking/index', 'icon' => 'calendar_pencil'],
+    ['label' => 'Data Pengguna', 'url' => '/admin/user/index', 'icon' => 'person'],
+    ['label' => 'Data Ruangan', 'url' => '/admin/room/index', 'icon' => 'room'],
+    ['label' => 'Data Feedback', 'url' => '/admin/feedback/index', 'icon' => 'feedback'],
 
 ];
  $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? "https" : "http";

@@ -14,17 +14,16 @@ class FeedbackController extends Controller
     {
         try {
             $params = [];
-            if(isset($_GET['room'])) {
+            if (isset($_GET['room'])) {
                 $params['room'] = $_GET['room'];
             }
 
-            if(isset($_GET['date'])) {
+            if (isset($_GET['date'])) {
                 $params['date'] = Carbon::parse($_GET['date'])->format('Y-m-d');
             }
 
             $feedback = Feedback::get($params);
-            $this->view('', $feedback, 'Admin');
-
+            $this->view('/admin/feedback/index', $feedback, 'Admin');
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getMessage(), 'error');
             header('location:' . URL . '/admin/feedback/index');
