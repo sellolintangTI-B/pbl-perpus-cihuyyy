@@ -19,10 +19,11 @@ foreach ($room as $r) {
 
 $tahun = [
     '' => 'Tahun',
-    '2023' => '2023',
-    '2024' => '2024',
-    '2025' => '2025'
 ];
+
+foreach($data['years'] as $key => $value) {
+    $tahun[$value->year] = $value->year;
+}
 
 $bulan = [
     '' => 'Bulan',
@@ -60,7 +61,7 @@ $bulan = [
                     color: 'primary',
                     class: 'px-3 py-2',
                     btn_icon_size: 'w-4 h-4',
-                    href: '/path/untuk/export?ruangan = ? & bulan = ? & tahun = ?'
+                    href: '/admin/feedback/export?ruangan = ? & bulan = ? & tahun = ?'
                 ) ?>
             </div>
             <div class="flex items-start justify-end gap-2 h-full w-full">
@@ -123,7 +124,7 @@ $bulan = [
                         <div class="flex gap-2 items-center justify-start text-black/80 mt-2">
                             <?= Icon::calendar_pencil("w-5 h-5") ?>
                             <p class="font-medium text-sm">
-                                Tanggal Booking: <?= Carbon::parse("$d->start_time")->translatedFormat('D - M - Y') ?>
+                                Tanggal Booking: <?= Carbon::parse("$d->start_time")->translatedFormat('l, d M Y') ?>
                             </p>
                         </div>
                         <div class="flex flex-col gap-2 items-start justify-center text-black/80 ">
