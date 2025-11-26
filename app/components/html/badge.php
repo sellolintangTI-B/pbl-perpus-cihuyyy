@@ -14,6 +14,9 @@ if (!empty($color)) {
         case 'tertiary':
             $customClass = "border border-tertiary " . ($active ? "bg-tertiary text-white" : "bg-tertiary/20 text-tertiary");
             break;
+        case 'yellow':
+            $customClass = "border border-yellow " . ($active ? "bg-yellow text-white" : "bg-yellow/20 text-yellow");
+            break;
         default:
             $customClass = "border border-primary " . ($active ? "bg-primary text-white" : "bg-primary/20 text-primary");
             break;

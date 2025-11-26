@@ -27,7 +27,7 @@ $classColor = match ($color) {
             <?= isset($required) && $required ? 'required' : '' ?>
             <?= isset($readonly) && $readonly ? 'readonly' : '' ?>
             <?= isset($disabled) && $disabled ? 'disabled' : '' ?>
-            x-bind:disabled="<?= $alpine_disabled ?>" />
+            <?= isset($alpine_disabled) && $alpine_disabled ? 'x-bind:disabled="' . $alpine_disabled . '"' : '' ?> />
         <?php if ($type == "password"): ?>
             <button
                 type="button"
@@ -45,7 +45,7 @@ $classColor = match ($color) {
     </div>
 </div>
 
-<script>
+<script type="module">
     function togglePassword(inputId) {
         const input = document.getElementById(inputId);
         const eyeIcon = document.getElementById('eye-icon-' + inputId);
