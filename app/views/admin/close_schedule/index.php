@@ -34,7 +34,7 @@ $data = [
                 label: "Tambah tanggal tutup",
                 icon: "plus",
                 href: "/admin/close/create",
-                class: "px-4 py-2 h-full",
+                class: "px-4 py-2 h-full  w-[16rem]",
                 btn_icon_size: 'w-4 h-4'
             ) ?>
 

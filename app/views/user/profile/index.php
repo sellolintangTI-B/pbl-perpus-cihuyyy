@@ -235,8 +235,8 @@ $badgeSuspendColor = [
                     required: true,
                 );
                 ?>
-                <ul id="check_password_message" class="list-disc text-red text-xs ">
-                </ul>
+                <!-- <ul id="check_password_message" class="list-disc text-red text-xs ">
+                </ul> -->
 
                 <?php
                 FormInput::input(
@@ -275,12 +275,12 @@ $badgeSuspendColor = [
 <script src="<?= URL ?>/public/js/select-jurusan.js"></script>
 <script src="<?= URL ?>/public/js/update-user.js"></script>
 
-<script type="module">
-    import {
-        ValidatePassword
-    } from '<?= URL ?>/public/js/utils/password-validation.js'
-    const password = document.getElementById('password');
-    const password_message = document.getElementById('check_password_message')
+<script>
+    // import {
+    //     ValidatePassword
+    // } from '<?= URL ?>/public/js/utils/password-validation.js'
+    // const password = document.getElementById('password');
+    // const password_message = document.getElementById('check_password_message')
     document.addEventListener('DOMContentLoaded', function() {
         const dbJurusan = "<?= $data['data']->major ?? "" ?>";
         const dbProdi = "<?= $data['data']->study_program ?? "" ?>";
@@ -295,20 +295,20 @@ $badgeSuspendColor = [
             }, 100);
         }
     });
-    password.addEventListener('change', function() {
-        password_message.innerHTML = '';
-        console.log(this.value)
-        let passwordState = ValidatePassword(this.value);
+    // password.addEventListener('change', function() {
+    //     password_message.innerHTML = '';
+    //     console.log(this.value)
+    //     let passwordState = ValidatePassword(this.value);
 
-        if (!passwordState.isValid) {
+    //     if (!passwordState.isValid) {
 
-            passwordState.messages.forEach(messageObj => {
-                const newMessage = document.createElement('li');
+    //         passwordState.messages.forEach(messageObj => {
+    //             const newMessage = document.createElement('li');
 
-                newMessage.textContent = messageObj.message;
+    //             newMessage.textContent = messageObj.message;
 
-                password_message.appendChild(newMessage);
-            });
-        }
-    });
+    //             password_message.appendChild(newMessage);
+    //         });
+    //     }
+    // });
 </script>

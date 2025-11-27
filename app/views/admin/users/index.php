@@ -30,7 +30,7 @@ $options = [
                 label: "Tambah Pengguna",
                 icon: "plus",
                 href: "/admin/user/add_admin",
-                class: "px-4 py-2 h-full",
+                class: "px-4 py-2 h-full  w-[16rem]",
                 btn_icon_size: 'w-4 h-4'
             ) ?>
 
@@ -145,17 +145,17 @@ $options = [
 
                                         <?php if ($user->is_active): ?>
 
-                                            href="<?= URL . "/admin/user/details/" . $user->id ?>"
-                                            class="flex items-center gap-2 px-3 py-2 text-xs text-gray-700 hover:bg-gray-50 transition">
-                                            <?= Icon::eye('w-4 h-4') ?>
-                                            <span>Detail</span>
+                                            <a href="<?= URL . "/admin/user/details/" . $user->id ?>"
+                                                class="flex items-center gap-2 px-3 py-2 text-xs text-gray-700 hover:bg-gray-50 transition">
+                                                <?= Icon::eye('w-4 h-4') ?>
+                                                <span>Detail</span>
                                             </a>
 
 
-                                            href="<?= URL . "/admin/user/edit/" . $user->id ?>"
-                                            class="flex items-center gap-2 px-3 py-2 text-xs text-primary hover:bg-primary/5 border-t border-gray-100 transition">
-                                            <?= Icon::pencil('w-4 h-4') ?>
-                                            <span>Edit</span>
+                                            <a href="<?= URL . "/admin/user/edit/" . $user->id ?>"
+                                                class="flex items-center gap-2 px-3 py-2 text-xs text-primary hover:bg-primary/5 border-t border-gray-100 transition">
+                                                <?= Icon::pencil('w-4 h-4') ?>
+                                                <span>Edit</span>
                                             </a>
                                         <?php else: ?>
 

@@ -39,7 +39,7 @@
             </div>
             <!-- action section -->
             <div class="w-full h-10 flex items-center justify-between">
-                <?= Button::anchor(label: "Tambah Peminjaman", icon: "plus", href: "/admin/booking/create", class: "px-4 py-2 h-full", btn_icon_size: 'w-4 h-4') ?>
+                <?= Button::anchor(label: "Tambah Peminjaman", icon: "plus", href: "/admin/booking/create", class: "px-4 py-2 h-full w-[16rem]", btn_icon_size: 'w-4 h-4') ?>
                 <!-- form action -->
                 <div class="flex items-center justify-end gap-2 h-full w-full max-w-3/4">
                     <form method="GET" class="flex items-start justify-end gap-2  w-full h-full flex-1">
