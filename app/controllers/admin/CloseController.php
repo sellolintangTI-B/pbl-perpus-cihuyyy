@@ -16,7 +16,8 @@ class CloseController extends Controller
     public function index()
     {
         try {
-            $this->view('/admin/close_schedule/index', layoutType: $this::$layoutType['admin']);
+            $data = LibraryClose::get();
+            $this->view('/admin/close_schedule/index', $data, layoutType: $this::$layoutType['admin']);
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), 'error');
             header('location:' . URL . '/admin/close/');
@@ -50,7 +51,8 @@ class CloseController extends Controller
             $nowdate = Carbon::now('Asia/Jakarta')->toDateString();
             if($closeDate < $nowdate) throw new CustomException('Tdak bisa close dikemarin hari');
             $_SESSION['old_close'] = null;
-            // $libraryClose = LibraryClose::
+            $libraryClose = LibraryClose::store($data);
+
             ResponseHandler::setResponse("Berhasil menambahkan tanggal tutup!", 'success');
             $this->redirectWithOldInput(url: '/admin/close');
         } catch (CustomException $e) {
@@ -59,13 +61,19 @@ class CloseController extends Controller
         }
     }
 
-    public function delete()
+    public function delete($id)
     {
         try {
-            //code...
+            $data = LibraryClose::delete($id);
+            if($data) {
+                ResponseHandler::setResponse('Berhasil menghapus data');
+                header('location:' . URL . '/admin/close/index');
+            } else {
+                throw new CustomException('Terjadi kesalahan');
+            }
         } catch (CustomException $e) {
-            ResponseHandler::setResponse($e->getErrorMessages(), 'error');;
-            header('location:' . URL . '/admin/close/');
+            ResponseHandler::setResponse($e->getErrorMessages(), 'error');
+            header('location:' . URL . '/admin/close/index');
         }
     }
 }
