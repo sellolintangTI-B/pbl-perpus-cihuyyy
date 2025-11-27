@@ -5,9 +5,11 @@ namespace App\Controllers\admin;
 
 use App\Core\Controller;
 use App\Core\ResponseHandler;
-use app\error\CustomException;
+use App\Error\CustomException;
+use App\Models\LibraryClose;
 use App\Utils\Authentication;
 use App\Utils\Validator;
+use Carbon\Carbon;
 
 class CloseController extends Controller
 {
@@ -43,42 +45,17 @@ class CloseController extends Controller
             $validator->field('close_date', ['required']);
             $validator->field('reason', ['required']);
             if ($validator->error()) throw new CustomException($validator->getErrors());
+
+            $closeDate = Carbon::parse($data['close_date'])->toDateString();
+            $nowdate = Carbon::now('Asia/Jakarta')->toDateString();
+            if($closeDate < $nowdate) throw new CustomException('Tdak bisa close dikemarin hari');
             $_SESSION['old_close'] = null;
+            // $libraryClose = LibraryClose::
             ResponseHandler::setResponse("Berhasil menambahkan tanggal tutup!", 'success');
             $this->redirectWithOldInput(url: '/admin/close');
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), 'error');
             $this->redirectWithOldInput(url: '/admin/close/create', oldData: $_POST, session_name: 'old_close');
-        }
-    }
-
-    public function detail()
-    {
-        try {
-            //code...
-        } catch (CustomException $e) {
-            ResponseHandler::setResponse($e->getErrorMessages(), 'error');
-            header('location:' . URL . '/admin/close/');
-        }
-    }
-
-    public function edit()
-    {
-        try {
-            //code...
-        } catch (CustomException $e) {
-            ResponseHandler::setResponse($e->getErrorMessages(), 'error');
-            header('location:' . URL . '/admin/close/');
-        }
-    }
-
-    public function update()
-    {
-        try {
-            //code...
-        } catch (CustomException $e) {
-            ResponseHandler::setResponse($e->getErrorMessages(), 'error');
-            header('location:' . URL . '/admin/close/');
         }
     }
 

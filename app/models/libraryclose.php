@@ -16,5 +16,11 @@ class LibraryClose extends Database
         return $data;
     }
 
+    public static function store()
+    {
+        $conn = parent::getConnection();
+        // $q = $conn->prepare("INSERT INTO library_close_logs (")
+    }
+
     
 }

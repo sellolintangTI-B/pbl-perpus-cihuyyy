@@ -4,7 +4,9 @@ use App\Components\Button;
 use App\Components\Icon\Icon;
 use App\Components\FormInput;
 
-$old_data = $_SESSION['old_close']
+if(isset($_SESSION['old_close'])) {
+    $old_data = $_SESSION['old_close']; 
+}
 ?>
 <div class="w-full h-full flex flex-col items-start justify-start gap-5 ">
     <div class="w-full flex items-center justify-start">
