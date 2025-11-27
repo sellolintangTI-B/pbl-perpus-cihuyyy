@@ -6,6 +6,8 @@ namespace App\Controllers\admin;
 use App\Core\Controller;
 use App\Core\ResponseHandler;
 use App\Error\CustomException;
+use App\Models\Booking;
+use App\Models\BookingLog;
 use App\Models\LibraryClose;
 use App\Utils\Authentication;
 use App\Utils\Validator;
@@ -51,8 +53,15 @@ class CloseController extends Controller
             $nowdate = Carbon::now('Asia/Jakarta')->toDateString();
             if($closeDate < $nowdate) throw new CustomException('Tdak bisa close dikemarin hari');
             $_SESSION['old_close'] = null;
-            $libraryClose = LibraryClose::store($data);
+            $bookingByDate = Booking::getBookingByDate($closeDate);
 
+            $bookingIds = array_map(function($item){
+                return $item->id;
+            }, $bookingByDate);
+
+            $cancelAllBookingByDate = BookingLog::cancelAllBookingByDate($bookingIds, $data['reason'], $data['created_by']);
+            $libraryClose = LibraryClose::store($data);
+            
             ResponseHandler::setResponse("Berhasil menambahkan tanggal tutup!", 'success');
             $this->redirectWithOldInput(url: '/admin/close');
         } catch (CustomException $e) {
