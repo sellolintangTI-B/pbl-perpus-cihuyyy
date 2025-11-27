@@ -18,7 +18,7 @@ $auth = new Authentication();
             <div class="w-full flex flex-col gap-6 items-center mt-8">
                 <?php
                 foreach ($items as $item) {
-                    $isActive = ($activeItem == $item['url']);
+                    $isActive = str_contains($item['url'], $activeItem);
                     NavThings::adminNavLink(active: $isActive, label: $item['label'], icon: $item['icon'], href: $item['url']);
                 }
                 ?>

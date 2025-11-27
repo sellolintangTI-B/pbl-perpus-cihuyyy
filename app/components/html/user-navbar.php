@@ -24,7 +24,7 @@ $currentPath = URL . parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
             <div class="flex items-center gap-2">
                 <?php
                 foreach ($navItems as $item):
-                    $isActive = str_starts_with($currentPath, URL . $item['start-with']);
+                    $isActive = str_contains($currentPath,  $item['start-with']);
                 ?>
                     <?= UserNavbar::navLink(label: $item['label'], href: URL . $item['url'], active: $isActive) ?>
                 <?php endforeach; ?>
