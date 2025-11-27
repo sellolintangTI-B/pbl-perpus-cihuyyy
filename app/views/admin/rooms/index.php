@@ -39,7 +39,7 @@ $floorOptions = [
     <div class="w-full h-10 flex gap-6 items-center justify-between">
         <div class="h-full">
             <?= Button::anchor(
-                label: "Tambah Ruangan",
+                label: "Tambah",
                 icon: "plus",
                 href: "/admin/room/create",
                 class: "px-4 py-2 h-full",

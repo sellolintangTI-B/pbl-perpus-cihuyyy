@@ -27,7 +27,7 @@ $options = [
         <!-- Action Section -->
         <div class="w-full h-10 flex items-center justify-between">
             <?= Button::anchor(
-                label: "Tambah Pengguna",
+                label: "Tambah",
                 icon: "plus",
                 href: "/admin/user/add_admin",
                 class: "px-4 py-2 h-full",
