@@ -10,22 +10,25 @@ use App\Utils\DB;
 class DashboardController extends Controller
 {
 
-    private $authUser;
-
-    public function __construct()
-    {
-        $this->authUser = new Authentication;
-    }
     public function index()
     {
+        return $this->view('admin/dashboard/index', layoutType: $this::$layoutType['admin']);
+    }
+
+
+    public function search_book() {
         $activeBooking = [];
         if(isset($_GET['search'])) {
             $bookingCode = $_GET['search'];
             $activeBooking = Booking::getActiveBookingByBookingCode($bookingCode);
         }
-        return $this->view('admin/dashboard/index', $activeBooking ,layoutType: $this::$layoutType['admin']);
+        $json = json_encode($activeBooking);
+        header('Content-Type: application/json');
+        echo $json;
     }
 
-
-    public function approved() {}
+    public function get_chart_data()
+    {
+        
+    }
 }
