@@ -56,8 +56,8 @@ class RoomController extends Controller
     {
         try {
             $date = Carbon::now('Asia/Jakarta')->toDateString();
-            if (isset($_GET['date'])) {
-                $date = Carbon::parse($_GET['date'])->toDateString();
+            if (isset($_GET['date_check'])) {
+                $date = Carbon::parse($_GET['date_check'])->toDateString();
             }
             $room = Room::getById($id);
             if (!$room) throw new CustomException("Data ruangan tidak ditemukan");
