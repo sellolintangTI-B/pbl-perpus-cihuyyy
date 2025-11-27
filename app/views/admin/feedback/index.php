@@ -12,21 +12,21 @@ $no = 1;
 $feedback = $data['feedback'];
 $room = $data['room'];
 
-$Ruangan = ['' => 'Ruangan'];
+$Ruangan = ['' => 'Semua'];
 foreach ($room as $r) {
     $Ruangan[$r->id] = $r->name;
 }
 
 $tahun = [
-    '' => 'Tahun',
+    '' => 'Semua',
 ];
 
-foreach($data['years'] as $key => $value) {
+foreach ($data['years'] as $key => $value) {
     $tahun[$value->year] = $value->year;
 }
 
 $bulan = [
-    '' => 'Bulan',
+    '' => 'Semua',
     '01' => 'Januari',
     '02' => 'Februari',
     '03' => 'Maret',
@@ -61,7 +61,7 @@ $bulan = [
                     color: 'primary',
                     class: 'px-3 py-2',
                     btn_icon_size: 'w-4 h-4',
-                    href: '/admin/feedback/export?ruangan = ? & bulan = ? & tahun = ?'
+                    href: '/admin/feedback/export?ruangan = ' . (htmlspecialchars($_GET['ruangan'] ?? "")) . ' & bulan = ' . (htmlspecialchars($_GET['bulan'] ?? "")) . ' & tahun = ' . ($_GET['tahun'] ?? "")
                 ) ?>
             </div>
             <div class="flex items-start justify-end gap-2 h-full w-full">

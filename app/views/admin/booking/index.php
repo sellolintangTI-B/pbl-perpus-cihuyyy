@@ -6,6 +6,7 @@
     use App\Components\Icon\Icon;
     use Carbon\Carbon;
     use App\Components\Modal;
+    use App\Components\CustomSelect;
 
     $no = 1;
 
@@ -21,6 +22,12 @@
         "cancelled" => "dibatalkan",
         "finished" => "selesai"
     ];
+    $roomOption = [
+        '' => 'semua'
+    ];
+    foreach ($data['room'] as $r):
+        $roomOption[$r->id] = $r->name;
+    endforeach;
     ?>
 
     <div class="w-full h-full" x-data="{ showAlert: false, cancelPeminjamanId: null }" @cancel-peminjaman.window="showAlert = true; cancelPeminjamanId = $event.detail.cancelPeminjamanId">
@@ -32,11 +39,35 @@
             </div>
             <!-- action section -->
             <div class="w-full h-10 flex items-center justify-between">
-                <?= Button::anchor(label: "Tambah Peminjaman", icon: "plus", href: "/admin/booking/create", class: "px-4 py-2 h-full") ?>
+                <?= Button::anchor(label: "Tambah Peminjaman", icon: "plus", href: "/admin/booking/create", class: "px-4 py-2 h-full", btn_icon_size: 'w-4 h-4') ?>
                 <!-- form action -->
-                <div class="flex items-center justify-end gap-2 h-full w-full max-w-[24rem]">
-                    <form method="GET" class="flex items-center gap-2  w-full h-full flex-1">
-                        <div class="h-full flex-1">
+                <div class="flex items-center justify-end gap-2 h-full w-full max-w-3/4">
+                    <form method="GET" class="flex items-start justify-end gap-2  w-full h-full flex-1">
+                        <div>
+                            <?= CustomSelect::render(
+                                name: 'date',
+                                defaultLabel: 'Tanggal',
+                                options: [],
+                                selectedValue: $_GET['date'] ?? ''
+                            ) ?>
+                        </div>
+                        <div>
+                            <?= CustomSelect::render(
+                                name: 'status',
+                                defaultLabel: 'Status',
+                                options: $statusLabel,
+                                selectedValue: $_GET['status'] ?? ''
+                            ) ?>
+                        </div>
+                        <div>
+                            <?= CustomSelect::render(
+                                name: 'room',
+                                defaultLabel: 'Ruangan',
+                                options: $roomOption,
+                                selectedValue: $_GET['room'] ?? ''
+                            ) ?>
+                        </div>
+                        <div class="h-full w-[12rem]">
                             <?= FormInput::input(type: "text", name: "search", placeholder: "Cari Data Peminjaman", value: $_GET['search'] ?? '', class: "h-full !w-full !border-primary", classGlobal: "h-full !w-full") ?>
                         </div>
                         <?= Button::button(class: "px-4 h-full", label: "Search") ?>
@@ -61,7 +92,7 @@
                     </thead>
                     <!-- Body -->
                     <tbody class="text-primary divide-y divide-gray-100">
-                        <?php foreach ($data as $value) :
+                        <?php foreach ($data['booking'] as $value) :
                             $startTime = Carbon::parse($value->start_time);
                             $endTime = Carbon::parse($value->end_time);
                             $hours = $startTime->diff($endTime);
