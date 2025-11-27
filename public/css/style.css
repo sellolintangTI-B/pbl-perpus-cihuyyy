@@ -550,9 +550,6 @@
   .max-h-80 {
     max-height: calc(var(--spacing) * 80);
   }
-  .max-h-96 {
-    max-height: calc(var(--spacing) * 96);
-  }
   .max-h-full {
     max-height: 100%;
   }
@@ -631,12 +628,6 @@
   .w-\[1px\] {
     width: 1px;
   }
-  .w-\[8rem\] {
-    width: 8rem;
-  }
-  .w-\[10rem\] {
-    width: 10rem;
-  }
   .w-\[12rem\] {
     width: 12rem;
   }
@@ -684,9 +675,6 @@
   }
   .max-w-7xl {
     max-width: var(--container-7xl);
-  }
-  .max-w-\[12rem\] {
-    max-width: 12rem;
   }
   .max-w-\[24rem\] {
     max-width: 24rem;
@@ -760,9 +748,6 @@
   }
   .transform {
     transform: var(--tw-rotate-x,) var(--tw-rotate-y,) var(--tw-rotate-z,) var(--tw-skew-x,) var(--tw-skew-y,);
-  }
-  .cursor-default {
-    cursor: default;
   }
   .cursor-not-allowed {
     cursor: not-allowed;
@@ -973,9 +958,6 @@
   .\!border-primary {
     border-color: var(--color-primary) !important;
   }
-  .border-blue-100 {
-    border-color: var(--color-blue-100);
-  }
   .border-gray-100 {
     border-color: var(--color-gray-100);
   }
@@ -1050,9 +1032,6 @@
     @supports (color: color-mix(in lab, red, red)) {
       background-color: color-mix(in oklab, var(--color-black) 40%, transparent);
     }
-  }
-  .bg-blue-50 {
-    background-color: var(--color-blue-50);
   }
   .bg-gray-50 {
     background-color: var(--color-gray-50);
@@ -1298,9 +1277,6 @@
   .py-2\! {
     padding-block: calc(var(--spacing) * 2) !important;
   }
-  .py-2\.5 {
-    padding-block: calc(var(--spacing) * 2.5);
-  }
   .py-3 {
     padding-block: calc(var(--spacing) * 3);
   }
@@ -1468,9 +1444,6 @@
       color: color-mix(in oklab, var(--color-black) 90%, transparent);
     }
   }
-  .text-blue-700 {
-    color: var(--color-blue-700);
-  }
   .text-gray-300 {
     color: var(--color-gray-300);
   }
@@ -1575,9 +1548,6 @@
   }
   .opacity-50 {
     opacity: 50%;
-  }
-  .opacity-75 {
-    opacity: 75%;
   }
   .opacity-90 {
     opacity: 90%;
@@ -1727,12 +1697,6 @@
   .select-none {
     -webkit-user-select: none;
     user-select: none;
-  }
-  .last\:border-b-0 {
-    &:last-child {
-      border-bottom-style: var(--tw-border-style);
-      border-bottom-width: 0px;
-    }
   }
   .checked\:border-secondary {
     &:checked {

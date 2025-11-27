@@ -26,7 +26,8 @@ $badgeSuspendColor = [
     1 => 'tertiary',
     2 => 'yellow',
     3 => 'red',
-]
+];
+
 ?>
 
 <!-- show modal update data akun -->
@@ -77,9 +78,11 @@ $badgeSuspendColor = [
             <div class="h-1/2 bg-linear-120 from-primary to-secondary">
 
             </div>
+            <?php if($data['suspension']) : ?>
             <div class="flex justify-end items-center p-4">
                 <?= Badge::badge(label: 'Suspend Point: ' . $data['suspension']->suspend_count . ' point', color: $badgeSuspendColor[$data['suspension']->suspend_count], class: 'px-2! py-1!') ?>
             </div>
+            <?php endif ?>
             <div class="absolute p-4 inset-0 left-18 flex flex-col items-start justify-start gap-4">
                 <div class="flex flex-col items-center gap-2">
                     <div class="h-28 w-28 rounded-full bg-white p-1">
@@ -116,7 +119,7 @@ $badgeSuspendColor = [
                 id="updateUserForm"
                 class="w-full grid grid-cols-1 sm:grid-cols-2 gap-6"
                 @submit.prevent="validateAndShowUpdateAlert"
-                action="<?= URL ?>/user/user/update/<?= $data['data']->id ?>"
+                action="<?= URL ?>/user/profile/update/<?= $data['data']->id ?>"
                 method="post"
                 enctype="multipart/form-data">
                 <?php

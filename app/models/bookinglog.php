@@ -87,4 +87,25 @@ class BookingLog extends Database
         if ($q) return true;
         return false;
     }
+
+    public static function cancelAllBookingByDate($bookingId, $reason, $actor)
+    {
+        $insertQuery = [];
+        $insertData = [];
+        $conn = parent::getConnection();
+        $n = 0;
+        foreach($bookingId as $item) {
+            $insertQuery[] = "(:status$n, :cancelled_by$n, :reason$n, :bookingId$n)";
+            $insertData["status$n"] = 'cancelled'; 
+            $insertData["cancelled_by$n"] = $actor; 
+            $insertData["reason$n"] = $reason; 
+            $insertData["bookingId$n"] = $item; 
+            $n++;
+        }
+        $query = implode(', ', $insertQuery);
+        $q = $conn->prepare("INSERT INTO booking_logs (status, cancelled_by, reason, booking_id) VALUES $query");
+        $q->execute($insertData);
+        if($q) return true;
+        return false;
+    }
 }

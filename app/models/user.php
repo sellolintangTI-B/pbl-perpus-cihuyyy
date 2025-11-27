@@ -49,6 +49,33 @@ class User extends Database
         return $data;
     }
 
+    public static function getByUniqueField($email = "", $id_number = "", $phoneNumber = "")
+    {
+        $conn = parent::getConnection();
+        $clauses = "";
+        $value = "";
+        if(!empty($email)) {
+            $clauses = "email = ?";
+            $value = $email;
+        } 
+
+        if(!empty($id_number)) {
+            $clauses = "id_number = ?";
+            $value = $id_number;
+        }
+
+        if(!empty($phoneNumber)) {
+            $clauses = "phone_number = ?";
+            $value = $phoneNumber;
+        }
+
+        $q = $conn->prepare("SELECT * FROM users WHERE $clauses");
+        $q->bindValue(1, $value);
+        $q->execute();
+        $data = $q->fetch(PDO::FETCH_ASSOC);
+        return $data;
+    }
+
     public static function getById($id)
     {
         $conn = parent::getConnection();

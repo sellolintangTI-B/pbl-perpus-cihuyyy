@@ -64,13 +64,15 @@ class RegisterController extends Controller
             $errors = $validator->error();
             if ($errors) throw new CustomException($validator->getErrors());
 
-            if($_SESSION['captcha'] !== $data['captcha']) throw new CustomException('Captcha tidak valid');
+            // if($_SESSION['captcha'] !== $data['captcha']) throw new CustomException('Captcha tidak valid');
 
-            $checkByIdNumber = User::getByIdNumber($data['id_number']);
-            $checkByEmail = User::getByEmail($data['email']);
+            $checkByIdNumber = User::getByUniqueField(id_number: $data['id_number']);
+            $checkByEmail = User::getByUniqueField(email: $data['email']);
+            $checkByPhoneNumber = User::getByUniqueField(phoneNumber: $data['phone_number']);
 
             if ($checkByIdNumber) throw new CustomException('NIM / NIP sudah terdaftar');
             if ($checkByEmail) throw new CustomException('Email sudah terdaftar');
+            if ($checkByPhoneNumber) throw new CustomException('Nomor Telfon sudah terdaftar');
 
             $file = $_FILES['file_upload']['tmp_name'];
             $allowedMimes = ["image/jpeg", "image/png", "image/jpg"];

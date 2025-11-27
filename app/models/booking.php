@@ -171,4 +171,14 @@ class Booking extends Database
         $data = $q->fetchAll(PDO::FETCH_OBJ);
         return $data;   
     }
+
+    public static function getBookingByDate($date)
+    {
+        $conn = parent::getConnection();
+        $q = $conn->prepare("SELECT * FROM bookings WHERE TO_CHAR(start_time, 'YYYY-MM-DD') = :date");
+        $q->bindValue(":date", $date);
+        $q->execute();
+        $data = $q->fetchAll(PDO::FETCH_OBJ);
+        return $data;
+    }
 }
