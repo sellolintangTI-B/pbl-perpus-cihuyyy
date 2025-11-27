@@ -265,9 +265,6 @@
   .top-40 {
     top: calc(var(--spacing) * 40);
   }
-  .top-full {
-    top: 100%;
-  }
   .-right-2 {
     right: calc(var(--spacing) * -2);
   }
@@ -378,15 +375,6 @@
   }
   .mt-16 {
     margin-top: calc(var(--spacing) * 16);
-  }
-  .mt-20 {
-    margin-top: calc(var(--spacing) * 20);
-  }
-  .mt-24 {
-    margin-top: calc(var(--spacing) * 24);
-  }
-  .mt-32 {
-    margin-top: calc(var(--spacing) * 32);
   }
   .mt-auto {
     margin-top: auto;
@@ -692,10 +680,6 @@
     --tw-translate-y: calc(calc(1/2 * 100%) * -1);
     translate: var(--tw-translate-x) var(--tw-translate-y);
   }
-  .-translate-y-8 {
-    --tw-translate-y: calc(var(--spacing) * -8);
-    translate: var(--tw-translate-x) var(--tw-translate-y);
-  }
   .-translate-y-24 {
     --tw-translate-y: calc(var(--spacing) * -24);
     translate: var(--tw-translate-x) var(--tw-translate-y);
@@ -981,9 +965,6 @@
     @supports (color: color-mix(in lab, red, red)) {
       background-color: color-mix(in oklab, var(--color-baseColor) 20%, transparent);
     }
-  }
-  .bg-black {
-    background-color: var(--color-black);
   }
   .bg-black\/20 {
     background-color: color-mix(in srgb, #000 20%, transparent);
@@ -1790,16 +1771,6 @@
         background-color: color-mix(in srgb, #0B3F78 20%, transparent);
         @supports (color: color-mix(in lab, red, red)) {
           background-color: color-mix(in oklab, var(--color-primary) 20%, transparent);
-        }
-      }
-    }
-  }
-  .hover\:bg-primary\/80 {
-    &:hover {
-      @media (hover: hover) {
-        background-color: color-mix(in srgb, #0B3F78 80%, transparent);
-        @supports (color: color-mix(in lab, red, red)) {
-          background-color: color-mix(in oklab, var(--color-primary) 80%, transparent);
         }
       }
     }
