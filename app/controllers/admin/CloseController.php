@@ -53,13 +53,15 @@ class CloseController extends Controller
             $nowdate = Carbon::now('Asia/Jakarta')->toDateString();
             if($closeDate < $nowdate) throw new CustomException('Tdak bisa close dikemarin hari');
             $_SESSION['old_close'] = null;
-            $bookingByDate = Booking::getBookingByDate($closeDate);
+            $bookingByDate = Booking::getBookingForCancelByDate($closeDate);
 
-            $bookingIds = array_map(function($item){
-                return $item->id;
-            }, $bookingByDate);
+            if($bookingByDate) {
+                $bookingIds = array_map(function($item){
+                    return $item->booking_id;
+                }, $bookingByDate);
 
-            $cancelAllBookingByDate = BookingLog::cancelAllBookingByDate($bookingIds, $data['reason'], $data['created_by']);
+                $cancelAllBookingByDate = BookingLog::cancelAllBookingByDate($bookingIds, $data['reason'], $data['created_by']);
+            }
             $libraryClose = LibraryClose::store($data);
             
             ResponseHandler::setResponse("Berhasil menambahkan tanggal tutup!", 'success');
