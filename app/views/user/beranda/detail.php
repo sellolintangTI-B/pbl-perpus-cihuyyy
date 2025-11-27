@@ -27,124 +27,128 @@ if (isset($_SESSION['old_input'])) {
     </div>
 
     <img src="<?= URL ?>/public/<?= $data['detail']->room_img_url ?>" alt="Ruang Perancis" class="w-full h-80 object-cover rounded-lg shadow-md">
-    <div class="flex gap-4 items-center justify-center w-full h-32">
-        <div class="bg-linear-to-r from-primary to-secondary flex items-center justify-center rounded-xl p-4 shadow-lg flex-3 h-full">
-            <div class="flex items-center gap-3 text-white">
-                <div class="bg-white/20 p-2 rounded-full">
-                    <?= Icon::global('w-10 h-10') ?>
-                </div>
-                <div class="flex-1">
-                    <h3 class="font-medium text-lg mb-1"><?= ($data['detail']->requires_special_approval) ? "Ruangan Khusus" : "Ruangan Umum"  ?></h3>
-                    <p class="text-sm opacity-90">Lorem ipsum dolor sit amet consdtaectetur adipisicing elit. Quod ad, nostrum dicta doloremque totam pariatur officia doloribus id soluta ea?</p>
+    <div class="grid grid-cols-5 gap-4">
+        <div class="col-span-3 h-28">
+            <div class="bg-linear-to-r from-primary to-secondary flex items-center justify-center rounded-xl p-4 shadow-lg w-full h-full">
+                <div class="flex items-center gap-3 text-white">
+                    <div class=" p-2 rounded-full">
+                        <?= ($data['detail']->requires_special_approval)
+                            ?  Icon::group('w-10 h-10')
+                            :  Icon::global('w-10 h-10') ?>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-medium text-lg mb-1"><?= ($data['detail']->requires_special_approval) ? "Ruangan Khusus" : "Ruangan Umum"  ?></h3>
+                        <p class="text-sm opacity-90"><?= ($data['detail']->requires_special_approval) ? "Ruangan ini hanya bisa dipinjam dengan menggunakan surat dari admin PNJ. baca panduan untuk detail lebih lanjut." : "Ruangan ini bisa dipinjam tanpa menggunakan surat khusus, cukup patuhi aturan yang tertera di panduan."  ?></p>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="flex-2 flex gap-8 p-4 bg-white rounded-xl items-center justify-center shadow-md text-center h-full">
-            <div class="text-center flex flex-col items-center justify-center gap-4 w-full">
-                <div class="flex items-center justify-center gap-1 text-primary">
-                    <span class="text-3xl font-bold">4.75</span>
-                </div>
-                <div class="flex justify-center gap-1">
-                    <?php for ($i = 0; $i < 5; $i++): ?>
-                        <svg class="w-4 h-4 <?= $i < 4 ? 'text-yellow-400' : 'text-gray-300' ?>" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                        </svg>
-                    <?php endfor; ?>
-                </div>
-            </div>
-            <div class="h-1/2 w-[1px] bg-gray-400 rounded-full">
 
-            </div>
-            <div class="text-center flex flex-col items-center justify-center gap-4 w-full">
-                <div class="text-3xl font-bold text-primary">63</div>
-                <div class="text-sm text-gray-600">Ulasan</div>
+        <div class="col-span-2 h-28">
+            <div class="flex gap-8 p-4 bg-white rounded-xl items-center justify-center shadow-md text-center w-full h-full">
+                <div class="text-center flex flex-col items-center justify-center gap-4 w-full">
+                    <div class="flex items-center justify-center gap-1 text-primary">
+                        <span class="text-3xl font-bold">4.75</span>
+                    </div>
+                    <div class="flex justify-center gap-1">
+                        <?php for ($i = 0; $i < 5; $i++): ?>
+                            <svg class="w-4 h-4 <?= $i < 4 ? 'text-yellow-400' : 'text-gray-300' ?>" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                            </svg>
+                        <?php endfor; ?>
+                    </div>
+                </div>
+                <div class="h-1/2 w-[1px] bg-gray-400 rounded-full">
+
+                </div>
+                <div class="text-center flex flex-col items-center justify-center gap-4 w-full">
+                    <div class="text-3xl font-bold text-primary">63</div>
+                    <div class="text-sm text-gray-600">Ulasan</div>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- main information -->
-    <div class="flex gap-8 items-start justify-start w-full">
-        <!-- informasi kiri -->
-        <div class="flex-3 flex flex-col gap-4 justify-start items-start">
-            <!-- Capacity -->
-            <div class="flex items-center gap-2 text-gray-700 text-sm w-full">
-                <svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
-                </svg>
-                <span>Minimal <?= $data['detail']->min_capacity ?> orang - Maksimal <?= $data['detail']->max_capacity ?> orang</span>
-            </div>
-
-            <!-- Location -->
-            <div class="flex items-center gap-2 text-gray-700 text-sm w-full">
-                <svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
-                </svg>
-                <span>Tempat: Perpustakaan PNJ, LT. <?= $data['detail']->floor ?></span>
-            </div>
-
-            <!-- Description -->
-            <p class="text-sm text-gray-600 leading-relaxed text-justify">
-                <?= $data['detail']->description ?>
-            </p>
-
-            <h3 class="text-lg font-medium text-primary">Waktu terpakai</h3>
-            <!-- Date Input -->
-            <form class="w-full flex justify-between items-center h-8" method="get">
-                <div class="flex items-center shrink gap-2 h-full">
-                    <label class="block text-sm font-medium text-primary">Tanggal:</label>
-                    <?php FormInput::input(
-                        id: "date_check",
-                        name: "date_check",
-                        type: "date",
-                        required: true,
-                        classGlobal: 'h-full p-0!',
-                        class: 'h-full rounded-none! border-none! p-0! focus:ring-0! focus:border-0! focus:bg-transparent!',
-                    ); ?>
+        <div class="col-span-3">
+            <div class="flex flex-col gap-4 justify-start items-start bg-white rounded-xl shadow-md p-4 w-full">
+                <!-- Capacity -->
+                <div class="flex items-center gap-2 text-gray-700 text-sm w-full">
+                    <svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
+                    </svg>
+                    <span>Minimal <?= $data['detail']->min_capacity ?> orang - Maksimal <?= $data['detail']->max_capacity ?> orang</span>
                 </div>
-                <button
-                    type="submit"
-                    class=" bg-primary text-white px-4 max-h-full h-full rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors">
-                    Cek
-                </button>
-            </form>
 
-            <!-- Schedule Table -->
-            <div class="border border-gray-200 rounded-lg overflow-hidden w-full">
-                <table class="w-full text-sm">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th class="px-4 py-2 text-left font-medium text-gray-700">Jam</th>
-                            <th class="px-4 py-2 text-left font-medium text-gray-700">Peminjam</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-200">
-                        <?php foreach ($data['schedule'] as $schedule) : ?>
+                <!-- Location -->
+                <div class="flex items-center gap-2 text-gray-700 text-sm w-full">
+                    <svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+                    </svg>
+                    <span>Tempat: Perpustakaan PNJ, LT. <?= $data['detail']->floor ?></span>
+                </div>
+
+                <!-- Description -->
+                <p class="text-sm text-gray-600 leading-relaxed text-justify">
+                    <?= $data['detail']->description ?>
+                </p>
+
+                <h3 class="text-lg font-medium text-primary">Waktu terpakai</h3>
+                <!-- Date Input -->
+                <form class="w-full flex justify-between items-center h-8" method="get">
+                    <div class="flex items-center shrink gap-2 h-full">
+                        <label class="block text-sm font-medium text-primary">Tanggal:</label>
+                        <?php FormInput::input(
+                            id: "date_check",
+                            name: "date_check",
+                            type: "date",
+                            required: true,
+                            value: $data['date'] ?? "",
+                            classGlobal: 'h-full p-0! bg-transparent!',
+                            class: 'h-full bg-transparent! rounded-none! border-none! p-0! focus:ring-0! focus:border-0! focus:bg-transparent!',
+                        ); ?>
+                    </div>
+                    <button
+                        type="submit"
+                        class=" bg-primary text-white px-4 max-h-full h-full rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors">
+                        Cek
+                    </button>
+                </form>
+
+                <!-- Schedule Table -->
+                <div class="border border-gray-200 rounded-lg overflow-hidden w-full">
+                    <table class="w-full text-sm">
+                        <thead class="bg-gray-50">
                             <tr>
-                                <td class="px-4 py-3 text-gray-600"><?= Carbon::parse($schedule->start_time)->toTimeString() ?> - <?= Carbon::parse($schedule->end_time)->toTimeString() ?></td>
-                                <td class="px-4 py-3 text-gray-600"><?= $schedule->pic_name ?></td>
+                                <th class="px-4 py-2 text-left font-medium text-gray-700">Jam</th>
+                                <th class="px-4 py-2 text-left font-medium text-gray-700">Peminjam</th>
                             </tr>
-                        <?php endforeach ?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            <?php foreach ($data['schedule'] as $schedule) : ?>
+                                <tr>
+                                    <td class="px-4 py-3 text-gray-600"><?= Carbon::parse($schedule->start_time)->toTimeString() ?> - <?= Carbon::parse($schedule->end_time)->toTimeString() ?></td>
+                                    <td class="px-4 py-3 text-gray-600"><?= $schedule->pic_name ?></td>
+                                </tr>
+                            <?php endforeach ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
-        <!-- form kanan -->
-        <div class="flex-2 flex flex-col gap-4 justify-start items-center">
-            <!-- Form Section -->
+        <div class="col-span-2">
             <div class="bg-white rounded-xl p-4 shadow-md w-full">
                 <?php if ($data['detail']->requires_special_approval): ?>
                     <div class="flex flex-col gap-4">
-                        <p class="text-sm text-black/80 flex flex-col gap-2">
+                        <p class=" text-lg text-primary flex flex-col gap-2 font-medium">
                             Panduan Peminjaman Ruang Rapat:
-                        <ul>
+                        </p>
+                        <ul class="text-sm space-y-2">
                             <li> 1. Siapkan surat resmi peminjaman ruang rapat sesuai format yang berlaku.</li>
                             <li> 2. Serahkan surat tersebut kepada Admin Perpustakaan.</li>
                             <li> 3. Admin Perpustakaan akan memproses dan menginformasikan hasil peminjaman.</li>
                         </ul>
-                        <b>
+                        <p class="text-sm text-red italic">
                             Catatan: Format surat resmi dapat diminta langsung kepada Admin Perpustakaan
-                        </b>
                         </p>
                     </div>
                 <?php else: ?>
