@@ -325,6 +325,9 @@
   .col-span-2 {
     grid-column: span 2 / span 2;
   }
+  .col-span-3 {
+    grid-column: span 3 / span 3;
+  }
   .container {
     width: 100%;
     @media (width >= 40rem) {
@@ -498,6 +501,9 @@
   }
   .h-28 {
     height: calc(var(--spacing) * 28);
+  }
+  .h-30 {
+    height: calc(var(--spacing) * 30);
   }
   .h-32 {
     height: calc(var(--spacing) * 32);
@@ -784,6 +790,9 @@
   }
   .grid-cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .grid-cols-5 {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
   }
   .grid-cols-6 {
     grid-template-columns: repeat(6, minmax(0, 1fr));
@@ -1117,6 +1126,9 @@
   .bg-transparent {
     background-color: transparent;
   }
+  .bg-transparent\! {
+    background-color: transparent !important;
+  }
   .bg-white {
     background-color: var(--color-white);
   }
@@ -1172,6 +1184,9 @@
   }
   .bg-\[url\(\'\/public\/storage\/images\/login-image\.jpg\'\)\] {
     background-image: url('/public/storage/images/login-image.jpg');
+  }
+  .bg-none\! {
+    background-image: none !important;
   }
   .from-primary {
     --tw-gradient-from: var(--color-primary);
@@ -1476,6 +1491,12 @@
   }
   .text-primary {
     color: var(--color-primary);
+  }
+  .text-primary\/80 {
+    color: color-mix(in srgb, #0B3F78 80%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      color: color-mix(in oklab, var(--color-primary) 80%, transparent);
+    }
   }
   .text-red {
     color: var(--color-red);
@@ -2207,9 +2228,24 @@
       font-size: 300px;
     }
   }
+  .lg\:flex-\[2\] {
+    @media (width >= 64rem) {
+      flex: 2;
+    }
+  }
+  .lg\:flex-\[3\] {
+    @media (width >= 64rem) {
+      flex: 3;
+    }
+  }
   .lg\:grid-cols-4 {
     @media (width >= 64rem) {
       grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+  .lg\:flex-row {
+    @media (width >= 64rem) {
+      flex-direction: row;
     }
   }
   .xl\:grid-cols-5 {

@@ -24,8 +24,7 @@ $classColor = match ($color) {
             <?= isset($readonly) && $readonly ? 'readonly' : '' ?>
             <?= isset($disabled) && $disabled ? 'disabled' : '' ?>
             <?= isset($maxlength) && $maxlength ? 'maxlength="' . $maxlength . '"' : '' ?>
-            <?= isset($alpine_disabled) && $alpine_disabled ? 'x-bind:disabled="' . $alpine_disabled . '"' : '' ?>>
-             <?= $value ?? '' ?></textarea>
+            <?= isset($alpine_disabled) && $alpine_disabled ? 'x-bind:disabled="' . $alpine_disabled . '"' : '' ?>><?= $value ?? '' ?></textarea>
         <?php if (isset($maxlength) && $maxlength): ?>
             <div class="absolute bottom-2 right-3 text-xs text-gray-400">
                 <span id="char-count-<?= $id ?? ($name ?? '') ?>">0</span> / <?= $maxlength ?>

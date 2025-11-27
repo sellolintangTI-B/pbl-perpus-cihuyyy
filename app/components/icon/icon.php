@@ -214,7 +214,6 @@ class Icon
         echo '
         <svg 
             xmlns="http://www.w3.org/2000/svg" 
-            fill="currentColor"
             class="' . htmlspecialchars($class) . '"
             fill="none"
             viewBox="0 0 64 64">
