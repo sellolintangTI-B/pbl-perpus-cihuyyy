@@ -42,7 +42,7 @@ $floorOptions = [
                 label: "Tambah",
                 icon: "plus",
                 href: "/admin/room/create",
-                class: "px-4 py-2 h-full",
+                class: "px-4 py-2 h-full  w-[16rem]",
                 btn_icon_size: 'w-4 h-4'
             ) ?>
         </div>
@@ -186,17 +186,17 @@ $floorOptions = [
                                     style="display: none;">
 
 
-                                    href="<?= URL . "/admin/room/detail/" . $room->id ?>"
-                                    class="flex items-center gap-2 px-3 py-2 text-xs text-gray-700 hover:bg-gray-50 transition">
-                                    <?= Icon::eye('w-3.5 h-3.5') ?>
-                                    <span>Detail</span>
+                                    <a href="<?= URL . "/admin/room/detail/" . $room->id ?>"
+                                        class="flex items-center gap-2 px-3 py-2 text-xs text-gray-700 hover:bg-gray-50 transition">
+                                        <?= Icon::eye('w-3.5 h-3.5') ?>
+                                        <span>Detail</span>
                                     </a>
 
 
-                                    href="<?= URL . "/admin/room/edit/" . $room->id ?>"
-                                    class="flex items-center gap-2 px-3 py-2 text-xs text-primary hover:bg-primary/5 border-t border-gray-100 transition">
-                                    <?= Icon::pencil('w-3.5 h-3.5') ?>
-                                    <span>Edit</span>
+                                    <a href="<?= URL . "/admin/room/edit/" . $room->id ?>"
+                                        class="flex items-center gap-2 px-3 py-2 text-xs text-primary hover:bg-primary/5 border-t border-gray-100 transition">
+                                        <?= Icon::pencil('w-3.5 h-3.5') ?>
+                                        <span>Edit</span>
                                     </a>
 
                                     <button
