@@ -10,14 +10,16 @@ use App\Utils\Validator;
 use App\Models\User;
 use App\Models\Suspension;
 
-class UserController extends Controller
+class ProfileController extends Controller
 {
     private $authUser;
+
     public function __construct()
     {
         $this->authUser = new Authentication;
     }
-    public function profile()
+
+    public function index()
     {
         $userId = $this->authUser->user['id'];
 
@@ -59,13 +61,13 @@ class UserController extends Controller
             $update = User::updateProfile($id, $data);
             if ($update) {
                 ResponseHandler::setResponse('Berhasil mengubah data');
-                header('location:' . URL . '/user/user/profile');
+                header('location:' . URL . '/user/profile/index');
             } else {
                 throw new CustomException('Gagal mengubah data');
             }
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), "error");
-            header('location:' . URL . "/user/user/profile");
+            header('location:' . URL . "/user/profile/index");
         }
     }
 
@@ -96,11 +98,11 @@ class UserController extends Controller
             if ($update) {
                 ResponseHandler::setResponse('Berhasil mengubah password user');
                 $_SESSION['reset_pass_old'] = null;
-                $this->redirectWithOldInput('/user/user/profile');
+                $this->redirectWithOldInput('/user/profile/index');
             }
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), 'error');
-            $this->redirectWithOldInput('/user/user/profile', $_POST, session_name: 'reset_pass_old');
+            $this->redirectWithOldInput('/user/profile/index', $_POST, session_name: 'reset_pass_old');
         }
     }
 }

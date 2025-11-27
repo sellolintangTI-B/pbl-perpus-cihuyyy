@@ -82,7 +82,7 @@ class Middleware
             //GUIDE
             "/user/guide/index",
             //PROFILE
-            "/user/user/profile",
+            "/user/profile/index",
             "/user/user/update",
             "/user/user/reset_password",
         ],
@@ -104,7 +104,7 @@ class Middleware
             //GUIDE
             "/user/guide/index",
             //PROFILE
-            "/user/user/profile",
+            "/user/profile/index",
             "/user/user/update",
             "/user/user/reset_password",
         ]

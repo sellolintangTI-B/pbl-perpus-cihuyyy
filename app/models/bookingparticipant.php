@@ -60,7 +60,7 @@ class BookingParticipant extends Database
     public static function getParticipantsByBookingId($id)
     {
         $conn = parent::getConnection();
-        $q = $conn->prepare("SELECT u.first_name || ' ' || u.last_name AS name, u.role, u.id FROM booking_participants AS bp JOIN users AS u ON bp.user_id = u.id WHERE bp.booking_id = :id");
+        $q = $conn->prepare("SELECT u.first_name || ' ' || u.last_name AS name, u.role, u.id FROM booking_participants AS bp JOIN users AS u ON bp.user_id = u.id WHERE bp.booking_id = :id ORDER BY bp.created_at ASC");
         $q->bindValue(':id', $id);
         $q->execute();
         $data = $q->fetchAll(PDO::FETCH_OBJ);
