@@ -31,7 +31,7 @@ use App\Components\DashboardCard;
             ?>
         </form>
 
-        <!-- give some shit condition here ... -->
+        <!-- kondisi untuk menampilkan booking card ... -->
         <?php
         if (!empty($data)) {
             include __DIR__ . '/sections/BookingCard.php';
