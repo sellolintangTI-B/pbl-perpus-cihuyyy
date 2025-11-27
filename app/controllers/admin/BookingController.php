@@ -19,7 +19,12 @@ class BookingController extends Controller
     public function index()
     {
         try {
-            $data = Booking::get();
+            $room = Room::get();
+            $booking = Booking::get();
+            $data = [
+                'room' => $room,
+                'booking'  => $booking
+            ];
             $this->view('admin/booking/index', $data, layoutType: "Admin");
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), 'error');

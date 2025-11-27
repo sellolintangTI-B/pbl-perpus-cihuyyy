@@ -45,7 +45,7 @@ $classColor = match ($color) {
     </div>
 </div>
 
-<script type="module">
+<script>
     function togglePassword(inputId) {
         const input = document.getElementById(inputId);
         const eyeIcon = document.getElementById('eye-icon-' + inputId);
