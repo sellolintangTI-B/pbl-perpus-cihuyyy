@@ -71,7 +71,8 @@ $currentStatus = !empty($_GET['status']) ? $_GET['status'] : 'semua';
                         htmlspecialchars($booking->name) . "', '" .
                         htmlspecialchars($booking->floor) . "', '" .
                         htmlspecialchars(Carbon::parse($booking->start_time)->translatedFormat('l, d F Y')) . "', '" .
-                        htmlspecialchars(Carbon::parse($booking->start_time)->toTimeString() . ' - ' . Carbon::parse($booking->end_time)->toTimeString()) . "')"
+                        htmlspecialchars(Carbon::parse($booking->start_time)->toTimeString() . ' - ' . Carbon::parse($booking->end_time)->toTimeString()) . "')",
+                    'has_feedback' => !empty($booking->feedback_created_at ?? null)
                 ];
                 RiwayatBookingCard::card($cardData);
             endforeach;
