@@ -103,9 +103,10 @@ class Booking extends Database
         if ($status == 'cancelled') $statusClause = "bl.status IN ('cancelled')";
         if ($status == 'finished') $statusClause = "bl.status IN ('finished')";
 
-        $stmt = "SELECT DISTINCT ON (b.id) b.id, bl.status, r.name, b.start_time, b.end_time, b.booking_code, r.floor
+        $stmt = "SELECT DISTINCT ON (b.id) b.id, bl.status, r.name, b.start_time, b.end_time, b.booking_code, r.floor, f.created_at AS feedback_created_at
         FROM bookings AS b JOIN booking_logs AS bl ON b.id = bl.booking_id
         JOIN booking_participants AS bp ON b.id = bp.booking_id 
+        LEFT JOIN feedbacks AS f ON b.id = f.booking_id AND f.user_id = :userId
         JOIN rooms AS r ON b.room_id = r.id WHERE bp.user_id = :userId
         AND $statusClause ORDER BY b.id, bl.created_at";
         $q = $conn->prepare($stmt);
