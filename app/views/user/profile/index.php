@@ -5,6 +5,7 @@ use App\Components\Icon\Icon;
 use App\Components\Badge;
 use App\Components\FormInput;
 use App\Components\Modal;
+use App\Components\ProfilePictureUpload;
 use App\Utils\Authentication;
 
 $roleOptions = [
@@ -78,23 +79,17 @@ $badgeSuspendColor = [
             <div class="h-1/2 bg-linear-120 from-primary to-secondary">
 
             </div>
-            <?php if($data['suspension']) : ?>
-            <div class="flex justify-end items-center p-4">
-                <?= Badge::badge(label: 'Suspend Point: ' . $data['suspension']->suspend_count . ' point', color: $badgeSuspendColor[$data['suspension']->suspend_count], class: 'px-2! py-1!') ?>
+            <div class="flex justify-end items-center p-4 ">
+                <?= Badge::badge(label: 'Suspend Point: ' . (isset($data['suspension']) ? ($data['suspension']->suspend_count ?? 0) : 0) . ' point', color: $badgeSuspendColor[isset($data['suspension']) ? ($data['suspension']->suspend_count ?? 0) : 0], class: 'px-2! py-1!') ?>
             </div>
-            <?php endif ?>
             <div class="absolute p-4 inset-0 left-18 flex flex-col items-start justify-start gap-4">
-                <div class="flex flex-col items-center gap-2">
-                    <div class="h-28 w-28 rounded-full bg-white p-1">
-                        <img src="<?= URL . "/public/" . $data['data']->profile_picture_url ?>" class="h-full w-full rounded-full object-cover" />
-                    </div>
-                    <h1 class="text-xl font-medium text-primary">
-                        <?= $data['data']->first_name . " " . $data['data']->last_name ?>
-                    </h1>
-                    <p class="text-gray-700">
-                        <?= $data['data']->role ?? " " ?>
-                    </p>
-                </div>
+                <?= ProfilePictureUpload::render(
+                    imageUrl: URL . "/public/storage/users/" . $data['data']->profile_picture_url,
+                    formAction: URL . "/user/profile/update_picture/" . $data['data']->id,
+                    userName: $data['data']->first_name . " " . $data['data']->last_name,
+                    userRole: $data['data']->role ?? "",
+                    inputName: 'profile_picture'
+                ) ?>
             </div>
         </div>
         <div class="w-full flex flex-col gap-4 p-6 h-fit bg-white rounded-lg shadow-sm shadow-black/40 overflow-hidden relative">
@@ -193,7 +188,7 @@ $badgeSuspendColor = [
                     label: 'Institusi',
                     value: $data['data']->institution ?? "",
                     required: true,
-                    alpine_disabled: '!isEdit'
+                    alpine_disabled: 'true'
                 );
                 ?>
 
@@ -213,7 +208,7 @@ $badgeSuspendColor = [
                 id="updatePasswordForm"
                 class="w-full grid grid-cols-1 gap-6"
                 @submit.prevent="validateAndShowPasswordAlert"
-                action="<?= URL ?>/user/user/reset_password/<?= $data['data']->id ?>"
+                action="<?= URL ?>/user/profile/reset_password/<?= $data['data']->id ?>"
                 method="post">
                 <?php
                 $old_data = $_SESSION['reset_pass_old'] ?? null;
@@ -238,8 +233,9 @@ $badgeSuspendColor = [
                     required: true,
                 );
                 ?>
-                <!-- <ul id="check_password_message" class="list-disc text-red text-xs ">
-                </ul> -->
+                <ul class="text-xs text-start list-disc hidden px-4" id="text_alert">
+
+                </ul>
 
                 <?php
                 FormInput::input(
@@ -252,7 +248,9 @@ $badgeSuspendColor = [
                     required: true
                 );
                 ?>
+                <ul class="text-xs text-start list-disc hidden px-4" id="match_alert">
 
+                </ul>
                 <div class="mt-4">
                     <?= Button::button(label: 'Ganti Password', class: 'px-4 py-3 w-full', type: 'submit', color: 'red') ?>
                 </div>
@@ -275,15 +273,13 @@ $badgeSuspendColor = [
         ) ?>
     </div>
 </div>
+<script src="<?= URL ?>/public/js/profile-picture-upload.js"></script>
 <script src="<?= URL ?>/public/js/select-jurusan.js"></script>
+<script src="<?= URL ?>/public/js/password-validator.js"></script>
 <script src="<?= URL ?>/public/js/update-user.js"></script>
 
+
 <script>
-    // import {
-    //     ValidatePassword
-    // } from '<?= URL ?>/public/js/utils/password-validation.js'
-    // const password = document.getElementById('password');
-    // const password_message = document.getElementById('check_password_message')
     document.addEventListener('DOMContentLoaded', function() {
         const dbJurusan = "<?= $data['data']->major ?? "" ?>";
         const dbProdi = "<?= $data['data']->study_program ?? "" ?>";
@@ -298,20 +294,4 @@ $badgeSuspendColor = [
             }, 100);
         }
     });
-    // password.addEventListener('change', function() {
-    //     password_message.innerHTML = '';
-    //     console.log(this.value)
-    //     let passwordState = ValidatePassword(this.value);
-
-    //     if (!passwordState.isValid) {
-
-    //         passwordState.messages.forEach(messageObj => {
-    //             const newMessage = document.createElement('li');
-
-    //             newMessage.textContent = messageObj.message;
-
-    //             password_message.appendChild(newMessage);
-    //         });
-    //     }
-    // });
 </script>

@@ -38,14 +38,14 @@ use App\Components\RoomCard;
                     <label class="px-1 bg-transparent text-xs font-medium text-black/70">
                         Waktu mulai
                     </label>
-                    <input type="time" name="start_time" placeholder="Jam mulai peminjaman" value="<?= isset($_GET['duration']) ? $_GET['duration'] : null ?>" class="w-full h-full rounded-lg border-0 focus:outline-none focus:ring-0 transition-colors duration-200 text-sm text-black/70 px-4">
+                    <input type="time" name="start_time" placeholder="Jam mulai peminjaman" value="<?= isset($_GET['start_time']) ? $_GET['start_time'] : null ?>" class="w-full h-full rounded-lg border-0 focus:outline-none focus:ring-0 transition-colors duration-200 text-sm text-black/70 px-4">
                 </div>
                 <!-- end time Filter -->
                 <div class="flex-1 relative flex flex-col gap-3 justify-center items-start h-full">
                     <label class="px-1 bg-transparent text-xs font-medium text-black/70">
                         Waktu berakhir
                     </label>
-                    <input type="time" name="end_time" placeholder="Jam peminjaman berakhir" value="<?= isset($_GET['duration']) ? $_GET['duration'] : null ?>" class="w-full h-full rounded-lg border-0 focus:outline-none focus:ring-0 transition-colors duration-200 text-sm text-black/70 px-4">
+                    <input type="time" name="end_time" placeholder="Jam peminjaman berakhir" value="<?= isset($_GET['end_time']) ? $_GET['end_time'] : null ?>" class="w-full h-full rounded-lg border-0 focus:outline-none focus:ring-0 transition-colors duration-200 text-sm text-black/70 px-4">
                 </div>
 
                 <!-- Search Button -->
@@ -67,7 +67,7 @@ use App\Components\RoomCard;
         </h2>
 
         <!-- Room Cards Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             <?php
             // Dummy data ruangan
             foreach ($data as $room) {
@@ -80,7 +80,7 @@ use App\Components\RoomCard;
                     'max' => $room->max_capacity,
                     'description' => $room->description,
                     'isSpecial' => $room->requires_special_approval,
-                    'room_url' => '/user/room/detail/' . $room->id,
+                    'room_url' => '/user/room/detail/' . $room->id . "?date=" . (isset($_GET['date']) ? $_GET['date'] : null) . "&date_check=" . (isset($_GET['date']) ? $_GET['date'] : null) . "&start_time=" . (isset($_GET['start_time']) ? $_GET['start_time'] : null) . "&end_time=" . (isset($_GET['end_time']) ? $_GET['end_time'] : null),
                 ];
                 RoomCard::card($r);
             }

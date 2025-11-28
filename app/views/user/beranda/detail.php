@@ -8,8 +8,8 @@ use App\Components\Button;
 
 $authUser = new Authentication;
 
-if (isset($_SESSION['old_input'])) {
-    $oldData = $_SESSION['old_input'];
+if (isset($_SESSION['old_booking'])) {
+    $oldData = $_SESSION['old_booking'];
 }
 
 ?>
@@ -72,38 +72,71 @@ if (isset($_SESSION['old_input'])) {
             <div class="flex flex-col gap-4 justify-start items-start bg-white rounded-xl shadow-md p-4 w-full">
                 <!-- Capacity -->
                 <div class="flex items-center gap-2 text-gray-700 text-sm w-full">
-                    <svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
-                    </svg>
-                    <span>Minimal <?= $data['detail']->min_capacity ?> orang - Maksimal <?= $data['detail']->max_capacity ?> orang</span>
+                    <?= Icon::people('w-6 h-6 text-black/80') ?>
+                    <span class="font-medium font-black/80 text-lg">Minimal <?= $data['detail']->min_capacity ?> orang - Maksimal <?= $data['detail']->max_capacity ?> orang</span>
                 </div>
 
                 <!-- Location -->
                 <div class="flex items-center gap-2 text-gray-700 text-sm w-full">
-                    <svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
-                    </svg>
-                    <span>Tempat: Perpustakaan PNJ, LT. <?= $data['detail']->floor ?></span>
+                    <?= Icon::location('w-6 h-6 text-black/80') ?>
+                    <span class="font-medium font-black/80 text-lg">Tempat: Perpustakaan PNJ, LT. <?= $data['detail']->floor ?></span>
                 </div>
 
                 <!-- Description -->
                 <p class="text-sm text-gray-600 leading-relaxed text-justify">
                     <?= $data['detail']->description ?>
                 </p>
-
-                <h3 class="text-lg font-medium text-primary">Waktu terpakai</h3>
+                <!-- jadwal perpustakaan -->
+                <div class="flex flex-col gap-2 w-full">
+                    <h3 class="text-lg font-medium text-black/80">Jadwal buka perpustakaan</h3>
+                    <div class="w-full h-px bg-gray-400 rounded-full">
+                    </div>
+                </div>
+                <div class="rounded-lg overflow-hidden w-full">
+                    <table class="w-full text-sm text-black/80">
+                        <thead>
+                            <tr>
+                                <th class="px-4 py-2 text-left font-medium ">Hari</th>
+                                <th class="px-4 py-2 text-left font-medium ">Jam</th>
+                            </tr>
+                        </thead>
+                        <tbody class="">
+                            <tr>
+                                <td class="px-4 py-3 ">Senin - Kamis</td>
+                                <td class="px-4 py-3 ">08.00 - 12.00 &bull; 13.00 - 15.50</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-3 ">Jumat</td>
+                                <td class="px-4 py-3 ">08.00 - 11.00 &bull; 13.00 - 16.00</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-3 ">Sabtu - Minggu</td>
+                                <td class="px-4 py-3 text-red">Libur</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-3 ">tanggal merah</td>
+                                <td class="px-4 py-3 text-red">Libur</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="flex flex-col gap-2 w-full">
+                    <h3 class="text-lg font-medium text-black/80">Waktu terpakai</h3>
+                    <div class="w-full h-px bg-gray-400 rounded-full">
+                    </div>
+                </div>
                 <!-- Date Input -->
                 <form class="w-full flex justify-between items-center h-8" method="get">
                     <div class="flex items-center shrink gap-2 h-full">
-                        <label class="block text-sm font-medium text-primary">Tanggal:</label>
+                        <label class="block text-lg  text-black/80">Tanggal:</label>
                         <?php FormInput::input(
                             id: "date_check",
                             name: "date_check",
                             type: "date",
                             required: true,
-                            value: $data['date'] ?? "",
+                            value: $oldData['date'] ?? (isset($_GET['date']) ? $_GET['date'] : null),
                             classGlobal: 'h-full p-0! bg-transparent!',
-                            class: 'h-full bg-transparent! rounded-none! border-none! p-0! focus:ring-0! focus:border-0! focus:bg-transparent!',
+                            class: 'h-full text-lg! bg-transparent! rounded-none! border-none! p-0! focus:ring-0! focus:border-0! focus:bg-transparent!',
                         ); ?>
                     </div>
                     <button
@@ -114,19 +147,19 @@ if (isset($_SESSION['old_input'])) {
                 </form>
 
                 <!-- Schedule Table -->
-                <div class="border border-gray-200 rounded-lg overflow-hidden w-full">
-                    <table class="w-full text-sm">
-                        <thead class="bg-gray-50">
+                <div class=" rounded-lg overflow-hidden w-full">
+                    <table class="w-full text-sm text-black/80">
+                        <thead>
                             <tr>
-                                <th class="px-4 py-2 text-left font-medium text-gray-700">Jam</th>
-                                <th class="px-4 py-2 text-left font-medium text-gray-700">Peminjam</th>
+                                <th class="px-4 py-2 text-left font-medium ">Jam</th>
+                                <th class="px-4 py-2 text-left font-medium ">Peminjam</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200">
                             <?php foreach ($data['schedule'] as $schedule) : ?>
                                 <tr>
-                                    <td class="px-4 py-3 text-gray-600"><?= Carbon::parse($schedule->start_time)->toTimeString() ?> - <?= Carbon::parse($schedule->end_time)->toTimeString() ?></td>
-                                    <td class="px-4 py-3 text-gray-600"><?= $schedule->pic_name ?></td>
+                                    <td class="px-4 py-3 "><?= Carbon::parse($schedule->start_time)->toTimeString() ?> - <?= Carbon::parse($schedule->end_time)->toTimeString() ?></td>
+                                    <td class="px-4 py-3 "><?= $schedule->pic_name ?></td>
                                 </tr>
                             <?php endforeach ?>
                         </tbody>
@@ -156,18 +189,18 @@ if (isset($_SESSION['old_input'])) {
                         <!-- tanggal -->
                         <div>
                             <label class="block text-sm font-medium text-primary mb-2">Kapan</label>
-                            <?php FormInput::input(id: "date", name: "datetime", type: "date", required: true, value: $oldData['datetime'] ?? null); ?>
+                            <?php FormInput::input(id: "date", name: "date", type: "date", required: true, value: $oldData['date'] ?? (isset($_GET['date']) ? $_GET['date'] : null)); ?>
                         </div>
 
                         <!-- start time -->
                         <div>
                             <label class="block text-sm font-medium text-primary mb-2">Waktu mulai</label>
-                            <?php FormInput::input(id: "start_time", name: "start_time", type: "time", required: true, value: $oldData['duration'] ?? null); ?>
+                            <?php FormInput::input(id: "start_time", name: "start_time", type: "time", required: true, value: $oldData['start_time'] ?? (isset($_GET['start_time']) ? $_GET['start_time'] : null)); ?>
                         </div>
                         <!-- end time -->
                         <div>
                             <label class="block text-sm font-medium text-primary mb-2">Waktu berakhir</label>
-                            <?php FormInput::input(id: "end_time", name: "end_time", type: "time", required: true, value: $oldData['duration'] ?? null); ?>
+                            <?php FormInput::input(id: "end_time", name: "end_time", type: "time", required: true, value: $oldData['end_time'] ?? (isset($_GET['end_time']) ? $_GET['end_time'] : null)); ?>
                         </div>
                         <!-- Anggota -->
                         <label class="block text-sm font-medium text-primary mb-2">Anggota</label>
@@ -226,10 +259,9 @@ if (isset($_SESSION['old_input'])) {
                             ?>
                         </div> -->
                         <!-- Tombol submit -->
-                        <button type="submit"
-                            class="w-full bg-linear-to-r from-primary to-secondary text-white py-3 rounded-xl font-medium text-sm hover:shadow-lg transition-all duration-300">
-                            Booking Ruangan Ini
-                        </button>
+                        <?=
+                        Button::buttonGradient(label: 'Booking Ruangan Ini', class: 'w-full py-3 rounded-xl', type: 'submit')
+                        ?>
                     </form>
                 <?php endif; ?>
             </div>

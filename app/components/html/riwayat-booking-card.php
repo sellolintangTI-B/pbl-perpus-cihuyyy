@@ -52,7 +52,7 @@ $statusLabel = [
     <div class="flex w-full justify-end">
         <div class="flex gap-2">
             <?php
-            if ($booking['status'] == 'finished') {
+            if ($booking['status'] == 'finished' && !$booking['has_feedback']) {
                 Button::buttonGradient(label: "Beri Feedback",  alpineClick: $booking['alpineClick'], class: 'rounded-full! w-fit! text-sm! py-2! px-4!');
             }
             Button::anchorGradient(label: "See Details", link: $booking['url'], class: 'rounded-full! w-fit! text-sm! py-2! px-4!');

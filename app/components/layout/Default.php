@@ -16,7 +16,7 @@
 <body class="font-poppins">
     <?php include_once 'app/components/response-banner.php'; ?>
     <!-- Main Content -->
-    <div class="h-screen w-full">
+    <div class="h-screen w-full bg-primary p-4">
         <?= $content ?>
     </div>
 </body>

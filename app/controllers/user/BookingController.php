@@ -49,20 +49,20 @@ class BookingController extends Controller
                 "user_id" => $user->user['id'],
                 'room_id' => $id,
                 "start_time" => $_POST['start_time'],
-                'datetime' => $_POST['datetime'],
+                'date' => $_POST['date'],
                 "end_time" => $_POST['end_time'],
                 "list_anggota" => json_decode($_POST['list_anggota'], true)
             ];
 
             $validator = new Validator($data);
-            $validator->field('datetime', ['required']);
+            $validator->field('date', ['required']);
             $validator->field('start_time', ['required']);
             $validator->field('end_time', ['required']);
             if ($validator->error()) throw new CustomException($validator->getErrors());
 
-            $start = Carbon::parse($data['datetime'])->setTimeFromTimeString($data['start_time']);
-            $end = Carbon::parse($data['datetime'])->setTimeFromTimeString($data['end_time']);
-            $data['datetime'] = $start;
+            $start = Carbon::parse($data['date'])->setTimeFromTimeString($data['start_time']);
+            $end = Carbon::parse($data['date'])->setTimeFromTimeString($data['end_time']);
+            $data['date'] = $start;
             $data['duration'] = $start->diffInMinutes($end);
             $data['end_time'] = $end;
 
@@ -75,7 +75,7 @@ class BookingController extends Controller
             $booking = Booking::create([
                 'user_id' => $data['user_id'],
                 'room_id' => $data['room_id'],
-                'start_time' => $data['datetime']->toDateTimeString(),
+                'start_time' => $data['date']->toDateTimeString(),
                 'duration' => $data['duration'],
                 'end_time' => $data['end_time'],
                 'booking_code' => $data['booking_code']
@@ -86,10 +86,10 @@ class BookingController extends Controller
 
             ResponseHandler::setResponse("Berhasil menambahkan data");
             header("location:" . URL . '/user/room/index');
-            $_SESSION['old_input'] = null;
+            $_SESSION['old_booking'] = null;
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), 'error');
-            $this->redirectWithOldInput(url: '/user/room/detail/' . $id, oldData: $_POST);
+            $this->redirectWithOldInput(url: '/user/room/detail/' . $id, oldData: $_POST, session_name: 'old_booking');
         }
     }
 
@@ -111,22 +111,22 @@ class BookingController extends Controller
             $checkIfLibraryClose = LibraryClose::getByDate($data['datetime']->format('Y-m-d'));
             if($checkIfLibraryClose) throw new CustomException('Tidak bisa booking di tanggal ini');
 
-            if ($data['datetime']->isWeekend()) throw new CustomException('Tidak bisa booking di weekend');
-            if ($data['datetime']->lt(Carbon::now('Asia/Jakarta'))) throw new CustomException('Tidak bisa booking di kemarin hari');
-            if (Carbon::today('Asia/Jakarta')->diffInDays($data['datetime']) >= 7) throw new CustomException('Tidak bisa booking untuk jadwal lebih dari 7 hari per hari ini');
+            if ($data['date']->isWeekend()) throw new CustomException('Tidak bisa booking di weekend');
+            if ($data['date']->lt(Carbon::now('Asia/Jakarta'))) throw new CustomException('Tidak bisa booking di kemarin hari');
+            if (Carbon::today('Asia/Jakarta')->diffInDays($data['date']) >= 7) throw new CustomException('Tidak bisa booking untuk jadwal lebih dari 7 hari per hari ini');
 
-            if ($data['datetime']->isToday()) {
-                $startHour = $data['datetime']->format('H:i:s');
+            if ($data['date']->isToday()) {
+                $startHour = $data['date']->format('H:i:s');
                 $nowHour = Carbon::now('Asia/Jakarta')->format('H:i:s');
                 if ($startHour < $nowHour) throw new CustomException('Tidak bisa booking pada jam yang sudah lewat');
             }
 
-            $dayCheck = $scheduleJson[$data['datetime']->dayOfWeek()];
+            $dayCheck = $scheduleJson[$data['date']->dayOfWeek()];
             $isValid = false;
             foreach ($dayCheck as $slot) {
-                $startSchedule = Carbon::parse($data['datetime'])->setTimeFromTimeString($slot["start"]);
-                $endSchedule = Carbon::parse($data['datetime'])->setTimeFromTimeString($slot["end"]);
-                if ($data['datetime']->gte($startSchedule) && $data['end_time']->lte($endSchedule)) {
+                $startSchedule = Carbon::parse($data['date'])->setTimeFromTimeString($slot["start"]);
+                $endSchedule = Carbon::parse($data['date'])->setTimeFromTimeString($slot["end"]);
+                if ($data['date']->gte($startSchedule) && $data['end_time']->lte($endSchedule)) {
                     $isValid = true;
                     break;
                 }
@@ -136,7 +136,7 @@ class BookingController extends Controller
             if ($data['duration'] < 60) throw new CustomException('Minimal durasi pinjam ruangan 1 jam');
             if ($data['duration'] > 180) throw new CustomException('Maximal durasi pinjam ruangan 3 jam');
 
-            $checkIfScheduleExists = Booking::checkSchedule($data['datetime']->toDateTimeString(), $data['duration'], $roomId);
+            $checkIfScheduleExists = Booking::checkSchedule($data['date']->toDateTimeString(), $data['duration'], $roomId);
             if ($checkIfScheduleExists) throw new CustomException('Jadwal sudah dibooking');
 
             $roomDetail = Room::getById($roomId);
