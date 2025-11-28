@@ -6,6 +6,8 @@ namespace App\Controllers\admin;
 use App\Core\Controller;
 use App\Core\ResponseHandler;
 use App\Error\CustomException;
+use App\Models\Booking;
+use App\Models\BookingLog;
 use App\Models\LibraryClose;
 use App\Utils\Authentication;
 use App\Utils\Validator;
@@ -16,7 +18,8 @@ class CloseController extends Controller
     public function index()
     {
         try {
-            $this->view('/admin/close_schedule/index', layoutType: $this::$layoutType['admin']);
+            $data = LibraryClose::get();
+            $this->view('/admin/close_schedule/index', $data, layoutType: $this::$layoutType['admin']);
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), 'error');
             header('location:' . URL . '/admin/close/');
@@ -50,7 +53,17 @@ class CloseController extends Controller
             $nowdate = Carbon::now('Asia/Jakarta')->toDateString();
             if($closeDate < $nowdate) throw new CustomException('Tdak bisa close dikemarin hari');
             $_SESSION['old_close'] = null;
-            // $libraryClose = LibraryClose::
+            $bookingByDate = Booking::getBookingForCancelByDate($closeDate);
+
+            if($bookingByDate) {
+                $bookingIds = array_map(function($item){
+                    return $item->booking_id;
+                }, $bookingByDate);
+
+                $cancelAllBookingByDate = BookingLog::cancelAllBookingByDate($bookingIds, $data['reason'], $data['created_by']);
+            }
+            $libraryClose = LibraryClose::store($data);
+            
             ResponseHandler::setResponse("Berhasil menambahkan tanggal tutup!", 'success');
             $this->redirectWithOldInput(url: '/admin/close');
         } catch (CustomException $e) {
@@ -59,13 +72,19 @@ class CloseController extends Controller
         }
     }
 
-    public function delete()
+    public function delete($id)
     {
         try {
-            //code...
+            $data = LibraryClose::delete($id);
+            if($data) {
+                ResponseHandler::setResponse('Berhasil menghapus data');
+                header('location:' . URL . '/admin/close/index');
+            } else {
+                throw new CustomException('Terjadi kesalahan');
+            }
         } catch (CustomException $e) {
-            ResponseHandler::setResponse($e->getErrorMessages(), 'error');;
-            header('location:' . URL . '/admin/close/');
+            ResponseHandler::setResponse($e->getErrorMessages(), 'error');
+            header('location:' . URL . '/admin/close/index');
         }
     }
 }

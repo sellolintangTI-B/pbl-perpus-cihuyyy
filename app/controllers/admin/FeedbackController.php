@@ -49,7 +49,27 @@ class FeedbackController extends Controller
     public function export()
     {
         try {
-            $data = Feedback::get();
+            $params = [];
+            $filename = "DataFeedbackPeminjaman";
+            if (isset($_GET['ruangan'])) {
+                $params['ruangan'] = $_GET['ruangan'];
+                $room = Room::getById($_GET['ruangan']);
+                $ruangan = str_replace(" ", "_", $room->name);
+                $filename .= "_$ruangan";
+            }
+
+            if(isset($_GET['bulan']) && isset($_GET['tahun'])) {
+                if(!empty($_GET['bulan']) && !empty($_GET['tahun'])) {
+                    $params['date'] = Carbon::createFromDate((int) $_GET['tahun'], (int) $_GET['bulan'])->format('Y-m');
+                    $bulan = $_GET['bulan'];
+                    $tahun = $_GET['tahun'];
+                    $filename .= "_$bulan";
+                    $filename .= "_$tahun";
+                }
+            }
+
+            $data = Feedback::get($params);
+
             $spreadsheet = new Spreadsheet();
             $activeWorksheet = $spreadsheet->getActiveSheet();
             $activeWorksheet->setCellValue('A1', 'No');
@@ -89,7 +109,6 @@ class FeedbackController extends Controller
 
             $activeWorksheet->getStyle('A1:G' . $lastRow)->applyFromArray($styleArray);
             $writer = new Xlsx($spreadsheet);
-            $filename = "DataFeedbackPeminjaman";
             header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
             header('Content-Disposition: attachment; filename="'.$filename.'.xlsx"');
             header('Cache-Control: max-age=0');

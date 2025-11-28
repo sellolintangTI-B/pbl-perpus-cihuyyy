@@ -46,10 +46,10 @@ class LoginController extends Controller
             $errors = $validator->error();
             if ($errors) throw new CustomException($validator->getErrors());
 
-            if($_SESSION['captcha'] !== $data['captcha']) throw new CustomException('Captcha tidak valid');
+            // if($_SESSION['captcha'] !== $data['captcha']) throw new CustomException('Captcha tidak valid');
 
             $checkIfUserExist = User::getByEmailOrIdNumber($data['identifier']);
-            if (!$checkIfUserExist) throw new CustomException('Credentials not match');
+            if (!$checkIfUserExist) throw new CustomException('NIM/NIP/EMAIL Belum terdaftar');
             if (!password_verify($data['password'], $checkIfUserExist['password_hash'])) throw new CustomException('Credentials not match');
             if (!$checkIfUserExist['is_active']) throw new CustomException('Akun ini masih menunggu verifikasi admin');
 

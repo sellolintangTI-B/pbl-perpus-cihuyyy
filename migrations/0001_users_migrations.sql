@@ -1,9 +1,12 @@
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+DROP TYPE status;
 DROP TABLE IF EXISTS feedbacks;
 DROP TABLE IF EXISTS booking_participants;
 DROP TABLE IF EXISTS booking_logs;
 DROP TABLE IF EXISTS bookings;
+DROP TABLE IF EXISTS rooms;
 DROP TABLE IF EXISTS suspensions;
+DROP TABLE IF EXISTS library_close_logs;
 DROP TABLE IF EXISTS users;
 CREATE TABLE IF NOT EXISTS users  (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),

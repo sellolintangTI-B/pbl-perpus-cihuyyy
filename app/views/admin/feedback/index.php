@@ -61,7 +61,7 @@ $bulan = [
                     color: 'primary',
                     class: 'px-3 py-2',
                     btn_icon_size: 'w-4 h-4',
-                    href: '/admin/feedback/export?ruangan = ' . (htmlspecialchars($_GET['ruangan'] ?? "")) . ' & bulan = ' . (htmlspecialchars($_GET['bulan'] ?? "")) . ' & tahun = ' . ($_GET['tahun'] ?? "")
+                    href: '/admin/feedback/export?ruangan=' . (htmlspecialchars($_GET['ruangan'] ?? "")) . '&bulan=' . (htmlspecialchars($_GET['bulan'] ?? "")) . '&tahun=' . ($_GET['tahun'] ?? "")
                 ) ?>
             </div>
             <div class="flex items-start justify-end gap-2 h-full w-full">

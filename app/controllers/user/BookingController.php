@@ -9,6 +9,7 @@ use App\Models\Booking;
 use App\Models\BookingLog;
 use App\Models\BookingParticipant;
 use App\Models\Feedback;
+use App\Models\LibraryClose;
 use App\Models\Room;
 use App\Models\Suspension;
 use App\Models\User;
@@ -107,6 +108,8 @@ class BookingController extends Controller
             $checkUserActiveBooking = Booking::checkUserActiveBooking($userId);
             if ($checkUserActiveBooking) throw new CustomException('Tolong selesaikan peminjaman anda terlebih dahulu sebelum meminjam ruangan lain');
 
+            $checkIfLibraryClose = LibraryClose::getByDate($data['datetime']->format('Y-m-d'));
+            if($checkIfLibraryClose) throw new CustomException('Tidak bisa booking di tanggal ini');
 
             if ($data['datetime']->isWeekend()) throw new CustomException('Tidak bisa booking di weekend');
             if ($data['datetime']->lt(Carbon::now('Asia/Jakarta'))) throw new CustomException('Tidak bisa booking di kemarin hari');
