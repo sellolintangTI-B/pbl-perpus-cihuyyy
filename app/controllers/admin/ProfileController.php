@@ -62,4 +62,38 @@ class ProfileController extends Controller
             header('location:' . URL . '/admin/profile/index');
         }
     }
+    public function reset_password($id)
+    {
+        try {
+            $data = [
+                "current_password" => $_POST['current_password'],
+                "password" => $_POST['password'],
+                "confirm_password" => $_POST['password_confirmation']
+            ];
+            $validator = new Validator($data);
+            $validator->field('current_password', ['required']);
+            $validator->field('password', ['required']);
+            $validator->field('confirm_password', ['required']);
+            if ($validator->error()) throw new CustomException($validator->getErrors());
+
+            $checkIfUserExist = User::getById($id);
+            if (!$checkIfUserExist) throw new CustomException('User not found');
+            if (!password_verify($data['current_password'], $checkIfUserExist->password_hash)) throw new CustomException('Password yang anda masukkan salah!');
+
+            if ($data['password'] !== $data['confirm_password']) throw new CustomException('Konfirmasi Password tidak sama');
+            $checkById = User::getById($id);
+            if (!$checkById) throw new CustomException('Data tidak ditemukan');
+
+            $encryptedPass = password_hash($data['password'], PASSWORD_BCRYPT);
+            $update = User::resetPassword($id, $encryptedPass);
+            if ($update) {
+                ResponseHandler::setResponse('Berhasil mengubah password user');
+                $_SESSION['reset_pass_old'] = null;
+                $this->redirectWithOldInput('/admin/profile/index');
+            }
+        } catch (CustomException $e) {
+            ResponseHandler::setResponse($e->getErrorMessages(), 'error');
+            $this->redirectWithOldInput('/admin/profile/index', $_POST, session_name: 'reset_pass_old');
+        }
+    }
 }
