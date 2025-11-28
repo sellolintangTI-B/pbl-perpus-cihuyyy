@@ -47,5 +47,15 @@ class LibraryClose extends Database
         return false;
     }
 
+    public static function getByDate($date)
+    {
+        $conn = parent::getConnection();
+        $q = $conn->prepare("SELECT * FROM library_close_logs WHERE close_date = :date");
+        $q->bindValue(':date', $date);
+        $q->execute();
+        $data = $q->fetch(PDO::FETCH_OBJ);
+        return $data;
+    }
+
     
 }
