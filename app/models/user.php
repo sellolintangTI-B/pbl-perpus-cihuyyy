@@ -121,9 +121,9 @@ class User extends Database
     public static function update($id, $data)
     {
         $conn = parent::getConnection();
-        $query = "UPDATE users SET id_number = ?, email = ?, first_name = ?, last_name = ?, major = ?, study_program = ?, phone_number = ?, institution = ?, role = ? WHERE id = ?";
+        $query = "UPDATE users SET id_number = ?, email = ?, first_name = ?, last_name = ?, major = ?, study_program = ?, phone_number = ?, institution = ?, role = ?, is_active = ? WHERE id = ?";
         if (isset($data['image'])) {
-            $query = "UPDATE users SET id_number = ?, email = ?, first_name = ?, last_name = ?, major = ?, study_program = ?, phone_number = ?, institution = ?, role = ?, profile_picture_url = ? WHERE id = ?";
+            $query = "UPDATE users SET id_number = ?, email = ?, first_name = ?, last_name = ?, major = ?, study_program = ?, phone_number = ?, institution = ?, role = ?, is_active = ?,profile_picture_url = ? WHERE id = ?";
         }
         $q = $conn->prepare($query);
         $i = 1;

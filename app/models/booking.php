@@ -11,8 +11,9 @@ class Booking extends Database
     public static function get()
     {
         $conn = parent::getConnection();
-        $q = $conn->prepare("SELECT DISTINCT ON (b.id) b.id, u.first_name || ' ' || u.last_name AS pic_name, r.name, b.start_time, b.end_time, bl.status
-        FROM bookings AS b JOIN users AS u ON b.user_id = u.id
+        $q = $conn->prepare("SELECT DISTINCT ON (b.id) b.id, u.first_name || ' ' || u.last_name AS pic_name, r.name, b.start_time, b.end_time, bl.status, b.booking_code
+        FROM bookings AS b 
+        JOIN users AS u ON b.user_id = u.id
         JOIN rooms AS r ON b.room_id = r.id
 		JOIN booking_logs AS bl ON b.id = bl.booking_id ORDER BY b.id, bl.created_at DESC");
         $q->execute();
@@ -22,7 +23,9 @@ class Booking extends Database
     public static function create($data)
     {
         $conn = parent::getConnection();
-        $q = $conn->prepare("INSERT INTO bookings (user_id, room_id, start_time, duration, end_time , booking_code) VALUES (?, ?, ?, ?, ?, ?) RETURNING id");
+        $fields = implode(',', array_keys($data));
+        $placeholder = implode(',', array_fill(0, count($data), '?'));
+        $q = $conn->prepare("INSERT INTO bookings ($fields) VALUES ($placeholder) RETURNING id");
         $i = 1;
         foreach ($data as $key => $value) {
             if ($key == "duration") {
