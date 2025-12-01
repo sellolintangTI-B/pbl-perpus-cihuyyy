@@ -81,7 +81,7 @@
                     <!-- Header -->
                     <thead class="text-primary">
                         <tr class="border-b border-gray-200 ">
-                            <th class="px-3 py-3 text-xs font-semibold text-center">No</th>
+                            <th class="px-3 py-3 text-xs font-semibold text-center">Booking Code</th>
                             <th class="px-3 py-3 text-xs font-semibold">Peminjam</th>
                             <th class="px-3 py-3 text-xs font-semibold">Ruangan</th>
                             <th class="px-3 py-3 text-xs font-semibold">Tanggal</th>
@@ -100,7 +100,7 @@
                             <tr
                                 x-data="{ open: false }"
                                 class="hover:bg-gray-50 transition-colors duration-150 text-center">
-                                <td class="px-3 py-3 text-xs text-gray-600"><?= $no++ ?></td>
+                                <td class="px-3 py-3 text-xs text-gray-800"><?= $value->booking_code ?></td>
 
                                 <td class="px-3 py-3 text-xs font-medium text-gray-800 text-start">
                                     <?= htmlspecialchars($value->pic_name) ?>

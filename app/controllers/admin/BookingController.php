@@ -12,6 +12,7 @@ use App\Models\LibraryClose;
 use App\Models\Room;
 use App\Models\User;
 use App\Utils\Authentication;
+use App\Utils\FileHandler;
 use App\Utils\Validator;
 use Carbon\Carbon;
 
@@ -57,6 +58,7 @@ class BookingController extends Controller
             header('location:' . URL . '/admin/booking/index');
         }
     }
+
     public function edit($id)
     {
         try {
@@ -92,20 +94,19 @@ class BookingController extends Controller
             ];
 
             if (isset($_GET['date'])) {
-                $start = Carbon::parse($_GET['date']);
-                $params['start_time'] = $start->setTimeFromTimeString($_GET['start_time'])->toDateTimeString();
-            }
-
-            if (isset($_GET['end_time'])) {
-                $duration = $start->setTimeFromTimeString($_GET['end_time']);
-                $params['duration'] = Carbon::parse($params['start_time'])->diffInMinutes($duration);
+                if (!empty($_GET['date'])) {
+                    if (empty($_GET['start_time'])) throw new CustomException('Harap masukan waktu mulai nya');
+                    if (empty($_GET['end_time'])) throw new CustomException('Harap masukan waktu selesai nya');
+                    $start = Carbon::parse($_GET['date']);
+                    $params['start_time'] = $start->setTimeFromTimeString($_GET['start_time'])->toDateTimeString();
+                    $duration = $start->setTimeFromTimeString($_GET['end_time']);
+                    $params['duration'] = Carbon::parse($params['start_time'])->diffInMinutes($duration);
+                }
             }
 
             if (isset($_GET['room'])) {
                 $params['room'] = $_GET['room'];
             }
-
-            if (!empty($params)) $params['start_time'] = $params['start_time'];
 
             if (isset($_GET['state']) && $_GET['state'] == 'detail' && isset($_GET['id'])) {
                 $data['data'] = Room::getById($_GET['id']);
@@ -126,11 +127,12 @@ class BookingController extends Controller
     {
         try {
             $data = [
-                'room_id' => $id,
+                "room_id" => $id,
                 "start_time" => $_POST['start_time'],
-                'datetime' => $_POST['datetime'],
+                "datetime" => $_POST['datetime'],
                 "end_time" => $_POST['end_time'],
-                "list_anggota" => json_decode($_POST['list_anggota'], true)
+                "list_anggota" => isset($_POST['list_anggota']) ? json_decode($_POST['list_anggota'], true) : "",
+                "file" => $_FILES['file'] ?? null
             ];
 
             $validator = new Validator($data);
@@ -145,23 +147,37 @@ class BookingController extends Controller
             $data['duration'] = $start->diffInMinutes($end);
             $data['end_time'] = $end;
 
-            $rules = $this->validationBookingRules($data['room_id'], $data);
+            $getRoomById = Room::getById($data['room_id']);
+            if (!$getRoomById->is_operational) throw new CustomException('Ruangan sedang tidak beroperasi');
+
+            $checkIfLibraryClose = LibraryClose::getByDate($data['datetime']->format('Y-m-d'));
+            if ($checkIfLibraryClose) throw new CustomException('Tidak bisa booking di tanggal ini');
+
+            $rules = $this->validationBookingRules($getRoomById, $data);
             if (!$rules['status']) throw new CustomException($rules['message']);
 
-            $members = $data['list_anggota'];
-            $data['booking_code'] = $this->generateBookingCode();
-
-            $booking = Booking::create([
-                'user_id' => $data['list_anggota'][0]['id'],
+            $insertData = [
+                'user_id' => $data['list_anggota'][0]['id'] ?? "",
                 'room_id' => $data['room_id'],
-                'start_time' => $data['datetime'],
+                'start_time' => $data['datetime']->toDateTimeString(),
                 'duration' => $data['duration'],
-                'end_time' => $data['end_time'],
-                'booking_code' => $data['booking_code']
-            ]);
-            $members = $this->addBookingIdToMembersData($members, $booking->id);
-            $bookingLog = BookingLog::create($booking->id);
-            $bookingParticipants = BookingParticipant::bulkInsert($members);
+                'end_time' => $data['end_time']->toDateTimeString(),
+                'booking_code' => $this->generateBookingCode()
+            ];
+
+            if($getRoomById->requires_special_approval) {
+                $path = FileHandler::save($data['file'], 'booking');
+                $insertData['special_requirement_attachments_url'] = $path;
+                unset($insertData['user_id']);
+            }
+
+            $booking = Booking::create($insertData);
+            $bookingLog = BookingLog::create($booking->id); // MUNGKIN BISA DIBIKIN FUNCTION / PROCEDURE
+            if(!empty($data['list_anggota'])) {
+                $members = $data['list_anggota'];
+                $members = $this->addBookingIdToMembersData($members, $booking->id);
+                $bookingParticipants = BookingParticipant::bulkInsert($members);
+            }
 
             ResponseHandler::setResponse("Berhasil menambahkan data");
             header("location:" . URL . '/admin/booking/index');
@@ -195,7 +211,10 @@ class BookingController extends Controller
             $data['duration'] = $start->diffInMinutes($end);
             $data['end_time'] = $end;
 
-            $rules = $this->validationBookingRules($data['room_id'], $data);
+            $getRoomById = Room::getById($data['room_id']);
+            if (!$getRoomById->is_operational) throw new CustomException('Ruangan sedang tidak beroperasi');
+
+            $rules = $this->validationBookingRules($getRoomById, $data);
             if (!$rules['status']) throw new CustomException($rules['message']);
 
             $members = $data['list_anggota'];
@@ -238,14 +257,12 @@ class BookingController extends Controller
         }
     }
 
-    private function validationBookingRules($roomId, $data)
+    private function validationBookingRules($room, $data)
     {
         try {
             $readSchedule = file_get_contents(dirname(__DIR__) . '/../../schedule.json');
             $scheduleJson = json_decode($readSchedule, true);
 
-            $checkIfLibraryClose = LibraryClose::getByDate($data['datetime']->format('Y-m-d'));
-            if($checkIfLibraryClose) throw new CustomException('Tidak bisa booking di tanggal ini');
 
             if ($data['datetime']->isWeekend()) throw new CustomException('Tidak bisa booking di weekend');
             if ($data['datetime']->lt(Carbon::now('Asia/Jakarta')->toDateString())) throw new CustomException('Tidak bisa booking di kemarin hari');
@@ -268,19 +285,23 @@ class BookingController extends Controller
                 if ($startHour < $nowHour) throw new CustomException('Tidak bisa booking pada jam yang sudah lewat');
             }
             if (!$isValid) throw new CustomException('Tidak bisa booking di waktu yang anda masukan, harap lihat jadwal perpustakaan');
-            
 
             if ($data['duration'] < 60) throw new CustomException('Minimal durasi pinjam ruangan 1 jam');
             if ($data['duration'] > 180) throw new CustomException('Maximal durasi pinjam ruangan 3 jam');
 
-            $checkIfScheduleExists = Booking::checkSchedule($data['datetime'], $data['duration'], $roomId);
-            if ($data['booking_id'] !== $checkIfScheduleExists->id) {
-                throw new CustomException('Jadwal sudah dibooking');
+            $checkIfScheduleExists = Booking::checkSchedule($data['datetime'], $data['duration'], $room->id);
+            if($checkIfScheduleExists) {
+                if(isset($data['booking_id'])) {
+                    if ($data['booking_id'] !== $checkIfScheduleExists->id) throw new CustomException('Jadwal sudah dibooking');
+                } else {
+                    throw new CustomException('Jadwal sudah dibooking');
+                }
             }
 
-            $roomDetail = Room::getById($roomId);
-            if (count($data['list_anggota']) < $roomDetail->min_capacity) throw new CustomException("Minimal kapasitas adalah $roomDetail->min_capacity orang");
-            if (count($data['list_anggota']) > $roomDetail->max_capacity) throw new CustomException("Maximal kapasitas adalah $roomDetail->max_capacity orang");
+            if(!empty($data['list_anggota'])) {
+                if (count($data['list_anggota']) < $room->min_capacity) throw new CustomException("Minimal kapasitas adalah $room->min_capacity orang");
+                if (count($data['list_anggota']) > $room->max_capacity) throw new CustomException("Maximal kapasitas adalah $room->max_capacity orang");
+            }
 
             return [
                 'status' => true
