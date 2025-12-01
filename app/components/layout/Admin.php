@@ -39,7 +39,7 @@ $activeItem = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
             ?>
         </div>
         <div class="flex-1 w-full h-full p-4">
-            <div class="w-full h-full bg-image rounded-xl overflow-hidden relative">
+            <div class="w-full h-full bg-baseColor rounded-xl overflow-hidden relative">
                 <div class="w-full h-full p-4 flex items-center justify-center">
                     <?= $content ?>
                 </div>
@@ -47,12 +47,5 @@ $activeItem = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         </div>
     </div>
 </body>
-<style>
-    .bg-image {
-        background: url('<?= URL ?>/public/storage/bg-pattern/pattern.webp');
-        background-size: cover;
-        background-repeat: no-repeat;
-    }
-</style>
 
 </html>
