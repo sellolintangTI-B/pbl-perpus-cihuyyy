@@ -8,6 +8,34 @@ use Pdo;
 class Room extends Database
 {
 
+    public static function getALl($params = []) 
+    {
+        $where = [];
+        $values = [];
+        $conn = parent::getConnection();
+        $stmt = "SELECT * FROM rooms ";
+        if(!empty($params)) {
+            foreach($params as $key => $value) {
+                if($key === "name") {
+                    $where[] = "name ILIKE :$key";
+                    $values[] = "%$value%";
+                } else {
+                    $where[] = "$key = :$key";
+                    $values[] = $value;
+                }
+            }
+        }
+
+        if(!empty($where)) {
+            $whereClauses = implode(' AND ', $where);
+            $stmt .= "WHERE " . $whereClauses;
+        }
+        $q = $conn->prepare($stmt);
+        $q->execute($values);
+        $data = $q->fetchALl(PDO::FETCH_OBJ);
+        return $data;
+    }
+
     public static function get($params = [])
     {
         $paramValues = [];
