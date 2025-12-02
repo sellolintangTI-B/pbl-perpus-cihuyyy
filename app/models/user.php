@@ -8,11 +8,33 @@ use Pdo;
 class User extends Database
 {
 
-    public static function get()
+    public static function get($params = [])
     {
+        $where = [];
+        $values = [];
         $conn = parent::getConnection();
-        $q = $conn->prepare("SELECT * FROM users ORDER BY is_active ASC");
-        $q->execute();
+        $stmt = "SELECT * FROM users ";
+
+        if(!empty($params)) {
+            foreach($params as $key => $value) {
+                if($key == "first_name" && !empty($value)) {
+                    $where[] = "CONCAT(first_name, ' ', last_name) ILIKE :name";
+                    $values[] = "%$value%";
+                } else {
+                    $where[] = "$key = :$key";
+                    $values[] = $value;
+                }
+            }
+        }
+
+        if(!empty($where)) {
+            $whereClauses = implode(' AND ', $where);
+            $stmt .= "WHERE " . $whereClauses;
+        }
+
+        $stmt .= " ORDER BY is_active ASC";
+        $q = $conn->prepare($stmt);
+        $q->execute($values);
         $data = $q->fetchAll(PDO::FETCH_OBJ);
         return $data;
     }

@@ -18,7 +18,13 @@ class RoomController extends Controller {
 
     public function index()
     {
-        $data = $this->room->get();
+        $params = [];
+        if(isset($_GET['status']) && !empty($_GET['status'])) $params['is_operational'] = $_GET['status'];
+        if(isset($_GET['isSpecial']) && !empty($_GET['isSpecial'])) $params['requires_special_approval'] = $_GET['isSpecial'];
+        if(isset($_GET['floor']) && !empty($_GET['floor'])) $params['floor'] = $_GET['floor'];
+        if(isset($_GET['search']) && !empty($_GET['search'])) $params['name'] = $_GET['search'];
+
+        $data = Room::getALl($params);
         $this->view('admin/rooms/index', $data, layoutType: "Admin");
     }
 
