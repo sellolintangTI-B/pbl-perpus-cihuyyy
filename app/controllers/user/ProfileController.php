@@ -30,6 +30,7 @@ class ProfileController extends Controller
         ];
         $this->view('user/profile/index', $data, layoutType: $this::$layoutType['civitas']);
     }
+
     public function update($id)
     {
         try {
@@ -41,14 +42,14 @@ class ProfileController extends Controller
                 "major" => $_POST['major'],
                 "study_program" => $_POST['study_program'],
                 "phone_number" => $_POST["phone_number"],
-                "institution" => $_POST['institution'],
             ];
 
             $validator = new Validator($data);
             $validator->field("first_name", ['required']);
             $validator->field("email", ['required']);
             $validator->field("phone_number", ['required']);
-            $validator->field("institution", ['required']);
+            $validator->field("major", ['required']);
+            $validator->field("study_program", ['required']);
 
             if ($validator->error()) throw new CustomException($validator->getErrors());
 

@@ -83,8 +83,8 @@ class Middleware
             "/user/guide/index",
             //PROFILE
             "/user/profile/index",
-            "/user/user/update",
-            "/user/user/reset_password",
+            "/user/profile/update",
+            "/user/profile/reset_password",
         ],
         "Dosen" => [
             "/user/user/index",
@@ -105,8 +105,8 @@ class Middleware
             "/user/guide/index",
             //PROFILE
             "/user/profile/index",
-            "/user/user/update",
-            "/user/user/reset_password",
+            "/user/profile/update",
+            "/user/profile/reset_password",
         ]
     ];
 
