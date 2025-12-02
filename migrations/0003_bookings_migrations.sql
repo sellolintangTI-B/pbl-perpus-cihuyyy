@@ -1,6 +1,6 @@
 CREATE TABLE bookings (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id UUID NOT NULL,
+    user_id UUID,
     room_id UUID NOT NULL,
     start_time TIMESTAMP NOT NULL,
     duration INTEGER NOT NULL,

@@ -28,7 +28,7 @@ use App\Components\RoomCard;
                     <label class="px-1 bg-transparent text-xs font-medium text-black/70">
                         Kapan
                     </label>
-                    <input type="date" name="date" placeholder="Tanggal dan jam peminjaman" value="<?= isset($_GET['date']) ? $_GET['date'] : null ?>" class="w-full h-full rounded-lg border-0 focus:outline-none focus:ring-0 transition-colors duration-200 text-sm text-black/70 px-4">
+                    <input type="date" name="date" placeholder="Tanggal dan jam peminjaman" value="<?= isset($_GET['date']) ? $_GET['date'] : null ?>" class="w-full h-full cursor-pointer custom-input-icon  rounded-lg border-0 focus:outline-none focus:ring-0 transition-colors duration-200 text-sm text-black/70 px-4">
                 </div>
                 <div class="h-12 w-[1px] rounded-full bg-black/20">
 
@@ -38,14 +38,14 @@ use App\Components\RoomCard;
                     <label class="px-1 bg-transparent text-xs font-medium text-black/70">
                         Waktu mulai
                     </label>
-                    <input type="time" name="start_time" placeholder="Jam mulai peminjaman" value="<?= isset($_GET['start_time']) ? $_GET['start_time'] : null ?>" class="w-full h-full rounded-lg border-0 focus:outline-none focus:ring-0 transition-colors duration-200 text-sm text-black/70 px-4">
+                    <input type="time" name="start_time" placeholder="Jam mulai peminjaman" value="<?= isset($_GET['start_time']) ? $_GET['start_time'] : null ?>" class="w-full h-full custom-input-icon rounded-lg border-0 focus:outline-none focus:ring-0 transition-colors duration-200 text-sm text-black/70 px-4">
                 </div>
                 <!-- end time Filter -->
                 <div class="flex-1 relative flex flex-col gap-3 justify-center items-start h-full">
                     <label class="px-1 bg-transparent text-xs font-medium text-black/70">
                         Waktu berakhir
                     </label>
-                    <input type="time" name="end_time" placeholder="Jam peminjaman berakhir" value="<?= isset($_GET['end_time']) ? $_GET['end_time'] : null ?>" class="w-full h-full rounded-lg border-0 focus:outline-none focus:ring-0 transition-colors duration-200 text-sm text-black/70 px-4">
+                    <input type="time" name="end_time" min="07:00" max="17:00" step="600" placeholder="Jam peminjaman berakhir" value="<?= isset($_GET['end_time']) ? $_GET['end_time'] : null ?>" class="w-full h-full custom-input-icon rounded-lg border-0 focus:outline-none focus:ring-0 transition-colors duration-200 text-sm text-black/70 px-4">
                 </div>
 
                 <!-- Search Button -->

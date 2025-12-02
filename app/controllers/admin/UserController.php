@@ -8,6 +8,7 @@ use App\Error\CustomException;
 use App\Utils\Validator;
 use App\Models\User;
 use App\Utils\DB;
+use App\Utils\FileHandler;
 use Exception;
 
 class UserController extends Controller
@@ -21,7 +22,7 @@ class UserController extends Controller
             $users = User::get();
             if (!empty($search)) $searchLower = strtolower($search);
             if (!empty($type) && !empty($search)) {
-                $users = DB::get("SELECT * FROM users WHERE (LOWER(first_name) LIKE ? OR LOWER(last_name) LIKE ?) AND role = ? ORDER BY is_active ASC", ["%$searchLower%", "%$searchLower%", $type]);
+                $users = DB::get("SELECT * FROM users WHERE (LOWER(first_name) ILIKE ? OR LOWER(last_name) ILIKE ?) AND role = ? ORDER BY is_active ASC", ["%$searchLower%", "%$searchLower%", $type]);
             } else if (!empty($type)) {
                 $users = DB::get("SELECT * FROM users WHERE role = ? ORDER BY is_active ASC", [$type]);
             } else if (!empty($search)) {
@@ -91,6 +92,7 @@ class UserController extends Controller
                 "phone_number" => $_POST["phone_number"],
                 "major" => $_POST["major"],
                 "role" => $_POST['role'],
+                "is_active" => true
             ];
 
             $validator = new Validator($data);
@@ -148,7 +150,8 @@ class UserController extends Controller
                 "phone_number" => $_POST["phone_number"],
                 "institution" => $_POST['institution'],
                 "role" => $_POST["role"],
-                "image" => empty($_FILES['image']['name']) ? null : $_FILES['image']
+                "image" => empty($_FILES['image']['name']) ? null : $_FILES['image'],
+                "is_active" => $_POST['status']
             ];
 
             $validator = new Validator($data);
@@ -167,15 +170,13 @@ class UserController extends Controller
             if ($checkByEmail) throw new CustomException('Email sudah digunakan');
 
             if (!is_null($data['image'])) {
-                $file = $_FILES['image']['tmp_name'];
                 $allowedMimes = ["image/jpeg", "image/png", "image/jpg"];
-                $getFileInfo = getimagesize($file);
+                $getFileInfo = getimagesize($data['image']);
                 if (!in_array($getFileInfo['mime'], $allowedMimes)) {
                     throw new CustomException(['image' => "File tidak didukung"]);
                 }
-                $newPath = 'storage/users/' . $_FILES['image']['name'];
-                move_uploaded_file($file, dirname(__DIR__) . "/../../public/" . $newPath);
-                $data['image'] = $newPath;
+                $path = FileHandler::save($data['image'], 'users/profile');
+                $data['image'] = $path;
             } else {
                 unset($data['image']);
             }

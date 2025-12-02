@@ -7,6 +7,7 @@
     <title><?= $title ?? "SIMARU" ?></title>
     <link href="<?= URL ?>/public/css/style.css" rel="stylesheet">
     <link href="<?= URL ?>/public/css/theme.css" rel="stylesheet">
+    <link href="<?= URL ?>/public/css/global.css" rel="stylesheet">
     <!-- <script src="<?= URL ?>/public/js/alpine.js" defer></script> -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="//unpkg.com/alpinejs" defer></script>
@@ -40,8 +41,8 @@ $items = [
             NavThings::adminSideBar(items: $items, activeItem: $activeItem ?? null, title: $title ?? "SIMARU", logo: $logo ?? null);
             ?>
         </div>
-        <div class="flex-1 w-full h-full p-4">
-            <div class="w-full h-full bg-image rounded-xl overflow-hidden relative">
+        <div class="flex-1 w-full h-screen p-4">
+            <div class="w-full h-full bg-baseColor rounded-xl overflow-hidden relative">
                 <div class="w-full h-full p-4 flex items-center justify-center">
                     <?= $content ?>
                 </div>
@@ -49,12 +50,5 @@ $items = [
         </div>
     </div>
 </body>
-<style>
-    .bg-image {
-        background: url('<?= URL ?>/public/storage/bg-pattern/pattern.webp');
-        background-size: cover;
-        background-repeat: no-repeat;
-    }
-</style>
 
 </html>

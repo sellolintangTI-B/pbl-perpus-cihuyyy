@@ -1,4 +1,4 @@
-CREATE TYPE status AS ENUM ('checked_in', 'finished', 'cancelled', 'created');
+-- CREATE TYPE status AS ENUM ('checked_in', 'finished', 'cancelled', 'created');
 CREATE TABLE IF NOT EXISTS booking_logs (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     booking_id UUID NOT NULL,

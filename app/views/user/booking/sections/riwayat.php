@@ -49,7 +49,8 @@ $currentStatus = !empty($_GET['status']) ? $_GET['status'] : 'semua';
                 active: $isActive,
                 type: 'submit',
                 name: 'status',
-                value: htmlspecialchars($f['value'])
+                value: htmlspecialchars($f['value']),
+                class: 'cursor-pointer'
             );
         endforeach;
         ?>

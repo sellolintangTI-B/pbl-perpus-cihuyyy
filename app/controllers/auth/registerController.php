@@ -52,7 +52,7 @@ class RegisterController extends Controller
             $validator = new Validator($data);
             $validator->field("id_number", ["required"]);
             $validator->field("email", ["required", "email"]);
-            $validator->field("password_hash", ["required", "password"]);   
+            $validator->field("password_hash", ["required", "password"]);
             $validator->field("first_name", ["required"]);
             $validator->field("institution", ["required"]);
             $validator->field("study_program", ["required"]);
@@ -103,6 +103,7 @@ class RegisterController extends Controller
             if ($insertData) {
                 ResponseHandler::setResponse("Registrasi berhasil, tunggu verifikasi admin");
                 header('location:' . URL . '/auth/login/index');
+                $_SESSION['register_old'] = null;
             }
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), "error");

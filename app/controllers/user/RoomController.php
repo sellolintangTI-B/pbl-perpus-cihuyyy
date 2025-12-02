@@ -35,11 +35,6 @@ class RoomController extends Controller
                 }
             }
 
-            // if (isset($_GET['end_time'])) {
-            //     if(!empty($_GET['end_time'])) {
-            //     }
-            // }
-
             if (isset($_GET['room'])) {
                 $params['room'] = $_GET['room'];
             }
