@@ -37,7 +37,14 @@ class ProfileController extends Controller
         try {
             $file = $_FILES['profile_picture'];
             $path = FileHandler::save($file, 'users/profile');
-            // $updateProfile = User::updateProfile();
+            $updateProfile = User::updateProfile($id, [
+                'profile_picture_url' => $path
+            ]);
+
+            if($updateProfile) {
+                ResponseHandler::setResponse('Berhasil mengubah profile picture');
+                header('location:' . URL . "/user/profile/index");  
+            }
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), "error");
             header('location:' . URL . "/user/profile/index");
@@ -54,14 +61,14 @@ class ProfileController extends Controller
                 "major" => $_POST['major'],
                 "study_program" => $_POST['study_program'],
                 "phone_number" => $_POST["phone_number"],
-                "institution" => $_POST['institution'],
             ];
 
             $validator = new Validator($data);
             $validator->field("first_name", ['required']);
             $validator->field("email", ['required']);
             $validator->field("phone_number", ['required']);
-            $validator->field("institution", ['required']);
+            $validator->field("major", ['required']);
+            $validator->field("study_program", ['required']);
 
             if ($validator->error()) throw new CustomException($validator->getErrors());
 

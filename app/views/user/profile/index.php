@@ -84,7 +84,7 @@ $badgeSuspendColor = [
             </div>
             <div class="absolute p-4 inset-0  flex flex-col items-start justify-start gap-4">
                 <?= ProfilePictureUpload::render(
-                    imageUrl: URL . "/public/storage/users/" . $data['data']->profile_picture_url ?? "",
+                    imageUrl: URL . "/public/storage/" . $data['data']->profile_picture_url ?? "",
                     formAction: URL . "/user/profile/update_picture/" . $data['data']->id ?? "",
                     userName: ($data['data']->first_name ?? "") . " " . ($data['data']->last_name ?? ""),
                     userRole: $data['data']->role ?? "",

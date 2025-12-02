@@ -59,6 +59,7 @@ class Middleware
             "/admin/profile/index",
             "/admin/profile/update",
             "/admin/profile/reset_password",
+            "/admin/profile/update_picture",
             //ERROR
             "/error/forbidden/index",
             "/error/notfound/index",
@@ -84,9 +85,9 @@ class Middleware
             "/user/guide/index",
             //PROFILE
             "/user/profile/index",
-            "/user/user/update",
-            "/user/user/reset_password",
-            "/user/profile/update_picture"
+            "/user/profile/update",
+            "/user/profile/reset_password",
+            "/user/profile/update_picture",
         ],
         "Dosen" => [
             "/user/user/index",
@@ -107,9 +108,9 @@ class Middleware
             "/user/guide/index",
             //PROFILE
             "/user/profile/index",
-            "/user/user/update",
-            "/user/user/reset_password",
-            "/user/profile/update_picture"
+            "/user/profile/update",
+            "/user/profile/reset_password",
+            "/user/profile/update_picture",
         ]
     ];
 

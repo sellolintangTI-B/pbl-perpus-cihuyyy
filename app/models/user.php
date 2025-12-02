@@ -158,18 +158,22 @@ class User extends Database
         if ($q) return true;
         return false;
     }
+
     public static function updateProfile($id, $data)
     {
         $conn = parent::getConnection();
-        $query = "UPDATE users SET id_number = ?, email = ?, first_name = ?, last_name = ?, major = ?, study_program = ?, phone_number = ?, institution = ? WHERE id = ?";
-        $q = $conn->prepare($query);
-        $i = 1;
-        foreach ($data as $key => $value) {
-            $q->bindParam($i, $data[$key]);
-            $i++;
+        $fields = [];
+        $values = [];
+
+        foreach($data as $key => $value) {
+            $fields[] = "$key = :$key";
+            $values[] = $value;
         }
-        $q->bindParam($i++, $id);
-        $q->execute();
+        $values[] = $id;
+        $fields = implode(', ', $fields);
+        $query = "UPDATE users SET $fields WHERE id = :id";
+        $q = $conn->prepare($query);
+        $q->execute($values);
         if ($q) return true;
         return false;
     }
