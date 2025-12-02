@@ -11,9 +11,8 @@ class Booking extends Database
     public static function get()
     {
         $conn = parent::getConnection();
-        $q = $conn->prepare("SELECT DISTINCT ON (b.id) b.id, u.first_name || ' ' || u.last_name AS pic_name, r.name, b.start_time, b.end_time, bl.status, b.booking_code
-        FROM bookings AS b 
-        JOIN users AS u ON b.user_id = u.id
+        $q = $conn->prepare("SELECT DISTINCT ON (b.id) b.id, u.first_name || ' ' || u.last_name AS pic_name, b.booking_code ,r.name, b.start_time, b.end_time, bl.status
+        FROM bookings AS b JOIN users AS u ON b.user_id = u.id
         JOIN rooms AS r ON b.room_id = r.id
 		JOIN booking_logs AS bl ON b.id = bl.booking_id ORDER BY b.id, bl.created_at DESC");
         $q->execute();

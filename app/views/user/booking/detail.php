@@ -37,7 +37,7 @@ $bookingDetail = [
     'members' => $data['participants']
 ];
 ?>
-<div class="bg-baseColor font-poppins" x-data="{ onModalShow: false, showFeedback: false }">
+<div class="bg-baseColor font-poppins min-h-[32rem]" x-data="{ onModalShow: false, showFeedback: false }">
     <div class="max-w-6xl mx-auto p-4">
         <!-- Header -->
         <div class="flex items-center gap-3 mb-6">

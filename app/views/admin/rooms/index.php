@@ -9,14 +9,14 @@ use App\Components\CustomSelect;
 
 $statusOptions = [
     '' => 'Semua Status',
-    '1' => 'Aktif',
-    '0' => 'Nonaktif'
+    'true' => 'Aktif',
+    'false' => 'Nonaktif'
 ];
 
 $typeOptions = [
     '' => 'Semua Ruang',
-    true => 'Ruang Khusus',
-    false => 'Ruang Umum',
+    'true' => 'Ruang Khusus',
+    'false' => 'Ruang Umum',
 
 ];
 
@@ -71,7 +71,7 @@ $floorOptions = [
                     selectedValue: $_GET['floor'] ?? ''
                 ) ?>
 
-                <div class="h-full w-[12rem]">
+                <div class="h-full w-full min-w-[14rem]">
                     <?= FormInput::input(
                         type: "text",
                         name: "search",

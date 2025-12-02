@@ -82,13 +82,14 @@ $badgeSuspendColor = [
             <div class="flex justify-end items-center p-4 ">
                 <?= Badge::badge(label: 'Suspend Point: ' . (isset($data['suspension']) ? ($data['suspension']->suspend_count ?? 0) : 0) . ' point', color: $badgeSuspendColor[isset($data['suspension']) ? ($data['suspension']->suspend_count ?? 0) : 0], class: 'px-2! py-1!') ?>
             </div>
-            <div class="absolute p-4 inset-0 left-18 flex flex-col items-start justify-start gap-4">
+            <div class="absolute p-4 inset-0  flex flex-col items-start justify-start gap-4">
                 <?= ProfilePictureUpload::render(
-                    imageUrl: URL . "/public/storage/users/" . $data['data']->profile_picture_url,
-                    formAction: URL . "/user/profile/update_picture/" . $data['data']->id,
-                    userName: $data['data']->first_name . " " . $data['data']->last_name,
+                    imageUrl: URL . "/public/storage/users/" . $data['data']->profile_picture_url ?? "",
+                    formAction: URL . "/user/profile/update_picture/" . $data['data']->id ?? "",
+                    userName: ($data['data']->first_name ?? "") . " " . ($data['data']->last_name ?? ""),
                     userRole: $data['data']->role ?? "",
-                    inputName: 'profile_picture'
+                    inputName: 'profile_picture',
+                    class: 'mx-18'
                 ) ?>
             </div>
         </div>

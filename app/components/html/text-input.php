@@ -23,7 +23,7 @@ $classColor = match ($color) {
             value="<?= $value ?? '' ?>"
             <?php endif; ?>
             placeholder="<?= $placeholder ?? '' ?>"
-            class="<?= $class ?> <?= $classColor ?> rounded-xl p-3 bg-baseColor text-gray-600 border border-gray-400 outline-none text-sm transition-shadow duration-300 w-full <?= $type == 'password' ? 'pr-10' : '' ?>"
+            class="<?= $class ?> <?= $classColor ?> rounded-xl p-3 bg-baseColor custom-input-icon text-gray-600 border border-gray-400 outline-none text-sm transition-shadow duration-300 w-full <?= $type == 'password' ? 'pr-10' : '' ?>"
             <?= isset($required) && $required ? 'required' : '' ?>
             <?= isset($readonly) && $readonly ? 'readonly' : '' ?>
             <?= isset($disabled) && $disabled ? 'disabled' : '' ?>

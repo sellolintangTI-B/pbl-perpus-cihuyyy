@@ -17,13 +17,12 @@
 use App\Components\UserNavbar;
 use App\Utils\Authentication;
 
-$user = new Authentication
+$user = new Authentication;
 
 ?>
 
-<body class="font-poppins ">
+<body class="font-poppins">
     <?php include_once 'app/components/response-banner.php'; ?>
-
     <div x-data="{ 
         scrolled: false,
         init() {
@@ -44,12 +43,14 @@ $user = new Authentication
             ) ?>
 
             <div x-ref="scrollContainer" class="w-full h-full max-h-full overflow-y-auto ">
-                <div class="pb-32">
+                <div>
                     <?= $content ?>
+                    <?php include __DIR__ . '/Footer.php'; ?>
                 </div>
             </div>
         </div>
     </div>
+
 </body>
 <style>
     .bg-image {

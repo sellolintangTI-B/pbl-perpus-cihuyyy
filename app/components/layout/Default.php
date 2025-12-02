@@ -7,6 +7,7 @@
     <title><?= $title ?? "SIMARU" ?></title>
     <link href="<?= URL ?>/public/css/style.css" rel="stylesheet">
     <link href="<?= URL ?>/public/css/theme.css" rel="stylesheet">
+    <link href="<?= URL ?>/public/css/global.css" rel="stylesheet">
     <!-- <script src="<?= URL ?>/public/js/alpine.js" defer></script> -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="//unpkg.com/alpinejs" defer></script>
@@ -16,7 +17,7 @@
 <body class="font-poppins">
     <?php include_once 'app/components/response-banner.php'; ?>
     <!-- Main Content -->
-    <div class="h-screen w-full bg-primary p-4">
+    <div>
         <?= $content ?>
     </div>
 </body>

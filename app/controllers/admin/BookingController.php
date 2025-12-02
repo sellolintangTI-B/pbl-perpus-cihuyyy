@@ -263,6 +263,8 @@ class BookingController extends Controller
             $readSchedule = file_get_contents(dirname(__DIR__) . '/../../schedule.json');
             $scheduleJson = json_decode($readSchedule, true);
 
+            $checkIfLibraryClose = LibraryClose::getByDate($data['datetime']->format('Y-m-d'));
+            if ($checkIfLibraryClose) throw new CustomException('Tidak bisa booking di tanggal ini');
 
             if ($data['datetime']->isWeekend()) throw new CustomException('Tidak bisa booking di weekend');
             if ($data['datetime']->lt(Carbon::now('Asia/Jakarta')->toDateString())) throw new CustomException('Tidak bisa booking di kemarin hari');
@@ -285,6 +287,7 @@ class BookingController extends Controller
                 if ($startHour < $nowHour) throw new CustomException('Tidak bisa booking pada jam yang sudah lewat');
             }
             if (!$isValid) throw new CustomException('Tidak bisa booking di waktu yang anda masukan, harap lihat jadwal perpustakaan');
+
 
             if ($data['duration'] < 60) throw new CustomException('Minimal durasi pinjam ruangan 1 jam');
             if ($data['duration'] > 180) throw new CustomException('Maximal durasi pinjam ruangan 3 jam');

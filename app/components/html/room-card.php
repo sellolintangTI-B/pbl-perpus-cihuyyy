@@ -11,7 +11,11 @@ use Soap\Url;
     <div class="relative w-full h-72 overflow-hidden rounded-lg">
         <img src="<?= URL . '/public/' . $room['image'] ?>" alt="<?= $room['name'] ?? 'Room' ?>" class="w-full h-full object-cover">
         <?php if ($room['isSpecial']):
-            Badge::badge(label: 'Special Room', color: 'secondary', class: 'absolute inset-0 m-2 w-fit h-fit ms-auto bg-secondary/40!');
+        ?>
+            <div class="px-2 py-1 h-fit w-fit m-2 ms-auto rounded-full absolute inset-0 flex items-center justify-center text-sm border border-secondary bg-white/80 text-secondary">
+                Ruang Rapat
+            </div>
+        <?php
         endif;
         ?>
 
