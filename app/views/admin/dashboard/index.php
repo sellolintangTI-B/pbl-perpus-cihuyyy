@@ -78,7 +78,17 @@ use App\Components\Modal;
                             <?php Icon::copy('w-5 h-5 text-black/80') ?>
                         </button>
                     </div>
-                    <button class="px-2 py-1 rounded-full flex items-center justify-center text-xs w-24" x-text="getStatusLabel(bookingData.status)" :class="getStatusColor(bookingData.status)"></button>
+
+                    <!-- Badge Status -->
+                    <div class="px-3 py-1.5 rounded-full flex items-center justify-center text-xs font-medium w-fit whitespace-nowrap border"
+                        :class="[
+                            bookingData.status === 'created' ? 'border-primary bg-primary/20 text-primary' : '',
+                            bookingData.status === 'checked_in' ? 'border-secondary bg-secondary/20 text-secondary' : '',
+                            bookingData.status === 'cancelled' ? 'border-red bg-red/20 text-red' : '',
+                            bookingData.status === 'finished' ? 'border-tertiary bg-tertiary/20 text-tertiary' : ''
+                        ]"
+                        x-text="getStatusLabel(bookingData.status)">
+                    </div>
                 </div>
 
                 <div class="flex gap-2 text-black/80">
@@ -108,7 +118,7 @@ use App\Components\Modal;
                     </div>
 
                     <!-- Action Menu -->
-                    <div class="relative" x-data="{open: false}">
+                    <div class="relative" x-data="{open: false}" x-show=" bookingData.status == 'created' ||  bookingData.status == 'checked_in'">
                         <button
                             @click="open = !open"
                             class="p-1.5 rounded-full hover:bg-gray-100 transition-colors duration-150 cursor-pointer">
@@ -210,7 +220,7 @@ use App\Components\Modal;
                     <span class="text-white font-medium" x-text="copyToast.copySuccess ? 'Kode berhasil disalin!' : 'Gagal menyalin kode'"></span>
                     <button
                         class="text-white font-medium cursor-pointer p-1 rounded-full bg-none hover:bg-white/20 duration-300 transition-all"
-                        @click="copyToast = false">
+                        @click="copyToast.copyToast = false">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
                         </svg>
