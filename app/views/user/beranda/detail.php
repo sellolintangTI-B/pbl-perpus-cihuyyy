@@ -141,7 +141,7 @@ if (isset($_SESSION['old_booking'])) {
                     </div>
                     <button
                         type="submit"
-                        class=" bg-primary text-white px-4 max-h-full h-full rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors">
+                        class=" bg-primary cursor-pointer text-white px-4 max-h-full h-full rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors">
                         Cek
                     </button>
                 </form>
@@ -239,26 +239,10 @@ if (isset($_SESSION['old_booking'])) {
                             </div>
                             <!-- Pesan error -->
                             <p x-text="message" class="text-xs text-red-500 mt-1"></p>
-
-                            <!-- <div class="w-full flex items-center justify-center">
-                                <button type="button"
-                                    @click="tambahAnggota"
-                                    class="bg-primary text-white w-8 h-8 cursor-pointer rounded-full hover:bg-primary/90 transition-all">
-                                    +
-                                </button>
-                            </div> -->
-
                             <!-- Hidden input untuk mengirim data ke PHP -->
                             <input type="hidden" name="list_anggota" :value="JSON.stringify(listAnggota)">
                         </div>
-
-                        <!-- Upload surat resmi 
-                        <div>
-                            <label class="block text-sm font-medium text-primary mb-2">Upload Surat Resmi</label>
-                            <?php //FormInput::fileInput(id: "surat", name: "file_surat", placeholder: "Surat Izin Peminjaman", accept: 'image/*', required: true)
-                            ?>
-                        </div> -->
-                        <!-- Tombol submit -->
+                        <!-- submit -->
                         <?=
                         Button::buttonGradient(label: 'Booking Ruangan Ini', class: 'w-full py-3 rounded-xl', type: 'submit')
                         ?>

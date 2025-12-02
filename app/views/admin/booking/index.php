@@ -7,6 +7,7 @@
     use Carbon\Carbon;
     use App\Components\Modal;
     use App\Components\CustomSelect;
+    use App\Components\StagedCustomSelect;
 
     $no = 1;
 
@@ -43,34 +44,75 @@
                 <!-- form action -->
                 <div class="flex items-center justify-end gap-2 h-full w-full max-w-3/4">
                     <form method="GET" class="flex items-start justify-end gap-2  w-full h-full flex-1">
-                        <div>
-                            <?= CustomSelect::render(
-                                name: 'date',
-                                defaultLabel: 'Tanggal',
-                                options: [],
-                                selectedValue: $_GET['date'] ?? ''
-                            ) ?>
-                        </div>
-                        <div>
-                            <?= CustomSelect::render(
-                                name: 'status',
-                                defaultLabel: 'Status',
-                                options: $statusLabel,
-                                selectedValue: $_GET['status'] ?? ''
-                            ) ?>
-                        </div>
-                        <div>
-                            <?= CustomSelect::render(
-                                name: 'room',
-                                defaultLabel: 'Ruangan',
-                                options: $roomOption,
-                                selectedValue: $_GET['room'] ?? ''
-                            ) ?>
+                        <?= Button::anchor(
+                            label: 'Export',
+                            icon: 'export',
+                            color: 'primary',
+                            class: 'px-3 py-2',
+                            btn_icon_size: 'w-4 h-4',
+                            href: ''
+                        ) ?>
+                        <div class="relative" x-data="{showFilter:false}" @click.outside="showFilter = false" x-cloak>
+                            <!-- button filter show -->
+                            <button type="button" class="px-4 py-2 bg-primary rounded-lg text-white cursor-pointer flex items-center gap-2" @click="showFilter = !showFilter">
+                                <span>
+                                    <?= Icon::filter('w-4 h-4 text-white') ?>
+                                </span>
+                                Filter
+                                <span :class="showFilter?'rotate-180':'rotate-0'" class="duration-300 transition-all">
+                                    <?= Icon::arrowDown('w-6 h-6 text-white') ?>
+                                </span>
+                            </button>
+                            <!-- filter action -->
+                            <div
+                                x-show="showFilter"
+                                x-transition:enter="transition ease-out duration-300"
+                                x-transition:enter-start="opacity-0 -translate-y-4"
+                                x-transition:enter-end="opacity-100 translate-y-0"
+                                x-transition:leave="transition ease-in duration-200"
+                                x-transition:leave-start="opacity-100 translate-y-0"
+                                x-transition:leave-end="opacity-0 -translate-y-4"
+                                class="bg-white rounded-lg p-4 absolute z-50 items-center justify-self-end mt-4">
+                                <div class="flex gap-4 items-start justify-center">
+                                    <div>
+                                        <?= FormInput::input(
+                                            type: 'month',
+                                            name: 'month',
+                                            class: 'bg-primary text-white  p-0! h-full! py-2! px-4! input-icon-white',
+                                            classGlobal: 'h-full!'
+                                        ) ?>
+                                    </div>
+                                    <div>
+                                        <?= FormInput::input(
+                                            type: 'date',
+                                            name: 'date',
+                                            class: 'bg-primary text-white  p-0! h-full! py-2! px-4! input-icon-white',
+                                            classGlobal: 'h-full!'
+                                        ) ?>
+                                    </div>
+                                    <div>
+                                        <?= StagedCustomSelect::render(
+                                            name: 'status',
+                                            defaultLabel: 'Status',
+                                            options: $statusLabel,
+                                            selectedValue: $_GET['status'] ?? ''
+                                        ) ?>
+                                    </div>
+                                    <div>
+                                        <?= StagedCustomSelect::render(
+                                            name: 'room',
+                                            defaultLabel: 'Ruangan',
+                                            options: $roomOption,
+                                            selectedValue: $_GET['room'] ?? ''
+                                        ) ?>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="h-full w-[12rem]">
                             <?= FormInput::input(type: "text", name: "search", placeholder: "Kode Peminjaman", value: $_GET['search'] ?? '', class: "h-full !w-full !border-primary", classGlobal: "h-full !w-full") ?>
                         </div>
-                        <?= Button::button(class: "px-4 h-full", label: "Cari") ?>
+                        <?= Button::button(class: "px-4 h-full", label: "Cari", type: 'submit') ?>
                     </form>
                 </div>
             </div>

@@ -4,7 +4,7 @@ namespace App\Components;
 
 use App\Components\Icon\Icon;
 
-class CustomSelect
+class StagedCustomSelect
 {
     public static function render($name, $defaultLabel, $options, $selectedValue = '', $class = '')
     {
@@ -51,7 +51,7 @@ class CustomSelect
                 <input type="text" name="<?= htmlspecialchars($name) ?>" :value="value" hidden />
                 <?php foreach ($options as $optionValue => $optionLabel): ?>
                     <button
-                        type="submit"
+                        type="button"
                         @click="display = '<?= htmlspecialchars($optionLabel) ?>'; value='<?= htmlspecialchars($optionValue) ?>'"
                         class="flex line-clamp-1 truncate items-center gap-2 px-3 py-2 text-primary hover:bg-primary/5 text-sm border-t border-gray-100 w-full text-left transition cursor-pointer">
                         <?= htmlspecialchars($optionLabel) ?>

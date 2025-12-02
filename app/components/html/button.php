@@ -32,19 +32,19 @@ $safeType = in_array($type, $allowedTypes) ? $type : 'button';
     class="<?= $customClass ?> <?= htmlspecialchars($class) ?> shadow-md shadow-black/25 font-medium cursor-pointer"
     type="<?= $safeType ?>"
     <?php if (!empty($onClick)): ?>
-    onclick="<?= htmlspecialchars($onClick, ENT_QUOTES, 'UTF-8') ?>"
+    onclick="<?= htmlspecialchars($onClick) ?>"
     <?php endif; ?>
     <?php if (!empty($id)): ?>
-    id="<?= htmlspecialchars($id, ENT_QUOTES, 'UTF-8') ?>"
+    id="<?= htmlspecialchars($id) ?>"
     <?php endif; ?>
     <?php if (!empty($name)): ?>
-    name="<?= htmlspecialchars($name, ENT_QUOTES, 'UTF-8') ?>"
+    name="<?= htmlspecialchars($name) ?>"
     <?php endif; ?>
     <?php if (!empty($alpineClick)): ?>
-    @click="<?= htmlspecialchars($alpineClick, ENT_QUOTES, 'UTF-8') ?>"
+    @click="<?= htmlspecialchars($alpineClick) ?>"
     <?php endif; ?>
     <?php if (!empty($alpineDisabled)): ?>
-    :disabled="<?= htmlspecialchars($alpineDisabled, ENT_QUOTES, 'UTF-8') ?>"
+    :disabled="<?= htmlspecialchars($alpineDisabled) ?>"
     <?php endif; ?>
     <?php if ($disabled): ?>
     disabled
@@ -55,4 +55,9 @@ $safeType = in_array($type, $allowedTypes) ? $type : 'button';
     }
     ?>
     <?= $label ?>
+    <?php
+    if ($rightIcon && method_exists(Icon::class, $rightIcon)) {
+        Icon::{$rightIcon}($btn_icon_size);
+    }
+    ?>
 </button>
