@@ -8,7 +8,7 @@ class Button
     {
         include __DIR__ . '/html/anchor.php';
     }
-    public static function  button($label = '', $btn_icon_size = 'w-6 h-6', $icon = null, $onClick = '', $type = '', $class = '', $name = '', $id = '', $color = 'primary', $alpineClick = '', $alpineDisabled = '')
+    public static function  button($label = '', $btn_icon_size = 'w-6 h-6', $icon = null, $rightIcon = null, $onClick = '', $type = '', $class = '', $name = '', $id = '', $color = 'primary', $alpineClick = '', $alpineDisabled = '')
     {
         include __DIR__ . '/html/button.php';
     }

@@ -3,6 +3,7 @@
 use App\Components\RoomCard;
 
 $rooms = $data['data'] ?? [];
+
 ?>
 <div class="w-full h-full overflow-y-auto">
     <main class="w-full max-w-7xl mx-auto px-8 py-8 pb-16 h-fit">
@@ -77,8 +78,8 @@ $rooms = $data['data'] ?? [];
                         'max' => $room->max_capacity,
                         'description' => $room->description,
                         'isSpecial' => $room->requires_special_approval,
-                        'room_url' => "/admin/booking/create?id=" . $room->id . "&state=detail",
-                        // 'room_url' => "/admin/booking/create?id=" . $room->id . "&state=detail&date=" . (isset($_GET['date']) ? $_GET['date'] : null) . "&date_check=" . (isset($_GET['date']) ? $_GET['date'] : null) . "&start_time=" . (isset($_GET['start_time']) ? $_GET['start_time'] : null) . "&end_time=" . (isset($_GET['end_time']) ? $_GET['end_time'] : null),
+                        // 'room_url' => "/admin/booking/create?id=" . $room->id . "&state=detail",
+                        'room_url' => "/admin/booking/create?id=" . $room->id . "&state=detail&date=" . (isset($_GET['date']) ? $_GET['date'] : null) . "&date_check=" . (isset($_GET['date']) ? $_GET['date'] : null) . "&start_time=" . (isset($_GET['start_time']) ? $_GET['start_time'] : null) . "&end_time=" . (isset($_GET['end_time']) ? $_GET['end_time'] : null),
                     ];
                     RoomCard::card($r);
                 }

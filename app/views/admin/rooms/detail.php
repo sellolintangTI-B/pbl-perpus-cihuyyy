@@ -3,6 +3,8 @@
 use App\Components\Icon\Icon;
 use App\Components\Button;
 use App\Components\Badge;
+
+
 ?>
 <div class="w-full h-full flex flex-col gap-4 ">
     <h1 class="text-2xl font-medium text-primary">
@@ -67,11 +69,11 @@ use App\Components\Badge;
                             <span>
                                 <?= Icon::file("w-5 h-5") ?>
                             </span>
-                            <div class="flex flex-col gap-2">
+                            <div class="flex flex-col gap-2" x-data="{openDesc: false}">
                                 <p class="font-medium text-sm">
                                     Deskripsi:
                                 </p>
-                                <p class="text-sm text-black/60 leading-relaxed">
+                                <p class="text-sm text-black/60 leading-relaxed cursor-pointer" :class="openDesc?'line-clamp-none':'line-clamp-3'" @click="openDesc = !openDesc">
                                     <?= $data->description ?>
                                 </p>
                             </div>

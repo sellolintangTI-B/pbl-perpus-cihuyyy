@@ -12,9 +12,9 @@ $auth = new Authentication();
 <div class="w-full h-full" x-data="{logoutAlert: false}">
     <div class=" w-full h-full flex flex-col items-center py-8 justify-between text-baseColor">
         <div class="flex flex-col gap-4 items-center justify-center w-full">
-            <h1 class="text-2xl font-bold">
+            <a class="text-2xl font-bold cursor-pointer" href="<?= URL ?>/admin/dashboard">
                 SIMARU
-            </h1>
+            </a>
             <div class="w-full flex flex-col gap-6 items-center mt-8">
                 <?php
                 foreach ($items as $item) {
