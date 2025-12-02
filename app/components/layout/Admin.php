@@ -39,7 +39,7 @@ $activeItem = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
             NavThings::adminSideBar(items: $items, activeItem: $activeItem ?? null, title: $title ?? "SIMARU", logo: $logo ?? null);
             ?>
         </div>
-        <div class="flex-1 w-full h-full p-4">
+        <div class="flex-1 w-full h-screen p-4">
             <div class="w-full h-full bg-baseColor rounded-xl overflow-hidden relative">
                 <div class="w-full h-full p-4 flex items-center justify-center">
                     <?= $content ?>
