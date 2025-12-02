@@ -4,7 +4,6 @@ use App\Components\Icon\Icon;
 use App\Components\FormInput;
 use App\Components\Button;
 
-$edit = $_GET['edit'] ?? 'false';
 $options_jurusan = [
     ["display" => "Teknik Sipil", "value" => "Teknik Sipil"],
     ["display" => "Teknik Mesin", "value" => "Teknik Mesin"],
@@ -36,7 +35,7 @@ $options_jurusan = [
                 <?php
                 if (!$data->is_active):
                 ?>
-                    <div class="h-full w-[225px] bg-baseColor shadow-md overflow-hidden rounded-xl">
+                    <div class="h-full w-full min-w-[225px] bg-baseColor shadow-md overflow-hidden rounded-xl">
                         <img src="<?= URL . "/public/" . $data->activation_proof_url ?>"
                             alt="Mockup"
                             class="w-full h-full object-fill" />
@@ -55,13 +54,6 @@ $options_jurusan = [
                                         <?= $data->first_name . " " . $data->last_name ?>
                                     </h2>
                                 </div>
-                                <?php if ($data->is_active): ?>
-                                    <form method="get">
-                                        <button class="p-2 text-primary hover:bg-primary/5 rounded-lg cursor-pointer transition-all duration-300 <?= $edit == 'true' ? 'bg-primary/10' : 'bg-transparent' ?>" name="edit" value="<?= $edit == 'true' ? 'false' : 'true' ?>">
-                                            <?= Icon::pencil('w-8 h-8') ?>
-                                        </button>
-                                    </form>
-                                <?php endif; ?>
                             </div>
 
                             <!-- Form -->
@@ -75,117 +67,69 @@ $options_jurusan = [
                                 FormInput::input(
                                     id: 'first_name',
                                     name: 'first_name',
-                                    type: 'text',
                                     label: 'Nama Depan',
                                     value: $data->first_name ?? "",
-                                    placeholder: $data->first_name ?? "",
-                                    readonly: $edit == 'true' ? false : true
+                                    required: true,
                                 );
-                                ?>
 
-                                <!-- Nama Belakang -->
-                                <?php
                                 FormInput::input(
                                     id: 'last_name',
                                     name: 'last_name',
-                                    type: 'text',
                                     label: 'Nama Belakang',
-                                    value: $data->last_name ?? "",
-                                    placeholder: $data->last_name ?? "",
-                                    readonly: $edit == 'true' ? false : true
+                                    alpine_disabled: '!isEdit',
+                                    value: $data->last_name ?? ""
                                 );
-                                ?>
 
-                                <!-- NIM/NIP -->
-                                <?php
                                 FormInput::input(
                                     id: 'id_number',
                                     name: 'id_number',
-                                    type: 'text',
                                     label: 'NIM/NIP',
-                                    value: $data->id_number ?? "",
-                                    placeholder: $data->id_number ?? "",
-                                    readonly: $edit == 'true' ? false : true
+                                    value: $data->id_number,
+                                    required: true,
                                 );
-                                ?>
 
-                                <!-- Email -->
-                                <?php
                                 FormInput::input(
                                     id: 'email',
                                     name: 'email',
                                     type: 'email',
                                     label: 'Email',
-                                    value: $data->email ?? "",
-                                    placeholder: $data->email ?? "",
-                                    readonly: $edit == 'true' ? false : true
+                                    value: $data->email,
+                                    required: true,
                                 );
-                                ?>
-
-                                <!-- Jurusan -->
-                                <?php
                                 FormInput::select(
-                                    id: 'major',
+                                    id: 'jurusan',
                                     name: 'major',
                                     label: 'Jurusan',
-                                    options: $options_jurusan,
-                                    value: $data->major ?? "",
-                                    disabled: $edit == 'true' ? false : true
+                                    required: true,
+                                    alpine_disabled: '!isEdit',
                                 );
-                                ?>
+                                FormInput::select(
+                                    id: 'prodi',
+                                    name: 'study_program',
+                                    label: 'Program Studi',
+                                    placeholder: 'Pilih Jurusan terlebih dahulu',
+                                    required: true,
+                                    value: $data->study_program ?? "",
+                                    // options: []
+                                );
 
-                                <!-- Nomor WhatsApp -->
-                                <?php
                                 FormInput::input(
                                     id: 'phone_number',
                                     name: 'phone_number',
-                                    type: 'text',
-                                    label: 'Nomor WhatsApp',
+                                    type: 'tel',
+                                    label: 'Nomor Whatsapp',
                                     value: $data->phone_number ?? "",
-                                    placeholder: $data->phone_number ?? "",
-                                    readonly: $edit == 'true' ? false : true
+                                    required: true,
                                 );
-                                ?>
 
-                                <!-- Institusi -->
-                                <?php
                                 FormInput::input(
                                     id: 'institution',
                                     name: 'institution',
-                                    type: 'text',
                                     label: 'Institusi',
                                     value: $data->institution ?? "",
-                                    placeholder: $data->institution ?? "",
-                                    readonly: $edit == 'true' ? false : true
-                                );
-                                ?>
-
-                                <!-- Role -->
-                                <?php
-                                FormInput::input(
-                                    id: 'role',
-                                    name: 'role',
-                                    type: 'text',
-                                    label: 'Role',
-                                    value: $data->role ?? "",
-                                    readonly: $edit == 'true' ? false : true,
-                                );
-                                ?>
-                                <!-- status -->
-                                <?php
-                                FormInput::select(
-                                    id: 'status',
-                                    name: 'status',
-                                    label: 'Status',
-                                    options: [
-                                        ["display" => "Aktif", "value" => 1],
-                                        ["display" => "Inactive", "value" => 0]
-                                    ],
-                                    selected: $data->is_active,
                                     required: true,
-                                    classGlobal: 'sm:col-span-2 col-span-1',
-                                    disabled: $edit == 'true' ? false : true
                                 );
+
                                 ?>
 
                                 <!-- Submit Button -->
@@ -218,3 +162,20 @@ $options_jurusan = [
         </div>
     </div>
 </div>
+<script src="<?= URL ?>/public/js/select-jurusan.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const dbJurusan = "<?= $data->major ?? "" ?>";
+        const dbProdi = "<?= $data->study_program ?? "" ?>";
+
+        if (dbJurusan) {
+            setInitialJurusan(dbJurusan);
+        }
+
+        if (dbProdi) {
+            setTimeout(() => {
+                setProdiValue(dbProdi);
+            }, 100);
+        }
+    });
+</script>

@@ -7,3 +7,19 @@
         background-size: cover;
         background-repeat: no-repeat;
     }
+.custom-input-icon::-webkit-calendar-picker-indicator {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        color: gray;
+    }
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+        width: 0;
+        height: 0;
+    }
+
+    .no-scrollbar {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }

@@ -32,7 +32,7 @@ class Middleware
             //DASHBOARD
             "/admin/dashboard/index",
             "/admin/dashboard/logout",
-            "/admin/dashboard/search_book", 
+            "/admin/dashboard/search_book",
             "/admin/dashboard/get_chart_data",
             //USER
             "/admin/user/approve",
@@ -58,6 +58,7 @@ class Middleware
             //PROFILE
             "/admin/profile/index",
             "/admin/profile/update",
+            "/admin/profile/reset_password",
             //ERROR
             "/error/forbidden/index",
             "/error/notfound/index",

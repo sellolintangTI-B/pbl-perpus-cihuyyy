@@ -5,6 +5,7 @@ use App\Components\Icon\Icon;
 use App\Components\Badge;
 use App\Components\FormInput;
 use App\Components\Modal;
+use App\Components\ProfilePictureUpload;
 use App\Utils\Authentication;
 
 $roleOptions = [
@@ -42,6 +43,25 @@ $roleOptions = [
     ) ?>
 </div>
 <?php $updateAccountContent = ob_get_clean() ?>
+<!-- show modal ganti password -->
+<?php ob_start() ?>
+<div class="flex gap-4 w-full">
+    <?= Button::button(
+        label: 'ya',
+        class: 'w-full py-3',
+        alpineClick: "submitPasswordForm()",
+        type: 'button',
+        color: 'red',
+    ) ?>
+    <?= Button::button(
+        label: 'tidak',
+        type: 'button',
+        alpineClick: 'updatePasswordAlert = false',
+        class: 'w-full py-3',
+        color: 'white',
+    ) ?>
+</div>
+<?php $updatePasswordContent = ob_get_clean() ?>
 <div class="w-full h-full p-6 overflow-y-auto">
     <div class="w-full mx-auto flex flex-col gap-4" x-data="updateUserForm()">
         <h1 class="text-2xl font-medium text-primary">
@@ -52,20 +72,16 @@ $roleOptions = [
 
             </div>
             <div class="absolute p-4 inset-0 left-18 flex flex-col items-start justify-start gap-4">
-                <div class="flex flex-col items-center gap-2">
-                    <div class="h-28 w-28 rounded-full bg-white p-1">
-                        <img src="<?= URL . "/public/" . $data->profile_picture_url ?>" class="h-full w-full rounded-full object-cover" />
-                    </div>
-                    <h1 class="text-xl font-medium text-primary">
-                        <?= $data->first_name . " " . $data->last_name ?>
-                    </h1>
-                    <p class="text-gray-700">
-                        <?= $data->role ?? " " ?>
-                    </p>
-                </div>
+                <?= ProfilePictureUpload::render(
+                    imageUrl: URL . "/public/storage/users/" . $data->profile_picture_url,
+                    formAction: URL . "/user/profile/update_picture/" . $data->id,
+                    userName: $data->first_name . " " . $data->last_name,
+                    userRole: $data->role ?? "",
+                    inputName: 'profile_picture'
+                ) ?>
             </div>
         </div>
-        <div class="w-full flex flex-col gap-4 p-6 h-fit bg-white rounded-lg shadow-sm shadow-black/40 overflow-hidden relative">
+        <div class="w-full flex flex-col gap-4 p-6 h-fit bg-white rounded-lg shadow-sm shadow-black/40 overflow-hidden ">
             <div class="flex justify-between items-center ">
                 <h1 class="text-2xl font-medium text-black/80">
                     Data Pribadi
@@ -95,7 +111,7 @@ $roleOptions = [
                     id: 'first_name',
                     name: 'first_name',
                     label: 'Nama Depan',
-                    value: $data->first_name,
+                    value: $data->first_name ?? "",
                     required: true,
                     alpine_disabled: '!isEdit'
                 );
@@ -172,27 +188,86 @@ $roleOptions = [
                         Simpan Perubahan
                     </button>
                 </div>
+                <!-- modal -->
+                <?= Modal::render(
+                    title: 'Yakin ingin menyimpan perubahan?',
+                    color: 'secondary',
+                    message: 'Perubahan akan langsung tersimpan di database. Tidak ada riwayat edit, jadi harap berhati-hati.',
+                    customContent: $updateAccountContent,
+                    alpineShow: 'updateAlert',
+                ) ?>
             </form>
         </div>
-        <!-- modal -->
-        <?= Modal::render(
-            title: 'Yakin ingin menyimpan perubahan?',
-            color: 'secondary',
-            message: 'Perubahan akan langsung tersimpan di database. Tidak ada riwayat edit, jadi harap berhati-hati.',
-            customContent: $updateAccountContent,
-            alpineShow: 'updateAlert',
-        ) ?>
+        <div class=" w-full flex flex-col gap-4 p-6 h-fit bg-white rounded-lg shadow-sm shadow-black/40 overflow-hidden ">
+            <h2 class="text-2xl font-medium text-gray-800 mb-4">Keamanan Akun</h2>
+            <form
+                id="updatePasswordForm"
+                class="w-full grid grid-cols-1 gap-6"
+                @submit.prevent="validateAndShowPasswordAlert"
+                action="<?= URL ?>/admin/profile/reset_password/<?= $data->id ?>"
+                method="post">
+                <?php
+                $old_data = $_SESSION['reset_pass_old'] ?? null;
+                FormInput::input(
+                    id: 'current_password',
+                    name: 'current_password',
+                    type: 'password',
+                    label: 'Password Saat ini',
+                    value: $old_data['current_password'] ?? "",
+                    placeholder: 'Masukkan password baru',
+                    required: true,
+                );
+                ?>
+                <?php
+                FormInput::input(
+                    id: 'password',
+                    name: 'password',
+                    type: 'password',
+                    label: 'Password Baru',
+                    value: $old_data['password'] ?? "",
+                    placeholder: 'Masukkan password baru',
+                    required: true,
+                );
+                ?>
+                <ul class="text-xs text-start list-disc hidden px-4" id="text_alert">
+
+                </ul>
+
+                <?php
+                FormInput::input(
+                    id: 'password_confirmation',
+                    name: 'password_confirmation',
+                    value: $old_data['password_confirmation'] ?? "",
+                    type: 'password',
+                    label: 'Konfirmasi Password',
+                    placeholder: 'Ulangi password baru',
+                    required: true
+                );
+                ?>
+                <ul class="text-xs text-start list-disc hidden px-4" id="match_alert">
+
+                </ul>
+                <div class="mt-4">
+                    <?= Button::button(label: 'Ganti Password', class: 'px-4 py-3 w-full', type: 'submit', color: 'red') ?>
+                </div>
+                <!-- modal -->
+                <?= Modal::render(
+                    title: 'Yakin ingin mengubah password?',
+                    color: 'red',
+                    message: 'Perubahan password akan langsung diterapkan. Gunakan password yang kuat dan mudah diingat.',
+                    customContent: $updatePasswordContent,
+                    alpineShow: 'updatePasswordAlert',
+                ) ?>
+            </form>
+        </div>
     </div>
 </div>
 <script src="<?= URL ?>/public/js/select-jurusan.js"></script>
+<script src="<?= URL ?>/public/js/utils/password-validation.js"></script>
+<script src="<?= URL ?>/public/js/password-validator.js"></script>
 <script src="<?= URL ?>/public/js/update-user.js"></script>
 
-<script type="module">
-    import {
-        ValidatePassword
-    } from '<?= URL ?>/public/js/utils/password-validation.js'
-    const password = document.getElementById('password');
-    const password_message = document.getElementById('check_password_message')
+<script>
     document.addEventListener('DOMContentLoaded', function() {
         const dbJurusan = "<?= $data->major ?? "" ?>";
         const dbProdi = "<?= $data->study_program ?? "" ?>";
@@ -205,22 +280,6 @@ $roleOptions = [
             setTimeout(() => {
                 setProdiValue(dbProdi);
             }, 100);
-        }
-    });
-    password.addEventListener('change', function() {
-        password_message.innerHTML = '';
-        console.log(this.value)
-        let passwordState = ValidatePassword(this.value);
-
-        if (!passwordState.isValid) {
-
-            passwordState.messages.forEach(messageObj => {
-                const newMessage = document.createElement('li');
-
-                newMessage.textContent = messageObj.message;
-
-                password_message.appendChild(newMessage);
-            });
         }
     });
 </script>
