@@ -1,5 +1,4 @@
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
-DROP TYPE status;
 DROP TABLE IF EXISTS feedbacks;
 DROP TABLE IF EXISTS booking_participants;
 DROP TABLE IF EXISTS booking_logs;

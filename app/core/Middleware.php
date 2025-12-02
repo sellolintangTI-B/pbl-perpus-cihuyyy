@@ -86,6 +86,7 @@ class Middleware
             "/user/profile/index",
             "/user/user/update",
             "/user/user/reset_password",
+            "/user/profile/update_picture"
         ],
         "Dosen" => [
             "/user/user/index",
@@ -108,6 +109,7 @@ class Middleware
             "/user/profile/index",
             "/user/user/update",
             "/user/user/reset_password",
+            "/user/profile/update_picture"
         ]
     ];
 

@@ -22,7 +22,9 @@ class Booking extends Database
     public static function create($data)
     {
         $conn = parent::getConnection();
-        $q = $conn->prepare("INSERT INTO bookings (user_id, room_id, start_time, duration, end_time , booking_code) VALUES (?, ?, ?, ?, ?, ?) RETURNING id");
+        $fields = implode(',', array_keys($data));
+        $placeholder = implode(',', array_fill(0, count($data), '?'));
+        $q = $conn->prepare("INSERT INTO bookings ($fields) VALUES ($placeholder) RETURNING id");
         $i = 1;
         foreach ($data as $key => $value) {
             if ($key == "duration") {
