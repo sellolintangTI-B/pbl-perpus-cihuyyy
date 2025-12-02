@@ -13,6 +13,11 @@ $options = [
     'Mahasiswa' => 'Mahasiswa',
     'Dosen' => 'Dosen'
 ];
+$statusOption = [
+    '' => 'Semua',
+    'Active' => 'Active',
+    'Inactive' => 'Inactive',
+];
 ?>
 
 <div class="w-full h-full" x-data="{ showAlert: false, deleteUserId: null }" @delete-user.window="showAlert = true; deleteUserId = $event.detail.id">
@@ -35,16 +40,22 @@ $options = [
             ) ?>
 
             <!-- Form Action -->
-            <div class="flex items-start justify-end gap-2 h-full w-1/3">
+            <div class="flex items-start justify-end gap-2 h-full w-2/3">
                 <form method="GET" class="flex items-start gap-2 w-full h-full flex-1">
                     <?= CustomSelect::render(
+                        name: 'status',
+                        defaultLabel: 'Status',
+                        options: $statusOption,
+                        selectedValue: $_GET['status'] ?? ''
+                    ) ?>
+                    <?= CustomSelect::render(
                         name: 'type',
-                        defaultLabel: 'Semua',
+                        defaultLabel: 'Role',
                         options: $options,
-                        selectedValue: $_GET['role'] ?? ''
+                        selectedValue: $_GET['type'] ?? ''
                     ) ?>
 
-                    <div class="h-full w-[12rem]">
+                    <div class="h-full w-full min-w-[14rem]">
                         <?= FormInput::input(
                             type: "text",
                             name: "search",

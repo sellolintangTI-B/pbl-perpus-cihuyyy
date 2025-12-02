@@ -111,7 +111,7 @@ $roleOptions = [
                     id: 'first_name',
                     name: 'first_name',
                     label: 'Nama Depan',
-                    value: $data->first_name,
+                    value: $data->first_name ?? "",
                     required: true,
                     alpine_disabled: '!isEdit'
                 );
@@ -267,12 +267,7 @@ $roleOptions = [
 <script src="<?= URL ?>/public/js/password-validator.js"></script>
 <script src="<?= URL ?>/public/js/update-user.js"></script>
 
-<script type="module">
-    import {
-        ValidatePassword
-    } from '<?= URL ?>/public/js/utils/password-validation.js'
-    const password = document.getElementById('password');
-    const password_message = document.getElementById('check_password_message')
+<script>
     document.addEventListener('DOMContentLoaded', function() {
         const dbJurusan = "<?= $data->major ?? "" ?>";
         const dbProdi = "<?= $data->study_program ?? "" ?>";
@@ -285,22 +280,6 @@ $roleOptions = [
             setTimeout(() => {
                 setProdiValue(dbProdi);
             }, 100);
-        }
-    });
-    password.addEventListener('change', function() {
-        password_message.innerHTML = '';
-        console.log(this.value)
-        let passwordState = ValidatePassword(this.value);
-
-        if (!passwordState.isValid) {
-
-            passwordState.messages.forEach(messageObj => {
-                const newMessage = document.createElement('li');
-
-                newMessage.textContent = messageObj.message;
-
-                password_message.appendChild(newMessage);
-            });
         }
     });
 </script>

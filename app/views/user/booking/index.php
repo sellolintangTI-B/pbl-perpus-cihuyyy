@@ -16,21 +16,21 @@ use App\Components\Modal;
             <button
                 name="tab"
                 value="berlangsung"
-                class="pb-3 px-1 transition-colors <?= $tab == 'berlangsung' ? 'text-primary font-medium border-b-2 border-primary -mb-0.5' : 'text-gray-500 hover:text-primary' ?>">
+                class="pb-3 px-1 cursor-pointer transition-colors <?= $tab == 'berlangsung' ? 'text-primary font-medium border-b-2 border-primary -mb-0.5' : 'text-gray-500 hover:text-primary' ?>">
                 Berlangsung
             </button>
             <button
                 name="tab"
                 value="riwayat"
-                class="pb-3 px-1 transition-colors <?= $tab == 'riwayat' ? 'text-primary font-medium border-b-2 border-primary -mb-0.5' : 'text-gray-500 hover:text-primary' ?>">
+                class="pb-3 px-1 cursor-pointer transition-colors <?= $tab == 'riwayat' ? 'text-primary font-medium border-b-2 border-primary -mb-0.5' : 'text-gray-500 hover:text-primary' ?>">
                 Riwayat
             </button>
         </form>
 
         <!-- Container for main content with fixed height and scroll -->
         <div
-            class="w-full">
-            <div class=" w-full">
+            class="w-full pb-32">
+            <div class=" w-full ">
                 <?php
                 if ($tab == 'berlangsung') {
                     include __DIR__ . "/sections/berlangsung.php";

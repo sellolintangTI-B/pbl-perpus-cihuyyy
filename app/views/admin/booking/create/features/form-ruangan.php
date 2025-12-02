@@ -28,7 +28,7 @@ $rooms = $data['data'] ?? [];
                     <label class="px-1 bg-transparent text-xs font-medium text-black/70">
                         Kapan
                     </label>
-                    <input type="date" name="date" placeholder="Tanggal dan jam peminjaman" value="<?= isset($_GET['date']) ? $_GET['date'] : null ?>" class="w-full h-full rounded-lg border-0 focus:outline-none focus:ring-0 transition-colors duration-200 text-sm text-black/70 px-4">
+                    <input type="date" name="date" placeholder="Tanggal dan jam peminjaman" value="<?= isset($_GET['date']) ? $_GET['date'] : null ?>" class="w-full h-full custom-input-icon rounded-lg border-0 focus:outline-none focus:ring-0 transition-colors duration-200 text-sm text-black/70 px-4">
                 </div>
                 <div class="h-12 w-[1px] rounded-full bg-black/20">
 
@@ -38,14 +38,14 @@ $rooms = $data['data'] ?? [];
                     <label class="px-1 bg-transparent text-xs font-medium text-black/70">
                         Waktu mulai
                     </label>
-                    <input type="time" name="start_time" placeholder="Jam mulai peminjaman" value="<?= isset($_GET['duration']) ? $_GET['duration'] : null ?>" class="w-full h-full rounded-lg border-0 focus:outline-none focus:ring-0 transition-colors duration-200 text-sm text-black/70 px-4">
+                    <input type="time" name="start_time" placeholder="Jam mulai peminjaman" value="<?= isset($_GET['start_time']) ? $_GET['start_time'] : null ?>" class="w-full custom-input-icon h-full rounded-lg border-0 focus:outline-none focus:ring-0 transition-colors duration-200 text-sm text-black/70 px-4">
                 </div>
                 <!-- end time Filter -->
                 <div class="flex-1 relative flex flex-col gap-3 justify-center items-start h-full">
                     <label class="px-1 bg-transparent text-xs font-medium text-black/70">
                         Waktu berakhir
                     </label>
-                    <input type="time" name="end_time" placeholder="Jam peminjaman berakhir" value="<?= isset($_GET['duration']) ? $_GET['duration'] : null ?>" class="w-full h-full rounded-lg border-0 focus:outline-none focus:ring-0 transition-colors duration-200 text-sm text-black/70 px-4">
+                    <input type="time" name="end_time" placeholder="Jam peminjaman berakhir" value="<?= isset($_GET['end_time']) ? $_GET['end_time'] : null ?>" class="w-full h-full custom-input-icon rounded-lg border-0 focus:outline-none focus:ring-0 transition-colors duration-200 text-sm text-black/70 px-4">
                 </div>
 
                 <!-- Search Button -->
@@ -63,7 +63,7 @@ $rooms = $data['data'] ?? [];
     <!-- Available Rooms Section -->
     <div class="w-full h-fit mt-12">
         <!-- Room Cards Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             <?php
             // Dummy data ruangan
             foreach ($rooms as $room) {
@@ -76,7 +76,7 @@ $rooms = $data['data'] ?? [];
                     'max' => $room->max_capacity,
                     'description' => $room->description,
                     'isSpecial' => $room->requires_special_approval,
-                    'room_url' => '/admin/booking/create?state=detail&id=' . $room->id,
+                    'room_url' => "/admin/booking/create?id=" . $room->id . "&state=detail&date=" . (isset($_GET['date']) ? $_GET['date'] : null) . "&date_check=" . (isset($_GET['date']) ? $_GET['date'] : null) . "&start_time=" . (isset($_GET['start_time']) ? $_GET['start_time'] : null) . "&end_time=" . (isset($_GET['end_time']) ? $_GET['end_time'] : null),
                 ];
                 RoomCard::card($r);
             }

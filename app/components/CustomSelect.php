@@ -6,7 +6,7 @@ use App\Components\Icon\Icon;
 
 class CustomSelect
 {
-    public static function render($name, $defaultLabel, $options, $selectedValue = '')
+    public static function render($name, $defaultLabel, $options, $selectedValue = '', $class = '')
     {
         $displayLabel = $defaultLabel;
         if ($selectedValue && isset($options[$selectedValue])) {
@@ -15,7 +15,7 @@ class CustomSelect
 
         ob_start();
 ?>
-        <div class="flex flex-col gap-2 justify-start relative overflow-visible"
+        <div class="flex flex-col gap-2 justify-start relative w-full <?= $class ?>"
             x-data="{
              openSelect: false, 
              display: '<?= htmlspecialchars($displayLabel) ?>', 
@@ -24,11 +24,13 @@ class CustomSelect
             <button
                 @click="openSelect = !openSelect"
                 type="button"
-                class="flex gap-2 items-center rounded-lg px-3 py-2 bg-primary hover:bg-primary/95 text-white cursor-pointer">
-                <span>
-                    <?= Icon::filter('w-4 h-4') ?>
-                </span>
-                <span x-text="display"></span>
+                class="flex w-full line-clamp-1 truncate gap-2 items-center rounded-lg px-3 py-2 bg-primary hover:bg-primary/95 text-white cursor-pointer justify-between">
+                <div class="flex gap-2 items-center justify-start">
+                    <span>
+                        <?= Icon::filter('w-4 h-4') ?>
+                    </span>
+                    <span x-text="display"></span>
+                </div>
                 <span class="transition-all duration-300" :class="openSelect? 'rotate-180':''">
                     <?= Icon::arrowDown('w-6 h-6') ?>
                 </span>
@@ -51,7 +53,7 @@ class CustomSelect
                     <button
                         type="submit"
                         @click="display = '<?= htmlspecialchars($optionLabel) ?>'; value='<?= htmlspecialchars($optionValue) ?>'"
-                        class="flex items-center gap-2 px-3 py-2 text-primary hover:bg-primary/5 text-sm border-t border-gray-100 w-full text-left transition cursor-pointer">
+                        class="flex line-clamp-1 truncate items-center gap-2 px-3 py-2 text-primary hover:bg-primary/5 text-sm border-t border-gray-100 w-full text-left transition cursor-pointer">
                         <?= htmlspecialchars($optionLabel) ?>
                     </button>
                 <?php endforeach; ?>
