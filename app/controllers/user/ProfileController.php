@@ -9,6 +9,7 @@ use App\Error\CustomException;
 use App\Utils\Validator;
 use App\Models\User;
 use App\Models\Suspension;
+use App\Utils\FileHandler;
 
 class ProfileController extends Controller
 {
@@ -29,6 +30,18 @@ class ProfileController extends Controller
             'suspension' => $suspension
         ];
         $this->view('user/profile/index', $data, layoutType: $this::$layoutType['civitas']);
+    }
+
+    public function update_picture($id)
+    {
+        try {
+            $file = $_FILES['profile_picture'];
+            $path = FileHandler::save($file, 'users/profile');
+            // $updateProfile = User::updateProfile();
+        } catch (CustomException $e) {
+            ResponseHandler::setResponse($e->getErrorMessages(), "error");
+            header('location:' . URL . "/user/profile/index");
+        }
     }
     public function update($id)
     {
