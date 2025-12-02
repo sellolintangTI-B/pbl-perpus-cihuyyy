@@ -13,7 +13,7 @@ $navItems = [
 $currentPath = URL . parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 ?>
 <div class="w-full" x-data="{logoutAlert: false}">
-    <nav class="w-full py-4 px-8 transition-all duration-300" x-data="{ profileOpen: false }" x-bind:class="scrolled ? 'bg-primary' : 'bg-transparent'" x-cloak>
+    <nav class="w-full py-4 px-8 transition-all duration-300" x-data="{ profileOpen: false }" x-bind:class="scrolled ? 'bg-primary' : 'bg-baseColor'" x-cloak>
         <div class="w-full flex items-center justify-between">
             <!-- Logo & Brand -->
             <div class="flex items-center gap-3">

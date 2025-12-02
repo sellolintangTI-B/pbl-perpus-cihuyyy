@@ -52,7 +52,7 @@ class RegisterController extends Controller
             $validator = new Validator($data);
             $validator->field("id_number", ["required"]);
             $validator->field("email", ["required", "email"]);
-            $validator->field("password_hash", ["required"]);
+            $validator->field("password_hash", ["required", "password"]);   
             $validator->field("first_name", ["required"]);
             $validator->field("institution", ["required"]);
             $validator->field("study_program", ["required"]);
