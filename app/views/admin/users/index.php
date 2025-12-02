@@ -170,7 +170,7 @@ $statusOption = [
                                             </a>
                                         <?php else: ?>
 
-                                            href="<?= URL . "/admin/user/details/" . $user->id ?>"
+                                            <a href="<?= URL . "/admin/user/details/" . $user->id ?>"
                                             class="flex items-center gap-2 px-3 py-2 text-xs text-secondary hover:bg-secondary/5 transition">
                                             <?= Icon::lock('w-4 h-4') ?>
                                             <span>Activation</span>

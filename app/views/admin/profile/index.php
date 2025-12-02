@@ -73,8 +73,8 @@ $roleOptions = [
             </div>
             <div class="absolute p-4 inset-0 left-18 flex flex-col items-start justify-start gap-4">
                 <?= ProfilePictureUpload::render(
-                    imageUrl: URL . "/public/storage/users/" . $data->profile_picture_url,
-                    formAction: URL . "/user/profile/update_picture/" . $data->id,
+                    imageUrl: URL . "/public/storage/" . $data->profile_picture_url,
+                    formAction: URL . "/admin/profile/update_picture/" . $data->id,
                     userName: $data->first_name . " " . $data->last_name,
                     userRole: $data->role ?? "",
                     inputName: 'profile_picture'

@@ -18,6 +18,13 @@ class UserController extends Controller
     {
         try {
             $params = [];
+            if(isset($_GET['status']) && !empty($_GET['status'])) {
+                if($_GET['status'] == 'Active') {
+                    $params['is_active'] = 1;
+                } elseif($_GET['status'] == 'Inactive') {
+                    $params['is_active'] = 0;
+                }
+            }
             if(isset($_GET['type']) && !empty($_GET['type'])) $params['role'] = $_GET['type'];
             if(isset($_GET['search']) && !empty($_GET['search'])) $params['first_name'] = $_GET['search'];
             
@@ -175,7 +182,7 @@ class UserController extends Controller
                 unset($data['image']);
             }
 
-            $update = User::update($id, $data);
+            $update = User::updateProfile($id, $data);
             if ($update) {
                 ResponseHandler::setResponse('Berhasil mengubah data');
                 header('location:' . URL . '/admin/user');

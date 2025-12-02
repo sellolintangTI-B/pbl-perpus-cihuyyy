@@ -37,7 +37,14 @@ class ProfileController extends Controller
         try {
             $file = $_FILES['profile_picture'];
             $path = FileHandler::save($file, 'users/profile');
-            // $updateProfile = User::updateProfile();
+            $updateProfile = User::updateProfile($id, [
+                'profile_picture_url' => $path
+            ]);
+
+            if($updateProfile) {
+                ResponseHandler::setResponse('Berhasil mengubah profile picture');
+                header('location:' . URL . "/user/profile/index");  
+            }
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), "error");
             header('location:' . URL . "/user/profile/index");
