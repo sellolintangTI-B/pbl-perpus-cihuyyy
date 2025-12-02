@@ -29,6 +29,7 @@ class Middleware
             "/admin/room/edit",
             "/admin/room/update",
             "/admin/room/delete",
+            "/admin/room/deactivate",
             //DASHBOARD
             "/admin/dashboard/index",
             "/admin/dashboard/logout",
