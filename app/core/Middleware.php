@@ -34,6 +34,7 @@ class Middleware
             "/admin/dashboard/logout",
             "/admin/dashboard/search_book",
             "/admin/dashboard/get_chart_data",
+            "/admin/dashboard/mail",
             //USER
             "/admin/user/approve",
             "/admin/user/index",
