@@ -8,6 +8,7 @@ use App\Core\ResponseHandler;
 use App\Error\CustomException;
 use App\Utils\Validator;
 use App\Models\User;
+use App\Utils\FileHandler;
 
 class ProfileController extends Controller
 {
@@ -22,6 +23,26 @@ class ProfileController extends Controller
         $data = User::getById($userId);
         $this->view('admin/profile/index', $data, layoutType: $this::$layoutType['admin']);
     }
+
+    public function update_picture($id)
+    {
+        try {
+            $file = $_FILES['profile_picture'];
+            $path = FileHandler::save($file, 'users/profile');
+            $updateProfile = User::updateProfile($id, [
+                'profile_picture_url' => $path
+            ]);
+
+            if($updateProfile) {
+                ResponseHandler::setResponse('Berhasil mengubah profile picture');
+                header('location:' . URL . "/admin/profile/index");  
+            }
+        } catch (CustomException $e) {
+            ResponseHandler::setResponse($e->getErrorMessages(), "error");
+            header('location:' . URL . "/admin/profile/index");
+        }
+    }
+
     public function update($id)
     {
         try {
@@ -62,6 +83,7 @@ class ProfileController extends Controller
             header('location:' . URL . '/admin/profile/index');
         }
     }
+
     public function reset_password($id)
     {
         try {

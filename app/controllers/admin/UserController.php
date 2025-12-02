@@ -17,17 +17,18 @@ class UserController extends Controller
     public function index()
     {
         try {
-            $type = isset($_GET['type']) ? $_GET['type'] : null;
-            $search = isset($_GET['search']) ? $_GET['search'] : null;
-            $users = User::get();
-            if (!empty($search)) $searchLower = strtolower($search);
-            if (!empty($type) && !empty($search)) {
-                $users = DB::get("SELECT * FROM users WHERE (LOWER(first_name) ILIKE ? OR LOWER(last_name) ILIKE ?) AND role = ? ORDER BY is_active ASC", ["%$searchLower%", "%$searchLower%", $type]);
-            } else if (!empty($type)) {
-                $users = DB::get("SELECT * FROM users WHERE role = ? ORDER BY is_active ASC", [$type]);
-            } else if (!empty($search)) {
-                $users = DB::get("SELECT * FROM users WHERE (LOWER(first_name) LIKE ? OR LOWER(last_name) LIKE ?) ORDER BY is_active ASC", ["%$searchLower%", "%$searchLower%"]);
+            $params = [];
+            if(isset($_GET['status']) && !empty($_GET['status'])) {
+                if($_GET['status'] == 'Active') {
+                    $params['is_active'] = 1;
+                } elseif($_GET['status'] == 'Inactive') {
+                    $params['is_active'] = 0;
+                }
             }
+            if(isset($_GET['type']) && !empty($_GET['type'])) $params['role'] = $_GET['type'];
+            if(isset($_GET['search']) && !empty($_GET['search'])) $params['first_name'] = $_GET['search'];
+            
+            $users = User::get($params);
             $data = [
                 "no" => 1,
                 "users" => $users
@@ -181,7 +182,7 @@ class UserController extends Controller
                 unset($data['image']);
             }
 
-            $update = User::update($id, $data);
+            $update = User::updateProfile($id, $data);
             if ($update) {
                 ResponseHandler::setResponse('Berhasil mengubah data');
                 header('location:' . URL . '/admin/user');
