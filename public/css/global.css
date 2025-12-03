@@ -27,3 +27,12 @@
         scrollbar-width: none;
         -ms-overflow-style: none;
     }
+    .show-scrollbar::-webkit-scrollbar {
+        display: block;
+        width: 1px;
+    }
+
+    .show-scrollbar {
+        scrollbar-width: 1px;
+        -ms-overflow-style: auto;
+    }
