@@ -13,12 +13,6 @@ use Carbon\Carbon;
 
 class RoomController extends Controller
 {
-    private $authUser;
-
-    public function __construct()
-    {
-        $this->authUser = new Authentication;
-    }
     public function index()
     {
         try {

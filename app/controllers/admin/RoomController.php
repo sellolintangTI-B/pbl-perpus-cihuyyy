@@ -9,6 +9,7 @@ use App\Core\ResponseHandler;
 use App\Models\Booking;
 use App\Models\Room;
 use App\Utils\FileHandler;
+use Carbon\Carbon;
 
 class RoomController extends Controller {
     private $room;
@@ -91,10 +92,20 @@ class RoomController extends Controller {
     public function detail($id) 
     {
         try {
-            $data = Room::getById($id);
-            if(!$data) {
-                throw new CustomException('Data ruangan tidak ditemukan');
+            $date = Carbon::now('Asia/Jakarta')->toDateString();
+            if (isset($_GET['date_check'])) {
+                $date = Carbon::parse($_GET['date_check'])->toDateString();
             }
+            $room = Room::getById($id);
+            
+            if (!$room) throw new CustomException("Data ruangan tidak ditemukan");
+
+            $bookingSchedule = Booking::getByRoomId($id, $date);
+            $data = [
+                "detail" => $room,
+                "schedule" => $bookingSchedule,
+                "date" => $date
+            ];
             return $this->view('admin/rooms/detail', $data, layoutType:$this::$layoutType['admin']);
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages());
