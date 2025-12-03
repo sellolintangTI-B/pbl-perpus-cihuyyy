@@ -33,6 +33,7 @@ class BookingController extends Controller
             header('location:' . URL . '/admin/booking/index');
         }
     }
+    
     public function details($id)
     {
         try {
@@ -165,7 +166,7 @@ class BookingController extends Controller
                 'booking_code' => $this->generateBookingCode()
             ];
 
-            if($getRoomById->requires_special_approval) {
+            if ($getRoomById->requires_special_approval) {
                 $path = FileHandler::save($data['file'], 'booking');
                 $insertData['special_requirement_attachments_url'] = $path;
                 unset($insertData['user_id']);
@@ -173,17 +174,18 @@ class BookingController extends Controller
 
             $booking = Booking::create($insertData);
             $bookingLog = BookingLog::create($booking->id); // MUNGKIN BISA DIBIKIN FUNCTION / PROCEDURE
-            if(!empty($data['list_anggota'])) {
+            if (!empty($data['list_anggota'])) {
                 $members = $data['list_anggota'];
                 $members = $this->addBookingIdToMembersData($members, $booking->id);
                 $bookingParticipants = BookingParticipant::bulkInsert($members);
             }
 
             ResponseHandler::setResponse("Berhasil menambahkan data");
+            $_SESSION['old_booking'] = null;
             header("location:" . URL . '/admin/booking/index');
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), 'error');
-            header('location:' . URL . "/admin/booking/create?state=detail&id=$id");
+            $this->redirectWithOldInput(url: "/admin/booking/create?state=detail&id=$id", oldData: $data, session_name: 'old_booking');
         }
     }
 
@@ -293,15 +295,15 @@ class BookingController extends Controller
             if ($data['duration'] > 180) throw new CustomException('Maximal durasi pinjam ruangan 3 jam');
 
             $checkIfScheduleExists = Booking::checkSchedule($data['datetime'], $data['duration'], $room->id);
-            if($checkIfScheduleExists) {
-                if(isset($data['booking_id'])) {
+            if ($checkIfScheduleExists) {
+                if (isset($data['booking_id'])) {
                     if ($data['booking_id'] !== $checkIfScheduleExists->id) throw new CustomException('Jadwal sudah dibooking');
                 } else {
                     throw new CustomException('Jadwal sudah dibooking');
                 }
             }
 
-            if(!empty($data['list_anggota'])) {
+            if (!empty($data['list_anggota'])) {
                 if (count($data['list_anggota']) < $room->min_capacity) throw new CustomException("Minimal kapasitas adalah $room->min_capacity orang");
                 if (count($data['list_anggota']) > $room->max_capacity) throw new CustomException("Maximal kapasitas adalah $room->max_capacity orang");
             }

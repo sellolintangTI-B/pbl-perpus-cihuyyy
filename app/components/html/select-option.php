@@ -23,7 +23,6 @@ $classColor = match ($color) {
             id="<?= $id ?? ($name ?? '') ?>"
             class="<?= $class ?? '' ?> <?= $classColor ?> rounded-xl p-3 pr-10 bg-baseColor text-gray-600 border border-gray-400 outline-none text-sm transition-all duration-300 w-full cursor-pointer appearance-none focus:shadow-md"
             @blur="isOpen = false"
-
             @click="isOpen = !isOpen"
             <?= isset($required) && $required ? 'required' : '' ?>
             <?= isset($readonly) && $readonly ? 'readonly' : '' ?>
@@ -40,6 +39,7 @@ $classColor = match ($color) {
                 <?php foreach ($options as $option): ?>
                     <option
                         value="<?= $option['value'] ?? '' ?>"
+                        class="cursor-pointer"
                         <?php
                         $isSelected = false;
                         if (isset($value) && $value == ($option['value'] ?? '')) {

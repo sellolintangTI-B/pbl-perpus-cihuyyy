@@ -40,31 +40,32 @@ $statusOption = [
             ) ?>
 
             <!-- Form Action -->
-            <div class="flex items-start justify-end gap-2 h-full w-2/3">
+            <div class="flex items-start justify-end gap-2 h-full">
                 <form method="GET" class="flex items-start gap-2 w-full h-full flex-1">
-                    <?= CustomSelect::render(
-                        name: 'status',
-                        defaultLabel: 'Status',
-                        options: $statusOption,
-                        selectedValue: $_GET['status'] ?? ''
-                    ) ?>
-                    <?= CustomSelect::render(
-                        name: 'type',
-                        defaultLabel: 'Role',
-                        options: $options,
-                        selectedValue: $_GET['type'] ?? ''
-                    ) ?>
-
-                    <div class="h-full w-full min-w-[14rem]">
-                        <?= FormInput::input(
-                            type: "text",
-                            name: "search",
-                            placeholder: "Cari Pengguna...",
-                            value: $_GET['search'] ?? '',
-                            class: "h-full !w-full !border-primary",
-                            classGlobal: "h-full !w-full"
+                    <div class="w-fit">
+                        <?= CustomSelect::render(
+                            name: 'status',
+                            defaultLabel: 'Status',
+                            options: $statusOption,
+                            selectedValue: $_GET['status'] ?? ''
                         ) ?>
                     </div>
+                    <div class="w-fit">
+                        <?= CustomSelect::render(
+                            name: 'type',
+                            defaultLabel: 'Role',
+                            options: $options,
+                            selectedValue: $_GET['type'] ?? ''
+                        ) ?>
+                    </div>
+                    <?= FormInput::input(
+                        type: "text",
+                        name: "search",
+                        placeholder: "Cari Pengguna...",
+                        value: $_GET['search'] ?? '',
+                        class: "h-full !w-full !border-primary",
+                        classGlobal: "h-full w-[14rem]"
+                    ) ?>
 
                     <?= Button::button(
                         class: "px-4 h-full",
@@ -171,9 +172,9 @@ $statusOption = [
                                         <?php else: ?>
 
                                             <a href="<?= URL . "/admin/user/details/" . $user->id ?>"
-                                                class="flex items-center gap-2 px-3 py-2 text-xs text-secondary hover:bg-secondary/5 transition">
-                                                <?= Icon::lock('w-4 h-4') ?>
-                                                <span>Activation</span>
+                                            class="flex items-center gap-2 px-3 py-2 text-xs text-secondary hover:bg-secondary/5 transition">
+                                            <?= Icon::lock('w-4 h-4') ?>
+                                            <span>Activation</span>
                                             </a>
                                         <?php endif; ?>
 

@@ -3,9 +3,11 @@
 namespace App\Controllers\Admin;
 
 use App\Core\Controller;
+use app\error\CustomException;
 use App\Models\Booking;
 use App\Utils\Authentication;
 use App\Utils\DB;
+use App\Utils\Mailer;
 
 class DashboardController extends Controller
 {
@@ -30,5 +32,16 @@ class DashboardController extends Controller
     public function get_chart_data()
     {
         
+    }
+
+    public function mail()
+    {
+        try {
+            Mailer::send('farrelmaahira104@gmail.com', 'testing', '<h1> testing mail </h1>');
+            header('location:' . URL . '/admin/dashboard');
+        } catch (CustomException $e) {
+            var_dump($e->getErrorMessages());
+            die;
+        }
     }
 }

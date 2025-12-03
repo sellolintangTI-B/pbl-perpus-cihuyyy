@@ -66,7 +66,10 @@ class BookingController extends Controller
             $data['duration'] = $start->diffInMinutes($end);
             $data['end_time'] = $end;
 
-            $rules = $this->validationBookingRules($id, $data, $data['user_id']);
+            $getRoomById = Room::getById($data['room_id']);
+            if (!$getRoomById->is_operational) throw new CustomException('Ruangan sedang tidak beroperasi');
+
+            $rules = $this->validationBookingRules($getRoomById, $data, $data['user_id']);
             if (!$rules['status']) throw new CustomException($rules['message']);
 
             $members = $data['list_anggota'];
@@ -94,7 +97,7 @@ class BookingController extends Controller
     }
 
 
-    private function validationBookingRules($roomId, $data, $userId)
+    private function validationBookingRules($room, $data, $userId)
     {
         try {
             $readSchedule = file_get_contents(dirname(__DIR__) . '/../../schedule.json');
@@ -136,12 +139,11 @@ class BookingController extends Controller
             if ($data['duration'] < 60) throw new CustomException('Minimal durasi pinjam ruangan 1 jam');
             if ($data['duration'] > 180) throw new CustomException('Maximal durasi pinjam ruangan 3 jam');
 
-            $checkIfScheduleExists = Booking::checkSchedule($data['date']->toDateTimeString(), $data['duration'], $roomId);
+            $checkIfScheduleExists = Booking::checkSchedule($data['date']->toDateTimeString(), $data['duration'], $room->id);
             if ($checkIfScheduleExists) throw new CustomException('Jadwal sudah dibooking');
 
-            $roomDetail = Room::getById($roomId);
-            if (count($data['list_anggota']) < $roomDetail->min_capacity) throw new CustomException("Minimal kapasitas adalah $roomDetail->min_capacity orang");
-            if (count($data['list_anggota']) > $roomDetail->max_capacity) throw new CustomException("Maximal kapasitas adalah $roomDetail->max_capacity orang");
+            if (count($data['list_anggota']) < $room->min_capacity) throw new CustomException("Minimal kapasitas adalah $room->min_capacity orang");
+            if (count($data['list_anggota']) > $room->max_capacity) throw new CustomException("Maximal kapasitas adalah $room->max_capacity orang");
 
             return [
                 'status' => true

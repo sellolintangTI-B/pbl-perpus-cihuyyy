@@ -171,8 +171,8 @@ use Carbon\Carbon;
                         <?php endif; ?>
                     </div>
                     <!-- action buttons -->
-                    <?php if (!($data['booking']->status == 'finished' || $data['booking']->status == 'cancelled')): ?>
-                        <?= Button::anchor(label: 'Edit Data Peminjaman', color: 'primary', class: 'w-full py-3 px-6') ?>
+                    <?php if (!($data['booking']->status == 'finished' || $data['booking']->status == 'cancelled' || $data['booking']->status == 'checked_in')): ?>
+                        <?= Button::anchor(label: 'Edit Data Peminjaman', color: 'primary', class: 'w-full py-3 px-6', href: "/admin/booking/edit/" . htmlspecialchars($data['booking']->id)) ?>
                     <?php endif; ?>
                 </div>
             </div>

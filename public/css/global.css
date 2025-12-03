@@ -11,8 +11,12 @@
         width: 20px;
         height: 20px;
         cursor: pointer;
-        color: gray;
     }
+    .input-icon-white::-webkit-calendar-picker-indicator {
+        filter: invert(1); /* Untuk membuat putih */
+    }
+
+    
     .no-scrollbar::-webkit-scrollbar {
         display: none;
         width: 0;

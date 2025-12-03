@@ -8,6 +8,34 @@ use Pdo;
 class Room extends Database
 {
 
+    public static function getALl($params = []) 
+    {
+        $where = [];
+        $values = [];
+        $conn = parent::getConnection();
+        $stmt = "SELECT * FROM rooms ";
+        if(!empty($params)) {
+            foreach($params as $key => $value) {
+                if($key === "name") {
+                    $where[] = "name ILIKE :$key";
+                    $values[] = "%$value%";
+                } else {
+                    $where[] = "$key = :$key";
+                    $values[] = $value;
+                }
+            }
+        }
+
+        if(!empty($where)) {
+            $whereClauses = implode(' AND ', $where);
+            $stmt .= "WHERE " . $whereClauses;
+        }
+        $q = $conn->prepare($stmt);
+        $q->execute($values);
+        $data = $q->fetchALl(PDO::FETCH_OBJ);
+        return $data;
+    }
+
     public static function get($params = [])
     {
         $paramValues = [];
@@ -68,17 +96,18 @@ class Room extends Database
 
     public static function update($id, $data)
     {
+        $fields = [];
+        $values = [];
         $conn = parent::getConnection();
-        $query = "UPDATE rooms SET name = ?, floor = ?, min_capacity = ?, max_capacity = ?, description = ?, requires_special_approval = ?, is_operational = ? WHERE id = ?";
-        if (isset($data['image'])) $query = "UPDATE rooms SET name = ?, floor = ?, min_capacity = ?, max_capacity = ?, description = ?, requires_special_approval = ?, is_operational = ?, room_img_url = ? WHERE id = ?";
-
-        $stmt = $conn->prepare($query);
-        $x = 1;
-        foreach ($data as $key => $value) {
-            $stmt->bindValue($x++, $value);
+        foreach($data as $key => $value) {
+            $fields[] = "$key = :$key";
+            $values[] = $value;
         }
-        $stmt->bindValue($x, $id);
-        if ($stmt->execute()) return true;
+        $fields = implode(', ', $fields);
+        $values[] = $id;
+        $query = "UPDATE rooms SET $fields WHERE id = :id";
+        $stmt = $conn->prepare($query);
+        if ($stmt->execute($values)) return true;
         return false;
     }
 

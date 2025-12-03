@@ -3,12 +3,22 @@
 use App\Components\Button;
 use App\Components\Icon\Icon;
 use App\Components\FormInput;
+use Carbon\Carbon;
+
 ?>
 
-<div class="w-full h-full grid sm:grid-cols-5 grid-cols-1 gap-4 overflow-hidden">
+<div class="w-full h-full grid sm:grid-cols-5 grid-cols-1 gap-4 overflow-y-scroll">
+    <div class="sm:col-span-5">
+        <div class="w-full h-[16rem] rounded-lg overflow-hidden shrink-0">
+            <img
+                src="<?= URL ?>/public/<?= $data['data']->room_img_url ?>"
+                alt="Foto Ruangan"
+                class="w-full h-full object-cover" />
+        </div>
+    </div>
     <!-- form peminjaman ruangan di sebelah kiri -->
-    <div class="sm:col-span-3 h-full bg-white rounded-lg overflow-hidden flex flex-col">
-        <div class="w-full h-full overflow-y-auto p-6">
+    <div class="sm:col-span-3 h-fit   flex flex-col">
+        <div class="w-full h-full p-6 bg-white rounded-lg">
             <div class="flex flex-col items-start gap-4 w-full">
                 <h1 class="font-medium text-black/80 text-xl">
                     Form Peminjaman Ruangan
@@ -52,7 +62,8 @@ use App\Components\FormInput;
                             label: 'Tanggal Peminjaman',
                             placeholder: 'Masukkan tanggal peminjaman',
                             required: true,
-                            classGlobal: 'md:col-span-2'
+                            classGlobal: 'md:col-span-2',
+                            value: $oldData['datetime'] ?? (isset($_GET['date']) ? $_GET['date'] : null)
                         );
 
                         FormInput::input(
@@ -62,7 +73,8 @@ use App\Components\FormInput;
                             label: 'Waktu Mulai',
                             placeholder: 'Masukkan jam mulai peminjaman',
                             required: true,
-                            classGlobal: 'col-span-1'
+                            classGlobal: 'col-span-1',
+                            value: $oldData['start_time'] ?? (isset($_GET['start_time']) ? $_GET['start_time'] : null)
                         );
 
                         FormInput::input(
@@ -72,7 +84,9 @@ use App\Components\FormInput;
                             label: 'Waktu Berakhir',
                             placeholder: 'Masukkan jam peminjaman berakhir',
                             required: true,
-                            classGlobal: 'col-span-1'
+                            classGlobal: 'col-span-1',
+                            value: $oldData['end_time'] ?? (isset($_GET['end_time']) ? $_GET['end_time'] : null)
+
                         );
                         ?>
                     </div>
@@ -164,69 +178,109 @@ use App\Components\FormInput;
     </div>
 
     <!-- detail ruangan  -->
-    <div class="sm:col-span-2 h-full w-full bg-white rounded-lg overflow-hidden flex flex-col ">
-        <div class="flex flex-col gap-4 w-full p-6">
+    <div class="sm:col-span-2 h-fit w-full  flex flex-col gap-6">
+        <div class="flex flex-col gap-4 w-full h-full p-6 bg-white rounded-lg">
             <!-- foto ruangan -->
-            <div class="w-full h-48 rounded-lg overflow-hidden shrink-0">
+            <!-- <div class="w-full h-48 rounded-lg overflow-hidden shrink-0">
                 <img
-                    src="<?= URL ?>/public/storage/images/login-image.jpg"
+                    src="<?= URL ?>/public/<?= $data['data']->room_img_url ?>"
                     alt="Foto Ruangan"
                     class="w-full h-full object-cover" />
+            </div> -->
+            <!-- Divider -->
+            <div class="flex flex-col gap-2 w-full">
+                <h3 class="text-lg font-medium text-black/80">Waktu Terpakai</h3>
+                <div class="w-full h-px bg-gray-400 rounded-full"></div>
             </div>
-            <h2 class="font-medium text-black/80 text-xl">
-                Ruangan Terpakai
-            </h2>
-            <!-- Informasi ruangan -->
-            <div class="w-full flex-1 h-full">
-                <div class="flex flex-col gap-3">
-                    <div class="flex flex-col gap-1">
-                        <span class="font-medium text-sm text-gray-800">Nama Ruangan:</span>
-                        <span class="text-sm text-gray-600"><?= $data['data']->name ?></span>
+            <!-- Date Input -->
+            <form class="w-full flex justify-between items-center gap-2" method="get">
+                <input type="hidden" name="state" value="detail">
+                <input type="hidden" name="date" value="<?= $_GET['date'] ?? "" ?>">
+                <input type="hidden" name="start_time" value="<?= $_GET['start_time'] ?? "" ?>">
+                <input type="hidden" name="end_time" value="<?= $_GET['end_time'] ?? "" ?>">
+                <input type="hidden" name="state" value="detail">
+                <input type="hidden" name="id" value="<?= $data['data']->id ?>">
+                <input id="date_check" name="date_check" , type="date" required value=<?= isset($_GET['date_check']) ? $_GET['date_check'] : date('Y-m-d') ?> class="custom-input-icon border-none bg-none text-sm outline-none" />
+                <button
+                    type="submit"
+                    class="bg-primary cursor-pointer text-white px-4 py-1 rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors whitespace-nowrap">
+                    Cek
+                </button>
+            </form>
+            <div class="flex-1 h-full max-h-full overflow-y-auto">
+                <div class="flex flex-col gap-4 h-fit">
+                    <!-- Tabel Jadwal -->
+                    <div class=" rounded-lg overflow-hidden w-full bg-baseColor">
+                        <table class="w-full text-sm text-black/80 table table-auto border-collapse ">
+                            <thead class="border-b border-gray-400">
+                                <tr>
+                                    <th class="px-4 py-2 text-left font-medium ">Jam</th>
+                                    <th class="px-4 py-2 text-left font-medium ">Peminjam</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-x divide-gray-200">
+                                <tr>
+                                    <td class="px-4 py-3 ">
+                                        <!-- <?= Carbon::parse($schedule->start_time)->toTimeString() ?> - <?= Carbon::parse($schedule->end_time)->toTimeString() ?> -->
+                                        08:00 - 09:00
+                                    </td>
+                                    <td class="px-4 py-3 ">
+                                        <!-- <?= $schedule->pic_name ?> -->
+                                        Sujiwo Tedjo
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 ">
+                                        <!-- <?= Carbon::parse($schedule->start_time)->toTimeString() ?> - <?= Carbon::parse($schedule->end_time)->toTimeString() ?> -->
+                                        08:00 - 09:00
+                                    </td>
+                                    <td class="px-4 py-3 ">
+                                        <!-- <?= $schedule->pic_name ?> -->
+                                        Sujiwo Tedjo
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 ">
+                                        <!-- <?= Carbon::parse($schedule->start_time)->toTimeString() ?> - <?= Carbon::parse($schedule->end_time)->toTimeString() ?> -->
+                                        08:00 - 09:00
+                                    </td>
+                                    <td class="px-4 py-3 ">
+                                        <!-- <?= $schedule->pic_name ?> -->
+                                        Sujiwo Tedjo
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 ">
+                                        <!-- <?= Carbon::parse($schedule->start_time)->toTimeString() ?> - <?= Carbon::parse($schedule->end_time)->toTimeString() ?> -->
+                                        08:00 - 09:00
+                                    </td>
+                                    <td class="px-4 py-3 ">
+                                        <!-- <?= $schedule->pic_name ?> -->
+                                        Sujiwo Tedjo
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 ">
+                                        <!-- <?= Carbon::parse($schedule->start_time)->toTimeString() ?> - <?= Carbon::parse($schedule->end_time)->toTimeString() ?> -->
+                                        08:00 - 09:00
+                                    </td>
+                                    <td class="px-4 py-3 ">
+                                        <!-- <?= $schedule->pic_name ?> -->
+                                        Sujiwo Tedjo
+                                    </td>
+                                </tr>
+
+                                <?php //foreach ($data['schedule'] as $schedule) : 
+                                ?>
+
+                                <?php //endforeach 
+                                ?>
+                            </tbody>
+                        </table>
                     </div>
-
-                    <div class="flex flex-col gap-1">
-                        <span class="font-medium text-sm text-gray-800">Kapasitas:</span>
-                        <span class="text-sm text-gray-600"><?= $data['data']->min_capacity ?> - <?= $data['data']->max_capacity ?> orang</span>
-                    </div>
-
-                    <div class="flex flex-col gap-1">
-                        <span class="font-medium text-sm text-gray-800">Lantai:</span>
-                        <span class="text-sm text-gray-600">Lantai <?= $data['data']->floor ?></span>
-                    </div>
-
-                    <?php if ($data['data']->requires_special_approval): ?>
-                        <div class="flex flex-col gap-1">
-                            <span class="font-medium text-sm text-gray-800">Status:</span>
-                            <span class="px-3 py-1.5 bg-yellow/20 text-yellow text-xs rounded-md w-fit font-medium">
-                                Memerlukan Persetujuan Khusus
-                            </span>
-                        </div>
-                    <?php endif; ?>
-
-                    <?php if (isset($data['data']->description) && !empty($data['data']->description)): ?>
-                        <div class="flex flex-col gap-1">
-                            <span class="font-medium text-sm text-gray-800">Deskripsi:</span>
-                            <p class="text-sm text-gray-600"><?= $data['data']->description ?></p>
-                        </div>
-                    <?php endif; ?>
-
-                    <!-- Fasilitas jika ada -->
-                    <?php if (isset($data['data']->facilities) && !empty($data['data']->facilities)): ?>
-                        <div class="flex flex-col gap-2">
-                            <span class="font-medium text-sm text-gray-800">Fasilitas:</span>
-                            <div class="flex flex-wrap gap-2">
-                                <?php foreach (explode(',', $data['data']->facilities) as $facility): ?>
-                                    <span class="px-2 py-1 bg-primary/10 text-primary text-xs rounded-md">
-                                        <?= trim($facility) ?>
-                                    </span>
-                                <?php endforeach; ?>
-                            </div>
-                        </div>
-                    <?php endif; ?>
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 
@@ -238,7 +292,7 @@ use App\Components\FormInput;
 
         return {
             identifier: '',
-            listAnggota: [],
+            listAnggota: <?= !empty($oldData['list_anggota']) ? json_encode($oldData['list_anggota']) : '[]' ?>,
             message: '',
 
             async tambahAnggota() {
