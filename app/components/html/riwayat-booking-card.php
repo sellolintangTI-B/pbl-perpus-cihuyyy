@@ -23,7 +23,7 @@ $statusLabel = [
     <!-- Header with Code and Status -->
     <div class="flex justify-between items-start mb-3">
         <div>
-            <h3 class="text-base font-bold text-primary mb-1">Kode Booking: <?= $booking['code'] ?></h3>
+            <h3 class="text-base font-normal text-primary mb-1">Kode Booking: <?= $booking['code'] ?></h3>
         </div>
         <?php
         Badge::badge(label: $statusLabel[$booking['status']], active: false, color: $statusColor[$booking['status']]);
@@ -31,19 +31,19 @@ $statusLabel = [
     </div>
 
     <!-- Booking Details -->
-    <div class="space-y-2 text-sm text-gray-700 mb-4">
-        <div class="flex items-start gap-2">
-            <?php Icon::location("w-5 w-5 text-primary") ?>
+    <div class="space-y-2 text-sm text-gray-700 mb-4 my-6 md:my-0">
+        <div class="flex items-start gap-2 w-3/4 md:w-full">
+            <span><?php Icon::location("w-5 w-5 text-primary") ?></span>
             <span><?= $booking['location'] ?></span>
         </div>
 
         <div class="flex items-center gap-2">
-            <?php Icon::calendar_pencil("w-5 w-5 text-primary") ?>
+            <span><?php Icon::calendar_pencil("w-5 w-5 text-primary") ?></span>
             <span><?= $booking['date'] ?></span>
         </div>
 
         <div class="flex items-center gap-2">
-            <?php Icon::clock("w-5 w-5 text-primary") ?>
+            <span><?php Icon::clock("w-5 w-5 text-primary") ?></span>
             <span><?= $booking['time'] ?></span>
         </div>
     </div>

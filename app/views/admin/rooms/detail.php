@@ -3,7 +3,7 @@
 use App\Components\Icon\Icon;
 use App\Components\Button;
 use App\Components\Badge;
-
+use Carbon\Carbon;
 
 ?>
 <div class="w-full h-full flex flex-col gap-4 ">
@@ -22,7 +22,7 @@ use App\Components\Badge;
                     <!-- gambar -->
                     <div class="relative h-80 w-96 shrink-0 self-stretch">
                         <img
-                            src="<?= URL . "/public/" . $data->room_img_url ?>"
+                            src="<?= URL . "/public/" . $data['detail']->room_img_url ?>"
                             alt="Ruang Perancis"
                             class="w-full h-full object-cover rounded-lg shadow-sm" />
                     </div>
@@ -31,15 +31,15 @@ use App\Components\Badge;
                     <div class="p-6 flex flex-col gap-4 items-start justify-start flex-1 w-full border border-gray-200 bg-white rounded-xl overflow-hidden shadow-sm">
                         <div class="w-full flex justify-between items-start">
                             <h1 class="text-xl font-medium text-primary">
-                                <?= $data->name ?>
+                                <?= $data['detail']->name ?>
                             </h1>
                             <!-- badge tipe ruangan dan beroperasi -->
                             <div class="flex gap-2">
                                 <?php
-                                if ($data->requires_special_approval) {
+                                if ($data['detail']->requires_special_approval) {
                                     Badge::badge(label: "Ruangan Khusus", color: "secondary", class: 'border-none!');
                                 }
-                                Badge::badge(label: $data->is_operational ? "Beroperasi" : "Tidak Beroperasi", color: $data->is_operational ? "secondary" : "red", class: 'border-none!');
+                                Badge::badge(label: $data['detail']->is_operational ? "Beroperasi" : "Tidak Beroperasi", color: $data['detail']->is_operational ? "secondary" : "red", class: 'border-none!');
                                 ?>
                             </div>
                         </div>
@@ -47,21 +47,21 @@ use App\Components\Badge;
                         <div class="flex gap-2 items-center justify-start text-black/80">
                             <?= Icon::location("w-5 h-5") ?>
                             <p class="font-medium text-sm">
-                                Lantai: <?= $data->floor ?>
+                                Lantai: <?= $data['detail']->floor ?>
                             </p>
                         </div>
 
                         <div class="flex gap-2 items-center justify-start text-black/80">
                             <?= Icon::people("w-5 h-5") ?>
                             <p class="font-medium text-sm">
-                                Kapasitas Minimal: <?= $data->min_capacity ?> Orang
+                                Kapasitas Minimal: <?= $data['detail']->min_capacity ?> Orang
                             </p>
                         </div>
 
                         <div class="flex gap-2 items-center justify-start text-black/80">
                             <?= Icon::people("w-5 h-5") ?>
                             <p class="font-medium text-sm">
-                                Kapasitas Maksimal: <?= $data->max_capacity ?> Orang
+                                Kapasitas Maksimal: <?= $data['detail']->max_capacity ?> Orang
                             </p>
                         </div>
 
@@ -74,7 +74,7 @@ use App\Components\Badge;
                                     Deskripsi:
                                 </p>
                                 <p class="text-sm text-black/60 leading-relaxed cursor-pointer" :class="openDesc?'line-clamp-none':'line-clamp-3'" @click="openDesc = !openDesc">
-                                    <?= $data->description ?>
+                                    <?= $data['detail']->description ?>
                                 </p>
                             </div>
                         </div>
@@ -115,18 +115,12 @@ use App\Components\Badge;
                                 </tr>
                             </thead>
                             <tbody>
+                                <?php foreach($data['schedule'] as $schedule) : ?> 
                                 <tr class="border-b border-gray-100 hover:bg-gray-50">
-                                    <td class="py-3 px-4 text-black/70">08:00 - 11:00</td>
-                                    <td class="py-3 px-4 text-black/70">Badrul Simanjuntak</td>
+                                    <td class="py-3 px-4 text-black/70"><?= Carbon::parse($schedule->start_time)->format('H:i') ?> - <?= Carbon::parse($schedule->end_time)->format('H:i')?></td>
+                                    <td class="py-3 px-4 text-black/70"><?= $schedule->pic_name ?></td>
                                 </tr>
-                                <tr class="border-b border-gray-100 hover:bg-gray-50">
-                                    <td class="py-3 px-4 text-black/70">13:00 - 14:00</td>
-                                    <td class="py-3 px-4 text-black/70">Nujorono Nur Cahyo</td>
-                                </tr>
-                                <tr class="border-b border-gray-100 hover:bg-gray-50">
-                                    <td class="py-3 px-4 text-black/70">14:00 - 16:30</td>
-                                    <td class="py-3 px-4 text-black/70">Budiarto Sinagar</td>
-                                </tr>
+                                <?php endforeach ?>
                             </tbody>
                         </table>
                     </div>
@@ -134,7 +128,7 @@ use App\Components\Badge;
 
                 <!-- action buttons -->
                 <div class="w-full flex flex-col gap-3">
-                    <?= Button::anchor(label: 'Edit Ruangan', color: 'secondary', class: 'w-full py-3 px-6', href: "/admin/room/edit/" . $data->id) ?>
+                    <?= Button::anchor(label: 'Edit Ruangan', color: 'secondary', class: 'w-full py-2 px-6', href: "/admin/room/edit/" . $data['detail']->id) ?>
                     <?= Button::button(label: 'Nonaktifkan Ruangan', color: 'red', class: 'w-full py-3 px-6') ?>
                 </div>
             </div>

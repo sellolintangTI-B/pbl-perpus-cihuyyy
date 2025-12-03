@@ -29,7 +29,7 @@ $safeType = in_array($type, $allowedTypes) ? $type : 'button';
 
 ?>
 <button
-    class="<?= $customClass ?> <?= htmlspecialchars($class) ?> shadow-md shadow-black/25 font-medium cursor-pointer"
+    class="<?= $customClass ?> <?= htmlspecialchars($class) ?> shadow-md shadow-black/25 font-normal cursor-pointer"
     type="<?= $safeType ?>"
     <?php if (!empty($onClick)): ?>
     onclick="<?= htmlspecialchars($onClick) ?>"

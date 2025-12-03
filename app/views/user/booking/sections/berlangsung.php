@@ -14,11 +14,11 @@ $authUser = new Authentication;
     <div x-data="CopyToast()">
         <?php foreach ($data as $value) :  ?>
             <div class="bg-white rounded-xl shadow-lg  mb-4 p-4 w-full">
-                <div class="flex gap-4 mb-4">
+                <div class="flex md:flex-row flex-col gap-6 md:gap-4 mb-4">
                     <!-- Room Image -->
                     <img src="<?= URL . '/public/' . $value->room_img_url ?>"
                         alt="<?= $value->room_name ?>"
-                        class="w-44 h-48 object-cover rounded-lg shrink-0">
+                        class="md:w-44 w-full h-72 md:h-48 object-cover rounded-lg shrink-0">
                     <!-- Booking Info -->
                     <div class="flex-1">
                         <div class="flex justify-between items-start mb-3">
@@ -52,10 +52,10 @@ $authUser = new Authentication;
                 </div>
 
                 <!-- Booking Code -->
-                <div class="border-tertiary border rounded-xl p-3 mb-4 flex items-center justify-between">
+                <div class="border-tertiary border rounded-xl p-3 mt-6 md:mt-0 mb-4 flex items-center justify-between">
                     <div class="flex items-center justify-start gap-4">
                         <span class="text-lg font-medium text-black/80">Booking Code:</span>
-                        <span class="p-1 bg-tertiary/20 border border-tertiary text-tertiary rounded-lg text-lg font-medium"><?= $value->booking_code ?></span>
+                        <span class="p-1 bg-tertiary/20 border border-tertiary text-tertiary rounded-lg text-lg font-medium">#<?= $value->booking_code ?></span>
                     </div>
                     <button @click="copyText('<?= $value->booking_code ?>')"
                         class="p-1 bg-tertiary/30 hover:bg-tertiary/20 border border-tertiary text-tertiary rounded-lg cursor-pointer transition-all duration-300 ease-in-out">
@@ -64,11 +64,11 @@ $authUser = new Authentication;
                 </div>
 
                 <!-- Action Buttons -->
-                <div class="space-y-3">
+                <div class="w-full flex md:flex-col flex-row-reverse gap-2">
                     <?php
-                    Button::anchorGradient(label: 'See Details', link: URL . '/user/booking/detail/' . htmlspecialchars($value->booking_id), class: 'rounded-full!');
+                    Button::anchorGradient(label: 'Lihat Detail', link: URL . '/user/booking/detail/' . htmlspecialchars($value->booking_id), class: 'rounded-full!');
                     if ($authUser->user['id'] === $value->pic_id && $value->latest_status === "created") {
-                        Button::button(label: 'Cancel Booking', color: 'red', class: 'w-full py-3 rounded-full!', alpineClick: "showCancel=true; cancelPeminjamanId='" . htmlspecialchars($value->booking_id) . "'; ");
+                        Button::button(label: 'Batalkan Booking', color: 'red', class: 'w-full py-3 rounded-full!', alpineClick: "showCancel=true; cancelPeminjamanId='" . htmlspecialchars($value->booking_id) . "'; ");
                     }
                     ?>
                 </div>

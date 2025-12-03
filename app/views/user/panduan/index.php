@@ -157,7 +157,7 @@ $panduanList = [
     ]
 ];
 ?>
-<div class=" font-poppins w-full">
+<div class=" font-poppins w-full p-4 md:p-0">
     <div class="max-w-5xl mx-auto flex flex-col gap-4 pb-8">
         <?php foreach ($panduanList as $kategori): ?>
             <h1 class="text-2xl text-primary font-semibold">
@@ -165,8 +165,8 @@ $panduanList = [
             </h1>
             <?php foreach ($kategori['data'] as $panduan): ?>
                 <div class="w-full relative" x-data="{open: false}">
-                    <div class="bg-linear-to-r from-primary to-secondary text-white p-6 rounded-lg flex items-center justify-between relative z-10 w-full cursor-pointer" @click="open = !open">
-                        <span class="text-lg font-medium">
+                    <div class="bg-linear-to-r from-primary to-tertiary text-white p-4 md:p-6 rounded-lg flex items-center justify-between relative z-10 w-full cursor-pointer" @click="open = !open">
+                        <span class="md:text-lg font-medium">
                             <?= $panduan['title'] ?>
                         </span>
                         <button class=" shrink-0 ml-4">
@@ -185,8 +185,8 @@ $panduanList = [
                         x-transition:leave="transition ease-in duration-200"
                         x-transition:leave-start="opacity-100 translate-y-0"
                         x-transition:leave-end="opacity-0 -translate-y-24"
-                        class="px-8 w-full">
-                        <div class="p-8 bg-white shadow-md rounded-lg text-gray-700 leading-relaxed">
+                        class="md:px-8 px-4 w-full">
+                        <div class="p-4 md:p-8 bg-white shadow-md rounded-lg text-gray-700 leading-relaxed">
                             <?= $panduan['content'] ?>
                         </div>
                     </div>
