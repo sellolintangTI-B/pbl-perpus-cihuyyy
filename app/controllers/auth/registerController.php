@@ -45,7 +45,7 @@ class RegisterController extends Controller
                 "phone_number" => $_POST['phone_number'],
                 "role" => $_POST['role'],
                 "image" => empty($_FILES['file_upload']['name']) ? null : $_FILES['file_upload'],
-                "captcha" => $_POST['captcha'],
+                "captcha" => $_POST['cf-turnstile-response'],
                 "major" => $_POST['jurusan']
             ];
 
@@ -59,12 +59,20 @@ class RegisterController extends Controller
             $validator->field("phone_number", ["required"]);
             $validator->field("role", ["required"]);
             $validator->field("image", ["required"]);
-            $validator->field("captcha", ['required']);
+            $validator->field("captcha", ['captcha']);
 
             $errors = $validator->error();
             if ($errors) throw new CustomException($validator->getErrors());
 
-            // if($_SESSION['captcha'] !== $data['captcha']) throw new CustomException('Captcha tidak valid');
+
+            $validateTurnStileBody = [
+                'secret' => $_ENV['TURNSTILE_SECRETKEY'],
+                'response' => $data['captcha'],
+                'remoteip' => $_SERVER['REMOTE_ADDR']
+            ];
+
+            $validateCaptcha = $this->validateCaptcha($validateTurnStileBody);
+            if(!$validateCaptcha) throw new CustomException('Gagal verifikasi captcha');
 
             $checkByIdNumber = User::getByUniqueField(id_number: $data['id_number']);
             $checkByEmail = User::getByUniqueField(email: $data['email']);
@@ -108,6 +116,26 @@ class RegisterController extends Controller
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), "error");
             $this->redirectWithOldInput('/auth/register/index', $data, 'register_old');
+        }
+    }
+
+    private function validateCaptcha($body)
+    {
+        $url = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
+        $options = [
+            'http' => [
+                'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+                'method'  => 'POST',
+                'content' => http_build_query($body)
+            ]
+        ];
+        $context  = stream_context_create($options);
+        $result = file_get_contents($url, false, $context);
+        $response = json_decode($result);
+        if ($response->success) {
+            return true;
+        } else {
+            return false;
         }
     }
 }
