@@ -6,7 +6,7 @@ use App\Components\FormInput;
 use App\Components\Modal;
 ?>
 
-<div class=" font-poppins w-full" x-data="{showCancel: false, cancelPeminjamanId: null }">
+<div class=" font-poppins w-full px-4 py-4 md:p-0 " x-data="{showCancel: false, cancelPeminjamanId: null }">
     <div class="max-w-6xl mx-auto">
         <!-- Header -->
         <h1 class="text-2xl font-bold text-primary mb-6">Booking</h1>

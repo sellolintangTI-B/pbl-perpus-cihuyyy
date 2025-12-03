@@ -14,10 +14,10 @@ if (isset($_SESSION['old_booking'])) {
 
 ?>
 
-<div class="max-w-6xl mx-auto p-4 justify-center items-start flex flex-col gap-6" x-data="formAnggota()">
+<div class="max-w-6xl mx-auto md:p-4 justify-center items-start flex flex-col gap-6" x-data="formAnggota()">
 
     <!-- Header -->
-    <div class="flex items-center gap-3">
+    <div class=" items-center gap-3 hidden md:flex">
         <a href="javascript:history.back()" class="text-primary">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
@@ -26,25 +26,32 @@ if (isset($_SESSION['old_booking'])) {
         <h1 class="text-xl font-medium text-primary"><?= $data['detail']->name ?></h1>
     </div>
 
-    <img src="<?= URL ?>/public/<?= $data['detail']->room_img_url ?>" alt="Ruang Perancis" class="w-full h-80 object-cover rounded-lg shadow-md">
-    <div class="grid grid-cols-5 gap-4">
-        <div class="col-span-3 h-28">
+    <div class="w-full relative">
+        <img src="<?= URL ?>/public/<?= $data['detail']->room_img_url ?>" alt="Ruang Perancis" class="w-full h-80 object-cover md:rounded-lg shadow-md">
+        <a class="flex items-center gap-2 p-2 bg-white/30 hover:bg-white/40 transition-all duration-200 text-white rounded-lg absolute inset-0 m-4 w-fit h-fit" href="../">
+            <?= Icon::arrowLeft('w-5 h-5 text-white') ?>
+            Kembali
+        </a>
+    </div>
+
+    <div class="grid md:grid-cols-5 gap-4 p-4 md:p-0">
+        <div class="md:col-span-3 h-full">
             <div class="bg-linear-to-r from-primary to-secondary flex items-center justify-center rounded-xl p-4 shadow-lg w-full h-full">
                 <div class="flex items-center gap-3 text-white">
-                    <div class=" p-2 rounded-full">
+                    <div class="p-4  rounded-full">
                         <?= ($data['detail']->requires_special_approval)
                             ?  Icon::group('w-10 h-10')
                             :  Icon::global('w-10 h-10') ?>
                     </div>
-                    <div class="flex-1">
+                    <div class="flex-1" x-data="{isOpen: false}">
                         <h3 class="font-medium text-lg mb-1"><?= ($data['detail']->requires_special_approval) ? "Ruangan Khusus" : "Ruangan Umum"  ?></h3>
-                        <p class="text-sm opacity-90"><?= ($data['detail']->requires_special_approval) ? "Ruangan ini hanya bisa dipinjam dengan menggunakan surat dari admin PNJ. baca panduan untuk detail lebih lanjut." : "Ruangan ini bisa dipinjam tanpa menggunakan surat khusus, cukup patuhi aturan yang tertera di panduan."  ?></p>
+                        <p class="text-sm opacity-90 cursor-pointer" @click="isOpen = !isOpen" :class="isOpen?'line-clamp-none':'line-clamp-3'"><?= ($data['detail']->requires_special_approval) ? "Ruangan ini hanya bisa dipinjam dengan menggunakan surat dari admin PNJ. baca panduan untuk detail lebih lanjut." : "Ruangan ini bisa dipinjam tanpa menggunakan surat khusus, cukup patuhi aturan yang tertera di panduan."  ?></p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-span-2 h-28">
+        <div class="md:col-span-2 h-28">
             <div class="flex gap-8 p-4 bg-white rounded-xl items-center justify-center shadow-md text-center w-full h-full">
                 <div class="text-center flex flex-col items-center justify-center gap-4 w-full">
                     <div class="flex items-center justify-center gap-1 text-primary">
@@ -68,22 +75,25 @@ if (isset($_SESSION['old_booking'])) {
             </div>
         </div>
 
-        <div class="col-span-3">
-            <div class="flex flex-col gap-4 justify-start items-start bg-white rounded-xl shadow-md p-4 w-full">
+        <div class="md:col-span-3">
+            <div class="flex flex-col gap-4 justify-start items-start bg-white rounded-xl shadow-md p-4 w-full" x-data="{isDescOpen: false}">
                 <!-- Capacity -->
-                <div class="flex items-center gap-2 text-gray-700 text-sm w-full">
-                    <?= Icon::people('w-6 h-6 text-black/80') ?>
-                    <span class="font-medium font-black/80 text-lg">Minimal <?= $data['detail']->min_capacity ?> orang - Maksimal <?= $data['detail']->max_capacity ?> orang</span>
+                <div class="flex items-start md:items-center gap-2 text-gray-700  w-full">
+                    <span><?= Icon::people('w-6 h-6 text-black/80') ?></span>
+                    <span class="font-normal font-black/80  md:text-lg max-w-3/4 md:max-w-full">Minimal <?= $data['detail']->min_capacity ?> orang &bull; Maksimal <?= $data['detail']->max_capacity ?> orang</span>
                 </div>
 
                 <!-- Location -->
-                <div class="flex items-center gap-2 text-gray-700 text-sm w-full">
-                    <?= Icon::location('w-6 h-6 text-black/80') ?>
-                    <span class="font-medium font-black/80 text-lg">Tempat: Perpustakaan PNJ, LT. <?= $data['detail']->floor ?></span>
+                <div class="flex items-start md:items-center gap-2 text-gray-700  w-full">
+                    <span><?= Icon::location('w-6 h-6 text-black/80') ?></span>
+                    <span class="font-normal font-black/80  md:text-lg max-w-3/4 md:max-w-full">Tempat: Perpustakaan PNJ, LT. <?= $data['detail']->floor ?></span>
                 </div>
 
                 <!-- Description -->
-                <p class="text-sm text-gray-600 leading-relaxed text-justify">
+                <h1 class="text-primary text-lg md:hidden">
+                    Deskripsi:
+                </h1>
+                <p class="text-sm text-gray-600 leading-relaxed text-justify cursor-pointer" @click="isDescOpen = !isDescOpen" :class="isDescOpen?'line-clamp-none':'line-clamp-4'">
                     <?= $data['detail']->description ?>
                 </p>
                 <!-- jadwal perpustakaan -->
@@ -134,7 +144,7 @@ if (isset($_SESSION['old_booking'])) {
                             name: "date_check",
                             type: "date",
                             required: true,
-                            value: $oldData['date'] ?? (isset($_GET['date']) ? $_GET['date'] : null),
+                            value: ($oldData['date'] ?? $data['date']) ?? (isset($_GET['date']) ? $_GET['date'] : null),
                             classGlobal: 'h-full p-0! bg-transparent!',
                             class: 'h-full text-lg! bg-transparent! rounded-none! border-none! p-0! focus:ring-0! focus:border-0! focus:bg-transparent!',
                         ); ?>
@@ -147,28 +157,35 @@ if (isset($_SESSION['old_booking'])) {
                 </form>
 
                 <!-- Schedule Table -->
-                <div class=" rounded-lg overflow-hidden w-full">
-                    <table class="w-full text-sm text-black/80">
-                        <thead>
-                            <tr>
-                                <th class="px-4 py-2 text-left font-medium ">Jam</th>
-                                <th class="px-4 py-2 text-left font-medium ">Peminjam</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-200">
-                            <?php foreach ($data['schedule'] as $schedule) : ?>
+                <?php if (!empty($data['schedule'])): ?>
+                    <div class=" rounded-lg overflow-hidden w-full">
+                        <table class="w-full text-sm text-black/80">
+                            <thead>
                                 <tr>
-                                    <td class="px-4 py-3 "><?= Carbon::parse($schedule->start_time)->toTimeString() ?> - <?= Carbon::parse($schedule->end_time)->toTimeString() ?></td>
-                                    <td class="px-4 py-3 "><?= $schedule->pic_name ?></td>
+                                    <th class="px-4 py-2 text-left font-medium ">Jam</th>
+                                    <th class="px-4 py-2 text-left font-medium ">Peminjam</th>
                                 </tr>
-                            <?php endforeach ?>
-                        </tbody>
-                    </table>
-                </div>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <?php foreach ($data['schedule'] as $schedule) : ?>
+                                    <tr>
+                                        <td class="px-4 py-3 "><?= Carbon::parse($schedule->start_time)->toTimeString() ?> - <?= Carbon::parse($schedule->end_time)->toTimeString() ?></td>
+                                        <td class="px-4 py-3 "><?= $schedule->pic_name ?></td>
+                                    </tr>
+                                <?php endforeach ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php else: ?>
+                    <div class="w-full p-2 text-center bg-baseColor rounded-lg">
+                        Tidak ada peminjaman pada tanggal ini ...
+                    </div>
+                <?php endif; ?>
+
             </div>
         </div>
 
-        <div class="col-span-2">
+        <div class="md:col-span-2">
             <div class="bg-white rounded-xl p-4 shadow-md w-full">
                 <?php if ($data['detail']->requires_special_approval): ?>
                     <div class="flex flex-col gap-4">
@@ -188,7 +205,7 @@ if (isset($_SESSION['old_booking'])) {
                     <form method="POST" action="<?= URL ?>/user/booking/store/<?= $data['detail']->id ?>" @submit="prepareData" enctype="multipart/form-data" class="space-y-4 w-full">
                         <!-- tanggal -->
                         <div>
-                            <label class="block text-sm font-medium text-primary mb-2">Kapan</label>
+                            <label class="block text-sm font-medium text-primary mb-2">Tanggal Peminjaman</label>
                             <?php FormInput::input(id: "date", name: "date", type: "date", required: true, value: $oldData['date'] ?? (isset($_GET['date']) ? $_GET['date'] : null)); ?>
                         </div>
 
