@@ -33,6 +33,13 @@ class Validator
         }
     }
 
+    public function captcha($field) 
+    {
+        if (empty($this->data[$field])) {
+            return "Permintaan ditolak. Harap konfirmasi bahwa Anda bukan robot.";
+        }
+    }
+
     public function password($field)
     {
         $password = $this->data[$field];

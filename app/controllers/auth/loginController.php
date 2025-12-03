@@ -37,21 +37,30 @@ class LoginController extends Controller
             $data = [
                 "identifier" => $_POST['username'],
                 "password" => $_POST['password'],
-                "captcha" => $_POST['captcha']
+                "captcha" => $_POST['cf-turnstile-response']
             ];
+
             $validator = new Validator($data);
             str_contains($data['identifier'], '@') ? $validator->field("identifier", ['required', 'email']) : $validator->field('identifier', ['required']);
             $validator->field("password", ["required"]);
-            $validator->field('captcha', ['required']);
+            $validator->field("captcha", ['captcha']);
+
             $errors = $validator->error();
             if ($errors) throw new CustomException($validator->getErrors());
-
-            // if($_SESSION['captcha'] !== $data['captcha']) throw new CustomException('Captcha tidak valid');
 
             $checkIfUserExist = User::getByEmailOrIdNumber($data['identifier']);
             if (!$checkIfUserExist) throw new CustomException('NIM/NIP/EMAIL Belum terdaftar');
             if (!password_verify($data['password'], $checkIfUserExist['password_hash'])) throw new CustomException('Credentials not match');
             if (!$checkIfUserExist['is_active']) throw new CustomException('Akun ini masih menunggu verifikasi admin');
+
+            $validateTurnStileBody = [
+                'secret' => $_ENV['TURNSTILE_SECRETKEY'],
+                'response' => $data['captcha'],
+                'remoteip' => $_SERVER['REMOTE_ADDR']
+            ];
+
+            $validateCaptcha = $this->validateCaptcha($validateTurnStileBody);
+            if(!$validateCaptcha) throw new CustomException('Gagal verifikasi captcha');
 
             if (isset($_POST['remember_me'])) {
                 setcookie('remember_username', $_POST['username'], time() + (30 * 24 * 60 * 60), '/');
@@ -62,7 +71,6 @@ class LoginController extends Controller
                 }
                 unset($_COOKIE['remember_username']);
             }
-
 
             $_SESSION['loggedInUser'] = [
                 "username" => $checkIfUserExist['first_name'] . ' ' . $checkIfUserExist['last_name'],
@@ -81,6 +89,26 @@ class LoginController extends Controller
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), "error");
             header('location:' . URL . '/auth/login/index');
+        }
+    }
+
+    private function validateCaptcha($body)
+    {
+        $url = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
+        $options = [
+            'http' => [
+                'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+                'method'  => 'POST',
+                'content' => http_build_query($body)
+            ]
+        ];
+        $context  = stream_context_create($options);
+        $result = file_get_contents($url, false, $context);
+        $response = json_decode($result);
+        if ($response->success) {
+            return true;
+        } else {
+            return false;
         }
     }
 }
