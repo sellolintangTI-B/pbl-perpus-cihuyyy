@@ -159,34 +159,7 @@ if (isset($_SESSION['register_old'])) {
                             ?>
 
                             <!-- CAPTCHA Section -->
-                            <div class="w-full sm:col-span-2">
-                                <label class="block text-primary mb-2 font-poppins font-medium text-sm md:text-base">
-                                    Kode Verifikasi
-                                </label>
-                                <div class="flex gap-3 items-center mb-2">
-                                    <img id="captcha-image"
-                                        src="<?= URL ?>/public/validator/captcha.php"
-                                        alt="CAPTCHA Code"
-                                        class="border-2 border-primary rounded-md shadow-sm bg-white"
-                                        style="height: 50px; width: 200px;" />
-                                </div>
-                                <?php
-                                FormInput::input(
-                                    id: 'captcha',
-                                    name: 'captcha',
-                                    type: 'text',
-                                    label: '',
-                                    required: true,
-                                    placeholder: "Masukkan kode di atas",
-                                    classGlobal: "w-full"
-                                );
-                                ?>
-                                <?php if (isset($captcha_error)): ?>
-                                    <p class="text-red text-sm mt-1">
-                                        <?= $captcha_error ?>
-                                    </p>
-                                <?php endif; ?>
-                            </div>
+                            <div class="cf-turnstile" data-sitekey="<?= $_ENV['TURNSTILE_SITEKEY'] ?>" data-size="flexible" data-theme="light" ></div>
 
                             <!-- Submit Button -->
                             <div class="sm:col-span-2 mt-4">
