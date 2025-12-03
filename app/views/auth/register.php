@@ -7,128 +7,212 @@ if (isset($_SESSION['register_old'])) {
     $old_data = $_SESSION['register_old'];
 }
 ?>
-<div class="h-screen w-full bg-primary p-4">
-    <div class="h-full w-full flex justify-center items-center p-4 bg-baseColor rounded-xl">
-        <div class="h-full grid gap-8 grid-cols-2">
-            <div class="h-full col-span-1">
-                <div class="w-full h-full  shadow-md shadow-gray-400 rounded-lg relative overflow-hidden">
-                    <img src="<?= URL ?>/public/storage/images/login-image.jpg" alt="login image" class="w-full h-full object-cover rounded-lg hidden md:block" />
-                    <div class="p-2 m-4 w-fit h-fit bg-baseColor/50 absolute z-20 rounded-lg inset-0">
-                        <img src="<?= URL ?>/public/storage/logo/logo-simaru-text.svg" alt="Icon" class="h-14" />
+
+<div class="h-screen w-full md:bg-primary md:p-4">
+    <div class="h-full w-full flex justify-center items-center md:p-4 md:bg-baseColor md:rounded-xl overflow-hidden">
+        <div class="grid md:grid-cols-2 gap-0 md:gap-8 w-full h-full relative">
+            <!-- Image Section -->
+            <div class="col-span-1 h-full relative md:static">
+                <div class="w-full h-full md:shadow-md shadow-gray-400 md:rounded-lg relative overflow-hidden">
+                    <img src="<?= URL ?>/public/storage/images/login-image.jpg"
+                        alt="login image"
+                        class="w-full h-full object-cover md:rounded-lg" />
+                    <div class="p-2 m-4 md:m-4 w-fit h-fit bg-primary/40 absolute top-0 left-1/2 md:left-0 -translate-x-1/2 md:translate-x-0 rounded-lg z-20">
+                        <img src="<?= URL ?>/public/storage/logo/logo-simaru-mixed-text.svg"
+                            alt="Icon"
+                            class="h-16 md:h-14" />
                     </div>
                 </div>
             </div>
-            <div class="h-full col-span-1 overflow-y-auto p-8">
-                <div class="w-full">
-                    <h1 class="text-3xl font-poppins text-center font-medium mb-8 text-primary">
-                        Register
-                    </h1>
-                    <form class="w-full grid grid-cols-1 sm:grid-cols-2 gap-4" id="form_register" action="<?= URL ?>/auth/register/signup" method="post" enctype="multipart/form-data">
-                        <?php
-                        FormInput::input(id: 'id_number', placeholder: 'masukkan NIM/NIP', name: 'id_number', label: 'NIM/NIP', required: true, value: $old_data['id_number'] ?? '');
-                        FormInput::input(id: 'email', placeholder: 'masukkan email', name: 'email', type: 'email', label: 'Email', required: true, value: $old_data['email'] ?? '');
-                        FormInput::input(id: 'first_name', placeholder: 'masukkan nama depan', name: 'first_name', label: 'Nama Depan', required: true, value: $old_data['first_name'] ?? '');
-                        FormInput::input(id: 'last_name', placeholder: 'masukkan nama belakang', name: 'last_name', label: 'Nama Belakang', value: $old_data['last_name'] ?? '');
-                        FormInput::select(
-                            id: 'jurusan',
-                            name: 'jurusan',
-                            label: 'Jurusan',
-                            required: true,
-                        );
 
-                        FormInput::select(
-                            id: 'prodi',
-                            name: 'prodi',
-                            label: 'Program Studi',
-                            required: true,
-                        );
-                        FormInput::input(id: 'phone_number', placeholder: 'masukkan nomor whatsapp', name: 'phone_number', type: 'tel', label: 'Nomor Whatsapp', required: true, value: $old_data['phone_number'] ?? '');
-                        FormInput::select(
-                            id: 'role',
-                            name: 'role',
-                            label: 'Jenis Civitas',
-                            required: true,
-                            placeholder: "Role",
-                            value: $old_data['role'] ?? '',
-                            options: [
-                                [
-                                    "display" => "Mahasiswa",
-                                    "value" => "Mahasiswa"
-                                ],
-                                [
-                                    "display" => "Dosen",
-                                    "value" => "Dosen"
-                                ],
-                            ]
-                        );
-                        FormInput::input(id: 'password', placeholder: 'masukkan password', name: 'password', type: 'password', label: 'Password', required: true);
-                        FormInput::input(id: 'password_confirmation', placeholder: 'masukkan password', name: 'password_confirmation', type: 'password', label: 'Konfirmasi Password', required: true);
-                        ?>
-                        <div class="sm:col-span-2 px-4">
-                            <ul class="text-xs text-start list-disc hidden" id="text_alert">
+            <!-- Form Section -->
+            <div class="col-span-1 bg-white rounded-t-4xl md:bg-transparent z-20 md:z-0 absolute md:static bottom-0 left-0 right-0 md:rounded-none shadow-2xl md:shadow-none max-h-[60vh] md:max-h-full h-[60vh] md:h-full overflow-y-auto no-scrollbar md:show-scrollbar">
+                <div class="h-full w-full p-6 md:p-8">
+                    <div class="w-full md:max-w-none mx-auto">
+                        <h1 class="text-2xl md:text-3xl font-poppins text-center font-medium mb-6 md:mb-8 text-primary">
+                            Register
+                        </h1>
 
-                            </ul>
-                            <ul class="text-xs text-start list-disc hidden" id="match_alert">
-
-                            </ul>
-                        </div>
-                        <?php
-                        FormInput::fileInput(
-                            id: 'file_upload',
-                            name: 'file_upload',
-                            label: 'Upload Screenshot Profil Aplikasi \'Kubaca PNJ\'',
-                            required: true,
-                            classGlobal: 'sm:col-span-2',
-                            accept: 'image/*',
-                            value: $old_data['image'] ?? ''
-                        );
-                        ?>
-                        <!-- CAPTCHA Section -->
-                        <div class="w-full col-span-2">
-                            <label class="block text-primary mb-2 font-poppins font-medium">
-                                Kode verifikasi
-                            </label>
-                            <div class="flex gap-3 items-center mb-2">
-                                <img id="captcha-image"
-                                    src="<?= URL ?>/public/validator/captcha.php"
-                                    alt="CAPTCHA Code"
-                                    class="border-2 border-primary rounded-md shadow-sm bg-white"
-                                    style="height: 50px; width: 200px;" />
-                            </div>
+                        <form class="w-full grid grid-cols-1 sm:grid-cols-2 gap-4"
+                            id="form_register"
+                            action="<?= URL ?>/auth/register/signup"
+                            method="post"
+                            enctype="multipart/form-data">
                             <?php
                             FormInput::input(
-                                id: 'captcha',
-                                name: 'captcha',
-                                type: 'text',
-                                label: '',
+                                id: 'id_number',
+                                placeholder: 'Masukkan NIM/NIP',
+                                name: 'id_number',
+                                label: 'NIM/NIP',
                                 required: true,
-                                placeholder: "Masukkan kode di atas",
-                                classGlobal: "w-full"
+                                value: $old_data['id_number'] ?? ''
+                            );
+
+                            FormInput::input(
+                                id: 'email',
+                                placeholder: 'Masukkan email',
+                                name: 'email',
+                                type: 'email',
+                                label: 'Email',
+                                required: true,
+                                value: $old_data['email'] ?? ''
+                            );
+
+                            FormInput::input(
+                                id: 'first_name',
+                                placeholder: 'Masukkan nama depan',
+                                name: 'first_name',
+                                label: 'Nama Depan',
+                                required: true,
+                                value: $old_data['first_name'] ?? ''
+                            );
+
+                            FormInput::input(
+                                id: 'last_name',
+                                placeholder: 'Masukkan nama belakang',
+                                name: 'last_name',
+                                label: 'Nama Belakang',
+                                value: $old_data['last_name'] ?? ''
+                            );
+
+                            FormInput::select(
+                                id: 'jurusan',
+                                name: 'jurusan',
+                                label: 'Jurusan',
+                                placeholder: 'Pilih Jurusan',
+                                required: true,
+                            );
+
+                            FormInput::select(
+                                id: 'prodi',
+                                name: 'prodi',
+                                label: 'Program Studi',
+                                placeholder: 'Pilih Jurusan terlebih dahulu',
+                                required: true,
+                            );
+
+                            FormInput::input(
+                                id: 'phone_number',
+                                placeholder: 'Masukkan nomor whatsapp',
+                                name: 'phone_number',
+                                type: 'tel',
+                                label: 'Nomor Whatsapp',
+                                required: true,
+                                value: $old_data['phone_number'] ?? ''
+                            );
+
+                            FormInput::select(
+                                id: 'role',
+                                name: 'role',
+                                label: 'Jenis Civitas',
+                                required: true,
+                                placeholder: "Pilih Role",
+                                value: $old_data['role'] ?? '',
+                                options: [
+                                    [
+                                        "display" => "Mahasiswa",
+                                        "value" => "Mahasiswa"
+                                    ],
+                                    [
+                                        "display" => "Dosen",
+                                        "value" => "Dosen"
+                                    ],
+                                ]
+                            );
+
+                            FormInput::input(
+                                id: 'password',
+                                placeholder: 'Masukkan password',
+                                name: 'password',
+                                type: 'password',
+                                label: 'Password',
+                                required: true
+                            );
+
+                            FormInput::input(
+                                id: 'password_confirmation',
+                                placeholder: 'Konfirmasi password',
+                                name: 'password_confirmation',
+                                type: 'password',
+                                label: 'Konfirmasi Password',
+                                required: true
                             );
                             ?>
-                            <?php if (isset($captcha_error)): ?>
-                                <p class="text-red-500 text-sm mt-1">
-                                    <?= $captcha_error ?>
-                                </p>
-                            <?php endif; ?>
+
+                            <!-- Password Alerts -->
+                            <div class="sm:col-span-2 px-4">
+                                <ul class="text-xs text-start list-disc hidden text-red" id="text_alert"></ul>
+                                <ul class="text-xs text-start list-disc hidden text-red" id="match_alert"></ul>
+                            </div>
+
+                            <!-- File Upload -->
+                            <?php
+                            FormInput::fileInput(
+                                id: 'file_upload',
+                                name: 'file_upload',
+                                label: 'Upload Screenshot Profil Aplikasi \'Kubaca PNJ\'',
+                                required: true,
+                                classGlobal: 'sm:col-span-2',
+                                accept: 'image/*',
+                                value: $old_data['image'] ?? ''
+                            );
+                            ?>
+
+                            <!-- CAPTCHA Section -->
+                            <div class="w-full sm:col-span-2">
+                                <label class="block text-primary mb-2 font-poppins font-medium text-sm md:text-base">
+                                    Kode Verifikasi
+                                </label>
+                                <div class="flex gap-3 items-center mb-2">
+                                    <img id="captcha-image"
+                                        src="<?= URL ?>/public/validator/captcha.php"
+                                        alt="CAPTCHA Code"
+                                        class="border-2 border-primary rounded-md shadow-sm bg-white"
+                                        style="height: 50px; width: 200px;" />
+                                </div>
+                                <?php
+                                FormInput::input(
+                                    id: 'captcha',
+                                    name: 'captcha',
+                                    type: 'text',
+                                    label: '',
+                                    required: true,
+                                    placeholder: "Masukkan kode di atas",
+                                    classGlobal: "w-full"
+                                );
+                                ?>
+                                <?php if (isset($captcha_error)): ?>
+                                    <p class="text-red text-sm mt-1">
+                                        <?= $captcha_error ?>
+                                    </p>
+                                <?php endif; ?>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="sm:col-span-2 mt-4">
+                                <button type="submit"
+                                    name="register"
+                                    class="w-full bg-primary text-white px-4 py-2.5 md:py-3 rounded-md cursor-pointer shadow-sm shadow-gray-400 hover:shadow-md hover:shadow-primary/20 duration-300 transition-all font-medium text-sm md:text-base">
+                                    Register
+                                </button>
+                            </div>
+                        </form>
+
+                        <!-- Login Link -->
+                        <div class="w-full text-xs md:text-sm flex justify-center items-center gap-2 mt-6 md:mt-8 pb-32">
+                            <p class="text-primary">Already have an account?</p>
+                            <a class="text-secondary cursor-pointer hover:underline font-medium"
+                                href="<?= URL ?>/auth/login/index">
+                                Login
+                            </a>
                         </div>
-                        <div class="sm:col-span-2 mt-4">
-                            <button type="submit" name="register" class="w-full bg-primary text-white px-4 py-2 rounded-md cursor-pointer shadow-sm shadow-gray-400 hover:shadow-md hover:shadow-primary-100 duration-300 transition-all font-medium">
-                                Register
-                            </button>
-                        </div>
-                    </form>
-                    <div class="w-full text-sm flex justify-center items-center gap-2 col-span-1 mx-auto mt-8">
-                        <p class="text-primary">Already have an account?</p>
-                        <a class="text-secondary cursor-pointer" href="<?= URL ?>/auth/login/index">
-                            Login
-                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 <script src="<?= URL ?>/public/js/select-jurusan.js"></script>
 <script type="module" src="<?= URL ?>/public/js/password-validator.js"></script>
 <script>
