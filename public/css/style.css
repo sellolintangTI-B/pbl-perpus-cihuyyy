@@ -776,6 +776,12 @@
   .max-w-\[24rem\] {
     max-width: 24rem;
   }
+  .max-w-\[225px\] {
+    max-width: 225px;
+  }
+  .max-w-\[250px\] {
+    max-width: 250px;
+  }
   .max-w-full {
     max-width: 100%;
   }
@@ -790,6 +796,9 @@
   }
   .min-w-\[225px\] {
     min-width: 225px;
+  }
+  .min-w-\[250px\] {
+    min-width: 250px;
   }
   .min-w-full {
     min-width: 100%;

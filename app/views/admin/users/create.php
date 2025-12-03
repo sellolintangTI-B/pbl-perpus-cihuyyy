@@ -11,15 +11,15 @@ use App\Components\FormInput;
             Tambah Akun Admin
         </h1>
     </div>
-    <div class="p-6 bg-white shadow-sm shadow-gray-600 rounded-xl w-full h-full border border-gray-200 overflow-hidden flex flex-col items-start justify-center">
+    <div class="p-6 gap-6 bg-baseColor shadow-sm shadow-gray-600 rounded-xl w-full h-full border border-gray-200 overflow-hidden flex flex-col items-start justify-center">
         <div class="w-full h-10 flex items-center justify-start">
             <a class="flex gap-2 text-primary items-center h-full cursor-pointer hover:bg-primary/5 px-3 py-1 rounded-full" href="<?= URL . "/admin/user/index" ?>">
                 <?= Icon::arrowLeft('w-4 h-4') ?>
                 Back
             </a>
         </div>
-        <div class="h-full w-full flex-1 overflow-y-auto">
-            <form class="w-full max-w-3xl grid grid-cols-1 sm:grid-cols-2 gap-6 mx-auto" action=<?= URL . "/admin/user/store" ?> method="post" enctype="multipart/form-data">
+        <div class="h-full w-full flex-1 overflow-y-auto py-2">
+            <form class="w-full max-w-3xl bg-white p-6 rounded-xl border border-gray-200 shadow-md grid grid-cols-1 sm:grid-cols-2 gap-6 mx-auto" action=<?= URL . "/admin/user/store" ?> method="post" enctype="multipart/form-data">
                 <?php
                 FormInput::input(id: 'id_number', name: 'id_number', label: 'NIM/NIP', required: true);
                 FormInput::input(id: 'email', name: 'email', type: 'email', label: 'Email', required: true);
@@ -30,14 +30,14 @@ use App\Components\FormInput;
                     name: 'major',
                     label: 'Jurusan',
                     placeholder: 'Jurusan',
-                    required: true,
+                    // required: true,
                 );
                 FormInput::select(
                     id: 'prodi',
                     name: 'prodi',
                     label: 'Program Studi',
                     placeholder: 'Pilih Jurusan terlebih dahulu',
-                    required: true,
+                    // required: true,
                 );
                 FormInput::input(id: 'phone_number', name: 'phone_number', type: 'tel', label: 'Nomor Whatsapp', required: true);
                 FormInput::select(

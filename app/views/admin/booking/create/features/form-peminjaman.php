@@ -179,21 +179,6 @@ use Carbon\Carbon;
 
     <!-- detail ruangan  -->
     <div class="sm:col-span-2 h-fit w-full  flex flex-col gap-6">
-        <!-- <div class=" h-28">
-            <div class="bg-linear-to-r from-primary to-secondary flex items-center justify-center rounded-xl p-4 shadow-lg w-full h-full">
-                <div class="flex items-center gap-3 text-white">
-                    <div class=" p-2 rounded-full">
-                        <?= ($data['data']->requires_special_approval)
-                            ?  Icon::group('w-10 h-10')
-                            :  Icon::global('w-10 h-10') ?>
-                    </div>
-                    <div class="flex-1">
-                        <h3 class="font-medium text-lg mb-1"><?= ($data['data']->requires_special_approval) ? "Ruangan Khusus" : "Ruangan Umum"  ?></h3>
-                        <p class="text-sm opacity-90"><?= ($data['data']->requires_special_approval) ? "Ruangan ini hanya bisa dipinjam dengan menggunakan surat dari admin PNJ. baca panduan untuk detail lebih lanjut." : "Ruangan ini bisa dipinjam tanpa menggunakan surat khusus, cukup patuhi aturan yang tertera di panduan."  ?></p>
-                    </div>
-                </div>
-            </div>
-        </div> -->
         <div class="flex flex-col gap-4 w-full h-full p-6 bg-white rounded-lg">
             <!-- foto ruangan -->
             <!-- <div class="w-full h-48 rounded-lg overflow-hidden shrink-0">
@@ -203,7 +188,7 @@ use Carbon\Carbon;
                     class="w-full h-full object-cover" />
             </div> -->
             <!-- Divider -->
-            <div class="flex flex-col gap-2 w-full pt-2">
+            <div class="flex flex-col gap-2 w-full">
                 <h3 class="text-lg font-medium text-black/80">Waktu Terpakai</h3>
                 <div class="w-full h-px bg-gray-400 rounded-full"></div>
             </div>

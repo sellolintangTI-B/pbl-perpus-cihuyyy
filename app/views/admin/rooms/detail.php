@@ -90,18 +90,20 @@ use App\Components\Badge;
                     </div>
 
                     <!-- date picker -->
-                    <div class="w-full flex gap-2 items-center justify-between">
+                    <form class="w-full flex gap-2 items-center justify-between" method="GET">
                         <div class="flex gap-2 items-center justify-start">
                             <label class="text-sm text-black/80 font-medium">Tanggal:</label>
                             <input
                                 type="date"
-                                class="px-3 py-1.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-primary"
+                                name="date_check"
+                                value="<?= $_GET['date_check'] ?? null ?>"
+                                class="px-3 py-1.5 border-none custom-input-icon text-sm focus:outline-none focus:border-primary"
                                 placeholder="YYYY-MM-DD" />
                         </div>
-                        <button class="px-4 py-1.5 bg-primary text-white text-xs cursor-pointer font-medium rounded-lg hover:bg-primary/90 transition-all duration-300">
+                        <button type="submit" class="px-4 py-1.5 bg-primary text-white text-xs cursor-pointer font-medium rounded-lg hover:bg-primary/90 transition-all duration-300">
                             Cek
                         </button>
-                    </div>
+                    </form>
 
                     <!-- tabel waktu -->
                     <div class="w-full overflow-x-auto">

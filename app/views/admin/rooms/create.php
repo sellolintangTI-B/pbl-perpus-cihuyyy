@@ -9,7 +9,7 @@ use App\Components\FormInput;
             Tambah Ruangan
         </h1>
     </div>
-    <div class="p-6 bg-white shadow-sm shadow-gray-600 rounded-xl w-full h-full border border-gray-200 overflow-hidden flex flex-col items-start justify-center">
+    <div class="p-6 bg-baseColor shadow-sm shadow-gray-600 rounded-xl w-full h-full border border-gray-200 overflow-hidden flex flex-col items-start justify-center gap-6">
         <div class="w-full h-10 flex items-center justify-start">
             <a class="flex gap-2 text-primary items-center h-full cursor-pointer hover:bg-primary/5 px-3 py-1 rounded-full" href="<?= URL . "/admin/room/index" ?>">
                 <?= Icon::arrowLeft('w-4 h-4') ?>
@@ -17,8 +17,8 @@ use App\Components\FormInput;
             </a>
         </div>
         <div class="flex-1 w-full overflow-y-auto">
-            <div class="flex items-center justify-center  w-full max-w-5xl mx-auto">
-                <form class="w-full max-w-3xl grid grid-cols-1 sm:grid-cols-2 gap-6" action="<?= URL . "/admin/room/store" ?>" method="post" enctype="multipart/form-data">
+            <div class="flex items-center justify-center  w-full max-w-3xl mx-auto bg-white p-6 border border-gray-200 rounded-xl shadow-md">
+                <form class="w-full grid grid-cols-1 sm:grid-cols-2 gap-6" action="<?= URL . "/admin/room/store" ?>" method="post" enctype="multipart/form-data">
                     <?php
                     FormInput::input(id: 'nama', name: 'name', label: 'Nama', placeholder: "masukkan nama ruangan", required: true);
                     FormInput::input(id: 'lantai', name: 'floor', type: 'number', label: 'Lantai', placeholder: "contoh: 1", required: true);
