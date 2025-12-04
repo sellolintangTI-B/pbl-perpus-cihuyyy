@@ -22,12 +22,23 @@ class RoomController extends Controller {
     public function index()
     {
         $params = [];
+        $page = 0;
         if(isset($_GET['status']) && !empty($_GET['status'])) $params['is_operational'] = $_GET['status'];
+
         if(isset($_GET['isSpecial']) && !empty($_GET['isSpecial'])) $params['requires_special_approval'] = $_GET['isSpecial'];
+        
         if(isset($_GET['floor']) && !empty($_GET['floor'])) $params['floor'] = $_GET['floor'];
+
         if(isset($_GET['search']) && !empty($_GET['search'])) $params['name'] = $_GET['search'];
 
-        $data = Room::getALl($params);
+        if(isset($_GET['page'])) $page = (int)$_GET['page'] - 1;
+
+        $rooms = Room::getALl($params, $page);
+        $count = Room::count();
+        $data = [
+            'rooms' => $rooms,
+            'total_page' => ceil((int)$count->count / 15)
+        ];
         $this->view('admin/rooms/index', $data, layoutType: "Admin");
     }
 
