@@ -5,7 +5,7 @@ use App\Components\Icon\Icon;
 use App\Components\Badge;
 
 ?>
-<div class="flex flex-col gap-4 rounded-lg overflow-hidden bg-baseColor p-2 h-full w-[175px] sm:w-[200px] md:w-[300px] cursor-pointer" onclick="window.location.href = '<?= URL . $room['room_url'] ?>'">
+<div class="flex flex-col gap-4 rounded-lg overflow-hidden bg-baseColor p-2 h-full w-[175px] sm:w-[200px] md:w-full cursor-pointer" onclick="window.location.href = '<?= URL . $room['room_url'] ?>'">
     <!-- Room Image -->
     <div class="relative w-full md:h-72 h-36 overflow-hidden rounded-lg flex-shrink-0">
         <img src="<?= URL . '/public/' . $room['image'] ?>" alt="<?= $room['name'] ?? 'Room' ?>" class="w-full h-full object-cover ">

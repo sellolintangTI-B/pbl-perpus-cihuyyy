@@ -34,6 +34,7 @@ if (isset($_SESSION['old_booking'])) {
         </a>
     </div>
 
+    <!-- card unntuk  -->
     <div class="grid md:grid-cols-5 gap-4 p-4 md:p-0">
         <div class="md:col-span-3 h-full">
             <div class="bg-linear-to-r from-primary to-secondary flex items-center justify-center rounded-xl p-4 shadow-lg w-full h-full">
@@ -51,6 +52,7 @@ if (isset($_SESSION['old_booking'])) {
             </div>
         </div>
 
+        <!-- card untuk ulasan -->
         <div class="md:col-span-2 h-28">
             <div class="flex gap-8 p-4 bg-white rounded-xl items-center justify-center shadow-md text-center w-full h-full">
                 <div class="text-center flex flex-col items-center justify-center gap-4 w-full">
