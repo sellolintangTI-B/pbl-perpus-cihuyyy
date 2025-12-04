@@ -31,12 +31,11 @@ $badgeSuspendColor = [
 
 ?>
 
-<!-- show modal update data akun -->
 <?php ob_start() ?>
-<div class="w-full flex gap-4">
+<div class="w-full flex gap-3 md:gap-4">
     <?= Button::button(
         label: 'ya',
-        class: 'w-full py-3',
+        class: 'w-full py-2.5 md:py-3 text-sm md:text-base', // Responsive padding & font
         type: 'button',
         alpineClick: "submitUpdateForm()",
         color: 'secondary',
@@ -45,18 +44,17 @@ $badgeSuspendColor = [
         label: 'tidak',
         type: 'button',
         alpineClick: 'updateAlert = false',
-        class: 'w-full py-3',
+        class: 'w-full py-2.5 md:py-3 text-sm md:text-base', // Responsive padding & font
         color: 'white',
     ) ?>
 </div>
 <?php $updateAccountContent = ob_get_clean() ?>
 
-<!-- show modal ganti password -->
 <?php ob_start() ?>
-<div class="flex gap-4 w-full">
+<div class="flex gap-3 md:gap-4 w-full">
     <?= Button::button(
         label: 'ya',
-        class: 'w-full py-3',
+        class: 'w-full py-2.5 md:py-3 text-sm md:text-base', // Responsive padding & font
         alpineClick: "submitPasswordForm()",
         type: 'button',
         color: 'red',
@@ -65,44 +63,51 @@ $badgeSuspendColor = [
         label: 'tidak',
         type: 'button',
         alpineClick: 'updatePasswordAlert = false',
-        class: 'w-full py-3',
+        class: 'w-full py-2.5 md:py-3 text-sm md:text-base', // Responsive padding & font
         color: 'white',
     ) ?>
 </div>
 <?php $updatePasswordContent = ob_get_clean() ?>
-<div class="w-full h-full">
-    <div class="max-w-6xl mx-auto flex flex-col gap-4" x-data="updateUserForm()">
-        <h1 class="text-2xl text-black/80 font-medium">
+
+<div class="w-full h-full md:p-0 p-4 md:pb-16">
+
+    <div class="max-w-6xl mx-auto flex flex-col gap-4 md:gap-6" x-data="updateUserForm()">
+
+        <h1 class="text-xl md:text-2xl text-black/80 font-medium">
             Tentang Saya
         </h1>
-        <div class="w-full h-56 bg-white rounded-lg shadow-sm shadow-black/40 overflow-hidden relative">
+
+        <div class="w-full h-48 md:h-56 bg-white rounded-lg shadow-sm shadow-black/40 overflow-hidden relative">
             <div class="h-1/2 bg-linear-120 from-primary to-secondary">
 
             </div>
-            <div class="flex justify-end items-center p-4 ">
-                <?= Badge::badge(label: 'Suspend Point: ' . (isset($data['suspension']) ? ($data['suspension']->suspend_count ?? 0) : 0) . ' point', color: $badgeSuspendColor[isset($data['suspension']) ? ($data['suspension']->suspend_count ?? 0) : 0], class: 'px-2! py-1!') ?>
+            <div class="flex justify-end items-center p-3 md:p-4 ">
+                <?= Badge::badge(label: 'Suspend Point: ' . (isset($data['suspension']) ? ($data['suspension']->suspend_count ?? 0) : 0) . ' point', color: $badgeSuspendColor[isset($data['suspension']) ? ($data['suspension']->suspend_count ?? 0) : 0], class: 'px-2! py-1! text-xs md:text-sm') ?>
             </div>
-            <div class="absolute p-4 inset-0  flex flex-col items-start justify-start gap-4">
+
+            <div class="absolute p-3 md:p-4 inset-0  flex flex-col items-start justify-start gap-3 md:gap-4">
                 <?= ProfilePictureUpload::render(
                     imageUrl: URL . "/public/storage/" . $data['data']->profile_picture_url ?? "",
                     formAction: URL . "/user/profile/update_picture/" . $data['data']->id ?? "",
                     userName: ($data['data']->first_name ?? "") . " " . ($data['data']->last_name ?? ""),
                     userRole: $data['data']->role ?? "",
                     inputName: 'profile_picture',
-                    class: 'mx-18'
+                    class: 'mx-4 md:mx-18'
                 ) ?>
             </div>
         </div>
-        <div class="w-full flex flex-col gap-4 p-6 h-fit bg-white rounded-lg shadow-sm shadow-black/40 overflow-hidden relative">
+
+        <div class="w-full flex flex-col gap-4 md:gap-6 p-4 md:p-6 h-fit bg-white rounded-lg shadow-sm shadow-black/40 overflow-hidden relative">
             <div class="flex justify-between items-center ">
-                <h1 class="text-2xl font-medium text-black/80">
+                <h1 class="text-xl md:text-2xl font-medium text-black/80">
                     Data Pribadi
                 </h1>
                 <button
                     @click="toggleEdit()"
-                    class=" text-baseColor px-3 py-1 rounded-full flex gap-2 items-center justify-center border-2  transition-all duration-500 shadow-md shadow-black/25 font-medium cursor-pointer" :class="isEdit?'bg-red border-red hover:text-red hover:bg-red/5':'bg-primary border-primary hover:text-primary hover:bg-primary/5'">
+                    class=" text-baseColor px-3 py-1 rounded-full flex gap-2 items-center justify-center border-2  transition-all duration-500 shadow-md shadow-black/25 font-medium cursor-pointer text-sm md:text-base"
+                    :class="isEdit?'bg-red border-red hover:text-red hover:bg-red/5':'bg-primary border-primary hover:text-primary hover:bg-primary/5'">
                     <div class=" gap-2 items-center" :class="isEdit?'hidden':'flex'">
-                        <?= Icon::pencil('w-5 h-5') ?>
+                        <?= Icon::pencil('w-4 h-4 md:w-5 md:h-5') ?>
                         Edit Profile
                     </div>
                     <div class=" gap-2 items-center" :class="isEdit?'flex':'hidden'">
@@ -113,7 +118,7 @@ $badgeSuspendColor = [
             </div>
             <form
                 id="updateUserForm"
-                class="w-full grid grid-cols-1 sm:grid-cols-2 gap-6"
+                class="w-full grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6"
                 @submit.prevent="validateAndShowUpdateAlert"
                 action="<?= URL ?>/user/profile/update/<?= $data['data']->id ?>"
                 method="post"
@@ -160,7 +165,10 @@ $badgeSuspendColor = [
                     label: 'Jurusan',
                     required: true,
                     alpine_disabled: '!isEdit',
-                    value: $data['data']->major ?? ""
+                    value: $data['data']->major ?? "",
+                    attributes: [
+                        'data-value' => $data['data']->major ?? ""
+                    ]
                 );
                 FormInput::select(
                     id: 'prodi',
@@ -170,7 +178,10 @@ $badgeSuspendColor = [
                     required: true,
                     value: $data['data']->study_program ?? "",
                     // options: []
-                    alpine_disabled: '!isEdit'
+                    alpine_disabled: '!isEdit',
+                    attributes: [
+                        'data-value' => $data['data']->study_program ?? ""
+                    ]
                 );
 
                 FormInput::input(
@@ -193,21 +204,21 @@ $badgeSuspendColor = [
                 );
                 ?>
 
-                <div class="sm:col-span-2 mt-4" x-show="isEdit">
+                <div class="sm:col-span-2 mt-2 md:mt-4" x-show="isEdit">
                     <button
                         type="submit"
-                        class="w-full bg-primary text-white px-4 py-3 rounded-xl cursor-pointer shadow-sm shadow-gray-400 hover:shadow-md hover:shadow-primary transition-all duration-300 font-medium">
+                        class="w-full bg-primary text-white px-4 py-2.5 md:py-3 text-sm md:text-base rounded-xl cursor-pointer shadow-sm shadow-gray-400 hover:shadow-md hover:shadow-primary transition-all duration-300 font-medium">
                         Simpan Perubahan
                     </button>
                 </div>
             </form>
         </div>
-        <!-- Form Ganti Password -->
-        <div class=" w-full flex flex-col gap-4 p-6 h-fit bg-white rounded-lg shadow-sm shadow-black/40 overflow-hidden relative">
-            <h2 class="text-2xl font-medium text-gray-800 mb-4">Keamanan Akun</h2>
+
+        <div class=" w-full flex flex-col gap-4 md:gap-6 p-4 md:p-6 h-fit bg-white rounded-lg shadow-sm shadow-black/40 overflow-hidden relative">
+            <h2 class="text-xl md:text-2xl font-medium text-gray-800 mb-2 md:mb-4">Keamanan Akun</h2>
             <form
                 id="updatePasswordForm"
-                class="w-full grid grid-cols-1 gap-6"
+                class="w-full grid grid-cols-1 gap-4 md:gap-6"
                 @submit.prevent="validateAndShowPasswordAlert"
                 action="<?= URL ?>/user/profile/reset_password/<?= $data['data']->id ?>"
                 method="post">
@@ -252,12 +263,11 @@ $badgeSuspendColor = [
                 <ul class="text-xs text-start list-disc hidden px-4" id="match_alert">
 
                 </ul>
-                <div class="mt-4">
-                    <?= Button::button(label: 'Ganti Password', class: 'px-4 py-3 w-full', type: 'submit', color: 'red') ?>
+                <div class="mt-2 md:mt-4">
+                    <?= Button::button(label: 'Ganti Password', class: 'px-4 py-2.5 md:py-3 text-sm md:text-base w-full', type: 'submit', color: 'red') ?>
                 </div>
             </form>
         </div>
-        <!-- modal -->
         <?= Modal::render(
             title: 'Yakin ingin menyimpan perubahan?',
             color: 'secondary',
@@ -284,7 +294,7 @@ $badgeSuspendColor = [
     document.addEventListener('DOMContentLoaded', function() {
         const dbJurusan = "<?= $data['data']->major ?? "" ?>";
         const dbProdi = "<?= $data['data']->study_program ?? "" ?>";
-
+        console.log(dbProdi)
         if (dbJurusan) {
             setInitialJurusan(dbJurusan);
         }
@@ -294,5 +304,7 @@ $badgeSuspendColor = [
                 setProdiValue(dbProdi);
             }, 100);
         }
+
+        prodiSelect.disabled = true
     });
 </script>

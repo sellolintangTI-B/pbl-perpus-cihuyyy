@@ -9,6 +9,11 @@ $classColor = match ($color) {
     'tertiary' => 'focus:border-tertiary hover:border-tertiary',
     default => 'focus:border-primary hover:border-primary',
 };
+
+$attributeString = '';
+foreach ($attributes as $key => $val) {
+    $attributeString .= htmlspecialchars($key) . '="' . htmlspecialchars($val) . '" ';
+}
 ?>
 <div class="<?= $classGlobal ?? '' ?> flex flex-col gap-1 font-poppins">
     <label for="<?= $id ?? ($name ?? '') ?>" class="<?= empty($label) ? 'hidden' : 'block font-medium text-primary mb-2' ?>">
@@ -27,7 +32,8 @@ $classColor = match ($color) {
             <?= isset($required) && $required ? 'required' : '' ?>
             <?= isset($readonly) && $readonly ? 'readonly' : '' ?>
             <?= isset($disabled) && $disabled ? 'disabled' : '' ?>
-            <?= isset($alpine_disabled) && $alpine_disabled ? 'x-bind:disabled="' . $alpine_disabled . '"' : '' ?>>
+            <?= isset($alpine_disabled) && $alpine_disabled ? 'x-bind:disabled="' . $alpine_disabled . '"' : '' ?>
+            $attributeString>
 
             <?php if (!empty($placeholder)): ?>
                 <option value="" disabled <?= empty($value) && empty($selected) ? 'selected' : '' ?>>

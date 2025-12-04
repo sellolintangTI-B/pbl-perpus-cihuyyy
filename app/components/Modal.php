@@ -16,7 +16,8 @@ class Modal
         string $color = 'red',
         string $alpineShow = '',
         string $alpineId = '',
-        string $class = 'p-8',
+        // UBAHAN 1: Default padding dibuat responsive
+        string $class = 'p-6 md:p-8',
         string $width = 'w-full max-w-2xl',
         string $height = 'h-fit',
     ): string {
@@ -64,13 +65,14 @@ class Modal
                 x-transition:leave-start="opacity-100 scale-100"
                 x-transition:leave-end="opacity-0 scale-95">
 
-                <div class="flex flex-col gap-8 items-center justify-center max-w-4xl w-full px-6 h-fit">
-                    <h1 class="<?= $selectedColor['text'] ?> font-medium text-2xl text-center">
+                <div class="flex flex-col gap-5 md:gap-8 items-center justify-center max-w-4xl w-full px-4 md:px-6 h-fit">
+
+                    <h1 class="<?= $selectedColor['text'] ?> font-medium text-xl md:text-2xl text-center">
                         <?= htmlspecialchars($title) ?>
                     </h1>
 
                     <?php if (!empty($message)): ?>
-                        <p class="text-gray-600 text-center -mt-4">
+                        <p class="text-gray-600 text-center -mt-2 md:-mt-4 text-sm md:text-base">
                             <?= htmlspecialchars($message) ?>
                         </p>
                     <?php endif; ?>
@@ -78,7 +80,7 @@ class Modal
                     <?php
                     if ($customContent == null || is_null($customContent)):
                     ?>
-                        <div class="flex gap-4 items-center justify-center h-10">
+                        <div class="flex gap-3 md:gap-4 items-center justify-center h-9 md:h-10">
                             <form
 
                                 <?php if ($alpineId || $alpineId != ''): ?>
@@ -88,12 +90,13 @@ class Modal
                                 <?php endif; ?>
 
                                 method="<?= strtolower($method) ?>">
-                                <button type="submit" class="p-2 text-baseColor <?= $selectedColor['bg'] ?> shadow-sm rounded-md h-full w-24 cursor-pointer hover:opacity-90 transition-opacity">
+
+                                <button type="submit" class="p-2 text-baseColor <?= $selectedColor['bg'] ?> shadow-sm rounded-md h-full w-20 md:w-24 text-sm md:text-base cursor-pointer hover:opacity-90 transition-opacity">
                                     <?= htmlspecialchars($confirmText) ?>
                                 </button>
                             </form>
                             <button
-                                class="p-2 text-black/80 bg-baseColor shadow-sm rounded-md h-full w-24 cursor-pointer hover:bg-gray-100 transition-colors"
+                                class="p-2 text-black/80 bg-baseColor shadow-sm rounded-md h-full w-20 md:w-24 text-sm md:text-base cursor-pointer hover:bg-gray-100 transition-colors"
                                 @click="<?= $alpineShow ?> = false">
                                 <?= htmlspecialchars($cancelText) ?>
                             </button>
