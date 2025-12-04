@@ -136,8 +136,8 @@ class RoomController extends Controller {
                 "min_capacity" => (int) $_POST['min'],  
                 "max_capacity" => (int) $_POST['max'],
                 "description" => $_POST['description'],
-                "requires_special_approval" => isset($_POST['isSpecial']) ? 1 : 0,
-                "is_operational" => isset($_POST['isOperational']) ? 1 : 0,
+                "requires_special_approval" => $_POST['isSpecial'],
+                "is_operational" => $_POST['isOperational'],
                 "room_img_url" => empty($_FILES['file_upload']['name']) ? null : $_FILES['file_upload']
             ];
 

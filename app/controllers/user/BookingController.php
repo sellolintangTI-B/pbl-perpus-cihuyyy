@@ -111,7 +111,7 @@ class BookingController extends Controller
             $checkUserActiveBooking = Booking::checkUserActiveBooking($userId);
             if ($checkUserActiveBooking) throw new CustomException('Tolong selesaikan peminjaman anda terlebih dahulu sebelum meminjam ruangan lain');
 
-            $checkIfLibraryClose = LibraryClose::getByDate($data['datetime']->format('Y-m-d'));
+            $checkIfLibraryClose = LibraryClose::getByDate($data['date']->format('Y-m-d'));
             if($checkIfLibraryClose) throw new CustomException('Tidak bisa booking di tanggal ini');
 
             if ($data['date']->isWeekend()) throw new CustomException('Tidak bisa booking di weekend');

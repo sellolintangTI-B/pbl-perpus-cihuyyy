@@ -65,7 +65,7 @@ $rooms = $data['data'] ?? [];
         <!-- Available Rooms Section -->
         <div class="w-full h-fit mt-12">
             <!-- Room Cards Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 <?php
                 // Dummy data ruangan
                 foreach ($rooms as $room) {

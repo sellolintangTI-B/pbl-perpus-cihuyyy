@@ -263,22 +263,12 @@ use App\Components\Modal;
                 </div>
 
                 <!-- Chart 2: Bar Chart - Per Ruangan -->
-                <div class="w-full h-[32rem] bg-white col-span-1 border-gray-400 border rounded-lg flex flex-col overflow-hidden gap-2 p-4">
+                <div class="w-full h-[32rem] bg-white col-span-2 border-gray-400 border rounded-lg flex flex-col overflow-hidden gap-2 p-4">
                     <h1 class="text-xl font-medium text-primary">
                         Jumlah Peminjaman Per Ruangan
                     </h1>
                     <div class="w-full h-full flex-1">
                         <canvas id="chart-peminjaman-ruangan"></canvas>
-                    </div>
-                </div>
-
-                <!-- Chart 3: Bar Chart - Rating -->
-                <div class="w-full h-[32rem] bg-white col-span-1 border-gray-400 border rounded-lg flex flex-col overflow-hidden gap-2 p-4">
-                    <h1 class="text-xl font-medium text-primary">
-                        Rating Per Ruangan
-                    </h1>
-                    <div class="w-full h-full flex-1">
-                        <canvas id="chart-rating-ruangan"></canvas>
                     </div>
                 </div>
             </div>
@@ -288,7 +278,7 @@ use App\Components\Modal;
 
 <script src="<?= URL ?>/public/js/copy-toast.js"></script>
 
-<!-- Alpine.js Component -->
+<!-- seaarch booking -->
 <script>
     function SearchBooking() {
         return {
@@ -386,10 +376,10 @@ use App\Components\Modal;
     }
 </script>
 
-<!-- Chart.js Scripts -->
+<!-- Chart.js assign -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Chart 1: Line Chart - Jumlah Peminjaman
+        // Chart 1: Jumlah Peminjaman
         const ctx1 = document.getElementById('chart-peminjaman-line');
         if (ctx1) {
             new Chart(ctx1, {
@@ -445,7 +435,7 @@ use App\Components\Modal;
             });
         }
 
-        // Chart 2: Bar Chart - Jumlah Peminjaman Per Ruangan
+        // Chart 2: Jumlah Peminjaman Per Ruangan
         const ctx2 = document.getElementById('chart-peminjaman-ruangan');
         if (ctx2) {
             new Chart(ctx2, {
@@ -486,56 +476,6 @@ use App\Components\Modal;
                         y: {
                             beginAtZero: true,
                             max: 100
-                        }
-                    }
-                }
-            });
-        }
-
-        // Chart 3: Bar Chart - Rating Per Ruangan
-        const ctx3 = document.getElementById('chart-rating-ruangan');
-        if (ctx3) {
-            new Chart(ctx3, {
-                type: 'bar',
-                data: {
-                    labels: ['Ruangan 1', 'Ruangan 2', 'Ruangan 3', 'Ruangan 4', 'Ruangan 5', 'Ruangan 6', 'Ruangan 7', 'Ruangan 8', 'Ruangan 9', 'Ruangan 10'],
-                    datasets: [{
-                            label: '2023',
-                            data: [4.5, 3.8, 4.2, 3.5, 4.8, 4.0, 3.9, 4.3, 4.1, 4.6],
-                            backgroundColor: 'rgba(139, 92, 246, 0.8)',
-                        },
-                        {
-                            label: '2024',
-                            data: [4.2, 4.5, 3.7, 4.6, 4.0, 4.3, 4.4, 3.8, 4.7, 4.1],
-                            backgroundColor: 'rgba(236, 72, 153, 0.8)',
-                        },
-                        {
-                            label: '2025',
-                            data: [4.0, 3.9, 4.6, 4.1, 4.4, 3.8, 4.2, 4.8, 4.0, 4.5],
-                            backgroundColor: 'rgba(59, 130, 246, 0.8)',
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'bottom',
-                            labels: {
-                                usePointStyle: true,
-                                padding: 15
-                            }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: 5,
-                            ticks: {
-                                stepSize: 1
-                            }
                         }
                     }
                 }
