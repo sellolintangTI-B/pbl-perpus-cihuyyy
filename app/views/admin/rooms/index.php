@@ -84,7 +84,8 @@ $floorOptions = [
 
                 <?= Button::button(
                     class: "px-4 h-full",
-                    label: "Search"
+                    label: "Search",
+                    type: 'submit'
                 ) ?>
             </form>
         </div>
