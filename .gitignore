@@ -1,6 +1,6 @@
 /node_moodules/
 app/config/config.php
-public/storage/rooms/*
+# public/storage/rooms/*
 public/storage/users/*
 /vendor/
 .env
