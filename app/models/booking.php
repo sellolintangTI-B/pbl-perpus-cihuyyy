@@ -187,4 +187,14 @@ class Booking extends Database
         $data = $q->fetchAll(PDO::FETCH_OBJ);
         return $data;
     }
+
+    public static function getDataForLineChart()
+    {
+        $conn = parent::getConnection();
+        $q = $conn->prepare("SELECT TO_CHAR(start_time, 'YYYY') AS year, TO_CHAR(start_time, 'MM') AS month, COUNT(id) FROM bookings 
+        GROUP BY year, month ORDER BY year ASC, month ASC" );
+        $q->execute();
+        $data = $q->fetchAll(PDO::FETCH_OBJ);
+        return $data;
+    } 
 }

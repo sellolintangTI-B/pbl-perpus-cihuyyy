@@ -219,62 +219,17 @@ use Carbon\Carbon;
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-x divide-gray-200">
-                                <tr>
-                                    <td class="px-4 py-3 ">
-                                        <!-- <?= Carbon::parse($schedule->start_time)->toTimeString() ?> - <?= Carbon::parse($schedule->end_time)->toTimeString() ?> -->
-                                        08:00 - 09:00
-                                    </td>
-                                    <td class="px-4 py-3 ">
-                                        <!-- <?= $schedule->pic_name ?> -->
-                                        Sujiwo Tedjo
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="px-4 py-3 ">
-                                        <!-- <?= Carbon::parse($schedule->start_time)->toTimeString() ?> - <?= Carbon::parse($schedule->end_time)->toTimeString() ?> -->
-                                        08:00 - 09:00
-                                    </td>
-                                    <td class="px-4 py-3 ">
-                                        <!-- <?= $schedule->pic_name ?> -->
-                                        Sujiwo Tedjo
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="px-4 py-3 ">
-                                        <!-- <?= Carbon::parse($schedule->start_time)->toTimeString() ?> - <?= Carbon::parse($schedule->end_time)->toTimeString() ?> -->
-                                        08:00 - 09:00
-                                    </td>
-                                    <td class="px-4 py-3 ">
-                                        <!-- <?= $schedule->pic_name ?> -->
-                                        Sujiwo Tedjo
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="px-4 py-3 ">
-                                        <!-- <?= Carbon::parse($schedule->start_time)->toTimeString() ?> - <?= Carbon::parse($schedule->end_time)->toTimeString() ?> -->
-                                        08:00 - 09:00
-                                    </td>
-                                    <td class="px-4 py-3 ">
-                                        <!-- <?= $schedule->pic_name ?> -->
-                                        Sujiwo Tedjo
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="px-4 py-3 ">
-                                        <!-- <?= Carbon::parse($schedule->start_time)->toTimeString() ?> - <?= Carbon::parse($schedule->end_time)->toTimeString() ?> -->
-                                        08:00 - 09:00
-                                    </td>
-                                    <td class="px-4 py-3 ">
-                                        <!-- <?= $schedule->pic_name ?> -->
-                                        Sujiwo Tedjo
-                                    </td>
-                                </tr>
 
-                                <?php //foreach ($data['schedule'] as $schedule) : 
-                                ?>
-
-                                <?php //endforeach 
-                                ?>
+                                <?php foreach ($data['schedule'] as $schedule) : ?>
+                                    <tr>
+                                        <td class="px-4 py-3 ">
+                                            <?= Carbon::parse($schedule->start_time)->toTimeString() ?> - <?= Carbon::parse($schedule->end_time)->toTimeString() ?>
+                                        </td>
+                                        <td class="px-4 py-3 ">
+                                            <?= $schedule->pic_name ?>
+                                        </td>
+                                    </tr>
+                                <?php endforeach ?>
                             </tbody>
                         </table>
                     </div>
