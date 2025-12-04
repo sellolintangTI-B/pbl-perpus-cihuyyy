@@ -6,3 +6,5 @@ $dotEnv = Dotenv::createImmutable(__DIR__ . '/../');
 $dotEnv->load();
 Carbon::setLocale('id');
 require_once('config/config.php');
+  // use App\Utils\Migrate;
+  // new Migrate;

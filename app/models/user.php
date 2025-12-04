@@ -8,7 +8,7 @@ use Pdo;
 class User extends Database
 {
 
-    public static function get($params = [])
+    public static function get($params = [], $page = 1)
     {
         $where = [];
         $values = [];
@@ -32,13 +32,21 @@ class User extends Database
             $stmt .= "WHERE " . $whereClauses;
         }
 
-        $stmt .= " ORDER BY is_active ASC";
+        $stmt .= " ORDER BY is_active ASC LIMIT 15 OFFSET 15 * $page";
         $q = $conn->prepare($stmt);
         $q->execute($values);
         $data = $q->fetchAll(PDO::FETCH_OBJ);
         return $data;
     }
 
+    public static function count() 
+    {
+        $conn = parent::getConnection();
+        $q = $conn->prepare("SELECT COUNT(id) FROM users");
+        $q->execute();
+        $data = $q->fetch(PDO::FETCH_OBJ);
+        return $data;
+    }
     public static function insert($data)
     {
         $values = [];

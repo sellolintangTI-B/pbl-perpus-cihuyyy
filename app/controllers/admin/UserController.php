@@ -18,6 +18,7 @@ class UserController extends Controller
     {
         try {
             $params = [];
+            $page = 0;
             if(isset($_GET['status']) && !empty($_GET['status'])) {
                 if($_GET['status'] == 'Active') {
                     $params['is_active'] = 1;
@@ -25,14 +26,22 @@ class UserController extends Controller
                     $params['is_active'] = 0;
                 }
             }
+
             if(isset($_GET['type']) && !empty($_GET['type'])) $params['role'] = $_GET['type'];
+
             if(isset($_GET['search']) && !empty($_GET['search'])) $params['first_name'] = $_GET['search'];
-            
-            $users = User::get($params);
+
+            if(isset($_GET['page']) && !empty($_GET['page'])) $page = $_GET['page'] - 1;
+
+            $countUsers = User::count();
+
+            $users = User::get($params, $page);
             $data = [
                 "no" => 1,
-                "users" => $users
+                "users" => $users,
+                "total_page" => ceil((int)$countUsers->count / 15)
             ];
+
             return $this->view('admin/users/index', $data, layoutType: $this::$layoutType['admin']);
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), "error");

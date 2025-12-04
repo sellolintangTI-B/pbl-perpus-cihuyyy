@@ -110,6 +110,11 @@ class BookingController extends Controller
             }
 
             if (isset($_GET['state']) && $_GET['state'] == 'detail' && isset($_GET['id'])) {
+                $date = Carbon::now('Asia/Jakarta')->toDateString();
+                if (isset($_GET['date_check'])) {
+                    $date = Carbon::parse($_GET['date_check'])->toDateString();
+                }
+                $data['schedule'] = Booking::getByRoomId($_GET['id'], $date);
                 $data['data'] = Room::getById($_GET['id']);
                 $data['roomList'] = Room::get();
                 $data['state'] = 'detail';
@@ -269,8 +274,8 @@ class BookingController extends Controller
             if ($checkIfLibraryClose) throw new CustomException('Tidak bisa booking di tanggal ini');
 
             if ($data['datetime']->isWeekend()) throw new CustomException('Tidak bisa booking di weekend');
-            if ($data['datetime']->lt(Carbon::now('Asia/Jakarta')->toDateString())) throw new CustomException('Tidak bisa booking di kemarin hari');
-            if (Carbon::today('Asia/Jakarta')->diffInDays($data['datetime']) >= 7) throw new CustomException('Tidak bisa booking untuk jadwal lebih dari 7 hari per hari ini');
+            // if ($data['datetime']->lt(Carbon::now('Asia/Jakarta')->toDateString())) throw new CustomException('Tidak bisa booking di kemarin hari');
+            // if (Carbon::today('Asia/Jakarta')->diffInDays($data['datetime']) >= 7) throw new CustomException('Tidak bisa booking untuk jadwal lebih dari 7 hari per hari ini');
 
             $dayCheck = $scheduleJson[$data['datetime']->dayOfWeek()];
             $isValid = false;

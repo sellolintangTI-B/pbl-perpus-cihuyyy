@@ -22,12 +22,23 @@ class RoomController extends Controller {
     public function index()
     {
         $params = [];
+        $page = 0;
         if(isset($_GET['status']) && !empty($_GET['status'])) $params['is_operational'] = $_GET['status'];
+
         if(isset($_GET['isSpecial']) && !empty($_GET['isSpecial'])) $params['requires_special_approval'] = $_GET['isSpecial'];
+        
         if(isset($_GET['floor']) && !empty($_GET['floor'])) $params['floor'] = $_GET['floor'];
+
         if(isset($_GET['search']) && !empty($_GET['search'])) $params['name'] = $_GET['search'];
 
-        $data = Room::getALl($params);
+        if(isset($_GET['page'])) $page = (int)$_GET['page'] - 1;
+
+        $rooms = Room::getALl($params, $page);
+        $count = Room::count();
+        $data = [
+            'rooms' => $rooms,
+            'total_page' => ceil((int)$count->count / 15)
+        ];
         $this->view('admin/rooms/index', $data, layoutType: "Admin");
     }
 
@@ -136,8 +147,8 @@ class RoomController extends Controller {
                 "min_capacity" => (int) $_POST['min'],  
                 "max_capacity" => (int) $_POST['max'],
                 "description" => $_POST['description'],
-                "requires_special_approval" => isset($_POST['isSpecial']) ? 1 : 0,
-                "is_operational" => isset($_POST['isOperational']) ? 1 : 0,
+                "requires_special_approval" => $_POST['isSpecial'],
+                "is_operational" => $_POST['isOperational'],
                 "room_img_url" => empty($_FILES['file_upload']['name']) ? null : $_FILES['file_upload']
             ];
 

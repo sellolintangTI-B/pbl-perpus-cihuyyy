@@ -2590,11 +2590,6 @@
       width: calc(var(--spacing) * 48);
     }
   }
-  .md\:w-\[300px\] {
-    @media (width >= 48rem) {
-      width: 300px;
-    }
-  }
   .md\:w-full {
     @media (width >= 48rem) {
       width: 100%;
