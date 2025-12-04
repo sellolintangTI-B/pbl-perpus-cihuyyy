@@ -8,7 +8,7 @@ use Pdo;
 class Room extends Database
 {
 
-    public static function getALl($params = []) 
+    public static function getALl($params = [], $page = 0) 
     {
         $where = [];
         $values = [];
@@ -30,9 +30,20 @@ class Room extends Database
             $whereClauses = implode(' AND ', $where);
             $stmt .= "WHERE " . $whereClauses;
         }
+
+        $stmt .= " LIMIT 15 OFFSET 15 * $page";
         $q = $conn->prepare($stmt);
         $q->execute($values);
         $data = $q->fetchALl(PDO::FETCH_OBJ);
+        return $data;
+    }
+
+    public static function count()
+    {
+        $conn = parent::getConnection();
+        $q = $conn->prepare("SELECT COUNT(id) FROM rooms");
+        $q->execute();
+        $data = $q->fetch(PDO::FETCH_OBJ);
         return $data;
     }
 

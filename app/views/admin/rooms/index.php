@@ -118,7 +118,7 @@ $floorOptions = [
                 <?php else: ?>
                     <?php
                     $no = 0;
-                    foreach ($data as $room):
+                    foreach ($data['rooms'] as $room):
                         $no++;
                     ?>
                         <tr

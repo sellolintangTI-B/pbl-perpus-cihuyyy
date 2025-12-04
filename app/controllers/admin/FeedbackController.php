@@ -51,7 +51,7 @@ class FeedbackController extends Controller
         try {
             $params = [];
             $filename = "DataFeedbackPeminjaman";
-            if (isset($_GET['ruangan'])) {
+            if (isset($_GET['ruangan']) && !empty($_GET['ruangan'])) {
                 $params['ruangan'] = $_GET['ruangan'];
                 $room = Room::getById($_GET['ruangan']);
                 $ruangan = str_replace(" ", "_", $room->name);
