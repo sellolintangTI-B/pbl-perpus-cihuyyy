@@ -12,8 +12,8 @@ class FileHandler {
             $fileName .= '.' . $ext;
         } 
         $fileOldPath = $file['tmp_name'];
-        $path .= '/' . $fileName;
-        move_uploaded_file($fileOldPath, dirname(__DIR__) . '/../public/storage/' . $path);
+        $path .= 'storage/' . $fileName;
+        move_uploaded_file($fileOldPath, dirname(__DIR__) . '/../public/' . $path);
         return $path;
     }
 }
