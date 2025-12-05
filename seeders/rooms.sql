@@ -6,10 +6,15 @@ INSERT INTO rooms (
     requires_special_approval, room_img_url
 )
 VALUES
--- Lantai 1
-(gen_random_uuid(), 'Ruang Server', 1, 'Ruangan dengan akses terbatas untuk peralatan server dan jaringan.', 1, 3, FALSE, TRUE, TRUE, 'https://example.com/img/room3.jpg'),
+-- Ruangan Minimal 2 Orang dan Maksimal 4 Orang
+(gen_random_uuid(), 'Ruang Asa', 1, 'Ruang Bimbingan & Konseling.', 2, 4, FALSE, TRUE, FALSE, 'storage/rooms/ruang_asa.jpg'),
+(gen_random_uuid(), 'Lentera Edukasi', 1, 'Ruang Bimbingan & Konseling.', 2, 4, FALSE, TRUE, FALSE, 'storage/rooms/lentera_edukasi.jpg'),
 
--- Lantai 2
-(gen_random_uuid(), 'Ruang Kelas 2A', 2, 'Ruang kelas standar dengan proyektor dan AC.', 10, 25, FALSE, TRUE, FALSE, 'https://example.com/img/room4.jpg'),
-(gen_random_uuid(), 'Ruang Kelas 2B', 2, 'Ruang kelas sedang dengan fasilitas lengkap.', 15, 30, FALSE, TRUE, FALSE, 'https://example.com/img/room5.jpg');
-
+-- Ruang Minimal 6 dan Maksimal 12 Orang
+(gen_random_uuid(), 'Ruang Layar', 2, 'Ruang Audio Visual.', 6, 12, FALSE, TRUE, FALSE, 'storage/rooms/ruang_layar.jpg'),
+(gen_random_uuid(), 'Ruang Sinergi', 2, 'Ruang Telekonferensi.', 6, 12, FALSE, TRUE, FALSE, 'storage/rooms/ruang_sinergi.jpg'),
+(gen_random_uuid(), 'Zona Interaktif', 2, 'Ruang Kreasi dan Rekreasi.', 6, 12, FALSE, TRUE, FALSE, 'storage/rooms/zona_interaktif.jpg'),
+(gen_random_uuid(), 'Sudut Pustaka', 2, 'Ruang Baca Kelompok.', 6, 12, FALSE, TRUE, FALSE, 'storage/rooms/sudut_pustaka.jpg'),
+(gen_random_uuid(), 'Galeri Literasi', 2, 'Ruang Baca Kelompok.', 6, 12, FALSE, TRUE, FALSE, 'storage/rooms/galeri_literasi.jpg'),
+(gen_random_uuid(), 'Ruang Cendekia', 2, 'Ruang Baca Kelompok.', 6, 12, FALSE, TRUE, FALSE, 'storage/rooms/ruang_cendekia.jpg'),
+(gen_random_uuid(), 'Pusat Perancis', 2, 'Ruang Koleksi Bahasa Prancis.', 6, 12, FALSE, TRUE, FALSE, 'storage/rooms/pusat_prancis.jpg');

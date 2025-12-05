@@ -2,6 +2,7 @@
 app/config/config.php
 public/storage/rooms/*
 public/storage/users/*
+public/storage/booking/*
 /vendor/
 .env
 .vscode/    

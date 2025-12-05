@@ -46,7 +46,7 @@ class BookingController extends Controller
         try {
             $user = new Authentication;
             $data = [
-                "user_id" => $user->user['id'],
+                "user_id" => $user->user["id"],
                 'room_id' => $id,
                 "start_time" => $_POST['start_time'],
                 'date' => $_POST['date'],

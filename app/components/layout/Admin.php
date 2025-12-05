@@ -27,7 +27,9 @@ $items = [
     ['label' => 'Jadwal Tutup', 'url' => '/admin/close/index', 'icon' => 'calendar'],
 
 ];
-$activeItem = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+//  $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? "https" : "http";
+//   $activeItem = "{$protocol}://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
+  $activeItem = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 ?>
 
 <body class="font-poppins">

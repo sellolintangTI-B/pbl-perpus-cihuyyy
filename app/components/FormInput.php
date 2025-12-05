@@ -12,7 +12,7 @@ class FormInput
     {
         include __DIR__ . '/html/file-input.php';
     }
-    public static function select($id = '', $name = '', $value = '', $options = [["display" => null, "value" => null]], $placeholder = '', $label = '', $required = false, $class = '', $classGlobal = '', $disabled = false, $selected = '', $color = '', $readonly = false, $alpine_disabled = false)
+    public static function select($id = '', $name = '', $value = '', $options = [["display" => null, "value" => null]], $placeholder = '', $label = '', $required = false, $class = '', $classGlobal = '', $disabled = false, $selected = '', $color = '', $readonly = false, $alpine_disabled = false, array $attributes = [])
     {
         include __DIR__ . '/html/select-option.php';
     }
