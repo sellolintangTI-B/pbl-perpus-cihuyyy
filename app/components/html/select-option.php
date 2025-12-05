@@ -1,6 +1,7 @@
 <?php
 
 use App\Components\Icon\Icon;
+use Dotenv\Parser\Value;
 
 $classColor = match ($color) {
     'primary' => 'focus:border-primary hover:border-primary',
@@ -34,7 +35,6 @@ foreach ($attributes as $key => $val) {
             <?= isset($disabled) && $disabled ? 'disabled' : '' ?>
             <?= isset($alpine_disabled) && $alpine_disabled ? 'x-bind:disabled="' . $alpine_disabled . '"' : '' ?>
             $attributeString>
-
             <?php if (!empty($placeholder)): ?>
                 <option value="" disabled <?= empty($value) && empty($selected) ? 'selected' : '' ?>>
                     <?= $placeholder ?>
@@ -62,7 +62,13 @@ foreach ($attributes as $key => $val) {
                 <?php endforeach; ?>
             <?php endif; ?>
         </select>
-
+        <?php
+        if ($disabled && !empty($value)) {
+        ?>
+            <input hidden type="text" name="<?= $name ?>" value="<?= $value ?>" />
+        <?php
+        }
+        ?>
         <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none transition-transform duration-300"
             :class="isOpen ? 'rotate-180' : 'rotate-0'">
             <?= Icon::arrowDown('w-5 h-5 text-gray-600') ?>

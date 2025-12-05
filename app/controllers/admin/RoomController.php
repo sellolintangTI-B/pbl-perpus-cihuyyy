@@ -11,27 +11,28 @@ use App\Models\Room;
 use App\Utils\FileHandler;
 use Carbon\Carbon;
 
-class RoomController extends Controller {
+class RoomController extends Controller
+{
     private $room;
 
     public function __construct()
     {
-        $this->room = $this->model('room'); 
+        $this->room = $this->model('room');
     }
 
     public function index()
     {
         $params = [];
         $page = 0;
-        if(isset($_GET['status']) && !empty($_GET['status'])) $params['is_operational'] = $_GET['status'];
+        if (isset($_GET['status']) && !empty($_GET['status'])) $params['is_operational'] = $_GET['status'];
 
-        if(isset($_GET['isSpecial']) && !empty($_GET['isSpecial'])) $params['requires_special_approval'] = $_GET['isSpecial'];
-        
-        if(isset($_GET['floor']) && !empty($_GET['floor'])) $params['floor'] = $_GET['floor'];
+        if (isset($_GET['isSpecial']) && !empty($_GET['isSpecial'])) $params['requires_special_approval'] = $_GET['isSpecial'];
 
-        if(isset($_GET['search']) && !empty($_GET['search'])) $params['name'] = $_GET['search'];
+        if (isset($_GET['floor']) && !empty($_GET['floor'])) $params['floor'] = $_GET['floor'];
 
-        if(isset($_GET['page'])) $page = (int)$_GET['page'] - 1;
+        if (isset($_GET['search']) && !empty($_GET['search'])) $params['name'] = $_GET['search'];
+
+        if (isset($_GET['page'])) $page = (int)$_GET['page'] - 1;
 
         $rooms = Room::getALl($params, $page);
         $count = Room::count();
@@ -57,10 +58,10 @@ class RoomController extends Controller {
                 "max" => (int) $_POST['max'],
                 "description" => $_POST['description'],
                 "isSpecial" => isset($_POST['isSpecial']) ? 1 : 0,
-                "image" => empty($_FILES['image']['name']) ? null : $_FILES['image'] 
+                "image" => empty($_FILES['image']['name']) ? null : $_FILES['image']
             ];
 
-            $validator = new Validator($data); 
+            $validator = new Validator($data);
             $validator->field('name', ['required']);
             $validator->field('floor', ['required', 'int']);
             $validator->field('min', ['required', 'int']);
@@ -69,11 +70,11 @@ class RoomController extends Controller {
             $validator->field('image', ['required']);
 
             $errors = $validator->error();
-            if($errors) throw new CustomException($validator->getErrors());
+            if ($errors) throw new CustomException($validator->getErrors());
 
-            if($data['floor'] <= 0 || $data['min'] <= 0 || $data['max'] <= 0) throw new CustomException('Tidak Boleh dibawah 0 atau 0');
+            if ($data['floor'] <= 0 || $data['min'] <= 0 || $data['max'] <= 0) throw new CustomException('Tidak Boleh dibawah 0 atau 0');
 
-            if($data['min'] > $data['max']) throw new CustomException('Kapasitas minimal harus lebih kecil dari kapasitas maximal'); 
+            if ($data['min'] > $data['max']) throw new CustomException('Kapasitas minimal harus lebih kecil dari kapasitas maximal');
 
             $file = $data['image']['tmp_name'];
             $allowedMimes = ["image/jpeg", "image/png", "image/jpg"];
@@ -85,22 +86,21 @@ class RoomController extends Controller {
             $newPath = "storage/rooms/" . $data['image']['name'];
             move_uploaded_file($data['image']['tmp_name'], dirname(__DIR__) . '/../../public/' . $newPath);
             $data['image'] = $newPath;
-            
+
             $insert = Room::create($data);
-            if($insert) {
+            if ($insert) {
                 ResponseHandler::setResponse("Berhail memasukan data ruangan");
                 header('location:' . URL . '/admin/room/index');
             } else {
                 throw new CustomException('Gagal memasukan data');
             }
-
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), "error");
             header('location:' . URL . '/admin/room/create');
         }
     }
 
-    public function detail($id) 
+    public function detail($id)
     {
         try {
             $date = Carbon::now('Asia/Jakarta')->toDateString();
@@ -108,7 +108,7 @@ class RoomController extends Controller {
                 $date = Carbon::parse($_GET['date_check'])->toDateString();
             }
             $room = Room::getById($id);
-            
+
             if (!$room) throw new CustomException("Data ruangan tidak ditemukan");
 
             $bookingSchedule = Booking::getByRoomId($id, $date);
@@ -117,7 +117,7 @@ class RoomController extends Controller {
                 "schedule" => $bookingSchedule,
                 "date" => $date
             ];
-            return $this->view('admin/rooms/detail', $data, layoutType:$this::$layoutType['admin']);
+            return $this->view('admin/rooms/detail', $data, layoutType: $this::$layoutType['admin']);
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages());
             header('location:' . URL . '/admin/room/index');
@@ -128,23 +128,23 @@ class RoomController extends Controller {
     {
         try {
             $data = Room::getById($id);
-            if(!$data) {
+            if (!$data) {
                 throw new CustomException('Data ruangan tidak ditemukan');
             }
             $this->view('admin/rooms/edit', $data, layoutType: "Admin");
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), "error");
-            header('location:' . URL. '/room/index');
+            header('location:' . URL . '/room/index');
         }
     }
 
-    public function update($id) 
+    public function update($id)
     {
         try {
             $data = [
                 "name" => $_POST['name'],
                 "floor" => (int) $_POST['floor'],
-                "min_capacity" => (int) $_POST['min'],  
+                "min_capacity" => (int) $_POST['min'],
                 "max_capacity" => (int) $_POST['max'],
                 "description" => $_POST['description'],
                 "requires_special_approval" => $_POST['isSpecial'],
@@ -159,11 +159,11 @@ class RoomController extends Controller {
             $validator->field("max_capacity", ['required'], '');
 
             $errors = $validator->error();
-            if($errors) throw new CustomException($validator->getErrors());
+            if ($errors) throw new CustomException($validator->getErrors());
 
-            if($data['min_capacity'] > $data['max_capacity']) throw new CustomException('Kapasitas minimal harus lebih kecil dari kapasitas maximal'); 
+            if ($data['min_capacity'] > $data['max_capacity']) throw new CustomException('Kapasitas minimal harus lebih kecil dari kapasitas maximal');
 
-            if($data['room_img_url'] === null) {
+            if ($data['room_img_url'] === null) {
                 unset($data['room_img_url']);
             } else {
                 $file = $data['room_img_url']['tmp_name'];
@@ -177,29 +177,27 @@ class RoomController extends Controller {
             }
 
             $update = Room::update($id, $data);
-            if($update) {
+            if ($update) {
                 ResponseHandler::setResponse("Berhasil memperbarui data ruangan");
                 header('location:' . URL . '/admin/room/index');
             } else {
                 throw new CustomException('Gagal memperbarui data ruangan');
             }
-
-        } catch(CustomException $e) {
+        } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), "error");
             header('location:' . URL . '/admin/room/edit/' . $id);
         }
-
     }
 
     public function delete($id)
     {
         try {
-            $delete = Room::softDelete($id); 
-            if($delete) {
+            $delete = Room::softDelete($id);
+            if ($delete) {
                 ResponseHandler::setResponse("Berhasil menghapus data ruangan");
                 header('location:' . URL . '/admin/room/index');
             } else {
-                throw new CustomException('Gagal menghapus data ruangan'); 
+                throw new CustomException('Gagal menghapus data ruangan');
             }
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), "error");
@@ -213,7 +211,7 @@ class RoomController extends Controller {
             $updateStatus = Room::update($id, [
                 'is_operational' => 0
             ]);
-            if($updateStatus) {
+            if ($updateStatus) {
                 ResponseHandler::setResponse('Berhasil mengubah status ruangan');
                 header('location:' . URL . '/admin/room/index');
             } else {
@@ -224,4 +222,21 @@ class RoomController extends Controller {
             header('location:' . URL . '/admin/room/index');
         }
     }
-} 
+    public function activate($id)
+    {
+        try {
+            $updateStatus = Room::update($id, [
+                'is_operational' => 1
+            ]);
+            if ($updateStatus) {
+                ResponseHandler::setResponse('Berhasil mengubah status ruangan');
+                header('location:' . URL . '/admin/room/index');
+            } else {
+                throw new CustomException('Terjadi kesalahan');
+            }
+        } catch (CustomException $e) {
+            ResponseHandler::setResponse($e->getErrorMessages(), "error");
+            header('location:' . URL . '/admin/room/index');
+        }
+    }
+}

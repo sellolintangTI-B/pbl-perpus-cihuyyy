@@ -223,9 +223,6 @@ $roleOptions = [
                                 required: true,
                             );
                             ?>
-                            <ul class="text-xs text-start list-disc hidden px-4" id="text_alert">
-
-                            </ul>
 
                             <?php
                             FormInput::input(
@@ -237,9 +234,10 @@ $roleOptions = [
                                 required: true
                             );
                             ?>
-                            <ul class="text-xs text-start list-disc hidden px-4" id="match_alert">
-
-                            </ul>
+                            <div class=" px-4 mt-4">
+                                <ul class="text-xs text-start list-disc hidden text-red" id="text_alert"></ul>
+                                <ul class="text-xs text-start list-disc hidden text-red" id="match_alert"></ul>
+                            </div>
                             <div class="mt-4">
                                 <button type="submit" class="w-full bg-red text-white px-4 py-3 rounded-xl cursor-pointer shadow-sm shadow-gray-400 hover:shadow-md hover:shadow-red-300 transition-all duration-300 font-medium">
                                     Ganti Password
@@ -262,9 +260,8 @@ $roleOptions = [
     </div>
 </div>
 <script src="<?= URL ?>/public/js/select-jurusan.js"></script>
-<script src="<?= URL ?>/public/js/utils/password-validation.js"></script>
-<script src="<?= URL ?>/public/js/password-validator.js"></script>
 <script src="<?= URL ?>/public/js/update-user.js"></script>
+<script src="<?= URL ?>/public/js/password-validator.js"></script>
 
 <script>
     const dbJurusan = "<?= $data->major ?>";
@@ -278,5 +275,10 @@ $roleOptions = [
         setTimeout(() => {
             setProdiValue(dbProdi);
         }, 100);
+    }
+
+    const createForm = document.getElementById("CreateForm")
+    if (createForm) {
+        createForm.addEventListener('submit', formSubmitCheck);
     }
 </script>

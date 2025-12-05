@@ -8,7 +8,7 @@ use App\Components\FormInput;
 <div class="w-full h-full max-h-full flex flex-col items-start justify-start gap-5 ">
     <div class="w-full flex items-center justify-start">
         <h1 class="text-2xl font-medium text-primary">
-            Tambah Akun Admin
+            Tambah Akun Pengguna
         </h1>
     </div>
     <div class="p-6 gap-6 bg-baseColor shadow-sm shadow-gray-600 rounded-xl w-full h-full border border-gray-200 overflow-hidden flex flex-col items-start justify-center">
@@ -19,7 +19,7 @@ use App\Components\FormInput;
             </a>
         </div>
         <div class="h-full w-full flex-1 overflow-y-auto py-2">
-            <form class="w-full max-w-3xl bg-white p-6 rounded-xl border border-gray-200 shadow-md grid grid-cols-1 sm:grid-cols-2 gap-6 mx-auto" action=<?= URL . "/admin/user/store" ?> method="post" enctype="multipart/form-data">
+            <form id="CreateForm" class="w-full max-w-3xl bg-white p-6 rounded-xl border border-gray-200 shadow-md grid grid-cols-1 sm:grid-cols-2 gap-6 mx-auto" action=<?= URL . "/admin/user/store" ?> method="post" enctype="multipart/form-data">
                 <?php
                 FormInput::input(id: 'id_number', name: 'id_number', label: 'NIM/NIP', required: true);
                 FormInput::input(id: 'email', name: 'email', type: 'email', label: 'Email', required: true);
@@ -64,8 +64,14 @@ use App\Components\FormInput;
 
                 FormInput::input(id: 'password', name: 'password', type: 'password', label: 'Password', required: true);
                 FormInput::input(id: 'password_confirmation', name: 'password_confirmation', type: 'password', label: 'Konfirmasi Password', required: true);
-
                 ?>
+                <!-- Password Alerts -->
+                <div class="sm:col-span-2 mt-4">
+                    <div class="sm:col-span-2 px-4">
+                        <ul class="text-xs text-start list-disc hidden text-red" id="text_alert"></ul>
+                        <ul class="text-xs text-start list-disc hidden text-red" id="match_alert"></ul>
+                    </div>
+                </div>
                 <div class="sm:col-span-2 mt-4">
                     <button type="submit" name="register" class="w-full bg-primary text-white px-4 py-2 rounded-xl cursor-pointer shadow-sm shadow-gray-400 hover:shadow-md hover:shadow-primary-100 duration-300 transition-all font-medium">
                         Tambah Akun
@@ -76,3 +82,10 @@ use App\Components\FormInput;
     </div>
 </div>
 <script src="<?= URL ?>/public/js/select-jurusan.js"></script>
+<script src="<?= URL ?>/public/js/password-validator.js"></script>
+<script>
+    const createForm = document.getElementById("CreateForm")
+    if (createForm) {
+        createForm.addEventListener('submit', formSubmitCheck);
+    }
+</script>

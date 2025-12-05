@@ -33,7 +33,7 @@ class BookingController extends Controller
             header('location:' . URL . '/admin/booking/index');
         }
     }
-    
+
     public function details($id)
     {
         try {

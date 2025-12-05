@@ -70,7 +70,6 @@ use App\Components\Modal;
                             options: $options,
                             value: $data['roomDetail']->id,
                             classGlobal: 'sm:col-span-2',
-                            readonly: true
                         );
 
                         FormInput::input(
@@ -78,7 +77,7 @@ use App\Components\Modal;
                             name: 'datetime',
                             type: 'date',
                             label: 'Tanggal Peminjaman',
-                            disabled: true,
+                            readonly: true,
                             placeholder: 'Masukkan tanggal peminjaman',
                             value: date('Y-m-d', strtotime($data['booking']->start_time)),
                             required: true,

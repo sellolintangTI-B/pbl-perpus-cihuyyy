@@ -73,7 +73,7 @@ $roleOptions = [
             </div>
             <div class="absolute p-4 inset-0 left-18 flex flex-col items-start justify-start gap-4">
                 <?= ProfilePictureUpload::render(
-                    imageUrl: URL . "/public/storage/" . $data->profile_picture_url,
+                    imageUrl: URL . "/public/" . $data->profile_picture_url,
                     formAction: URL . "/admin/profile/update_picture/" . $data->id,
                     userName: $data->first_name . " " . $data->last_name,
                     userRole: $data->role ?? "",
@@ -155,7 +155,7 @@ $roleOptions = [
                     name: 'study_program',
                     label: 'Program Studi',
                     placeholder: 'Pilih Jurusan terlebih dahulu',
-                    required: true,
+                    // required: true,
                     value: $data->study_program ?? "",
                     // options: []
                     alpine_disabled: '!isEdit'
@@ -167,7 +167,7 @@ $roleOptions = [
                     type: 'tel',
                     label: 'Nomor Whatsapp',
                     value: $data->phone_number ?? "",
-                    required: true,
+                    // required: true,
                     alpine_disabled: '!isEdit'
                 );
 
@@ -177,7 +177,7 @@ $roleOptions = [
                     label: 'Institusi',
                     value: $data->institution ?? "",
                     required: true,
-                    alpine_disabled: '!isEdit'
+                    alpine_disabled: 'true'
                 );
                 ?>
 
@@ -262,8 +262,8 @@ $roleOptions = [
         </div>
     </div>
 </div>
+<script src="<?= URL ?>/public/js/profile-picture-upload.js"></script>
 <script src="<?= URL ?>/public/js/select-jurusan.js"></script>
-<script src="<?= URL ?>/public/js/utils/password-validation.js"></script>
 <script src="<?= URL ?>/public/js/password-validator.js"></script>
 <script src="<?= URL ?>/public/js/update-user.js"></script>
 
@@ -281,5 +281,6 @@ $roleOptions = [
                 setProdiValue(dbProdi);
             }, 100);
         }
+        prodiSelect.disabled = true
     });
 </script>

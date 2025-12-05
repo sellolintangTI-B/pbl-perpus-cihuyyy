@@ -278,7 +278,7 @@ use App\Components\Modal;
 
 <script src="<?= URL ?>/public/js/copy-toast.js"></script>
 
-<!-- seaarch booking -->
+<!-- search booking -->
 <script>
     function SearchBooking() {
         return {
@@ -376,110 +376,73 @@ use App\Components\Modal;
     }
 </script>
 
-<!-- Chart.js assign -->
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Chart 1: Jumlah Peminjaman
-        const ctx1 = document.getElementById('chart-peminjaman-line');
-        if (ctx1) {
-            new Chart(ctx1, {
-                type: 'line',
-                data: {
-                    labels: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'],
-                    datasets: [{
-                            label: '2023',
-                            data: [65, 59, 80, 81, 56, 55, 40, 70, 65, 75, 80, 85],
-                            borderColor: 'rgba(255, 99, 132, 1)',
-                            backgroundColor: 'rgba(255, 99, 132, 0.1)',
-                            tension: 0,
-                            borderWidth: 2
-                        },
-                        {
-                            label: '2024',
-                            data: [45, 78, 65, 52, 88, 70, 62, 55, 48, 72, 68, 75],
-                            borderColor: 'rgba(54, 162, 235, 1)',
-                            backgroundColor: 'rgba(54, 162, 235, 0.1)',
-                            tension: 0,
-                            borderWidth: 2
-                        },
-                        {
-                            label: '2025',
-                            data: [55, 68, 42, 89, 72, 65, 78, 82, 70, 62, 88, 95],
-                            borderColor: 'rgba(75, 192, 192, 1)',
-                            backgroundColor: 'rgba(75, 192, 192, 0.1)',
-                            tension: 0,
-                            borderWidth: 2
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'bottom',
-                            labels: {
-                                usePointStyle: true,
-                                padding: 15
-                            }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: 100
-                        }
-                    }
-                }
-            });
-        }
+    document.addEventListener('DOMContentLoaded', async function() {
+        const apiUrl = '<?= URL ?>/admin/dashboard/get_chart_data';
+        const colors = {
+            2025: {
+                border: 'rgba(255, 99, 132, 1)',
+                background: 'rgba(255, 99, 132, 0.1)'
+            },
+            2026: {
+                border: 'rgba(54, 162, 235, 1)',
+                background: 'rgba(54, 162, 235, 0.1)'
+            },
+            2027: {
+                border: 'rgba(75, 192, 192, 1)',
+                background: 'rgba(75, 192, 192, 0.1)'
+            }
+        };
+        const monthLabels = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+            'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+        ];
 
-        // Chart 2: Jumlah Peminjaman Per Ruangan
-        const ctx2 = document.getElementById('chart-peminjaman-ruangan');
-        if (ctx2) {
-            new Chart(ctx2, {
-                type: 'bar',
-                data: {
-                    labels: ['Ruangan 1', 'Ruangan 2', 'Ruangan 3', 'Ruangan 4', 'Ruangan 5', 'Ruangan 6', 'Ruangan 7', 'Ruangan 8', 'Ruangan 9', 'Ruangan 10'],
-                    datasets: [{
-                            label: '2023',
-                            data: [85, 42, 58, 35, 92, 52, 45, 75, 48, 95],
-                            backgroundColor: 'rgba(139, 92, 246, 0.8)',
+        try {
+            const response = await fetch(apiUrl);
+            if (!response.ok) throw new Error('Gagal mengambil data chart');
+
+            const data = await response.json();
+
+            const datasets = Object.keys(data).map(year => ({
+                label: year,
+                data: data[year],
+                borderColor: colors[year]?.border || 'rgba(75, 192, 192, 1)',
+                backgroundColor: colors[year]?.background || 'rgba(75, 192, 192, 0.1)',
+                tension: 0,
+                borderWidth: 2
+            }));
+
+            const ctx = document.getElementById('chart-peminjaman-line');
+            if (ctx) {
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: monthLabels,
+                        datasets: datasets
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'bottom',
+                                labels: {
+                                    usePointStyle: true,
+                                    padding: 15
+                                }
+                            }
                         },
-                        {
-                            label: '2024',
-                            data: [65, 78, 45, 88, 52, 68, 72, 58, 82, 62],
-                            backgroundColor: 'rgba(236, 72, 153, 0.8)',
-                        },
-                        {
-                            label: '2025',
-                            data: [55, 48, 82, 62, 75, 58, 68, 85, 55, 88],
-                            backgroundColor: 'rgba(59, 130, 246, 0.8)',
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'bottom',
-                            labels: {
-                                usePointStyle: true,
-                                padding: 15
+                        scales: {
+                            y: {
+                                beginAtZero: true
                             }
                         }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: 100
-                        }
                     }
-                }
-            });
+                });
+            }
+        } catch (error) {
+            console.error('Error loading chart:', error);
         }
     });
 </script>

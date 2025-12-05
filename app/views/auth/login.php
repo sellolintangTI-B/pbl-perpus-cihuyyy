@@ -1,5 +1,6 @@
 <?php
 
+use App\Components\Button;
 use App\Components\FormInput;
 use App\Components\icon\Icon;
 ?>
@@ -53,7 +54,7 @@ use App\Components\icon\Icon;
                                 placeholder: "Masukkan password"
                             );
                             ?>
-                            <div class="cf-turnstile" data-sitekey="<?= $_ENV['TURNSTILE_SITEKEY'] ?>" data-size="flexible" data-theme="light" ></div>
+                            <div class="cf-turnstile" data-sitekey="<?= $_ENV['TURNSTILE_SITEKEY'] ?>" data-size="flexible" data-theme="light"></div>
                             <!-- CAPTCHA Section -->
 
                             <!-- Remember Me & Forgot Password -->
@@ -73,10 +74,8 @@ use App\Components\icon\Icon;
                             </div>
 
                             <!-- Login Button -->
-                            <button type="submit"
-                                class="w-full bg-primary text-white px-4 py-2.5 md:py-3 rounded-md cursor-pointer shadow-sm shadow-gray-400 hover:shadow-md hover:shadow-primary/20 duration-300 transition-all font-medium text-sm md:text-base mt-2">
-                                Login
-                            </button>
+                            <?= Button::button(label: 'Login', type: 'submit', class: 'px-4 py-2.5 rounded-full! shadow-none!') ?>
+
 
                             <!-- Register Link -->
                             <div class="w-full text-xs md:text-sm flex justify-center items-center gap-2 mt-4 md:mt-8 pb-6 md:pb-0">

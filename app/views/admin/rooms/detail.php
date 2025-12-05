@@ -115,11 +115,11 @@ use Carbon\Carbon;
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach($data['schedule'] as $schedule) : ?> 
-                                <tr class="border-b border-gray-100 hover:bg-gray-50">
-                                    <td class="py-3 px-4 text-black/70"><?= Carbon::parse($schedule->start_time)->format('H:i') ?> - <?= Carbon::parse($schedule->end_time)->format('H:i')?></td>
-                                    <td class="py-3 px-4 text-black/70"><?= $schedule->pic_name ?></td>
-                                </tr>
+                                <?php foreach ($data['schedule'] as $schedule) : ?>
+                                    <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                        <td class="py-3 px-4 text-black/70"><?= Carbon::parse($schedule->start_time)->format('H:i') ?> - <?= Carbon::parse($schedule->end_time)->format('H:i') ?></td>
+                                        <td class="py-3 px-4 text-black/70"><?= $schedule->pic_name ?></td>
+                                    </tr>
                                 <?php endforeach ?>
                             </tbody>
                         </table>
@@ -128,8 +128,16 @@ use Carbon\Carbon;
 
                 <!-- action buttons -->
                 <div class="w-full flex flex-col gap-3">
-                    <?= Button::anchor(label: 'Edit Ruangan', color: 'secondary', class: 'w-full py-2 px-6', href: "/admin/room/edit/" . $data['detail']->id) ?>
-                    <?= Button::button(label: 'Nonaktifkan Ruangan', color: 'red', class: 'w-full py-3 px-6') ?>
+                    <?= Button::anchor(label: 'Edit Ruangan', color: 'primary', class: 'w-full py-2 px-6', href: "/admin/room/edit/" . $data['detail']->id) ?>
+                    <!-- gatau make modal ato kaga -->
+                    <?php
+                    if ($data['detail']->is_operational) {
+                        Button::anchor(label: 'Nonaktifkan Ruangan', color: 'red', class: 'w-full py-3 px-6', href: '/admin/room/deactivate/' . $data['detail']->id);
+                    } else {
+                        Button::anchor(label: 'Aktifkan Ruangan', color: 'secondary', class: 'w-full py-3 px-6', href: '/admin/room/activate/' . $data['detail']->id);
+                    }
+                    ?>
+
                 </div>
             </div>
         </div>

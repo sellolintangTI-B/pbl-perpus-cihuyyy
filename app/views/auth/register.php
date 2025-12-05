@@ -1,5 +1,6 @@
 <?php
 
+use App\Components\Button;
 use App\Components\FormInput;
 use Carbon\Traits\Options;
 
@@ -159,15 +160,11 @@ if (isset($_SESSION['register_old'])) {
                             ?>
 
                             <!-- CAPTCHA Section -->
-                            <div class="cf-turnstile" data-sitekey="<?= $_ENV['TURNSTILE_SITEKEY'] ?>" data-size="flexible" data-theme="light" ></div>
+                            <div class="cf-turnstile sm:col-span-2" data-sitekey="<?= $_ENV['TURNSTILE_SITEKEY'] ?>" data-size="flexible" data-theme="light"></div>
 
                             <!-- Submit Button -->
                             <div class="sm:col-span-2 mt-4">
-                                <button type="submit"
-                                    name="register"
-                                    class="w-full bg-primary text-white px-4 py-2.5 md:py-3 rounded-md cursor-pointer shadow-sm shadow-gray-400 hover:shadow-md hover:shadow-primary/20 duration-300 transition-all font-medium text-sm md:text-base">
-                                    Register
-                                </button>
+                                <?= Button::button(label: 'Register', type: 'submit', class: 'px-4 py-2.5 rounded-full! shadow-none! w-full') ?>
                             </div>
                         </form>
 

@@ -35,7 +35,7 @@ $statusOption = [
                 label: "Tambah",
                 icon: "plus",
                 href: "/admin/user/add_admin",
-                class: "px-4 py-2 h-full  w-[16rem]",
+                class: "px-4 py-2 h-full  w-fit",
                 btn_icon_size: 'w-4 h-4'
             ) ?>
 
