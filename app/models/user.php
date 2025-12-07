@@ -32,7 +32,7 @@ class User extends Database
             $stmt .= "WHERE " . $whereClauses;
         }
 
-        $stmt .= " ORDER BY is_active ASC LIMIT 15 OFFSET 15 * $page";
+        $stmt .= " ORDER BY is_active ASC, created_at ASC LIMIT 15 OFFSET 15 * $page";
         $q = $conn->prepare($stmt);
         $q->execute($values);
         $data = $q->fetchAll(PDO::FETCH_OBJ);
@@ -137,15 +137,18 @@ class User extends Database
         return $data;
     }
 
-    public static function approve($id)
+    public static function approve($id, $activeUntill)
     {
         $conn = parent::getConnection();
-        $q = $conn->prepare("UPDATE users SET is_active = true WHERE id = ?");
-        $q->bindParam(1, $id, PDO::PARAM_STR);
+        $q = $conn->prepare("UPDATE users SET is_active = true, active_periode = ? WHERE id = ? RETURNING *");
+        $q->bindParam(1, $activeUntill);
+        $q->bindParam(2, $id, PDO::PARAM_STR);
         $q->execute();
         if ($q) {
-            return true;
+            $data = $q->fetch(PDO::FETCH_OBJ);
+            return $data;
         }
+        return false;
     }
 
     public static function update($id, $data)
@@ -192,8 +195,11 @@ class User extends Database
         $q = $conn->prepare("DELETE FROM users WHERE id = ?");
         $q->bindParam(1, $id);
         $q->execute();
-        if ($q) return true;
-        return false;
+        if ($q) {
+            return $q->fetch(PDO::FETCH_OBJ);
+        } else {
+            return false;
+        }
     }
 
     public static function resetPassword($id, $password)

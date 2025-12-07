@@ -57,7 +57,7 @@ class DashboardController extends Controller
     public function mail()
     {
         try {
-            Mailer::send('farrelmaahira104@gmail.com', 'testing', '<h1> testing mail </h1>');
+            Mailer::send('mahasisw@example.com', 'testing', '<h1> testing mail </h1>');
             header('location:' . URL . '/admin/dashboard');
         } catch (CustomException $e) {
             var_dump($e->getErrorMessages());

@@ -12,12 +12,12 @@ class Mailer {
         
         $mail->isSMTP();
         $mail->Host = $_ENV['SMTP_HOST'];
-        $mail->SMTPAuth = true;  
-        $mail->Username = $_ENV['SMTP_USERNAME'];
-        $mail->Password = $_ENV['SMTP_PASS'];
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;  
-        $mail->Port = 465;  
-        $mail->SMTPDebug = 4;
+        $mail->SMTPAuth = false;  
+        // $mail->Username = $_ENV['SMTP_USERNAME'];
+        // $mail->Password = $_ENV['SMTP_PASS'];
+        // $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;  
+        $mail->Port = $_ENV['SMTP_PORT'];  
+        // $mail->SMTPDebug = 4;
         
         $mail->setFrom('admin.perpustakaan@pnj.ac.id', 'Sistem Akademik');
         

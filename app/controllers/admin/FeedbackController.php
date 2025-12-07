@@ -9,6 +9,7 @@ use App\Models\Booking;
 use App\Models\Feedback;
 use App\Models\Room;
 use Carbon\Carbon;
+use Carbon\Traits\Cast;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -27,8 +28,11 @@ class FeedbackController extends Controller
             }
 
             if(isset($_GET['bulan']) && isset($_GET['tahun'])) {
-                if(!empty($_GET['bulan']) && !empty($_GET['tahun'])) {
-                    $params['date'] = Carbon::createFromDate((int) $_GET['tahun'], (int) $_GET['bulan'])->format('Y-m');
+                $now = Carbon::now('Asia/Jakarta');
+                $month = empty($_GET['bulan']) ? $now->format('m') : $_GET['bulan'];
+                $year =  empty($_GET['tahun']) ? $now->format('Y') : $_GET['tahun'];
+                if(!empty($_GET['bulan'])) {
+                    $params['date'] = Carbon::createFromDate((int) $year, (int) $month)->format('Y-m');
                 }
             }
 
@@ -74,7 +78,7 @@ class FeedbackController extends Controller
             $activeWorksheet = $spreadsheet->getActiveSheet();
             $activeWorksheet->setCellValue('A1', 'No');
             $activeWorksheet->setCellValue('B1', 'Kode Booking');
-            $activeWorksheet->setCellValue('C1', 'Nama Anggota');
+            $activeWorksheet->setCellValue('C1', 'Nama Pengguna');
             $activeWorksheet->setCellValue('D1', 'Ruangan');
             $activeWorksheet->setCellValue('E1', 'Tanggal Booking');
             $activeWorksheet->setCellValue('F1', 'Rating');
