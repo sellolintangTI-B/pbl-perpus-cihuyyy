@@ -24,7 +24,7 @@ class CustomSelect
             <button
                 @click="openSelect = !openSelect"
                 type="button"
-                class="flex w-full line-clamp-1 truncate gap-2 items-center rounded-lg px-3 py-2 bg-primary hover:bg-primary/95 text-white cursor-pointer justify-between">
+                class="flex w-full line-clamp-1 truncate gap-2 items-center rounded-xl px-3 py-2 bg-primary hover:bg-primary/95 text-white cursor-pointer justify-between">
                 <div class="flex gap-2 items-center justify-start">
                     <span>
                         <?= Icon::filter('w-4 h-4') ?>

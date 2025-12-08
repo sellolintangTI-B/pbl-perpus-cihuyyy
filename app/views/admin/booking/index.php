@@ -8,6 +8,7 @@
     use App\Components\Modal;
     use App\Components\CustomSelect;
     use App\Components\StagedCustomSelect;
+    use Dotenv\Parser\Value;
 
     $no = 1;
 
@@ -29,6 +30,29 @@
     foreach ($data['room'] as $r):
         $roomOption[$r->id] = $r->name;
     endforeach;
+
+    $tahun = ['' => 'Semua'];
+    if (isset($data['years'])):
+        foreach ($data['years'] as $key => $value) {
+            $tahun[$value->year] = $value->year;
+        }
+    endif;
+
+    $bulan = [
+        '' => 'Semua',
+        '01' => 'Januari',
+        '02' => 'Februari',
+        '03' => 'Maret',
+        '04' => 'April',
+        '05' => 'Mei',
+        '06' => 'Juni',
+        '07' => 'Juli',
+        '08' => 'Agustus',
+        '09' => 'September',
+        '10' => 'Oktober',
+        '11' => 'November',
+        '12' => 'Desember'
+    ];
     ?>
 
     <div class="w-full h-full" x-data="{ showAlert: false, cancelPeminjamanId: null }" @cancel-peminjaman.window="showAlert = true; cancelPeminjamanId = $event.detail.cancelPeminjamanId">
@@ -40,20 +64,20 @@
                 </h1>
             </div>
             <!-- action section -->
-            <div class="w-full h-10 flex items-center justify-between">
-                <?= Button::anchor(label: "Tambah", icon: "plus", href: "/admin/booking/create", class: "px-4 py-2 h-full", btn_icon_size: 'w-4 h-4') ?>
-                <!-- form action -->
-                <div class="flex items-center justify-end gap-2 h-full w-full max-w-3/4">
-                    <form method="GET" class="flex items-start justify-end gap-2  w-full h-full flex-1">
-                        <?= Button::anchor(
-                            label: 'Export',
-                            icon: 'export',
-                            color: 'primary',
-                            class: 'px-3 py-2',
-                            btn_icon_size: 'w-4 h-4',
-                            href: ''
-                        ) ?>
-                        <div class="relative" x-data="{showFilter:false}" @click.outside="showFilter = false" x-cloak>
+            <form class="w-full flex flex-col  gap-5" method="GET" x-data="{showFilter:false}" @click.outside="showFilter = false" x-cloak>
+                <div class="w-full h-10 flex items-center justify-between">
+                    <?= Button::anchor(label: "Tambah", icon: "plus", href: "/admin/booking/create", class: "px-4 py-2 h-full", btn_icon_size: 'w-4 h-4') ?>
+                    <!-- form action -->
+                    <div class="flex items-center justify-end gap-2 h-full w-full max-w-3/4">
+                        <div class="flex items-start justify-end gap-2  w-full h-full flex-1">
+                            <?= Button::anchor(
+                                label: 'Export',
+                                icon: 'export',
+                                color: 'primary',
+                                class: 'px-3 py-2 h-full',
+                                btn_icon_size: 'w-4 h-4',
+                                href: ''
+                            ) ?>
                             <!-- button filter show -->
                             <button type="button" class="px-4 py-2 bg-primary rounded-lg text-white cursor-pointer flex items-center gap-2" @click="showFilter = !showFilter">
                                 <span>
@@ -64,60 +88,68 @@
                                     <?= Icon::arrowDown('w-6 h-6 text-white') ?>
                                 </span>
                             </button>
-                            <!-- filter action -->
-                            <div
-                                x-show="showFilter"
-                                x-transition:enter="transition ease-out duration-300"
-                                x-transition:enter-start="opacity-0 -translate-y-4"
-                                x-transition:enter-end="opacity-100 translate-y-0"
-                                x-transition:leave="transition ease-in duration-200"
-                                x-transition:leave-start="opacity-100 translate-y-0"
-                                x-transition:leave-end="opacity-0 -translate-y-4"
-                                class="bg-white rounded-lg p-4 absolute z-50 items-center justify-self-end mt-4">
-                                <div class="flex gap-4 items-start justify-center">
-                                    <div>
-                                        <?= FormInput::input(
-                                            type: 'month',
-                                            name: 'month',
-                                            class: 'bg-primary text-white  p-0! h-full! py-2! px-4! input-icon-white',
-                                            classGlobal: 'h-full!'
-                                        ) ?>
-                                    </div>
-                                    <div>
-                                        <?= FormInput::input(
-                                            type: 'date',
-                                            name: 'date',
-                                            class: 'bg-primary text-white  p-0! h-full! py-2! px-4! input-icon-white',
-                                            classGlobal: 'h-full!'
-                                        ) ?>
-                                    </div>
-                                    <div>
-                                        <?= StagedCustomSelect::render(
-                                            name: 'status',
-                                            defaultLabel: 'Status',
-                                            options: $statusLabel,
-                                            selectedValue: $_GET['status'] ?? ''
-                                        ) ?>
-                                    </div>
-                                    <div>
-                                        <?= StagedCustomSelect::render(
-                                            name: 'room',
-                                            defaultLabel: 'Ruangan',
-                                            options: $roomOption,
-                                            selectedValue: $_GET['room'] ?? ''
-                                        ) ?>
-                                    </div>
-                                </div>
+                            <div class="h-full w-[12rem]">
+                                <?= FormInput::input(type: "text", name: "search", placeholder: "Kode Peminjaman", value: $_GET['search'] ?? '', class: "h-full !w-full !border-primary", classGlobal: "h-full !w-full") ?>
+                            </div>
+                            <?= Button::button(class: "px-4 h-full", label: "Cari", type: 'submit') ?>
+                        </div>
+                    </div>
+                </div>
+                <!-- filter section -->
+                <div class="w-full h-fit transition-all duration-300 ease-in-out bg-baseColor shadow-md shadow-gray-200 rounded-xl border border-gray-200" :class="showFilter?'max-h-24 opacity-100':'max-h-0 opacity-0'">
+                    <div class="flex justify-between items-start p-4  ">
+                        <div class="flex gap-4 items-start justify-start ">
+                            <div>
+                                <?= FormInput::input(
+                                    type: 'date',
+                                    name: 'date',
+                                    class: 'bg-primary text-white  p-0! h-full! py-2! px-4! input-icon-white',
+                                    classGlobal: 'h-full!'
+                                ) ?>
+                            </div>
+                            <?php if (isset($_GET['tahun']) && $_GET['tahun'] !== ''): ?>
+                                <?= CustomSelect::render(
+                                    name: 'bulan',
+                                    defaultLabel: 'Bulan',
+                                    options: $bulan,
+                                    selectedValue: $_GET['bulan'] ?? ''
+                                ) ?>
+                            <?php endif; ?>
+
+                            <?= CustomSelect::render(
+                                name: 'tahun',
+                                defaultLabel: 'Tahun',
+                                options: $tahun,
+                                selectedValue: $_GET['tahun'] ?? ''
+                            ) ?>
+                            <div>
+                                <?= StagedCustomSelect::render(
+                                    name: 'status',
+                                    defaultLabel: 'Status',
+                                    options: $statusLabel,
+                                    selectedValue: $_GET['status'] ?? ''
+                                ) ?>
+                            </div>
+                            <div>
+                                <?= StagedCustomSelect::render(
+                                    name: 'room',
+                                    defaultLabel: 'Ruangan',
+                                    options: $roomOption,
+                                    selectedValue: $_GET['room'] ?? ''
+                                ) ?>
                             </div>
                         </div>
-                        <div class="h-full w-[12rem]">
-                            <?= FormInput::input(type: "text", name: "search", placeholder: "Kode Peminjaman", value: $_GET['search'] ?? '', class: "h-full !w-full !border-primary", classGlobal: "h-full !w-full") ?>
+                        <div>
+                            <?php Button::anchor(
+                                icon: 'arrow_cycle',
+                                color: 'primary',
+                                href: '/admin/booking/index',
+                                class: 'h-full! py-2! px-4! shadow-none!'
+                            ) ?>
                         </div>
-                        <?= Button::button(class: "px-4 h-full", label: "Cari", type: 'submit') ?>
-                    </form>
+                    </div>
                 </div>
-            </div>
-
+            </form>
             <!-- tabel users -->
             <div class="p-4 bg-baseColor shadow-sm shadow-gray-600 rounded-xl w-full h-full border border-gray-200 overflow-y-auto">
                 <table class="table-auto w-full text-left border-collapse">
