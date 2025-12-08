@@ -9,6 +9,8 @@ use App\Utils\Validator;
 use App\Models\User;
 use App\Utils\DB;
 use App\Utils\FileHandler;
+use App\Utils\Mailer;
+use Carbon\Carbon;
 use Exception;
 
 class UserController extends Controller
@@ -65,8 +67,27 @@ class UserController extends Controller
     public function approve($id)
     {
         try {
-            $approve = User::approve($id);
+            $periode = Carbon::parse($_POST['active_until'])->toDateTimeString(); 
+            $approve = User::approve($id, $periode);
             if ($approve) {
+                Mailer::send($approve->email, 'VERIFIKASI AKUN SIMARU', 'Berhasil diverifikasi');
+                ResponseHandler::setResponse("Akun berhasil disetujui, akun sudah aktif");
+                header('location:' . URL . '/admin/user/index');
+            } else {
+                throw new CustomException('Gagal menyetujui akun');
+            }
+        } catch (CustomException $e) {
+            ResponseHandler::setResponse($e->getErrorMessages(), 'error');
+            header('location:' . URL . '/admin/user/index');
+        }
+    }
+
+    public function reject($id)
+    {
+        try {
+            $approve = User::delete($id);
+            if ($approve) {
+                Mailer::send($approve->email, 'VERIFIKASI AKUN SIMARU', 'Berhasil diverifikasi');
                 ResponseHandler::setResponse("Akun berhasil disetujui, akun sudah aktif");
                 header('location:' . URL . '/admin/user/index');
             } else {
@@ -110,8 +131,6 @@ class UserController extends Controller
             $validator->field('email', ['required']);
             $validator->field('password_hash', ['required']);
             $validator->field('first_name', ['required']);
-            $validator->field('study_program', ['required']);
-            $validator->field('phone_number', ['required']);
             $validator->field('major', ['required']);
 
             if ($validator->error()) throw new CustomException($validator->getErrors());
@@ -155,12 +174,12 @@ class UserController extends Controller
                 "email" => $_POST["email"],
                 "first_name" => $_POST["first_name"],
                 "last_name" => $_POST["last_name"],
-                "major" => $_POST['major'],
-                "study_program" => $_POST['study_program'],
+                "major" => $_POST['major'] ?? "",
+                "study_program" => $_POST['study_program'] ?? "",
                 "phone_number" => $_POST["phone_number"],
                 "institution" => $_POST['institution'],
                 "role" => $_POST["role"],
-                "image" => empty($_FILES['image']['name']) ? null : $_FILES['image'],
+                "profile_picture_url" => empty($_FILES['image']['name']) ? null : $_FILES['image'],
                 "is_active" => $_POST['status']
             ];
 
@@ -179,16 +198,16 @@ class UserController extends Controller
             if ($checkById) throw new CustomException('NIP / NIM sudah digunakan');
             if ($checkByEmail) throw new CustomException('Email sudah digunakan');
 
-            if (!is_null($data['image'])) {
+            if (!is_null($data['profile_picture_url'])) {
                 $allowedMimes = ["image/jpeg", "image/png", "image/jpg"];
-                $getFileInfo = getimagesize($data['image']);
+                $getFileInfo = getimagesize($data['profile_picture_url']['tmp_name']);
                 if (!in_array($getFileInfo['mime'], $allowedMimes)) {
                     throw new CustomException(['image' => "File tidak didukung"]);
                 }
-                $path = FileHandler::save($data['image'], 'users/profile');
-                $data['image'] = $path;
+                $path = FileHandler::save($data['profile_picture_url'], 'users/profile');
+                $data['profile_picture_url'] = $path;
             } else {
-                unset($data['image']);
+                unset($data['profile_picture_url']);
             }
 
             $update = User::updateProfile($id, $data);
@@ -211,6 +230,8 @@ class UserController extends Controller
             if (!$checkById) throw new CustomException('Data tidak ditemukan');
 
             $data = User::delete($id);
+            var_dump($data);
+            die;
             if ($data) {
                 ResponseHandler::setResponse('Berhasil menghapus data');
                 header('location:' . URL . '/admin/user/index');

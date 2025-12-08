@@ -19,7 +19,7 @@ $auth = new Authentication();
                 <?php
                 foreach ($items as $item) {
                     $isActive = str_contains($item['url'], $activeItem);
-                    NavThings::adminNavLink(active: $isActive, label: $item['label'], icon: $item['icon'], href: $item['url']);
+                    NavThings::adminNavLink(active: $isActive, label: $item['label'], icon: $item['icon'], href: URL . $item['url']);
                 }
                 ?>
             </div>

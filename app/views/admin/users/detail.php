@@ -140,7 +140,7 @@ $options_jurusan = [
                             </form>
                             <?= $data->is_active ? Button::anchor(label: 'Edit Profil Pengguna', class: 'py-2', href: '/admin/user/edit/' . $data->id) : null ?>
                             <?php if (!$data->is_active): ?>
-                                <form class="flex flex-col gap-4 w-full p-6 bg-white shadow-md border border-gray-200 rounded-xl" action="<?= URL . '/admin/user/approve/' . $data->id ?>" method="get">
+                                <form class="flex flex-col gap-4 w-full p-6 bg-white shadow-md border border-gray-200 rounded-xl" action="<?= URL . '/admin/user/approve/' . $data->id ?>" method="POST">
                                     <?= FormInput::input(id: 'date', type: 'date', required: true, name: 'active_until', label: 'Aktif sampai', class: 'w-full custom-input-icon') ?>
                                     <div class="w-full flex justify-center items-center gap-6 rounded-full mb-4">
                                         <?php
