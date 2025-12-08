@@ -178,7 +178,7 @@ class BookingController extends Controller
             }
 
             $booking = Booking::create($insertData);
-            $bookingLog = BookingLog::create($booking->id); // MUNGKIN BISA DIBIKIN FUNCTION / PROCEDURE
+            
             if (!empty($data['list_anggota'])) {
                 $members = $data['list_anggota'];
                 $members = $this->addBookingIdToMembersData($members, $booking->id);
