@@ -192,7 +192,7 @@ class User extends Database
     public static function delete($id)
     {
         $conn = parent::getConnection();
-        $q = $conn->prepare("DELETE FROM users WHERE id = ?");
+        $q = $conn->prepare("DELETE FROM users WHERE id = ? RETURNING *");
         $q->bindParam(1, $id);
         $q->execute();
         if ($q) {

@@ -8,17 +8,14 @@ use App\Error\CustomException;
 use App\Core\ResponseHandler;
 use App\Models\Booking;
 use App\Models\Room;
+use App\Models\User;
+use App\Utils\Authentication;
 use App\Utils\FileHandler;
+use App\Utils\Mailer;
 use Carbon\Carbon;
 
 class RoomController extends Controller
 {
-    private $room;
-
-    public function __construct()
-    {
-        $this->room = $this->model('room');
-    }
 
     public function index()
     {
@@ -192,8 +189,13 @@ class RoomController extends Controller
     public function delete($id)
     {
         try {
-            $delete = Room::softDelete($id);
+            $authUser = new Authentication;
+            $delete = Room::softDelete($id, $authUser->user['id']);
             if ($delete) {
+                foreach($delete as $data) {
+                    $user = User::getById($data->affected_user_id);
+                    Mailer::send($user->email, 'PEMBERITAHUAN', 'Booking anda telah di cancel oleh admin');
+                }
                 ResponseHandler::setResponse("Berhasil menghapus data ruangan");
                 header('location:' . URL . '/admin/room/index');
             } else {

@@ -87,8 +87,8 @@ class UserController extends Controller
         try {
             $approve = User::delete($id);
             if ($approve) {
-                Mailer::send($approve->email, 'VERIFIKASI AKUN SIMARU', 'Berhasil diverifikasi');
-                ResponseHandler::setResponse("Akun berhasil disetujui, akun sudah aktif");
+                Mailer::send($approve->email, 'VERIFIKASI AKUN SIMARU', 'Akun anda tidak diverifikasi oleh admin, hara registrasi ulang');
+                ResponseHandler::setResponse("Akun berhasil ditolak");
                 header('location:' . URL . '/admin/user/index');
             } else {
                 throw new CustomException('Gagal menyetujui akun');
@@ -230,8 +230,6 @@ class UserController extends Controller
             if (!$checkById) throw new CustomException('Data tidak ditemukan');
 
             $data = User::delete($id);
-            var_dump($data);
-            die;
             if ($data) {
                 ResponseHandler::setResponse('Berhasil menghapus data');
                 header('location:' . URL . '/admin/user/index');

@@ -13,7 +13,7 @@ class Room extends Database
         $where = [];
         $values = [];
         $conn = parent::getConnection();
-        $stmt = "SELECT * FROM rooms ";
+        $stmt = "SELECT * FROM rooms WHERE is_deleted = false";
         if(!empty($params)) {
             foreach($params as $key => $value) {
                 if($key === "name") {
@@ -28,7 +28,7 @@ class Room extends Database
 
         if(!empty($where)) {
             $whereClauses = implode(' AND ', $where);
-            $stmt .= "WHERE " . $whereClauses;
+            $stmt .= $whereClauses;
         }
 
         $stmt .= " LIMIT 15 OFFSET 15 * $page";
@@ -122,12 +122,16 @@ class Room extends Database
         return false;
     }
 
-    public static function softDelete($id)
+    public static function softDelete($id, $adminId)
     {
         $conn = parent::getConnection();
-        $stmt = $conn->prepare("UPDATE rooms SET is_deleted = true WHERE id = ?");
-        $stmt->bindValue(1, $id);
-        if ($stmt->execute()) return true;
+        $stmt = $conn->prepare("SELECT * FROM soft_delete_room_and_cancel_bookings(:roomId, :adminId)");
+        $stmt->bindValue(':roomId', $id);
+        $stmt->bindValue(':adminId', $adminId);
+        if ($stmt->execute()) {
+            $data = $stmt->fetchAll(PDO::FETCH_OBJ);
+            return $data;
+        }
         return false;
     }
 }

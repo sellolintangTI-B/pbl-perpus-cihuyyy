@@ -139,7 +139,7 @@ use App\Components\Modal;
                             x-cloak>
                             <template x-if="bookingData.status === 'created'">
 
-                                <a :href="`<?= URL ?>/admin/booking/check_in/${bookingData.id}`"
+                                <a :href="`<?= URL ?>/admin/dashboard/check_in/${bookingData.id}`"
                                     class="flex items-center gap-2 px-3 py-2 text-xs text-secondary hover:bg-secondary/5 border-t border-gray-100 w-full transition cursor-pointer">
                                     Check In
                                 </a>
@@ -147,7 +147,7 @@ use App\Components\Modal;
 
                             <template x-if="bookingData.status === 'checked_in'">
 
-                                <a :href="`<?= URL ?>/admin/booking/check_out/${bookingData.id}`"
+                                <a :href="`<?= URL ?>/admin/dashboard/check_out/${bookingData.id}`"
                                     class="flex items-center gap-2 px-3 py-2 text-xs text-primary hover:bg-primary/5 border-t border-gray-100 w-full transition cursor-pointer">
                                     Check Out
                                 </a>
@@ -169,7 +169,7 @@ use App\Components\Modal;
                 ob_start();
                 ?>
                 <form
-                    x-bind:action="`<?= URL ?>/admin/booking/cancel/${cancelPeminjamanId}`"
+                    x-bind:action="`<?= URL ?>/admin/dashboard/cancel/${cancelPeminjamanId}`"
                     method="POST"
                     class="w-full flex flex-col gap-2">
                     <?= FormInput::textarea(
