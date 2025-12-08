@@ -46,6 +46,8 @@ class Middleware
             "/admin/user/edit",
             "/admin/user/reset_password",
             "/admin/user/details",
+            "/admin/user/delete",
+            "/admin/user/reject",
             //FEEBACK
             "/admin/feedback/index",
             "/admin/feedback/export",

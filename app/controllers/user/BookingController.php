@@ -14,6 +14,7 @@ use App\Models\Room;
 use App\Models\Suspension;
 use App\Models\User;
 use App\Utils\Authentication;
+use App\Utils\Mailer;
 use App\Utils\Validator;
 use Carbon\Carbon;
 
@@ -83,10 +84,11 @@ class BookingController extends Controller
                 'end_time' => $data['end_time'],
                 'booking_code' => $data['booking_code']
             ]);
+            
             $members = $this->addBookingIdToMembersData($members, $booking->id);
-            $bookingLog = BookingLog::create($booking->id);
             $bookingParticipants = BookingParticipant::bulkInsert($members);
 
+            Mailer::send($user->user['email'], 'KODE BOOKING', $data['booking_code']);
             ResponseHandler::setResponse("Berhasil menambahkan data");
             header("location:" . URL . '/user/room/index');
             $_SESSION['old_booking'] = null;
