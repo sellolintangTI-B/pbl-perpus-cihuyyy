@@ -108,7 +108,7 @@
                                 ) ?>
                             </div>
                             <?php if (isset($_GET['tahun']) && $_GET['tahun'] !== ''): ?>
-                                <?= CustomSelect::render(
+                                <?= StagedCustomSelect::render(
                                     name: 'bulan',
                                     defaultLabel: 'Bulan',
                                     options: $bulan,
@@ -116,7 +116,7 @@
                                 ) ?>
                             <?php endif; ?>
 
-                            <?= CustomSelect::render(
+                            <?= StagedCustomSelect::render(
                                 name: 'tahun',
                                 defaultLabel: 'Tahun',
                                 options: $tahun,
@@ -139,7 +139,8 @@
                                 ) ?>
                             </div>
                         </div>
-                        <div>
+                        <div class="flex items-center justify-center gap-4 h-full">
+                            <?= Button::button(class: "py-2! px-4! h-full", label: "terapkan", type: 'submit') ?>
                             <?php Button::anchor(
                                 icon: 'arrow_cycle',
                                 color: 'primary',
