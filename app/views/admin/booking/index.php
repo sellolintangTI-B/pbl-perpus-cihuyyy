@@ -32,6 +32,7 @@
     ?>
 
     <div class="w-full h-full" x-data="{ showAlert: false, cancelPeminjamanId: null }" @cancel-peminjaman.window="showAlert = true; cancelPeminjamanId = $event.detail.cancelPeminjamanId">
+
         <div class="w-full h-full flex flex-col items-start justify-start gap-5 ">
             <div class="w-full flex items-center justify-start">
                 <h1 class="text-2xl font-medium text-primary">
@@ -118,7 +119,7 @@
             </div>
 
             <!-- tabel users -->
-            <div class="p-6 bg-baseColor shadow-sm shadow-gray-600 rounded-xl w-full h-full border border-gray-200 overflow-y-auto">
+            <div class="p-4 bg-baseColor shadow-sm shadow-gray-600 rounded-xl w-full h-full border border-gray-200 overflow-y-auto">
                 <table class="table-auto w-full text-left border-collapse">
                     <!-- Header -->
                     <thead class="text-primary">

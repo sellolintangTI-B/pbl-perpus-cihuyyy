@@ -62,7 +62,7 @@ $roleOptions = [
     ) ?>
 </div>
 <?php $updatePasswordContent = ob_get_clean() ?>
-<div class="w-full h-full p-6 overflow-y-auto">
+<div class="w-full h-full p-4 overflow-y-auto">
     <div class="w-full mx-auto flex flex-col gap-4" x-data="updateUserForm()">
         <h1 class="text-2xl font-medium text-primary">
             Tentang Saya

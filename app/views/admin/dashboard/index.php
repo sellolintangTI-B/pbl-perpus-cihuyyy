@@ -7,7 +7,7 @@ use App\Components\Badge;
 use App\Components\DashboardCard;
 use App\Components\Modal;
 ?>
-<div class="w-full h-full overflow-y-auto p-4">
+<div class="w-full h-full overflow-y-auto">
     <div class="flex flex-col justify-start items-start h-full w-full gap-5" x-data="SearchBooking()">
         <h1 class="text-2xl font-medium text-primary">
             Beranda
@@ -443,6 +443,132 @@ use App\Components\Modal;
             }
         } catch (error) {
             console.error('Error loading chart:', error);
+        }
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', async function() {
+        const apiUrl = '<?= URL ?>/admin/dashboard/get_room_chart_data';
+
+        // Warna untuk setiap tahun
+        const yearColors = {
+            2023: 'rgba(139, 92, 246, 0.8)', // Purple
+            2024: 'rgba(251, 146, 146, 0.8)', // Pink/Salmon
+            2025: 'rgba(96, 165, 250, 0.8)' // Sky Blue
+        };
+
+        try {
+            const response = await fetch(apiUrl);
+            if (!response.ok) throw new Error('Gagal mengambil data chart ruangan');
+
+            const data = await response.json();
+
+            // Format data dari API
+            // Expected format: 
+            // {
+            //   "Ruangan 1": { "2023": 95, "2024": 34, "2025": 29 },
+            //   "Ruangan 2": { "2023": 80, "2024": 45, "2025": 58 },
+            //   ...
+            // }
+
+            const roomNames = Object.keys(data);
+            const years = ['2023', '2024', '2025']; // Sesuaikan dengan data Anda
+
+            // Buat datasets untuk setiap tahun
+            const datasets = years.map(year => ({
+                label: year,
+                data: roomNames.map(room => data[room][year] || 0),
+                backgroundColor: yearColors[year],
+                borderColor: yearColors[year].replace('0.8', '1'),
+                borderWidth: 1,
+                borderRadius: 4,
+                barThickness: 'flex',
+                maxBarThickness: 40
+            }));
+
+            const ctx = document.getElementById('chart-peminjaman-ruangan');
+            if (ctx) {
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: roomNames,
+                        datasets: datasets
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'bottom',
+                                labels: {
+                                    usePointStyle: true,
+                                    padding: 15,
+                                    font: {
+                                        size: 12,
+                                        family: "'Segoe UI', sans-serif"
+                                    }
+                                }
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                padding: 12,
+                                titleFont: {
+                                    size: 14,
+                                    weight: 'bold'
+                                },
+                                bodyFont: {
+                                    size: 13
+                                },
+                                borderColor: 'rgba(255, 255, 255, 0.1)',
+                                borderWidth: 1,
+                                callbacks: {
+                                    label: function(context) {
+                                        return context.dataset.label + ': ' + context.parsed.y + ' peminjaman';
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    font: {
+                                        size: 11
+                                    },
+                                    maxRotation: 45,
+                                    minRotation: 45
+                                }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                grid: {
+                                    color: 'rgba(0, 0, 0, 0.05)',
+                                    drawBorder: false
+                                },
+                                ticks: {
+                                    stepSize: 20,
+                                    font: {
+                                        size: 11
+                                    },
+                                    callback: function(value) {
+                                        return value;
+                                    }
+                                }
+                            }
+                        },
+                        interaction: {
+                            mode: 'index',
+                            intersect: false
+                        }
+                    }
+                });
+            }
+        } catch (error) {
+            console.error('Error loading room chart:', error);
         }
     });
 </script>
