@@ -24,6 +24,7 @@ $roleOptions = [
 ];
 
 $badgeSuspendColor = [
+    0 => 'tertiary',
     1 => 'tertiary',
     2 => 'yellow',
     3 => 'red',
