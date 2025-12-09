@@ -119,7 +119,7 @@ if (isset($_SESSION['old_booking'])) {
                             </tr>
                             <tr>
                                 <td class="px-4 py-3 ">Jumat</td>
-                                <td class="px-4 py-3 ">08.00 - 11.00 &bull; 13.00 - 16.00</td>
+                                <td class="px-4 py-3 ">08.00 - 11.00 &bull; 13.00 - 16.30</td>
                             </tr>
                             <tr>
                                 <td class="px-4 py-3 ">Sabtu - Minggu</td>

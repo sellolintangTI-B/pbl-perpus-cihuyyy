@@ -97,7 +97,7 @@ use Carbon\Carbon;
                             <input
                                 type="date"
                                 name="date_check"
-                                value="<?= $_GET['date_check'] ?? null ?>"
+                                value="<?= $data['date'] ?? ($_GET['date_check'] ?? '') ?>"
                                 class="px-3 py-1.5 border-none custom-input-icon text-sm focus:outline-none focus:border-primary"
                                 placeholder="YYYY-MM-DD" />
                         </div>
