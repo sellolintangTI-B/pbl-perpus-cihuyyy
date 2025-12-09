@@ -39,11 +39,31 @@ class User extends Database
         return $data;
     }
 
-    public static function count() 
+    public static function count($params) 
     {
+        $where = [];
+        $values = [];
         $conn = parent::getConnection();
-        $q = $conn->prepare("SELECT COUNT(id) FROM users");
-        $q->execute();
+        $stmt = "SELECT COUNT(id) FROM users ";
+
+        if(!empty($params)) {
+            foreach($params as $key => $value) {
+                if($key == "first_name" && !empty($value)) {
+                    $where[] = "CONCAT(first_name, ' ', last_name) ILIKE :name";
+                    $values[] = "%$value%";
+                } else {
+                    $where[] = "$key = :$key";
+                    $values[] = $value;
+                }
+            }
+        }
+
+        if(!empty($where)) {
+            $whereClauses = implode(' AND ', $where);
+            $stmt .= "WHERE " . $whereClauses;
+        }
+        $q = $conn->prepare($stmt);
+        $q->execute($values);
         $data = $q->fetch(PDO::FETCH_OBJ);
         return $data;
     }

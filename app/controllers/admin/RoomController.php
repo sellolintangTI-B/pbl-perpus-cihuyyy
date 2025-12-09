@@ -32,11 +32,12 @@ class RoomController extends Controller
         if (isset($_GET['page'])) $page = (int)$_GET['page'] - 1;
 
         $rooms = Room::getALl($params, $page);
-        $count = Room::count();
+        $count = Room::count($params);
         $data = [
             'rooms' => $rooms,
             'total_page' => ceil((int)$count->count / 5)
         ];
+
         $this->view('admin/rooms/index', $data, layoutType: "Admin");
     }
 
