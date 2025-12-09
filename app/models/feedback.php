@@ -109,7 +109,8 @@ class Feedback extends Database
         $where = [];
         $values = [];
         $conn = parent::getConnection();
-        $stmt = "SELECT COUNT(id) FROM feedbacks";
+        $stmt = "SELECT COUNT(f.id) FROM feedbacks as f
+        JOIN bookings AS b ON b.id = f.booking_id JOIN rooms AS r ON b.room_id = r.id";
 
         if (!empty($params)) {
             foreach ($params as $key => $value) {
