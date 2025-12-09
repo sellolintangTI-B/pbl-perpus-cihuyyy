@@ -79,7 +79,7 @@
                                 href: ''
                             ) ?>
                             <!-- button filter show -->
-                            <button type="button" class="px-4 py-2 bg-primary rounded-lg text-white cursor-pointer flex items-center gap-2" @click="showFilter = !showFilter">
+                            <button type="button" class="px-4 py-2 bg-primary rounded-lg text-white cursor-pointer flex items-center gap-2 shadow-md shadow-black/25" @click="showFilter = !showFilter">
                                 <span>
                                     <?= Icon::filter('w-4 h-4 text-white') ?>
                                 </span>
@@ -140,12 +140,12 @@
                             </div>
                         </div>
                         <div class="flex items-center justify-center gap-4 h-full">
-                            <?= Button::button(class: "py-2! px-4! h-full", label: "terapkan", type: 'submit') ?>
+                            <?= Button::button(class: "py-2! px-4! h-full ", label: "terapkan", type: 'submit') ?>
                             <?php Button::anchor(
                                 icon: 'arrow_cycle',
                                 color: 'primary',
                                 href: '/admin/booking/index',
-                                class: 'h-full! py-2! px-4! shadow-none!'
+                                class: 'h-full! py-2! px-4! '
                             ) ?>
                         </div>
                     </div>

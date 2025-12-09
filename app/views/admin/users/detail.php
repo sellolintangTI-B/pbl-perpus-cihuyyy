@@ -161,10 +161,11 @@ $options_jurusan = [
                                         class: 'w-full h-10',
                                         type: 'submit'
                                     ) ?>
-                                    <?= Button::button(
+                                    <?= Button::anchor(
                                         label: 'Tolak',
                                         color: 'red',
-                                        class: 'w-full h-10'
+                                        class: 'w-full h-10',
+                                        href: '/admin/user/reject/' . $data->id
                                     ) ?>
                                 </div>
                             </form>
