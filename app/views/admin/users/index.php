@@ -74,7 +74,7 @@ $totalPage = $data['total_page'] ?? 1;
                         icon: 'arrow_cycle',
                         color: 'primary',
                         href: '/admin/user/index',
-                        class: 'h-full! py-2! px-4! shadow-none!'
+                        class: 'h-full! py-2! px-4!'
                     ) ?>
                     <?= FormInput::input(
                         type: "text",
@@ -87,7 +87,7 @@ $totalPage = $data['total_page'] ?? 1;
 
                     <?= Button::button(
                         class: "px-4 h-full",
-                        label: "Search",
+                        label: "Cari",
                         type: 'submit'
                     ) ?>
                 </form>

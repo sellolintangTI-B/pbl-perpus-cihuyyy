@@ -103,7 +103,7 @@ $bulan = [
                         icon: 'arrow_cycle',
                         color: 'primary',
                         href: '/admin/feedback/index',
-                        class: 'h-full! py-2! px-4! shadow-none!'
+                        class: 'h-full! py-2! px-4!'
                     ) ?>
                 </form>
             </div>

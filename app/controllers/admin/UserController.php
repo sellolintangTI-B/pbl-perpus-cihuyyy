@@ -21,19 +21,19 @@ class UserController extends Controller
         try {
             $params = [];
             $page = 0;
-            if(isset($_GET['status']) && !empty($_GET['status'])) {
-                if($_GET['status'] == 'Active') {
+            if (isset($_GET['status']) && !empty($_GET['status'])) {
+                if ($_GET['status'] == 'Active') {
                     $params['is_active'] = 1;
-                } elseif($_GET['status'] == 'Inactive') {
+                } elseif ($_GET['status'] == 'Inactive') {
                     $params['is_active'] = 0;
                 }
             }
 
-            if(isset($_GET['type']) && !empty($_GET['type'])) $params['role'] = $_GET['type'];
+            if (isset($_GET['type']) && !empty($_GET['type'])) $params['role'] = $_GET['type'];
 
-            if(isset($_GET['search']) && !empty($_GET['search'])) $params['first_name'] = $_GET['search'];
+            if (isset($_GET['search']) && !empty($_GET['search'])) $params['first_name'] = $_GET['search'];
 
-            if(isset($_GET['page']) && !empty($_GET['page'])) $page = $_GET['page'] - 1;
+            if (isset($_GET['page']) && !empty($_GET['page'])) $page = $_GET['page'] - 1;
 
             $countUsers = User::count();
 
@@ -67,7 +67,7 @@ class UserController extends Controller
     public function approve($id)
     {
         try {
-            $periode = Carbon::parse($_POST['active_until'])->toDateTimeString(); 
+            $periode = Carbon::parse($_POST['active_until'])->toDateTimeString();
             $approve = User::approve($id, $periode);
             if ($approve) {
                 Mailer::send($approve->email, 'VERIFIKASI AKUN SIMARU', 'Berhasil diverifikasi');
@@ -87,7 +87,7 @@ class UserController extends Controller
         try {
             $approve = User::delete($id);
             if ($approve) {
-                Mailer::send($approve->email, 'VERIFIKASI AKUN SIMARU', 'Akun anda tidak diverifikasi oleh admin, hara registrasi ulang');
+                Mailer::send($approve->email, 'VERIFIKASI AKUN SIMARU', 'Akun anda tidak diverifikasi oleh admin, harap registrasi ulang');
                 ResponseHandler::setResponse("Akun berhasil ditolak");
                 header('location:' . URL . '/admin/user/index');
             } else {
