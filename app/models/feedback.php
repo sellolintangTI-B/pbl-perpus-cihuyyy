@@ -31,7 +31,44 @@ class Feedback extends Database
         return $data;
     }
 
-    public static function get($params = [])
+    public static function get($params = [], $page = 1)
+    {
+        $where = [];
+        $values = [];
+        $conn = parent::getConnection();
+        $stmt = "SELECT u.first_name || ' ' || u.last_name AS name, r.name AS room_name, r.floor,
+        b.start_time, f.feedback, f.rating, b.booking_code
+        FROM feedbacks AS f JOIN bookings AS b ON f.booking_id = b.id
+        JOIN rooms AS r ON b.room_id = r.id
+        JOIN users AS u ON f.user_id = u.id";
+
+        if (!empty($params)) {
+            foreach ($params as $key => $value) {
+                if ($key === 'ruangan' && !empty($value)) {
+                    $where[] = "r.id = :roomId";
+                    $values[] = $value; 
+                }
+
+                if ($key === 'date' && !empty($value)) {
+                    $where[] = "TO_CHAR(b.start_time, 'YYYY-MM') = :date";
+                    $values[] = $value; 
+                }
+            }
+        }
+
+        if (!empty($where)) {
+            $whereClauses = implode(' AND ', $where);
+            $stmt .= " WHERE $whereClauses ";
+        }
+        
+        $stmt .= " LIMIT 4 OFFSET 4 * $page";
+        $q = $conn->prepare($stmt);
+        $q->execute($values);
+        $data = $q->fetchAll(PDO::FETCH_OBJ);
+        return $data;
+    }
+
+    public static function getForExport($params = [])
     {
         $where = [];
         $values = [];
@@ -64,6 +101,38 @@ class Feedback extends Database
         $q = $conn->prepare($stmt);
         $q->execute($values);
         $data = $q->fetchAll(PDO::FETCH_OBJ);
+        return $data;
+    }
+
+    public static function count($params)
+    {
+        $where = [];
+        $values = [];
+        $conn = parent::getConnection();
+        $stmt = "SELECT COUNT(id) FROM feedbacks";
+
+        if (!empty($params)) {
+            foreach ($params as $key => $value) {
+                if ($key === 'ruangan' && !empty($value)) {
+                    $where[] = "r.id = :roomId";
+                    $values[] = $value; 
+                }
+
+                if ($key === 'date' && !empty($value)) {
+                    $where[] = "TO_CHAR(b.start_time, 'YYYY-MM') = :date";
+                    $values[] = $value; 
+                }
+            }
+        }
+
+        if (!empty($where)) {
+            $whereClauses = implode(' AND ', $where);
+            $stmt .= " WHERE $whereClauses ";
+        }
+        
+        $q = $conn->prepare($stmt);
+        $q->execute($values);
+        $data = $q->fetch(PDO::FETCH_OBJ);
         return $data;
     }
 }
