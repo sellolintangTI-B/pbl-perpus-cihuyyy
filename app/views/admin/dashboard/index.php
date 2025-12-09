@@ -7,7 +7,7 @@ use App\Components\Badge;
 use App\Components\DashboardCard;
 use App\Components\Modal;
 ?>
-<div class="w-full h-full overflow-y-auto">
+<div class="w-full h-full overflow-y-auto no-scrollbar">
     <div class="flex flex-col justify-start items-start h-full w-full gap-5" x-data="SearchBooking()">
         <h1 class="text-2xl font-medium text-primary">
             Beranda

@@ -3,10 +3,11 @@
 use App\Components\Icon\Icon;
 use App\Components\Button;
 use App\Components\Badge;
+use App\Components\Modal;
 use Carbon\Carbon;
 
 ?>
-<div class="w-full h-full flex flex-col gap-4 ">
+<div class="w-full h-full flex flex-col gap-4" x-data="{showAlert:false}">
     <h1 class="text-2xl font-medium text-primary">
         Detail Ruangan
     </h1>
@@ -132,7 +133,7 @@ use Carbon\Carbon;
                     <!-- gatau make modal ato kaga -->
                     <?php
                     if ($data['detail']->is_operational) {
-                        Button::anchor(label: 'Nonaktifkan Ruangan', color: 'red', class: 'w-full py-3 px-6', href: '/admin/room/deactivate/' . $data['detail']->id);
+                        Button::button(label: 'Nonaktifkan Ruangan', color: 'red', class: 'w-full py-3 px-6', alpineClick: "showAlert=true");
                     } else {
                         Button::anchor(label: 'Aktifkan Ruangan', color: 'secondary', class: 'w-full py-3 px-6', href: '/admin/room/activate/' . $data['detail']->id);
                     }
@@ -142,4 +143,15 @@ use Carbon\Carbon;
             </div>
         </div>
     </div>
+    <?= Modal::render(
+        title: 'Yakin ingin menonaktifkan ruangan ini?',
+        actionUrl: URL . '/admin/room/deactivate/' . $data['detail']->id,
+        alpineId: 'deleteUserId',
+        color: 'red',
+        confirmText: 'Ya',
+        cancelText: 'Tidak',
+        message: 'Ruangan akan dinonaktifkan. Pastikan keputusan Anda sudah benar.',
+        method: 'GET',
+        alpineShow: 'showAlert',
+    ) ?>
 </div>

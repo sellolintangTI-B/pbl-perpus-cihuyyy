@@ -60,7 +60,7 @@ class LoginController extends Controller
             ];
 
             $validateCaptcha = $this->validateCaptcha($validateTurnStileBody);
-            if(!$validateCaptcha) throw new CustomException('Gagal verifikasi captcha');
+            if (!$validateCaptcha) throw new CustomException('Gagal verifikasi captcha');
 
             if (isset($_POST['remember_me'])) {
                 setcookie('remember_username', $_POST['username'], time() + (30 * 24 * 60 * 60), '/');
@@ -73,7 +73,7 @@ class LoginController extends Controller
             }
 
             $_SESSION['loggedInUser'] = [
-                "username" => $checkIfUserExist['first_name'] . ' ' . $checkIfUserExist['last_name'],
+                "username" => $checkIfUserExist['first_name'],
                 "role" => $checkIfUserExist['role'],
                 "id_number" => $checkIfUserExist['id_number'],
                 "email" => $checkIfUserExist['email'],

@@ -214,7 +214,7 @@ $totalPage = $data['total_page'] ?? 1;
             </div>
 
             <!-- Pagination Section -->
-            <?php if (isset($data['total_page'])): ?>
+            <?php if (isset($data['total_page']) && $data['total_page'] > 1): ?>
                 <?= Pagination::render(
                     currentPage: $currentPage,
                     totalPage: $totalPage,
