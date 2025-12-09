@@ -7,10 +7,10 @@ use PDO;
 
 class LibraryClose extends Database
 {
-    public static function get()
+    public static function get($page = 1)
     {
         $conn = parent::getConnection();
-        $q = $conn->prepare("SELECT u.first_name || ' ' || u.last_name AS name, l.* FROM library_close_logs l JOIN users AS u ON l.created_by = u.id");
+        $q = $conn->prepare("SELECT u.first_name || ' ' || u.last_name AS name, l.* FROM library_close_logs l JOIN users AS u ON l.created_by = u.id LIMIT 15 OFFSET 15 * $page");
         $q->execute();
         $data = $q->fetchAll(PDO::FETCH_OBJ);
         return $data;
@@ -56,6 +56,16 @@ class LibraryClose extends Database
         $data = $q->fetch(PDO::FETCH_OBJ);
         return $data;
     }
+
+    public static function count()
+    {
+        $conn = parent::getConnection();
+        $q = $conn->prepare("SELECT COUNT(id) FROM library_close_logs");
+        $q->execute();
+        $data = $q->fetch(PDO::FETCH_OBJ);
+        return $data;
+    }
+
 
     
 }
