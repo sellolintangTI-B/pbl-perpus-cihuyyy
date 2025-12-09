@@ -22,10 +22,13 @@ class FeedbackController extends Controller
             $rooms = Room::get();
             $years = Booking::getAllBookingsYear();
             $params = [];
+            $page = 0;
 
             if (isset($_GET['ruangan'])) {
                 $params['ruangan'] = $_GET['ruangan'];
             }
+
+            if(isset($_GET['page']) && !empty($_GET['page'])) $page = $_GET['page'] - 1;
 
             if(isset($_GET['bulan']) && isset($_GET['tahun'])) {
                 $now = Carbon::now('Asia/Jakarta');
@@ -36,11 +39,13 @@ class FeedbackController extends Controller
                 }
             }
 
-            $feedback = Feedback::get($params);
+            $feedback = Feedback::get($params, $page);
+            $count = Feedback::count($params);
             $data = [
                 'feedback' => $feedback,
                 'room' => $rooms,
-                'years' => $years
+                'years' => $years,
+                "total_page" => ceil((int)$count->count / 15)
             ];
 
             $this->view('/admin/feedback/index', $data , 'Admin');

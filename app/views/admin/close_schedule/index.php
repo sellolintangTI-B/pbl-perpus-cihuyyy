@@ -52,14 +52,14 @@ $no = 1;
 
                 <!-- Body -->
                 <tbody class="text-primary divide-y divide-gray-100">
-                    <?php if (empty($data)): ?>
+                    <?php if (empty($data['close'])): ?>
                         <tr>
                             <td colspan="6" class="px-3 py-8 text-center text-sm text-gray-500">
                                 Tidak ada data jadwal tutup
                             </td>
                         </tr>
                     <?php else: ?>
-                        <?php foreach ($data as $value): ?>
+                        <?php foreach ($data['close'] as $value): ?>
                             <tr
                                 x-data="{ open: false }"
                                 class="hover:bg-gray-50 transition-colors duration-150">

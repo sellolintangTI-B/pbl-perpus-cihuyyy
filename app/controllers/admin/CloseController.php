@@ -19,6 +19,14 @@ class CloseController extends Controller
     {
         try {
             $data = LibraryClose::get();
+
+            $count = LibraryClose::count();
+            
+            $data = [
+                'close' => $data,
+                'total_page' => ceil((int) $count->count / 15)
+            ];
+
             $this->view('/admin/close_schedule/index', $data, layoutType: $this::$layoutType['admin']);
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), 'error');
