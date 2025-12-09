@@ -70,6 +70,12 @@ $totalPage = $data['total_page'] ?? 1;
                             selectedValue: $_GET['type'] ?? ''
                         ) ?>
                     </div>
+                    <?php Button::anchor(
+                        icon: 'arrow_cycle',
+                        color: 'primary',
+                        href: '/admin/user/index',
+                        class: 'h-full! py-2! px-4! shadow-none!'
+                    ) ?>
                     <?= FormInput::input(
                         type: "text",
                         name: "search",

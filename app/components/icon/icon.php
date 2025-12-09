@@ -363,4 +363,16 @@ class Icon
         <path fill="currentColor" d="M12 14.85H18.6667V21.6H12V14.85ZM21.3333 2.7H20V0H17.3333V2.7H6.66667V0H4V2.7H2.66667C1.2 2.7 0 3.915 0 5.4V24.3C0 25.785 1.2 27 2.66667 27H21.3333C22.8 27 24 25.785 24 24.3V5.4C24 3.915 22.8 2.7 21.3333 2.7ZM21.3333 5.4V8.1H2.66667V5.4H21.3333ZM2.66667 24.3V10.8H21.3333V24.3H2.66667Z" />
         </svg>';
     }
+    public static function arrow_cycle(string $class = 'w-5 h-5 text-gray-700'): void
+    {
+        echo '<svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            fill="none" 
+            viewBox="0 0 24 24" 
+            stroke-width="1.5" 
+            stroke="currentColor" 
+            class="' . htmlspecialchars($class) . '">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+        </svg>';
+    }
 }

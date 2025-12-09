@@ -82,7 +82,12 @@ $totalPage = $data['total_page'] ?? 1;
                     options: $floorOptions,
                     selectedValue: $_GET['floor'] ?? ''
                 ) ?>
-
+                <?php Button::anchor(
+                    icon: 'arrow_cycle',
+                    color: 'primary',
+                    href: '/admin/room/index',
+                    class: 'h-full! py-2! px-4! shadow-none!'
+                ) ?>
                 <div class="h-full w-full min-w-[14rem]">
                     <?= FormInput::input(
                         type: "text",
