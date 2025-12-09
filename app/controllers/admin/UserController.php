@@ -146,13 +146,14 @@ class UserController extends Controller
             $insert = User::insert($data);
             if ($insert) {
                 ResponseHandler::setResponse("Berhasil menambahkan akun admin");
+                $_SESSION['old_users'] = [];
                 header('location:' . URL . '/admin/user/index');
             } else {
                 throw new CustomException("Gagal memasukan data admin");
             }
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), "error");
-            header('location:' . URL . '/admin/user/add_admin');
+            $this->redirectWithOldInput(url: '/admin/user/add_admin', oldData: $_POST, session_name: 'old_users');
         }
     }
 

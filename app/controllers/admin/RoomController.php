@@ -88,13 +88,14 @@ class RoomController extends Controller
             $insert = Room::create($data);
             if ($insert) {
                 ResponseHandler::setResponse("Berhail memasukan data ruangan");
+                $_SESSION['old_rooms'] = [];
                 header('location:' . URL . '/admin/room/index');
             } else {
                 throw new CustomException('Gagal memasukan data');
             }
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), "error");
-            header('location:' . URL . '/admin/room/create');
+            $this->redirectWithOldInput(url: '/admin/room/create', oldData: $_POST, session_name: 'old_rooms');
         }
     }
 
@@ -193,7 +194,7 @@ class RoomController extends Controller
             $authUser = new Authentication;
             $delete = Room::softDelete($id, $authUser->user['id']);
             if ($delete) {
-                foreach($delete as $data) {
+                foreach ($delete as $data) {
                     $user = User::getById($data->affected_user_id);
                     Mailer::send($user->email, 'PEMBERITAHUAN', 'Booking anda telah di cancel oleh admin');
                 }

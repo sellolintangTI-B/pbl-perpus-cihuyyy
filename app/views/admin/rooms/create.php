@@ -2,6 +2,8 @@
 
 use App\Components\Icon\Icon;
 use App\Components\FormInput;
+
+$oldRooms = $_SESSION['old_rooms'] ?? []
 ?>
 <div class="w-full h-full flex flex-col items-start justify-start gap-5 ">
     <div class="w-full flex items-center justify-start">
@@ -20,11 +22,46 @@ use App\Components\FormInput;
             <div class="flex items-center justify-center  w-full max-w-3xl mx-auto bg-white p-6 border border-gray-200 rounded-xl shadow-md">
                 <form class="w-full grid grid-cols-1 sm:grid-cols-2 gap-6" action="<?= URL . "/admin/room/store" ?>" method="post" enctype="multipart/form-data">
                     <?php
-                    FormInput::input(id: 'nama', name: 'name', label: 'Nama', placeholder: "masukkan nama ruangan", required: true);
-                    FormInput::input(id: 'lantai', name: 'floor', type: 'number', label: 'Lantai', placeholder: "contoh: 1", required: true);
-                    FormInput::input(id: 'kapasitas_minimal', name: 'min', type: 'number', label: 'Kapasitas Minimal', placeholder: 'contoh: 2', required: true);
-                    FormInput::input(id: 'kapasitas_maximal', name: 'max', type: 'number', label: 'Kapasitas Maximal', placeholder: 'contoh: 4',  required: true);
+                    FormInput::input(
+                        id: 'nama',
+                        name: 'name',
+                        label: 'Nama',
+                        placeholder: "masukkan nama ruangan",
+                        required: true,
+                        value: $oldRooms['name'] ?? ''
+                    );
+
+                    FormInput::input(
+                        id: 'lantai',
+                        name: 'floor',
+                        type: 'number',
+                        label: 'Lantai',
+                        placeholder: "contoh: 1",
+                        required: true,
+                        value: $oldRooms['floor'] ?? ''
+                    );
+
+                    FormInput::input(
+                        id: 'kapasitas_minimal',
+                        name: 'min',
+                        type: 'number',
+                        label: 'Kapasitas Minimal',
+                        placeholder: 'contoh: 2',
+                        required: true,
+                        value: $oldRooms['min'] ?? ''
+                    );
+
+                    FormInput::input(
+                        id: 'kapasitas_maximal',
+                        name: 'max',
+                        type: 'number',
+                        label: 'Kapasitas Maximal',
+                        placeholder: 'contoh: 4',
+                        required: true,
+                        value: $oldRooms['max'] ?? ''
+                    );
                     ?>
+
                     <div class="sm:col-span-2 mt-4">
                         <?php
                         FormInput::fileInput(
@@ -37,16 +74,32 @@ use App\Components\FormInput;
                         );
                         ?>
                     </div>
+
                     <div class="sm:col-span-2 mt-4">
                         <?php
-                        FormInput::textarea(id: 'deskripsi', name: 'description', label: 'Deskripsi', placeholder: "masukkan deskripsi ruangan", required: true, rows: 4);
+                        FormInput::textarea(
+                            id: 'deskripsi',
+                            name: 'description',
+                            label: 'Deskripsi',
+                            placeholder: "masukkan deskripsi ruangan",
+                            required: true,
+                            rows: 4,
+                            value: $oldRooms['description'] ?? ''
+                        );
                         ?>
                     </div>
+
                     <div class="sm:col-span-2 mt-4">
                         <?php
-                        FormInput::checkbox(id: 'jenis_ruangan', name: 'isSpecial', label: 'Ruangan special');
+                        FormInput::checkbox(
+                            id: 'jenis_ruangan',
+                            name: 'isSpecial',
+                            label: 'Ruangan special',
+                            checked: isset($oldRooms['isSpecial'])
+                        );
                         ?>
                     </div>
+
                     <div class="sm:col-span-2 mt-4">
                         <button type="submit" name="register" class="w-full bg-primary text-white px-4 py-2 rounded-xl cursor-pointer shadow-sm shadow-gray-400 hover:shadow-md hover:shadow-primary-100 duration-300 transition-all font-medium">
                             Tambah Ruangan

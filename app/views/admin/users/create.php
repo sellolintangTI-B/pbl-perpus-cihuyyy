@@ -3,6 +3,7 @@
 use App\Components\Icon\Icon;
 use App\Components\FormInput;
 
+$oldUsers = $_SESSION['old_users'] ?? []
 ?>
 
 <div class="w-full h-full max-h-full flex flex-col items-start justify-start gap-5 ">
@@ -21,31 +22,80 @@ use App\Components\FormInput;
         <div class="h-full w-full flex-1 overflow-y-auto py-2">
             <form id="CreateForm" class="w-full max-w-3xl bg-white p-6 rounded-xl border border-gray-200 shadow-md grid grid-cols-1 sm:grid-cols-2 gap-6 mx-auto" action=<?= URL . "/admin/user/store" ?> method="post" enctype="multipart/form-data">
                 <?php
-                FormInput::input(id: 'id_number', name: 'id_number', label: 'NIM/NIP', required: true);
-                FormInput::input(id: 'email', name: 'email', type: 'email', label: 'Email', required: true);
-                FormInput::input(id: 'first_name', name: 'first_name', label: 'Nama Depan', required: true);
-                FormInput::input(id: 'last_name', name: 'last_name', label: 'Nama Belakang');
+                // ID Number (NIM/NIP)
+                FormInput::input(
+                    id: 'id_number',
+                    name: 'id_number',
+                    label: 'NIM/NIP',
+                    placeholder: 'masukkan NIM/NIP',
+                    required: true,
+                    value: $oldUsers['id_number'] ?? ''
+                );
+
+                // Email
+                FormInput::input(
+                    id: 'email',
+                    name: 'email',
+                    type: 'email',
+                    label: 'Email',
+                    placeholder: 'masukkan email',
+                    required: true,
+                    value: $oldUsers['email'] ?? ''
+                );
+
+                // First Name
+                FormInput::input(
+                    id: 'first_name',
+                    name: 'first_name',
+                    label: 'Nama Depan',
+                    placeholder: 'masukkan nama depan',
+                    required: true,
+                    value: $oldUsers['first_name'] ?? ''
+                );
+
+                // Last Name
+                FormInput::input(
+                    id: 'last_name',
+                    name: 'last_name',
+                    label: 'Nama Belakang',
+                    placeholder: 'masukkan nama belakang',
+                    value: $oldUsers['last_name'] ?? ''
+                );
                 FormInput::select(
                     id: 'jurusan',
                     name: 'major',
                     label: 'Jurusan',
                     placeholder: 'Jurusan',
-                    // required: true,
+                    value: $oldUsers['major'] ?? ''
                 );
+
                 FormInput::select(
                     id: 'prodi',
                     name: 'prodi',
                     label: 'Program Studi',
                     placeholder: 'Pilih Jurusan terlebih dahulu',
-                    // required: true,
+                    value: $oldUsers['prodi'] ?? ''
                 );
-                FormInput::input(id: 'phone_number', name: 'phone_number', type: 'tel', label: 'Nomor Whatsapp', required: true);
+
+                // Phone Number
+                FormInput::input(
+                    id: 'phone_number',
+                    name: 'phone_number',
+                    type: 'tel',
+                    label: 'Nomor Whatsapp',
+                    placeholder: 'masukkan nomor whatsapp',
+                    required: true,
+                    value: $oldUsers['phone_number'] ?? ''
+                );
+
+                // Role (Select)
                 FormInput::select(
                     id: 'role',
                     name: 'role',
                     label: 'Jenis Civitas',
                     required: true,
                     placeholder: "Pilih jenis civitas",
+                    value: $oldUsers['role'] ?? '',
                     options: [
                         [
                             "display" => "Mahasiswa",
@@ -61,11 +111,10 @@ use App\Components\FormInput;
                         ],
                     ]
                 );
-
-                FormInput::input(id: 'password', name: 'password', type: 'password', label: 'Password', required: true);
-                FormInput::input(id: 'password_confirmation', name: 'password_confirmation', type: 'password', label: 'Konfirmasi Password', required: true);
+                FormInput::input(id: 'password', name: 'password', type: 'password', label: 'Password', required: true, placeholder: 'masukkan password');
+                FormInput::input(id: 'password_confirmation', name: 'password_confirmation', type: 'password', label: 'Konfirmasi Password', required: true, placeholder: 'masukkan konfirmasi password');
                 ?>
-                <!-- Password Alerts -->
+
                 <div class="sm:col-span-2 mt-4">
                     <div class="sm:col-span-2 px-4">
                         <ul class="text-xs text-start list-disc hidden text-red" id="text_alert"></ul>

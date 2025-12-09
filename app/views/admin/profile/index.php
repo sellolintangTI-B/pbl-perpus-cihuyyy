@@ -155,9 +155,7 @@ $roleOptions = [
                     name: 'study_program',
                     label: 'Program Studi',
                     placeholder: 'Pilih Jurusan terlebih dahulu',
-                    // required: true,
                     value: $data->study_program ?? "",
-                    // options: []
                     alpine_disabled: '!isEdit'
                 );
 

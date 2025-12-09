@@ -11,8 +11,8 @@ use App\Components\RoomCard;
         </h1>
 
         <!-- Search & Filter Section -->
-        <form class="w-full max-w-4xl justify-center items-center flex flex-col gap-4 m-3 " method="get">
-            <!-- Search Bar -->
+        <form class="w-full max-w-4xl justify-center items-center flex flex-col gap-4 m-3" method="get">
+
             <div class="flex gap-2 max-w-2xl w-full">
                 <div class="relative w-full max-w-2xl">
                     <div class="absolute left-4 top-1/2 -translate-y-1/2">
@@ -20,76 +20,57 @@ use App\Components\RoomCard;
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                         </svg>
                     </div>
-                    <input type="text" name="room" placeholder="Pusat Perancis ..." class="w-full pl-12 pr-4 py-3 text-center rounded-full border border-gray-300 focus:outline-none focus:border-primary transition-colors duration-200 text-sm">
+                    <input type="text" name="room" value="<?= $_GET['room'] ?? '' ?>" placeholder="Pusat Perancis ..." class="w-full pl-12 pr-4 py-3 text-center rounded-full border border-gray-300 focus:outline-none focus:border-primary transition-colors duration-200 text-sm">
                 </div>
-                <button type="submit" class="md:hidden px-8 py-2 cursor-pointer bg-primary border-primary hover:text-primary hover:bg-transparent text-white rounded-full font-medium text-sm hover:opacity-90 transition-all duration-300 shadow-sm flex items-center gap-2">
+                <button type="submit" class="md:hidden px-4 py-2 cursor-pointer bg-primary border-primary hover:text-primary hover:bg-transparent text-white rounded-full font-medium text-sm hover:opacity-90 transition-all duration-300 shadow-sm flex items-center justify-center">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                     </svg>
                 </button>
             </div>
 
-            <!-- Filter Section Desktop-->
-            <div class="w-full items-center gap-3 px-6 py-3 bg-white shadow-sm rounded-full overflow-hidden hidden md:flex">
-                <!-- Kapan Filter -->
-                <div class="flex-1 relative flex flex-col gap-3 justify-center items-start h-full">
+            <div class="w-full flex flex-col md:flex-row items-center gap-3 px-3 py-3 md:px-6 bg-white shadow-sm rounded-xl md:rounded-full border border-gray-200 md:border-none">
+
+                <div class="w-full md:flex-1 relative flex flex-col gap-1 md:gap-3 justify-center items-start h-full border-b md:border-b-0 border-gray-200 pb-2 md:pb-0">
                     <label class="px-1 bg-transparent text-xs font-medium text-black/70">
                         Kapan
                     </label>
-                    <input type="date" name="date" placeholder="Tanggal dan jam peminjaman" value="<?= isset($_GET['date']) ? $_GET['date'] : null ?>" class="w-full h-full cursor-pointer custom-input-icon  rounded-lg border-0 focus:outline-none focus:ring-0 transition-colors duration-200 text-sm text-black/70 px-4">
-                </div>
-                <div class="h-12 w-[1px] rounded-full bg-black/20">
-
-                </div>
-                <!-- start time Filter -->
-                <div class="flex-1 relative flex flex-col gap-3 justify-center items-start h-full">
-                    <label class="px-1 bg-transparent text-xs font-medium text-black/70">
-                        Waktu mulai
-                    </label>
-                    <input type="time" name="start_time" placeholder="Jam mulai peminjaman" value="<?= isset($_GET['start_time']) ? $_GET['start_time'] : null ?>" class="w-full h-full custom-input-icon rounded-lg border-0 focus:outline-none focus:ring-0 transition-colors duration-200 text-sm text-black/70 px-4">
-                </div>
-                <!-- end time Filter -->
-                <div class="flex-1 relative flex flex-col gap-3 justify-center items-start h-full">
-                    <label class="px-1 bg-transparent text-xs font-medium text-black/70">
-                        Waktu berakhir
-                    </label>
-                    <input type="time" name="end_time" min="07:00" max="17:00" step="600" placeholder="Jam peminjaman berakhir" value="<?= isset($_GET['end_time']) ? $_GET['end_time'] : null ?>" class="w-full h-full custom-input-icon rounded-lg border-0 focus:outline-none focus:ring-0 transition-colors duration-200 text-sm text-black/70 px-4">
+                    <input type="date" name="date"
+                        value="<?= $_GET['date'] ?? '' ?>"
+                        class="w-full h-full cursor-pointer bg-transparent rounded-lg border-0 focus:outline-none focus:ring-0 transition-colors duration-200 text-sm text-black/70 px-2 md:px-4 p-0">
                 </div>
 
-                <!-- Search Button -->
-                <button type="submit" class="px-8 py-3 cursor-pointer bg-linear-to-r from-primary to-secondary text-white rounded-full font-medium text-sm hover:opacity-90 transition-all duration-300 shadow-sm flex items-center gap-2">
+                <div class="hidden md:block h-12 w-[1px] rounded-full bg-black/20"></div>
+
+                <div class="w-full flex gap-2 md:contents">
+
+                    <div class="flex-1 relative flex flex-col gap-1 md:gap-3 justify-center items-start h-full">
+                        <label class="px-1 bg-transparent text-xs font-medium text-black/70">
+                            Mulai
+                        </label>
+                        <input type="time" name="start_time"
+                            value="<?= $_GET['start_time'] ?? '' ?>"
+                            class="w-full h-full custom-input-icon bg-transparent rounded-lg border-0 focus:outline-none focus:ring-0 transition-colors duration-200 text-sm text-black/70 px-2 md:px-4 p-0">
+                    </div>
+
+                    <div class="md:hidden w-[1px] bg-gray-200 h-10 self-center"></div>
+
+                    <div class="flex-1 relative flex flex-col gap-1 md:gap-3 justify-center items-start h-full">
+                        <label class="px-1 bg-transparent text-xs font-medium text-black/70">
+                            Selesai
+                        </label>
+                        <input type="time" name="end_time" min="07:00" max="17:00" step="600"
+                            value="<?= $_GET['end_time'] ?? '' ?>"
+                            class="w-full h-full custom-input-icon bg-transparent rounded-lg border-0 focus:outline-none focus:ring-0 transition-colors duration-200 text-sm text-black/70 px-2 md:px-4 p-0">
+                    </div>
+                </div>
+
+                <button type="submit" class="hidden md:flex px-8 py-3 cursor-pointer bg-linear-to-r from-primary to-secondary text-white rounded-full font-medium text-sm hover:opacity-90 transition-all duration-300 shadow-sm items-center gap-2 whitespace-nowrap">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                     </svg>
                     Cari
                 </button>
-            </div>
-            <!-- Filter section mobile -->
-            <div class="w-full flex flex-col items-center justify-center gap-2 py-2 md:hidden">
-                <div class="px-2 py-2 rounded-xl bg-white border border-gray-200 w-full">
-                    <div class="flex-1 relative flex flex-col gap-3 justify-center items-start w-full h-full">
-                        <label class="px-1 bg-transparent text-sm font-medium text-black/70">
-                            Kapan
-                        </label>
-                        <input type="date" name="date" placeholder="Tanggal dan jam peminjaman" value="<?= isset($_GET['date']) ? $_GET['date'] : null ?>" class="w-full h-full cursor-pointer custom-input-icon  rounded-lg border-0 focus:outline-none focus:ring-0 transition-colors duration-200 text-sm text-black/70 px-4">
-                    </div>
-                </div>
-                <div class="px-2 py-2 flex gap-2 items-center justify-center rounded-xl bg-white border border-gray-200 w-full">
-                    <!-- start time Filter -->
-                    <div class="flex-1 relative flex flex-col gap-3 justify-center items-start h-full">
-                        <label class="px-1 bg-transparent text-sm font-medium text-black/70">
-                            Waktu mulai
-                        </label>
-                        <input type="time" name="start_time" placeholder="Jam mulai peminjaman" value="<?= isset($_GET['start_time']) ? $_GET['start_time'] : null ?>" class="w-full h-full custom-input-icon rounded-lg border-0 focus:outline-none focus:ring-0 transition-colors duration-200 text-sm text-black/70 px-4">
-                    </div>
-                    <!-- end time Filter -->
-                    <div class="flex-1 relative flex flex-col gap-3 justify-center items-start h-full">
-                        <label class="px-1 bg-transparent text-sm font-medium text-black/70">
-                            Waktu berakhir
-                        </label>
-                        <input type="time" name="end_time" min="07:00" max="17:00" step="600" placeholder="Jam peminjaman berakhir" value="<?= isset($_GET['end_time']) ? $_GET['end_time'] : null ?>" class="w-full h-full custom-input-icon rounded-lg border-0 focus:outline-none focus:ring-0 transition-colors duration-200 text-sm text-black/70 px-4">
-                    </div>
-                </div>
             </div>
         </form>
     </div>
