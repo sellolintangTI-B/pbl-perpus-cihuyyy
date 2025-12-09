@@ -13,7 +13,7 @@ class Room extends Database
         $where = [];
         $values = [];
         $conn = parent::getConnection();
-        $stmt = "SELECT * FROM rooms WHERE is_deleted = false";
+        $stmt = "SELECT * FROM rooms WHERE is_deleted = false ";
         if(!empty($params)) {
             foreach($params as $key => $value) {
                 if($key === "name") {
@@ -28,21 +28,42 @@ class Room extends Database
 
         if (!empty($where)) {
             $whereClauses = implode(' AND ', $where);
-            $stmt .= $whereClauses;
+            $stmt .= "AND " . $whereClauses;
         }
 
         $stmt .= " LIMIT 5 OFFSET 5 * $page";
+        
         $q = $conn->prepare($stmt);
         $q->execute($values);
         $data = $q->fetchALl(PDO::FETCH_OBJ);
         return $data;
     }
 
-    public static function count()
+    public static function count($params)
     {
+        $where = [];
+        $values = [];
         $conn = parent::getConnection();
-        $q = $conn->prepare("SELECT COUNT(id) FROM rooms");
-        $q->execute();
+        $stmt = "SELECT COUNT(id) FROM rooms WHERE is_deleted = false";
+        if(!empty($params)) {
+            foreach($params as $key => $value) {
+                if($key === "name") {
+                    $where[] = "name ILIKE :$key";
+                    $values[] = "%$value%";
+                } else {
+                    $where[] = "$key = :$key";
+                    $values[] = $value;
+                }
+            }
+        }
+
+        if (!empty($where)) {
+            $whereClauses = implode(' AND ', $where);
+            $stmt .= " AND " . $whereClauses;
+        }
+
+        $q = $conn->prepare($stmt);
+        $q->execute($values);
         $data = $q->fetch(PDO::FETCH_OBJ);
         return $data;
     }

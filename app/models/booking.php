@@ -19,6 +19,7 @@ class Booking extends Database
         $data = $q->fetchAll(PDO::FETCH_OBJ);
         return $data;
     }
+
     public static function create($data)
     {
         $conn = parent::getConnection();

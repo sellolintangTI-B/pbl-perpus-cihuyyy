@@ -35,9 +35,10 @@ class UserController extends Controller
 
             if (isset($_GET['page']) && !empty($_GET['page'])) $page = $_GET['page'] - 1;
 
-            $countUsers = User::count();
+            $countUsers = User::count($params);
 
             $users = User::get($params, $page);
+
             $data = [
                 "no" => 1,
                 "users" => $users,
