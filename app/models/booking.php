@@ -8,15 +8,79 @@ use PDO;
 class Booking extends Database
 {
 
-    public static function get()
+    public static function get($params, $page)
     {
+        
+        $where = [];
+        $values = [];
+
         $conn = parent::getConnection();
-        $q = $conn->prepare("SELECT DISTINCT ON (b.id) b.id, u.first_name || ' ' || u.last_name AS pic_name, b.booking_code ,r.name, b.start_time, b.end_time, bl.status
-        FROM bookings AS b LEFT JOIN users AS u ON b.user_id = u.id
-        JOIN rooms AS r ON b.room_id = r.id
-		JOIN booking_logs AS bl ON b.id = bl.booking_id ORDER BY b.id, bl.created_at DESC");
-        $q->execute();
+        $stmt = "SELECT * FROM v_booking_details";
+
+        foreach($params as $key => $value) {
+            switch ($key) {
+                case 'status':
+                    $where[] = "$key = :$key";
+                    $values[] = $value;
+                    break;
+                case 'start_time':
+                    $where[] = "TO_CHAR($key, 'YYYY-MM-DD') ILIKE :$key";
+                    $values[] = "%$value%";
+                    break;
+                default:
+                    $where[] = "$key = :$key";
+                    $values[] = $value;
+                    break;
+            }
+        }
+
+        if(!empty($where)) {
+            $whereClauses = implode(' AND ', $where);
+            $stmt .= " WHERE " . $whereClauses;
+        }
+
+        $stmt .= " ORDER BY last_status_update DESC LIMIT 15 OFFSET 15 * $page";
+        $q = $conn->prepare($stmt);
+        $q->execute($values);
         $data = $q->fetchAll(PDO::FETCH_OBJ);
+        return $data;
+
+    }
+
+    public static function count($params)
+    {
+        $where = [];
+        $values = [];
+
+        $conn = parent::getConnection();
+        $stmt = "SELECT COUNT(booking_id) FROM v_booking_details";
+
+        foreach($params as $key => $value) {
+            switch ($key) {
+                case 'status':
+                    $where[] = "$key = :$key";
+                    $values[] = $value;
+                    break;
+                case 'start_time':
+                    $where[] = "TO_CHAR($key, 'YYYY-MM-DD') ILIKE :$key";
+                    $values[] = "%$value%";
+                    break;
+                default:
+                    $where[] = "$key = :$key";
+                    $values[] = $value;
+                    break;
+            }
+
+        }
+
+        if(!empty($where)) {
+            $whereClauses = implode(' AND ', $where);
+            $stmt .= " WHERE " . $whereClauses;
+        }
+
+        $q = $conn->prepare($stmt);
+        $q->execute($values);
+        $data = $q->fetch(PDO::FETCH_OBJ);
         return $data;
     }
 
