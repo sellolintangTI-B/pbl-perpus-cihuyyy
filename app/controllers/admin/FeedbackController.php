@@ -9,7 +9,6 @@ use App\Models\Booking;
 use App\Models\Feedback;
 use App\Models\Room;
 use Carbon\Carbon;
-use Carbon\Traits\Cast;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -77,7 +76,7 @@ class FeedbackController extends Controller
                 }
             }
 
-            $data = Feedback::get($params);
+            $data = Feedback::getForExport($params);
 
             $spreadsheet = new Spreadsheet();
             $activeWorksheet = $spreadsheet->getActiveSheet();

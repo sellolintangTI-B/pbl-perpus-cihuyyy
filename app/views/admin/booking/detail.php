@@ -52,7 +52,7 @@ use Carbon\Carbon;
                             <p class="font-medium text-sm">
                                 Locations:
                                 <span>
-                                    <?= $data['booking']->name ?? '-' ?>
+                                    <?= $data['booking']->room_name ?? '-' ?>
                                 </span>
                                 , Perpustakaan PNJ, LT. <?= $data['booking']->floor ?? '-' ?>
                             </p>
@@ -61,7 +61,7 @@ use Carbon\Carbon;
                         <div class="flex gap-2 items-center justify-start text-black/80">
                             <?= Icon::people("w-5 h-5") ?>
                             <p class="font-medium text-sm">
-                                Penanggung jawab: <?= $data['booking']->pic ?>
+                                Penanggung jawab: <?= $data['booking']->pic_name ?>
                             </p>
                         </div>
 
@@ -171,8 +171,8 @@ use Carbon\Carbon;
                         <?php endif; ?>
                     </div>
                     <!-- action buttons -->
-                    <?php if (!($data['booking']->status == 'finished' || $data['booking']->status == 'cancelled' || $data['booking']->status == 'checked_in')): ?>
-                        <?= Button::anchor(label: 'Edit Data Peminjaman', color: 'primary', class: 'w-full py-3 px-6', href: "/admin/booking/edit/" . htmlspecialchars($data['booking']->id)) ?>
+                    <?php if (!($data['booking']->current_status == 'finished' || $data['booking']->current_status == 'cancelled' || $data['booking']->current_status == 'checked_in')): ?>
+                        <?= Button::anchor(label: 'Edit Data Peminjaman', color: 'primary', class: 'w-full py-3 px-6', href: "/admin/booking/edit/" . htmlspecialchars($data['booking']->booking_id)) ?>
                     <?php endif; ?>
                 </div>
             </div>

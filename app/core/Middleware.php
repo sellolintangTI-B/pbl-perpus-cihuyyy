@@ -21,6 +21,7 @@ class Middleware
             "/admin/booking/store",
             "/admin/booking/edit",
             "/admin/booking/update",
+            "/admin/booking/export",
             //ROOM
             "/admin/room/index",
             "/admin/room/store",

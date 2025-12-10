@@ -7,11 +7,12 @@ SELECT DISTINCT ON (b.id)
     b.start_time,
     b.end_time,
     b.duration,
-    b.reason,
+    bl.reason,
     u.first_name || ' ' || u.last_name AS pic_name,
     u.email AS pic_email,
     r.name AS room_name,
     r.floor,
+    r.requires_special_approval,
     r.room_img_url,
     bl.status AS current_status,
     bl.created_at AS last_status_update

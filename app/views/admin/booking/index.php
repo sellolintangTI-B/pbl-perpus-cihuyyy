@@ -73,7 +73,7 @@ Carbon::setLocale('id');
             <div class="w-full h-10 flex items-center justify-between">
                 <?= Button::anchor(label: "Tambah", icon: "plus", href: "/admin/booking/create", class: "px-4 py-2 h-full", btn_icon_size: 'w-4 h-4') ?>
                 <div class="flex items-center justify-end gap-2 h-full w-full max-w-3/4">
-                    <?= Button::anchor(label: 'Export', href: '', class: 'h-full px-4 py-2', icon: 'export', btn_icon_size: 'w-4 h-4') ?>
+                    <?= Button::anchor(label: 'Export', href:'/admin/booking/export', class: 'h-full px-4 py-2', icon: 'export', btn_icon_size: 'w-4 h-4') ?>
                     <button type="button"
                         class="px-4 py-2 bg-primary rounded-lg text-white cursor-pointer flex items-center gap-2 shadow-md shadow-black/25"
                         @click="toggleFilter()">

@@ -15,7 +15,9 @@ use App\Utils\Authentication;
 use App\Utils\FileHandler;
 use App\Utils\Validator;
 use Carbon\Carbon;
-
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 class BookingController extends Controller
 {
     public function index()
@@ -56,20 +58,92 @@ class BookingController extends Controller
         }
     }
 
+    public function export()
+    {
+        try {
+            $params = [];
+            $page = 0;
+            $filename = 'DataPeminjaman';   
+
+            if (isset($_GET['search']) && !empty($_GET['search'])) $params['booking_code'] = $_GET['search'];
+
+            if (isset($_GET['room']) && !empty($_GET['room'])) $params['room_id'] = $_GET['room'];
+
+            if (isset($_GET['status']) && !empty($_GET['status'])) $params['current_status'] = $_GET['status'];
+
+            if (isset($_GET['tahun']) && !empty($_GET['tahun'])) $params['start_time'] = $_GET['tahun'];
+
+            if (isset($_GET['bulan']) && !empty($_GET['bulan'])) $params['start_time'] = Carbon::create($_GET['tahun'], $_GET['bulan'])->format('Y-m');
+
+            if (isset($_GET['date']) && !empty($_GET['date'])) $params['start_time'] = Carbon::create($_GET['tahun'], $_GET['bulan'], $_GET['date'])->format('Y-m-d');
+
+            if (isset($_GET['page']) && !empty($_GET['page'])) $page = $_GET['page'] - 1;
+
+            $booking = Booking::getForExport($params);
+
+            $spreadsheet = new Spreadsheet();
+            $activeWorksheet = $spreadsheet->getActiveSheet();
+            $activeWorksheet->setCellValue('A1', 'No');
+            $activeWorksheet->setCellValue('B1', 'Kode Booking');
+            $activeWorksheet->setCellValue('C1', 'Nama Pengguna');
+            $activeWorksheet->setCellValue('D1', 'Ruangan');
+            $activeWorksheet->setCellValue('E1', 'Tanggal Booking');
+            $activeWorksheet->setCellValue('E1', 'Status');
+            $rowNumber = 2;
+            $no = 1;
+            foreach ($booking as $key => $value) {
+                $activeWorksheet->setCellValue('A' . $rowNumber, $no);
+                $activeWorksheet->setCellValue('B' . $rowNumber, $value->booking_code);
+                $activeWorksheet->setCellValue('C' . $rowNumber, $value->pic_name);
+                $activeWorksheet->setCellValue('D' . $rowNumber, $value->room_name);
+                $activeWorksheet->setCellValue('E' . $rowNumber, Carbon::parse($value->start_time)->translatedFormat('l, d M Y'));
+                $activeWorksheet->setCellValue('E' . $rowNumber, $value->current_status);
+                $no++;
+                $rowNumber++;
+            }
+
+            foreach (range('A', 'G') as $columnID) {
+                $activeWorksheet->getColumnDimension($columnID)->setAutoSize(true);
+            }
+
+            $lastRow = $rowNumber - 1;
+            $styleArray = [
+                'borders' => [
+                    'allBorders' => [
+                        'borderStyle' => Border::BORDER_THIN,
+                        'color' => ['argb' => 'FF000000'],
+                    ],
+                ],
+            ];
+
+            $activeWorksheet->getStyle('A1:G' . $lastRow)->applyFromArray($styleArray);
+            $writer = new Xlsx($spreadsheet);
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: attachment; filename="'.$filename.'.xlsx"');
+            header('Cache-Control: max-age=0');
+            $writer->save('php://output');
+            exit;
+            $this->view('admin/booking/index', $data, layoutType: "Admin");
+        } catch (CustomException $e) {
+            ResponseHandler::setResponse($e->getErrorMessages(), 'error');
+            header('location:' . URL . '/admin/booking/index');
+        }
+
+    }
     public function details($id)
     {
         try {
             $booking = Booking::getById($id);
             $bookingParticipants = BookingParticipant::getParticipantsByBookingId($id);
-            if ($booking->status == 'cancelled') {
+            if ($booking->current_status == 'cancelled') {
                 $detailCancel = BookingLog::getCancelDetailByBookingId($id);
             }
-            if ($booking->status == 'finished') {
+            if ($booking->current_status == 'finished') {
                 $detailFinished = BookingLog::getFinishedDetailByBookingId($id);
             }
             $data = [
                 'booking' => $booking,
-                'status' => $booking->status,
+                'status' => $booking->current_status,
                 'bookingParticipants' => $bookingParticipants,
                 'detailCancel' => $detailCancel[0] ?? null,
                 'detailFinished' => $detailFinished ?? null,
@@ -86,7 +160,7 @@ class BookingController extends Controller
     {
         try {
             $booking = Booking::getById($id);
-            if (in_array($booking->status, ['checked_in', 'finished', 'cancelled'])) throw new CustomException('Data tidak bisa diedit');
+            if (in_array($booking->current_status, ['checked_in', 'finished', 'cancelled'])) throw new CustomException('Data tidak bisa diedit');
             if (!$booking) throw new CustomException('Data tidak ditemukan');
             $bookingParticipants = BookingParticipant::getParticipantsByBookingId($id);
             $roomDetail = Room::getById($booking->room_id);

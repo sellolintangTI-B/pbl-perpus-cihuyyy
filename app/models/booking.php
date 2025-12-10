@@ -46,6 +46,44 @@ class Booking extends Database
         return $data;
     }
 
+    public static function getForExport($params)
+    {
+
+        $where = [];
+        $values = [];
+
+        $conn = parent::getConnection();
+        $stmt = "SELECT * FROM v_booking_details";
+
+        foreach ($params as $key => $value) {
+            switch ($key) {
+                case 'status':
+                    $where[] = "$key = :$key";
+                    $values[] = $value;
+                    break;
+                case 'start_time':
+                    $where[] = "TO_CHAR($key, 'YYYY-MM-DD') ILIKE :$key";
+                    $values[] = "%$value%";
+                    break;
+                default:
+                    $where[] = "$key = :$key";
+                    $values[] = $value;
+                    break;
+            }
+        }
+
+        if (!empty($where)) {
+            $whereClauses = implode(' AND ', $where);
+            $stmt .= " WHERE " . $whereClauses;
+        }
+        $stmt .= " ORDER BY last_status_update DESC";
+        
+        $q = $conn->prepare($stmt);
+        $q->execute($values);
+        $data = $q->fetchAll(PDO::FETCH_OBJ);
+        return $data;
+    }
+
     public static function count($params)
     {
         $where = [];
@@ -184,11 +222,7 @@ class Booking extends Database
     public static function getById($id)
     {
         $conn = parent::getConnection();
-        $q = $conn->prepare("SELECT DISTINCT ON (b.id) b.id,b.booking_code, bl.status, u.first_name || ' ' || u.last_name AS pic,r.room_img_url, r.name, r.floor, r.requires_special_approval, b.start_time, b.end_time, b.user_id AS pic_id, bl.created_at, r.id as room_id
-        FROM bookings AS b JOIN booking_logs AS bl ON b.id = bl.booking_id
-        LEFT JOIN users AS u ON b.user_id = u.id
-        LEFT JOIN booking_participants AS bp ON b.id = bp.booking_id 
-        JOIN rooms AS r ON b.room_id = r.id WHERE b.id = :id ORDER BY b.id, bl.created_at DESC");
+        $q = $conn->prepare("SELECT * FROM v_booking_details WHERE booking_id = :id");
         $q->bindValue(':id', $id);
         $q->execute();
         $data = $q->fetch(PDO::FETCH_OBJ);
