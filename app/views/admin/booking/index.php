@@ -183,12 +183,12 @@ Carbon::setLocale('id');
                         <tr x-data="{ open: false }" class="hover:bg-gray-50 transition-colors duration-150 text-center">
                             <td class="px-3 py-3 text-xs text-gray-700 text-start "><?= $value->booking_code ?></td>
                             <td class="px-3 py-3 text-xs font-medium text-gray-800 text-start"><?= htmlspecialchars($value->pic_name) ?></td>
-                            <td class="px-3 py-3 text-xs text-gray-700 text-start"><?= htmlspecialchars($value->name) ?></td>
+                            <td class="px-3 py-3 text-xs text-gray-700 text-start"><?= htmlspecialchars($value->room_name) ?></td>
                             <td class="px-3 py-3 text-xs text-gray-700 text-start"><?= htmlspecialchars(Carbon::parse($value->start_time)->translatedFormat('D, d M Y')) ?></td>
                             <td class="px-3 py-3 text-xs text-gray-700 text-start"><?= htmlspecialchars($hours->h . ' jam ' . $hours->i . ' menit ') ?></td>
                             <td class="px-3 py-3 text-xs">
                                 <div class="flex justify-center">
-                                    <?= Badge::badge(label: $statusLabel[$value->status], color: $statusColor[$value->status], class: "w-24 text-xs!") ?>
+                                    <?= Badge::badge(label: $statusLabel[$value->current_status], color: $statusColor[$value->current_status], class: "w-24 text-xs!") ?>
                                 </div>
                             </td>
                             <td class="px-3 py-3 relative">

@@ -21,11 +21,33 @@ class BookingController extends Controller
     public function index()
     {
         try {
+            $params = [];
+            $page = 0;
+
+            if(isset($_GET['search']) && !empty($_GET['search'])) $params['booking_code'] = $_GET['search'];
+
+            if(isset($_GET['room']) && !empty($_GET['room'])) $params['room_id'] = $_GET['room'];
+
+            if(isset($_GET['status']) && !empty($_GET['status'])) $params['current_status'] = $_GET['status'];
+
+            if(isset($_GET['tahun']) && !empty($_GET['tahun'])) $params['start_time'] = $_GET['tahun'];
+
+            if(isset($_GET['bulan']) && !empty($_GET['bulan'])) $params['start_time'] = $_GET['bulan'];
+
+            if(isset($_GET['date']) && !empty($_GET['date'])) $params['start_time'] = Carbon::parse($_GET['date'])->addYear($_GET['tahun'])->addMonth($_GET['bulan'])->format('YYYY-M-D');
+
+            if(isset($_GET['page']) && !empty($_GET['page'])) $page = $_GET['page'] - 1;
+
             $room = Room::get();
-            $booking = Booking::get();
+
+            $booking = Booking::get($params, $page);
+
+            $count = Booking::count($params);
+            
             $data = [
                 'room' => $room,
-                'booking'  => $booking
+                'booking'  => $booking,
+                'total_pages' => ceil((int) $count->count / 15)
             ];
             $this->view('admin/booking/index', $data, layoutType: "Admin");
         } catch (CustomException $e) {
