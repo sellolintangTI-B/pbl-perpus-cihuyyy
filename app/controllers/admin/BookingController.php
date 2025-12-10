@@ -24,26 +24,26 @@ class BookingController extends Controller
             $params = [];
             $page = 0;
 
-            if(isset($_GET['search']) && !empty($_GET['search'])) $params['booking_code'] = $_GET['search'];
+            if (isset($_GET['search']) && !empty($_GET['search'])) $params['booking_code'] = $_GET['search'];
 
-            if(isset($_GET['room']) && !empty($_GET['room'])) $params['room_id'] = $_GET['room'];
+            if (isset($_GET['room']) && !empty($_GET['room'])) $params['room_id'] = $_GET['room'];
 
-            if(isset($_GET['status']) && !empty($_GET['status'])) $params['current_status'] = $_GET['status'];
+            if (isset($_GET['status']) && !empty($_GET['status'])) $params['current_status'] = $_GET['status'];
 
-            if(isset($_GET['tahun']) && !empty($_GET['tahun'])) $params['start_time'] = $_GET['tahun'];
+            if (isset($_GET['tahun']) && !empty($_GET['tahun'])) $params['start_time'] = $_GET['tahun'];
 
-            if(isset($_GET['bulan']) && !empty($_GET['bulan'])) $params['start_time'] = Carbon::create($_GET['tahun'], $_GET['bulan'])->format('Y-m');
+            if (isset($_GET['bulan']) && !empty($_GET['bulan'])) $params['start_time'] = Carbon::create($_GET['tahun'], $_GET['bulan'])->format('Y-m');
 
-            if(isset($_GET['date']) && !empty($_GET['date'])) $params['start_time'] = Carbon::create($_GET['tahun'], $_GET['bulan'], $_GET['date'])->format('Y-m-d');
+            if (isset($_GET['date']) && !empty($_GET['date'])) $params['start_time'] = Carbon::create($_GET['tahun'], $_GET['bulan'], $_GET['date'])->format('Y-m-d');
 
-            if(isset($_GET['page']) && !empty($_GET['page'])) $page = $_GET['page'] - 1;
+            if (isset($_GET['page']) && !empty($_GET['page'])) $page = $_GET['page'] - 1;
 
             $room = Room::get();
 
             $booking = Booking::get($params, $page);
 
             $count = Booking::count($params);
-            
+
             $data = [
                 'room' => $room,
                 'booking'  => $booking,
@@ -200,7 +200,7 @@ class BookingController extends Controller
             }
 
             $booking = Booking::create($insertData);
-            
+
             if (!empty($data['list_anggota'])) {
                 $members = $data['list_anggota'];
                 $members = $this->addBookingIdToMembersData($members, $booking->id);
