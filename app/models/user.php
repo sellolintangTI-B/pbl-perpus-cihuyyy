@@ -15,9 +15,9 @@ class User extends Database
         $conn = parent::getConnection();
         $stmt = "SELECT * FROM users ";
 
-        if(!empty($params)) {
-            foreach($params as $key => $value) {
-                if($key == "first_name" && !empty($value)) {
+        if (!empty($params)) {
+            foreach ($params as $key => $value) {
+                if ($key == "first_name" && !empty($value)) {
                     $where[] = "CONCAT(first_name, ' ', last_name) ILIKE :name";
                     $values[] = "%$value%";
                 } else {
@@ -27,7 +27,7 @@ class User extends Database
             }
         }
 
-        if(!empty($where)) {
+        if (!empty($where)) {
             $whereClauses = implode(' AND ', $where);
             $stmt .= "WHERE " . $whereClauses;
         }
@@ -39,16 +39,16 @@ class User extends Database
         return $data;
     }
 
-    public static function count($params) 
+    public static function count($params)
     {
         $where = [];
         $values = [];
         $conn = parent::getConnection();
         $stmt = "SELECT COUNT(id) FROM users ";
 
-        if(!empty($params)) {
-            foreach($params as $key => $value) {
-                if($key == "first_name" && !empty($value)) {
+        if (!empty($params)) {
+            foreach ($params as $key => $value) {
+                if ($key == "first_name" && !empty($value)) {
                     $where[] = "CONCAT(first_name, ' ', last_name) ILIKE :name";
                     $values[] = "%$value%";
                 } else {
@@ -58,7 +58,7 @@ class User extends Database
             }
         }
 
-        if(!empty($where)) {
+        if (!empty($where)) {
             $whereClauses = implode(' AND ', $where);
             $stmt .= "WHERE " . $whereClauses;
         }
@@ -104,17 +104,17 @@ class User extends Database
         $conn = parent::getConnection();
         $clauses = "";
         $value = "";
-        if(!empty($email)) {
+        if (!empty($email)) {
             $clauses = "email = ?";
             $value = $email;
-        } 
+        }
 
-        if(!empty($id_number)) {
+        if (!empty($id_number)) {
             $clauses = "id_number = ?";
             $value = $id_number;
         }
 
-        if(!empty($phoneNumber)) {
+        if (!empty($phoneNumber)) {
             $clauses = "phone_number = ?";
             $value = $phoneNumber;
         }
@@ -196,7 +196,7 @@ class User extends Database
         $fields = [];
         $values = [];
 
-        foreach($data as $key => $value) {
+        foreach ($data as $key => $value) {
             $fields[] = "$key = :$key";
             $values[] = $value;
         }
@@ -276,6 +276,22 @@ class User extends Database
         $q->bindValue(':userId', $userId);
         $q->execute();
         $data = $q->fetch(PDO::FETCH_OBJ);
+        return $data;
+    }
+    public static function getActiveUserCount()
+    {
+        $conn = parent::getConnection();
+        $q = $conn->prepare("select count(*) from users where role != 'Admin' and is_active = true");
+        $q->execute();
+        $data = $q->fetchColumn();
+        return $data;
+    }
+    public static function getNeedConfirmationAccountCount()
+    {
+        $conn = parent::getConnection();
+        $q = $conn->prepare("select count (*) from users where is_active = false");
+        $q->execute();
+        $data = $q->fetchColumn();
         return $data;
     }
 }

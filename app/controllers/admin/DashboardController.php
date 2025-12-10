@@ -7,6 +7,8 @@ use App\Core\ResponseHandler;
 use app\error\CustomException;
 use App\Models\Booking;
 use App\Models\BookingLog;
+use App\Models\Room;
+use App\Models\User;
 use App\Utils\Authentication;
 use App\Utils\DB;
 use App\Utils\Mailer;
@@ -17,7 +19,43 @@ class DashboardController extends Controller
 
     public function index()
     {
-        return $this->view('admin/dashboard/index', layoutType: $this::$layoutType['admin']);
+        $activeAccount = User::getActiveUserCount();
+        $needConfirmationAccount = User::getNeedConfirmationAccountCount();
+        $bookingCount = Booking::getBookingCount();
+        $operationalRoomCount = Room::getOperationalRoomCount();
+        $data = [];
+        $finalData = [
+            [
+                'id' => 'active_users',
+                'label' => 'Jumlah User Aktif',
+                'period' => "",
+                'value' => $activeAccount,
+                'theme' => 'yellow',
+            ],
+            [
+                'id' => 'pending_confirmations',
+                'label' => 'Permintaan Konfirmasi Akun',
+                'period' => "",
+                'value' => $needConfirmationAccount,
+                'theme' => 'purple',
+            ],
+            [
+                'id' => 'total_bookings',
+                'label' => 'Jumlah Peminjaman',
+                'period' => "",
+                'value' => $bookingCount,
+                'theme' => 'skyblue',
+            ],
+            [
+                'id' => 'operational_rooms',
+                'label' => 'Ruangan Beroperasi',
+                'period' => "",
+                'value' => $operationalRoomCount,
+                'theme' => 'pink',
+            ]
+        ];
+        $data['card_data'] = $finalData;
+        return $this->view('admin/dashboard/index', data: $data, layoutType: $this::$layoutType['admin']);
     }
 
 
@@ -61,21 +99,20 @@ class DashboardController extends Controller
     {
         try {
             $barChart = Booking::getDataForRoomsPerYearChart();
-            $finalData = [];
-            //        "Ruangan 1": {
-            //            "2023": 95,
-            //            "2024": 34,
-            //            "2025": 29
-            //          },
-
+            $groupedData = [];
             foreach ($barChart as $row) {
-                $name = $row->name;
-                $finalData[$name] = [];
-                foreach ($barChart as $row) {
-                }
+                $roomName = $row->name;
+                $year = $row->year;
+                $count = $row->count;
+                $groupedData[$roomName][$year] = $count;
             }
+
+            // Ubah ke format JSON
+            $jsonOutput = json_encode($groupedData, JSON_PRETTY_PRINT);
+
+            // Tampilkan hasil
             header('Content-Type: application/json');
-            echo json_encode($barChart);
+            echo $jsonOutput;
         } catch (CustomException $e) {
         }
     }

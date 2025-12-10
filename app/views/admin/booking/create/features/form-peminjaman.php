@@ -4,7 +4,6 @@ use App\Components\Button;
 use App\Components\Icon\Icon;
 use App\Components\FormInput;
 use Carbon\Carbon;
-
 ?>
 
 <div class="w-full h-full grid sm:grid-cols-5 grid-cols-1 gap-4 overflow-y-scroll">
@@ -200,7 +199,7 @@ use Carbon\Carbon;
                 <input type="hidden" name="end_time" value="<?= $_GET['end_time'] ?? "" ?>">
                 <input type="hidden" name="state" value="detail">
                 <input type="hidden" name="id" value="<?= $data['data']->id ?>">
-                <input id="date_check" name="date_check" , type="date" required value=<?= isset($_GET['date_check']) ? $_GET['date_check'] : date('Y-m-d') ?> class="custom-input-icon border-none bg-none text-sm outline-none" />
+                <input id="date_check" name="date_check" , type="date" required value=<?= $data["date_check"] ?? $_GET['date_check'] ?? "" ?> class="custom-input-icon border-none bg-none text-sm outline-none" />
                 <button
                     type="submit"
                     class="bg-primary cursor-pointer text-white px-4 py-1 rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors whitespace-nowrap">
