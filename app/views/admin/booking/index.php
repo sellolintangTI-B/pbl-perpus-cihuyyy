@@ -213,15 +213,15 @@ Carbon::setLocale('id');
                                     <?= Icon::dotMenu('w-5 h-5') ?>
                                 </button>
                                 <div x-show="open" @click.outside="open = false" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95" class="absolute right-0 mt-1 w-36 bg-white border border-gray-200 rounded-md shadow-md overflow-hidden z-50 text-left" style="display: none;">
-                                    <?php if ($value->status == 'created'): ?>
-                                        <a href="<?= URL . '/admin/booking/check_in/' . $value->id ?>" class="flex items-center gap-2 px-3 py-2 text-xs text-secondary hover:bg-secondary/5 transition"><?= Icon::calendar_pencil('w-4 h-4') ?> Check In</a>
-                                        <a href="<?= URL . '/admin/booking/edit/' . $value->id ?>" class="flex items-center gap-2 px-3 py-2 text-xs text-primary hover:bg-primary/5 transition"><?= Icon::pencil('w-4 h-4') ?> Edit</a>
-                                    <?php elseif ($value->status == 'checked_in'): ?>
-                                        <a href="<?= URL . '/admin/booking/check_out/' . $value->id ?>" class="flex items-center gap-2 px-3 py-2 text-xs text-tertiary hover:bg-tertiary/5 transition"><?= Icon::logout('w-4 h-4') ?> Finish</a>
+                                    <?php if ($value->current_status == 'created'): ?>
+                                        <a href="<?= URL . '/admin/booking/check_in/' . $value->booking_id ?>" class="flex items-center gap-2 px-3 py-2 text-xs text-secondary hover:bg-secondary/5 transition"><?= Icon::calendar_pencil('w-4 h-4') ?> Check In</a>
+                                        <a href="<?= URL . '/admin/booking/edit/' . $value->booking_id ?>" class="flex items-center gap-2 px-3 py-2 text-xs text-primary hover:bg-primary/5 transition"><?= Icon::pencil('w-4 h-4') ?> Edit</a>
+                                    <?php elseif ($value->current_status == 'checked_in'): ?>
+                                        <a href="<?= URL . '/admin/booking/check_out/' . $value->booking_id ?>" class="flex items-center gap-2 px-3 py-2 text-xs text-tertiary hover:bg-tertiary/5 transition"><?= Icon::logout('w-4 h-4') ?> Finish</a>
                                     <?php endif; ?>
-                                    <a href="<?= URL . '/admin/booking/details/' . $value->id ?>" class="flex items-center gap-2 px-3 py-2 text-xs text-gray-700 hover:bg-gray-50 transition"><?= Icon::eye('w-4 h-4') ?> Detail</a>
-                                    <?php if ($value->status == 'created'): ?>
-                                        <button @click="$dispatch('cancel-peminjaman', { cancelPeminjamanId: '<?= $value->id ?>' }); showAlert = true;" class="flex items-center gap-2 px-3 py-2 text-xs text-red-600 hover:bg-red/5 border-t border-gray-100 w-full text-left transition"><?= Icon::trash('w-4 h-4') ?> Cancel</button>
+                                    <a href="<?= URL . '/admin/booking/details/' . $value->booking_id ?>" class="flex items-center gap-2 px-3 py-2 text-xs text-gray-700 hover:bg-gray-50 transition"><?= Icon::eye('w-4 h-4') ?> Detail</a>
+                                    <?php if ($value->current_status == 'created'): ?>
+                                        <button @click="$dispatch('cancel-peminjaman', { cancelPeminjamanId: '<?= $value->booking_id ?>' }); showAlert = true;" class="flex items-center gap-2 px-3 py-2 text-xs text-red-600 hover:bg-red/5 border-t border-gray-100 w-full text-left transition"><?= Icon::trash('w-4 h-4') ?> Cancel</button>
                                     <?php endif; ?>
                                 </div>
                             </td>

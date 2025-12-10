@@ -16,7 +16,7 @@
     "scripts": {
         "migrate" : "php app/utils/Migrate.php",
         "seed" : "php app/utils/Seed.php",
-        "functions" : "php app/utils/functions.php"
+        "functions" : "php app/utils/Functions.php"
     },
     "require": {
         "vlucas/phpdotenv": "^5.6",

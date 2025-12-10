@@ -10,6 +10,7 @@ use App\Models\BookingLog;
 use App\Utils\Authentication;
 use App\Utils\DB;
 use App\Utils\Mailer;
+use PDO;
 
 class DashboardController extends Controller
 {
@@ -53,6 +54,29 @@ class DashboardController extends Controller
         } catch (CustomException $e) {
             header('Content-Type: application/json');
             echo json_encode($e->getErrorMessages());
+        }
+    }
+
+    public function get_barChart_data()
+    {
+        try {
+            $barChart = Booking::getDataForRoomsPerYearChart();
+            $finalData = [];
+            //        "Ruangan 1": {
+            //            "2023": 95,
+            //            "2024": 34,
+            //            "2025": 29
+            //          },
+
+            foreach ($barChart as $row) {
+                $name = $row->name;
+                $finalData[$name] = [];
+                foreach ($barChart as $row) {
+                }
+            }
+            header('Content-Type: application/json');
+            echo json_encode($barChart);
+        } catch (CustomException $e) {
         }
     }
 

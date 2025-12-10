@@ -10,14 +10,14 @@ class Booking extends Database
 
     public static function get($params, $page)
     {
-        
+
         $where = [];
         $values = [];
 
         $conn = parent::getConnection();
         $stmt = "SELECT * FROM v_booking_details";
 
-        foreach($params as $key => $value) {
+        foreach ($params as $key => $value) {
             switch ($key) {
                 case 'status':
                     $where[] = "$key = :$key";
@@ -34,7 +34,7 @@ class Booking extends Database
             }
         }
 
-        if(!empty($where)) {
+        if (!empty($where)) {
             $whereClauses = implode(' AND ', $where);
             $stmt .= " WHERE " . $whereClauses;
         }
@@ -44,7 +44,6 @@ class Booking extends Database
         $q->execute($values);
         $data = $q->fetchAll(PDO::FETCH_OBJ);
         return $data;
-
     }
 
     public static function count($params)
@@ -55,7 +54,7 @@ class Booking extends Database
         $conn = parent::getConnection();
         $stmt = "SELECT COUNT(booking_id) FROM v_booking_details";
 
-        foreach($params as $key => $value) {
+        foreach ($params as $key => $value) {
             switch ($key) {
                 case 'status':
                     $where[] = "$key = :$key";
@@ -70,10 +69,9 @@ class Booking extends Database
                     $values[] = $value;
                     break;
             }
-
         }
 
-        if(!empty($where)) {
+        if (!empty($where)) {
             $whereClauses = implode(' AND ', $where);
             $stmt .= " WHERE " . $whereClauses;
         }
@@ -257,9 +255,17 @@ class Booking extends Database
     {
         $conn = parent::getConnection();
         $q = $conn->prepare("SELECT TO_CHAR(start_time, 'YYYY') AS year, TO_CHAR(start_time, 'MM') AS month, COUNT(id) FROM bookings 
-        GROUP BY year, month ORDER BY year ASC, month ASC" );
+        GROUP BY year, month ORDER BY year ASC, month ASC");
         $q->execute();
         $data = $q->fetchAll(PDO::FETCH_OBJ);
         return $data;
-    } 
+    }
+    public static function getDataForRoomsPerYearChart()
+    {
+        $conn = parent::getConnection();
+        $q = $conn->prepare("SELECT r.name as name, extract(year from b.start_time) as year, count (b.id) from bookings b join rooms r on (b.room_id=r.id) group by name, year order by name asc");
+        $q->execute();
+        $data = $q->fetchAll(PDO::FETCH_OBJ);
+        return $data;
+    }
 }
