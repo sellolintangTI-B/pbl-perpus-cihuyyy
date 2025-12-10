@@ -84,7 +84,7 @@ class BookingController extends Controller
                 'end_time' => $data['end_time'],
                 'booking_code' => $data['booking_code']
             ]);
-            
+
             $members = $this->addBookingIdToMembersData($members, $booking->id);
             $bookingParticipants = BookingParticipant::bulkInsert($members);
 
@@ -114,7 +114,7 @@ class BookingController extends Controller
             if ($checkUserActiveBooking) throw new CustomException('Tolong selesaikan peminjaman anda terlebih dahulu sebelum meminjam ruangan lain');
 
             $checkIfLibraryClose = LibraryClose::getByDate($data['date']->format('Y-m-d'));
-            if($checkIfLibraryClose) throw new CustomException('Tidak bisa booking di tanggal ini');
+            if ($checkIfLibraryClose) throw new CustomException('Tidak bisa booking di tanggal ini');
 
             if ($data['date']->isWeekend()) throw new CustomException('Tidak bisa booking di weekend');
             if ($data['date']->lt(Carbon::now('Asia/Jakarta'))) throw new CustomException('Tidak bisa booking di kemarin hari');
