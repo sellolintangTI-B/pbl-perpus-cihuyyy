@@ -302,4 +302,12 @@ class Booking extends Database
         $data = $q->fetchAll(PDO::FETCH_OBJ);
         return $data;
     }
+    public static function getBookingCount()
+    {
+        $conn = parent::getConnection();
+        $q = $conn->prepare("select count(*) from bookings");
+        $q->execute();
+        $data = $q->fetchColumn();
+        return $data;
+    }
 }

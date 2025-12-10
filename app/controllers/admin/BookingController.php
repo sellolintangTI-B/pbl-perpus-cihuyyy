@@ -49,7 +49,7 @@ class BookingController extends Controller
             $data = [
                 'room' => $room,
                 'booking'  => $booking,
-                'total_pages' => ceil((int) $count->count / 15)
+                'total_page' => ceil((int) $count->count / 15)
             ];
             $this->view('admin/booking/index', $data, layoutType: "Admin");
         } catch (CustomException $e) {
@@ -211,6 +211,7 @@ class BookingController extends Controller
                     $date = Carbon::parse($_GET['date_check'])->toDateString();
                 }
                 $data['schedule'] = Booking::getByRoomId($_GET['id'], $date);
+                $data['date_check'] = $date;
                 $data['data'] = Room::getById($_GET['id']);
                 $data['roomList'] = Room::get();
                 $data['state'] = 'detail';

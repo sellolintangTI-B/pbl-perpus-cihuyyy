@@ -6,6 +6,7 @@ use App\Components\Badge;
 use App\Components\Icon\Icon;
 use Carbon\Carbon;
 use App\Components\CustomSelect;
+use App\Components\Pagination;
 
 $no = 1;
 
@@ -38,6 +39,14 @@ $bulan = [
     '12' => 'Desember'
 ];
 
+$queryParams = [];
+if (isset($_GET['ruangan'])) $queryParams['ruangan'] = $_GET['ruangan'];
+if (isset($_GET['bulan'])) $queryParams['bulan'] = $_GET['bulan'];
+if (isset($_GET['tahun'])) $queryParams['tahun'] = $_GET['tahun'];
+
+$currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$totalPage = $data['total_page'] ?? 1;
+
 ?>
 
 <div class="w-full h-full">
@@ -48,10 +57,10 @@ $bulan = [
             </h1>
         </div>
 
-        <!-- Action Section -->
         <div class="w-full h-10 flex items-center justify-between">
             <div class="flex items-center justify-start gap-2 h-full">
                 <?php
+                // Logic Export tetap menggunakan parameter yang sama
                 $exportParams = [];
                 if (isset($_GET['ruangan']) && $_GET['ruangan'] !== '') {
                     $exportParams[] = 'ruangan=' . urlencode($_GET['ruangan']);
@@ -109,7 +118,6 @@ $bulan = [
             </div>
         </div>
 
-        <!-- Main Content -->
         <div class="w-full h-full overflow-y-auto p-2">
             <?php if (empty($feedback)): ?>
                 <div class="w-full h-full flex items-center justify-center">
@@ -119,7 +127,7 @@ $bulan = [
                     </div>
                 </div>
             <?php else: ?>
-                <div class="w-full grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="w-full grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                     <?php foreach ($feedback as $d): ?>
                         <div class="w-full p-6 rounded-lg bg-baseColor shadow-md shadow-gray-200 flex flex-col gap-2">
                             <div class="flex justify-between items-center">
@@ -180,6 +188,21 @@ $bulan = [
                             </div>
                         </div>
                     <?php endforeach; ?>
+                </div>
+
+                <div class="mt-12">
+                    <?php if (isset($data['total_page']) && $data['total_page'] > 1): ?>
+                        <div class="w-full flex justify-center mb-6">
+                            <?= Pagination::render(
+                                currentPage: $currentPage,
+                                totalPage: $totalPage,
+                                queryParams: $queryParams,
+                                maxVisible: 5,
+                                prevText: "Sebelumnya",
+                                nextText: "Selanjutnya"
+                            ) ?>
+                        </div>
+                    <?php endif; ?>
                 </div>
             <?php endif; ?>
         </div>

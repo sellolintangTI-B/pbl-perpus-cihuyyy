@@ -245,10 +245,13 @@ use App\Components\Modal;
         <!-- Content Utama -->
         <div class="flex flex-col gap-6 w-full">
             <div class="flex items-center justify-start gap-4 w-full">
-                <?= DashboardCard::render(color: 'yellow', label: 'Jumlah Peminjaman', filter_value: 'November 2025', main_value: '524') ?>
-                <?= DashboardCard::render(color: 'purple', label: 'Jumlah Peminjaman', filter_value: 'November 2025', main_value: '524') ?>
-                <?= DashboardCard::render(color: 'skyblue', label: 'Jumlah Peminjaman', filter_value: 'November 2025', main_value: '524') ?>
-                <?= DashboardCard::render(color: 'pink', label: 'Jumlah Peminjaman', filter_value: 'November 2025', main_value: '524') ?>
+                <?php
+                foreach ($data['card_data'] as $dat):
+                ?>
+                    <?= DashboardCard::render(color: $dat['theme'], label: $dat['label'], filter_value: 'November 2025', main_value: $dat['value']) ?>
+                <?php
+                endforeach;
+                ?>
             </div>
 
             <div class="w-full grid grid-cols-2 gap-4">
@@ -379,68 +382,119 @@ use App\Components\Modal;
 <script>
     document.addEventListener('DOMContentLoaded', async function() {
         const apiUrl = '<?= URL ?>/admin/dashboard/get_chart_data';
-        const colors = {
-            2025: {
-                border: 'rgba(255, 99, 132, 1)',
-                background: 'rgba(255, 99, 132, 0.1)'
-            },
-            2026: {
-                border: 'rgba(54, 162, 235, 1)',
-                background: 'rgba(54, 162, 235, 0.1)'
-            },
-            2027: {
-                border: 'rgba(75, 192, 192, 1)',
-                background: 'rgba(75, 192, 192, 0.1)'
-            }
-        };
-        const monthLabels = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+        const chartCanvas = document.getElementById('chart-peminjaman-line');
+
+        // 1. Palette Warna Dasar (Format RGB String agar mudah atur opacity)
+        const colorPalette = [
+            '255, 99, 132', // Red
+            '54, 162, 235', // Blue
+            '75, 192, 192', // Teal
+            '255, 206, 86', // Yellow
+            '153, 102, 255', // Purple
+            '255, 159, 64' // Orange
+        ];
+
+        const monthLabels = [
+            'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
             'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
         ];
 
+        if (!chartCanvas) return;
+
         try {
             const response = await fetch(apiUrl);
-            if (!response.ok) throw new Error('Gagal mengambil data chart');
+
+            // Security Check
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            const contentType = response.headers.get("content-type");
+            if (!contentType || !contentType.includes("application/json")) {
+                throw new TypeError("Data bukan JSON!");
+            }
 
             const data = await response.json();
 
-            const datasets = Object.keys(data).map(year => ({
-                label: year,
-                data: data[year],
-                borderColor: colors[year]?.border || 'rgba(75, 192, 192, 1)',
-                backgroundColor: colors[year]?.background || 'rgba(75, 192, 192, 0.1)',
-                tension: 0,
-                borderWidth: 2
-            }));
+            // Validasi Data Kosong
+            if (!data || Object.keys(data).length === 0) {
+                console.warn('Data chart kosong.');
+                return;
+            }
 
-            const ctx = document.getElementById('chart-peminjaman-line');
-            if (ctx) {
-                new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: monthLabels,
-                        datasets: datasets
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                display: true,
-                                position: 'bottom',
-                                labels: {
-                                    usePointStyle: true,
-                                    padding: 15
+            const sortedYears = Object.keys(data).sort();
+
+            const datasets = sortedYears.map((year, index) => {
+                const colorBase = colorPalette[index % colorPalette.length];
+
+                const yearData = Array.isArray(data[year]) ? data[year] : [];
+
+                return {
+                    label: year,
+                    data: yearData,
+                    borderColor: `rgba(${colorBase}, 1)`,
+                    backgroundColor: `rgba(${colorBase}, 0.1)`,
+                    pointBackgroundColor: `rgba(${colorBase}, 1)`,
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: `rgba(${colorBase}, 1)`,
+                    fill: true,
+                    tension: 0.1,
+                    borderWidth: 2
+                };
+            });
+
+            new Chart(chartCanvas, {
+                type: 'line',
+                data: {
+                    labels: monthLabels,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'bottom',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 20,
+                                font: {
+                                    size: 12,
+                                    family: "'Segoe UI', sans-serif"
                                 }
                             }
                         },
-                        scales: {
-                            y: {
-                                beginAtZero: true
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            backgroundColor: 'rgba(0, 0, 0, 1)',
+                            padding: 10,
+                            itemSort: (a, b) => b.raw - a.raw
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            },
+                            ticks: {
+                                stepSize: 2
                             }
                         }
+                    },
+                    interaction: {
+                        mode: 'nearest',
+                        axis: 'x',
+                        intersect: false
                     }
-                });
-            }
+                }
+            });
+
         } catch (error) {
             console.error('Error loading chart:', error);
         }
@@ -449,126 +503,129 @@ use App\Components\Modal;
 
 <script>
     document.addEventListener('DOMContentLoaded', async function() {
-        const apiUrl = '<?= URL ?>/admin/dashboard/get_room_chart_data';
+        const apiUrl = '<?= URL ?>/admin/dashboard/get_barchart_data';
+        const chartCanvas = document.getElementById('chart-peminjaman-ruangan');
 
-        // Warna untuk setiap tahun
-        const yearColors = {
-            2023: 'rgba(139, 92, 246, 0.8)', // Purple
-            2024: 'rgba(251, 146, 146, 0.8)', // Pink/Salmon
-            2025: 'rgba(96, 165, 250, 0.8)' // Sky Blue
-        };
+        const colorPalette = [
+            '139, 92, 246', // Purple
+            '251, 146, 146', // Pink/Salmon
+            '96, 165, 250', // Sky Blue
+            '52, 211, 153', // Emerald Green
+            '251, 191, 36' // Amber
+        ];
+
+        if (!chartCanvas) return;
 
         try {
             const response = await fetch(apiUrl);
-            if (!response.ok) throw new Error('Gagal mengambil data chart ruangan');
+
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            const contentType = response.headers.get("content-type");
+            if (!contentType || !contentType.includes("application/json")) {
+                throw new TypeError("Oops, data yang diterima bukan JSON!");
+            }
 
             const data = await response.json();
 
-            // Format data dari API
-            // Expected format: 
-            // {
-            //   "Ruangan 1": { "2023": 95, "2024": 34, "2025": 29 },
-            //   "Ruangan 2": { "2023": 80, "2024": 45, "2025": 58 },
-            //   ...
-            // }
+            if (!data || Object.keys(data).length === 0) {
+                console.warn('Data chart kosong.');
+                return;
+            }
 
             const roomNames = Object.keys(data);
-            const years = ['2023', '2024', '2025']; // Sesuaikan dengan data Anda
 
-            // Buat datasets untuk setiap tahun
-            const datasets = years.map(year => ({
-                label: year,
-                data: roomNames.map(room => data[room][year] || 0),
-                backgroundColor: yearColors[year],
-                borderColor: yearColors[year].replace('0.8', '1'),
-                borderWidth: 1,
-                borderRadius: 4,
-                barThickness: 'flex',
-                maxBarThickness: 40
-            }));
 
-            const ctx = document.getElementById('chart-peminjaman-ruangan');
-            if (ctx) {
-                new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: roomNames,
-                        datasets: datasets
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                display: true,
-                                position: 'bottom',
-                                labels: {
-                                    usePointStyle: true,
-                                    padding: 15,
-                                    font: {
-                                        size: 12,
-                                        family: "'Segoe UI', sans-serif"
-                                    }
-                                }
-                            },
-                            tooltip: {
-                                backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                                padding: 12,
-                                titleFont: {
-                                    size: 14,
-                                    weight: 'bold'
-                                },
-                                bodyFont: {
-                                    size: 13
-                                },
-                                borderColor: 'rgba(255, 255, 255, 0.1)',
-                                borderWidth: 1,
-                                callbacks: {
-                                    label: function(context) {
-                                        return context.dataset.label + ': ' + context.parsed.y + ' peminjaman';
-                                    }
+            const allYearsSet = new Set();
+            Object.values(data).forEach(roomData => {
+                if (typeof roomData === 'object' && roomData !== null) {
+                    Object.keys(roomData).forEach(year => allYearsSet.add(year));
+                }
+            });
+
+            const dynamicYears = Array.from(allYearsSet).sort();
+
+            const datasets = dynamicYears.map((year, index) => {
+                const colorBase = colorPalette[index % colorPalette.length];
+
+                return {
+                    label: year,
+                    data: roomNames.map(room => (data[room] && data[room][year]) ? data[room][year] : 0),
+                    backgroundColor: `rgba(${colorBase}, 1)`,
+                    borderColor: `rgba(${colorBase}, 1)`,
+                    borderWidth: 1,
+                    borderRadius: 0,
+                    barThickness: 'flex',
+                    maxBarThickness: 40
+                };
+            });
+
+            new Chart(chartCanvas, {
+                type: 'bar',
+                data: {
+                    labels: roomNames,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'bottom',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 15,
+                                font: {
+                                    size: 12,
+                                    family: "'Segoe UI', sans-serif"
                                 }
                             }
                         },
-                        scales: {
-                            x: {
-                                grid: {
-                                    display: false
-                                },
-                                ticks: {
-                                    font: {
-                                        size: 11
-                                    },
-                                    maxRotation: 45,
-                                    minRotation: 45
-                                }
-                            },
-                            y: {
-                                beginAtZero: true,
-                                grid: {
-                                    color: 'rgba(0, 0, 0, 0.05)',
-                                    drawBorder: false
-                                },
-                                ticks: {
-                                    stepSize: 20,
-                                    font: {
-                                        size: 11
-                                    },
-                                    callback: function(value) {
-                                        return value;
-                                    }
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            padding: 12,
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.parsed.y + ' peminjaman';
                                 }
                             }
-                        },
-                        interaction: {
-                            mode: 'index',
-                            intersect: false
                         }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                font: {
+                                    size: 11
+                                },
+                                maxRotation: 45,
+                                minRotation: 45
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                stepSize: 2
+                            }
+                        }
+                    },
+                    interaction: {
+                        mode: 'index',
+                        intersect: false
                     }
-                });
-            }
+                }
+            });
+
         } catch (error) {
-            console.error('Error loading room chart:', error);
+            console.error('Gagal memuat grafik:', error);
+            // Optional: Tampilkan pesan error user-friendly di UI
+            chartCanvas.parentNode.innerHTML = `<div class="text-center p-4 text-red-500">Gagal memuat data grafik. Silakan refresh halaman.</div>`;
         }
     });
 </script>

@@ -45,7 +45,7 @@ class StagedCustomSelect
                 x-transition:leave="transition ease-in duration-150"
                 x-transition:leave-start="opacity-100 scale-100"
                 x-transition:leave-end="opacity-0 scale-95"
-                class="bg-white border border-gray-200 rounded-md shadow-md overflow-hidden absolute items-center justify-self-center top-0 translate-y-14 z-50 text-left min-w-full"
+                class="bg-white border border-gray-200 rounded-md shadow-md max-h-[14rem] overflow-y-auto overflow-hidden absolute items-center justify-self-center top-0 translate-y-14 z-50 text-left min-w-full"
                 style="display: none;">
 
                 <input type="text" name="<?= htmlspecialchars($name) ?>" :value="value" hidden />

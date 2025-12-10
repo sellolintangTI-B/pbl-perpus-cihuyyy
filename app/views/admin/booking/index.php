@@ -7,11 +7,9 @@ use App\Components\Icon\Icon;
 use Carbon\Carbon;
 use App\Components\Modal;
 use App\Components\StagedCustomSelect;
+use App\Components\Pagination; // 1. Import Pagination
 
 // --- [PHP CLEANUP] ---
-// Kita hapus logika CarbonPeriod di sini karena sudah ditangani oleh Alpine.js di browser.
-// Sisa PHP hanya untuk menerima input filter.
-
 $statusColor = [
     "created" => "primary",
     "checked_in" => "secondary",
@@ -56,6 +54,19 @@ if (isset($data['years'])):
 endif;
 
 Carbon::setLocale('id');
+
+
+$queryParams = [];
+if (isset($_GET['search'])) $queryParams['search'] = $_GET['search'];
+if (isset($_GET['tahun'])) $queryParams['tahun'] = $_GET['tahun'];
+if (isset($_GET['bulan'])) $queryParams['bulan'] = $_GET['bulan'];
+if (isset($_GET['date'])) $queryParams['date'] = $_GET['date'];
+if (isset($_GET['status'])) $queryParams['status'] = $_GET['status'];
+if (isset($_GET['room'])) $queryParams['room'] = $_GET['room'];
+
+$currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$totalPage = $data['total_page'] ?? 1;
+
 ?>
 
 <div class="w-full h-full" x-data="{ showAlert: false, cancelPeminjamanId: null }" @cancel-peminjaman.window="showAlert = true; cancelPeminjamanId = $event.detail.cancelPeminjamanId">
@@ -65,7 +76,6 @@ Carbon::setLocale('id');
             <h1 class="text-2xl font-medium text-primary">Data Peminjaman</h1>
         </div>
 
-        <!-- search bar & button filter -->
         <form class="w-full flex flex-col gap-5" method="GET"
             x-data="bookingFilter('<?= $_GET['tahun'] ?? '' ?>', '<?= $_GET['bulan'] ?? '' ?>', '<?= $_GET['date'] ?? '' ?>')"
             x-cloak>
@@ -90,12 +100,10 @@ Carbon::setLocale('id');
                     <?= Button::button(class: "px-4 h-full", label: "Cari", type: 'submit') ?>
                 </div>
             </div>
-            <!-- mulai show filter -->
             <div class="w-full h-fit transition-all duration-300 ease-in-out bg-baseColor shadow-md shadow-gray-200 rounded-xl border border-gray-200 overflow-visible"
                 :class="showFilter ? 'max-h-[500px] opacity-100 p-4' : 'max-h-0 opacity-0 overflow-hidden border-0'">
                 <div class="flex flex-wrap gap-4 items-start justify-start w-full">
 
-                    <!-- dropdown tanggal -->
                     <div class="relative w-fit h-full" x-data="{ open: false }" x-show="month">
                         <input type="hidden" name="date" x-model="date">
                         <button type="button" @click="open = !open" :disabled="!year || !month"
@@ -123,7 +131,6 @@ Carbon::setLocale('id');
                         </div>
                     </div>
 
-                    <!-- dropdown bulan -->
                     <div class="relative w-fit " x-data="{ open: false }" x-show="year">
                         <input type="hidden" name="bulan" x-model="month">
                         <button type="button" @click="open = !open"
@@ -143,7 +150,6 @@ Carbon::setLocale('id');
                         </div>
                     </div>
 
-                    <!-- dropdown tahun -->
                     <div class="relative w-fit" x-data="{ open: false }">
                         <input type="hidden" name="tahun" x-model="year">
                         <button type="button" @click="open = !open"
@@ -177,58 +183,80 @@ Carbon::setLocale('id');
                 </div>
             </div>
         </form>
-        <!-- end of filter -->
         <div class="p-4 bg-baseColor shadow-sm shadow-gray-600 rounded-xl w-full h-full border border-gray-200 overflow-y-auto">
-            <table class="table-auto w-full text-left border-collapse">
-                <thead class="text-primary">
-                    <tr class="border-b border-gray-200 ">
-                        <th class="px-3 py-3 text-xs font-semibold text-start">Kode</th>
-                        <th class="px-3 py-3 text-xs font-semibold">Peminjam</th>
-                        <th class="px-3 py-3 text-xs font-semibold">Ruangan</th>
-                        <th class="px-3 py-3 text-xs font-semibold">Tanggal</th>
-                        <th class="px-3 py-3 text-xs font-semibold">Durasi</th>
-                        <th class="px-3 py-3 text-xs font-semibold text-center">Status</th>
-                        <th class="px-3 py-3 text-xs font-semibold text-center">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody class="text-primary divide-y divide-gray-100">
-                    <?php foreach ($data['booking'] as $value) :
-                        $startTime = Carbon::parse($value->start_time);
-                        $endTime = Carbon::parse($value->end_time);
-                        $hours = $startTime->diff($endTime);
-                    ?>
-                        <tr x-data="{ open: false }" class="hover:bg-gray-50 transition-colors duration-150 text-center">
-                            <td class="px-3 py-3 text-xs text-gray-700 text-start "><?= $value->booking_code ?></td>
-                            <td class="px-3 py-3 text-xs font-medium text-gray-800 text-start"><?= htmlspecialchars($value->pic_name) ?></td>
-                            <td class="px-3 py-3 text-xs text-gray-700 text-start"><?= htmlspecialchars($value->room_name) ?></td>
-                            <td class="px-3 py-3 text-xs text-gray-700 text-start"><?= htmlspecialchars(Carbon::parse($value->start_time)->translatedFormat('D, d M Y')) ?></td>
-                            <td class="px-3 py-3 text-xs text-gray-700 text-start"><?= htmlspecialchars($hours->h . ' jam ' . $hours->i . ' menit ') ?></td>
-                            <td class="px-3 py-3 text-xs">
-                                <div class="flex justify-center">
-                                    <?= Badge::badge(label: $statusLabel[$value->current_status], color: $statusColor[$value->current_status], class: "w-24 text-xs!") ?>
-                                </div>
-                            </td>
-                            <td class="px-3 py-3 relative">
-                                <button @click="open = !open" class="p-1.5 rounded-full hover:bg-gray-100 transition-colors duration-200 cursor-pointer">
-                                    <?= Icon::dotMenu('w-5 h-5') ?>
-                                </button>
-                                <div x-show="open" @click.outside="open = false" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95" class="absolute right-0 mt-1 w-36 bg-white border border-gray-200 rounded-md shadow-md overflow-hidden z-50 text-left" style="display: none;">
-                                    <?php if ($value->current_status == 'created'): ?>
-                                        <a href="<?= URL . '/admin/booking/check_in/' . $value->booking_id ?>" class="flex items-center gap-2 px-3 py-2 text-xs text-secondary hover:bg-secondary/5 transition"><?= Icon::calendar_pencil('w-4 h-4') ?> Check In</a>
-                                        <a href="<?= URL . '/admin/booking/edit/' . $value->booking_id ?>" class="flex items-center gap-2 px-3 py-2 text-xs text-primary hover:bg-primary/5 transition"><?= Icon::pencil('w-4 h-4') ?> Edit</a>
-                                    <?php elseif ($value->current_status == 'checked_in'): ?>
-                                        <a href="<?= URL . '/admin/booking/check_out/' . $value->booking_id ?>" class="flex items-center gap-2 px-3 py-2 text-xs text-tertiary hover:bg-tertiary/5 transition"><?= Icon::logout('w-4 h-4') ?> Finish</a>
-                                    <?php endif; ?>
-                                    <a href="<?= URL . '/admin/booking/details/' . $value->booking_id ?>" class="flex items-center gap-2 px-3 py-2 text-xs text-gray-700 hover:bg-gray-50 transition"><?= Icon::eye('w-4 h-4') ?> Detail</a>
-                                    <?php if ($value->current_status == 'created'): ?>
-                                        <button @click="$dispatch('cancel-peminjaman', { cancelPeminjamanId: '<?= $value->booking_id ?>' }); showAlert = true;" class="flex items-center gap-2 px-3 py-2 text-xs text-red-600 hover:bg-red/5 border-t border-gray-100 w-full text-left transition"><?= Icon::trash('w-4 h-4') ?> Cancel</button>
-                                    <?php endif; ?>
-                                </div>
-                            </td>
+            <div class="w-full min-h-[28.5rem]">
+                <table class="table-auto w-full text-left border-collapse">
+                    <thead class="text-primary">
+                        <tr class="border-b border-gray-200 ">
+                            <th class="px-3 py-3 text-xs font-semibold text-start">Kode</th>
+                            <th class="px-3 py-3 text-xs font-semibold">Peminjam</th>
+                            <th class="px-3 py-3 text-xs font-semibold">Ruangan</th>
+                            <th class="px-3 py-3 text-xs font-semibold">Tanggal</th>
+                            <th class="px-3 py-3 text-xs font-semibold">Durasi</th>
+                            <th class="px-3 py-3 text-xs font-semibold text-center">Status</th>
+                            <th class="px-3 py-3 text-xs font-semibold text-center">Aksi</th>
                         </tr>
-                    <?php endforeach  ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody class="text-primary divide-y divide-gray-100">
+                        <?php if (empty($data['booking'])): ?>
+                            <tr>
+                                <td colspan="7" class="px-3 py-8 text-center text-sm text-gray-500">
+                                    Tidak ada data peminjaman
+                                </td>
+                            </tr>
+                        <?php else: ?>
+                            <?php foreach ($data['booking'] as $value) :
+                                $startTime = Carbon::parse($value->start_time);
+                                $endTime = Carbon::parse($value->end_time);
+                                $hours = $startTime->diff($endTime);
+                            ?>
+                                <tr x-data="{ open: false }" class="hover:bg-gray-50 transition-colors duration-150 text-center">
+                                    <td class="px-3 py-3 text-xs text-gray-700 text-start "><?= $value->booking_code ?></td>
+                                    <td class="px-3 py-3 text-xs font-medium text-gray-800 text-start"><?= htmlspecialchars($value->pic_name) ?></td>
+                                    <td class="px-3 py-3 text-xs text-gray-700 text-start"><?= htmlspecialchars($value->room_name) ?></td>
+                                    <td class="px-3 py-3 text-xs text-gray-700 text-start"><?= htmlspecialchars(Carbon::parse($value->start_time)->translatedFormat('D, d M Y')) ?></td>
+                                    <td class="px-3 py-3 text-xs text-gray-700 text-start"><?= htmlspecialchars($hours->h . ' jam ' . $hours->i . ' menit ') ?></td>
+                                    <td class="px-3 py-3 text-xs">
+                                        <div class="flex justify-center">
+                                            <?= Badge::badge(label: $statusLabel[$value->current_status], color: $statusColor[$value->current_status], class: "w-24 text-xs!") ?>
+                                        </div>
+                                    </td>
+                                    <td class="px-3 py-3 relative">
+                                        <button @click="open = !open" class="p-1.5 rounded-full hover:bg-gray-100 transition-colors duration-200 cursor-pointer">
+                                            <?= Icon::dotMenu('w-5 h-5') ?>
+                                        </button>
+                                        <div x-show="open" @click.outside="open = false" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95" class="absolute right-0 mt-1 w-36 bg-white border border-gray-200 rounded-md shadow-md overflow-hidden z-50 text-left" style="display: none;">
+                                            <?php if ($value->current_status == 'created'): ?>
+                                                <a href="<?= URL . '/admin/booking/check_in/' . $value->booking_id ?>" class="flex items-center gap-2 px-3 py-2 text-xs text-secondary hover:bg-secondary/5 transition"><?= Icon::calendar_pencil('w-4 h-4') ?> Check In</a>
+                                                <a href="<?= URL . '/admin/booking/edit/' . $value->booking_id ?>" class="flex items-center gap-2 px-3 py-2 text-xs text-primary hover:bg-primary/5 transition"><?= Icon::pencil('w-4 h-4') ?> Edit</a>
+                                            <?php elseif ($value->current_status == 'checked_in'): ?>
+                                                <a href="<?= URL . '/admin/booking/check_out/' . $value->booking_id ?>" class="flex items-center gap-2 px-3 py-2 text-xs text-tertiary hover:bg-tertiary/5 transition"><?= Icon::logout('w-4 h-4') ?> Finish</a>
+                                            <?php endif; ?>
+                                            <a href="<?= URL . '/admin/booking/details/' . $value->booking_id ?>" class="flex items-center gap-2 px-3 py-2 text-xs text-gray-700 hover:bg-gray-50 transition"><?= Icon::eye('w-4 h-4') ?> Detail</a>
+                                            <?php if ($value->current_status == 'created'): ?>
+                                                <button @click="$dispatch('cancel-peminjaman', { cancelPeminjamanId: '<?= $value->booking_id ?>' }); showAlert = true;" class="flex items-center gap-2 px-3 py-2 text-xs text-red-600 hover:bg-red/5 border-t border-gray-100 w-full text-left transition"><?= Icon::trash('w-4 h-4') ?> Cancel</button>
+                                            <?php endif; ?>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endforeach  ?>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-12">
+                <?php if (isset($data['total_page']) && $data['total_page'] > 1): ?>
+                    <?= Pagination::render(
+                        currentPage: $currentPage,
+                        totalPage: $totalPage,
+                        queryParams: $queryParams,
+                        maxVisible: 7,
+                        prevText: "Sebelumnya",
+                        nextText: "Selanjutnya"
+                    ) ?>
+                <?php endif; ?>
+            </div>
         </div>
     </div>
 

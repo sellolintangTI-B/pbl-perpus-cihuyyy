@@ -234,20 +234,22 @@ $totalPage = $data['total_page'] ?? 1;
         </div>
 
         <!-- Pagination Section -->
-        <?php
-        if (isset($data['total_page']) && $data['total_page'] > 1):
-        ?>
-            <?= Pagination::render(
-                currentPage: $currentPage,
-                totalPage: $totalPage,
-                queryParams: $queryParams,
-                maxVisible: 7,
-                prevText: "Sebelumnya",
-                nextText: "Selanjutnya"
-            ) ?>
-        <?php
-        endif;
-        ?>
+        <div class="mt-12">
+            <?php
+            if (isset($data['total_page']) && $data['total_page'] > 1):
+            ?>
+                <?= Pagination::render(
+                    currentPage: $currentPage,
+                    totalPage: $totalPage,
+                    queryParams: $queryParams,
+                    maxVisible: 7,
+                    prevText: "Sebelumnya",
+                    nextText: "Selanjutnya"
+                ) ?>
+            <?php
+            endif;
+            ?>
+        </div>
     </div>
 
     <!-- Modal -->

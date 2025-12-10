@@ -14,9 +14,9 @@ class Room extends Database
         $values = [];
         $conn = parent::getConnection();
         $stmt = "SELECT * FROM rooms WHERE is_deleted = false ";
-        if(!empty($params)) {
-            foreach($params as $key => $value) {
-                if($key === "name") {
+        if (!empty($params)) {
+            foreach ($params as $key => $value) {
+                if ($key === "name") {
                     $where[] = "name ILIKE :$key";
                     $values[] = "%$value%";
                 } else {
@@ -32,7 +32,7 @@ class Room extends Database
         }
 
         $stmt .= " LIMIT 5 OFFSET 5 * $page";
-        
+
         $q = $conn->prepare($stmt);
         $q->execute($values);
         $data = $q->fetchALl(PDO::FETCH_OBJ);
@@ -45,9 +45,9 @@ class Room extends Database
         $values = [];
         $conn = parent::getConnection();
         $stmt = "SELECT COUNT(id) FROM rooms WHERE is_deleted = false";
-        if(!empty($params)) {
-            foreach($params as $key => $value) {
-                if($key === "name") {
+        if (!empty($params)) {
+            foreach ($params as $key => $value) {
+                if ($key === "name") {
                     $where[] = "name ILIKE :$key";
                     $values[] = "%$value%";
                 } else {
@@ -154,5 +154,13 @@ class Room extends Database
             return $data;
         }
         return false;
+    }
+    public static function getOperationalRoomCount()
+    {
+        $conn = parent::getConnection();
+        $q = $conn->prepare("select count(*) from rooms where is_operational = true; ");
+        $q->execute();
+        $data = $q->fetchColumn();
+        return $data;
     }
 }
