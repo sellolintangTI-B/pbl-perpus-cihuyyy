@@ -1,10 +1,11 @@
-<?php 
+<?php
 
 namespace App\Controllers\Auth;
 
 use App\Utils\Authentication;
 
-class LogoutController {
+class LogoutController
+{
     private $authUser;
 
     public function __construct()
@@ -14,7 +15,10 @@ class LogoutController {
     public function logout()
     {
         $logout = $this->authUser->logout();
-        if($logout) {
+        if ($_SESSION) {
+            session_destroy();
+        }
+        if ($logout) {
             header('location:' . URL . '/auth/login/index');
         }
     }
