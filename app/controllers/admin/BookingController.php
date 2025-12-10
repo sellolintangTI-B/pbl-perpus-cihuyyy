@@ -32,9 +32,9 @@ class BookingController extends Controller
 
             if(isset($_GET['tahun']) && !empty($_GET['tahun'])) $params['start_time'] = $_GET['tahun'];
 
-            if(isset($_GET['bulan']) && !empty($_GET['bulan'])) $params['start_time'] = $_GET['bulan'];
+            if(isset($_GET['bulan']) && !empty($_GET['bulan'])) $params['start_time'] = Carbon::create($_GET['tahun'], $_GET['bulan'])->format('Y-m');
 
-            if(isset($_GET['date']) && !empty($_GET['date'])) $params['start_time'] = Carbon::parse($_GET['date'])->addYear($_GET['tahun'])->addMonth($_GET['bulan'])->format('YYYY-M-D');
+            if(isset($_GET['date']) && !empty($_GET['date'])) $params['start_time'] = Carbon::create($_GET['tahun'], $_GET['bulan'], $_GET['date'])->format('Y-m-d');
 
             if(isset($_GET['page']) && !empty($_GET['page'])) $page = $_GET['page'] - 1;
 

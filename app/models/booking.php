@@ -23,16 +23,15 @@ class Booking extends Database
                     $where[] = "$key = :$key";
                     $values[] = $value;
                     break;
-                // case 'status':
-                //     $where[] = "bl.$key = :$key";
-                //     $values[] = $value;
-                //     break;
+                case 'start_time':
+                    $where[] = "TO_CHAR($key, 'YYYY-MM-DD') ILIKE :$key";
+                    $values[] = "%$value%";
+                    break;
                 default:
                     $where[] = "$key = :$key";
                     $values[] = $value;
                     break;
             }
-
         }
 
         if(!empty($where)) {
@@ -62,10 +61,10 @@ class Booking extends Database
                     $where[] = "$key = :$key";
                     $values[] = $value;
                     break;
-                // case 'status':
-                //     $where[] = "bl.$key = :$key";
-                //     $values[] = $value;
-                //     break;
+                case 'start_time':
+                    $where[] = "TO_CHAR($key, 'YYYY-MM-DD') ILIKE :$key";
+                    $values[] = "%$value%";
+                    break;
                 default:
                     $where[] = "$key = :$key";
                     $values[] = $value;
