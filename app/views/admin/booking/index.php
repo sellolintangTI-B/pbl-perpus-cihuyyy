@@ -7,9 +7,8 @@ use App\Components\Icon\Icon;
 use Carbon\Carbon;
 use App\Components\Modal;
 use App\Components\StagedCustomSelect;
-use App\Components\Pagination; // 1. Import Pagination
+use App\Components\Pagination; 
 
-// --- [PHP CLEANUP] ---
 $statusColor = [
     "created" => "primary",
     "checked_in" => "secondary",
@@ -55,7 +54,7 @@ endif;
 
 Carbon::setLocale('id');
 
-
+// define query params yang ada sehingga tidak hilang saat pagination
 $queryParams = [];
 if (isset($_GET['search'])) $queryParams['search'] = $_GET['search'];
 if (isset($_GET['tahun'])) $queryParams['tahun'] = $_GET['tahun'];
@@ -80,10 +79,24 @@ $totalPage = $data['total_page'] ?? 1;
             x-data="bookingFilter('<?= $_GET['tahun'] ?? '' ?>', '<?= $_GET['bulan'] ?? '' ?>', '<?= $_GET['date'] ?? '' ?>')"
             x-cloak>
 
+            <!-- Baris tombol aksi -->
             <div class="w-full h-10 flex items-center justify-between">
+                <!-- Tombol tambah peminjaman -->
                 <?= Button::anchor(label: "Tambah", icon: "plus", href: "/admin/booking/create", class: "px-4 py-2 h-full", btn_icon_size: 'w-4 h-4') ?>
+                
+                <!-- Tombol aksi di kanan -->
                 <div class="flex items-center justify-end gap-2 h-full w-full max-w-3/4">
-                    <?= Button::anchor(label: 'Export', href:'/admin/booking/export', class: 'h-full px-4 py-2', icon: 'export', btn_icon_size: 'w-4 h-4') ?>
+                    <!-- Tombol export dengan parameter filter saat ini -->
+                    <?php
+                    // Build URL export dengan semua query params yang ada agar filter tetap terpakai saat export
+                    $exportUrl = '/admin/booking/export';
+                    if (!empty($queryParams)) {
+                        $exportUrl .= '?' . http_build_query($queryParams);
+                    }
+                    ?>
+                    <?= Button::anchor(label: 'Export', href: $exportUrl, class: 'h-full px-4 py-2', icon: 'export', btn_icon_size: 'w-4 h-4') ?>
+                    
+                    <!-- Tombol toggle filter -->
                     <button type="button"
                         class="px-4 py-2 bg-primary rounded-lg text-white cursor-pointer flex items-center gap-2 shadow-md shadow-black/25"
                         @click="toggleFilter()">
@@ -94,16 +107,20 @@ $totalPage = $data['total_page'] ?? 1;
                         </span>
                     </button>
 
+                    <!-- Input pencarian kode peminjaman -->
                     <div class="h-full w-[12rem]">
                         <?= FormInput::input(type: "text", name: "search", placeholder: "Kode Peminjaman", value: $_GET['search'] ?? '', class: "h-full !w-full !border-primary", classGlobal: "h-full !w-full") ?>
                     </div>
+                    
+                    <!-- Tombol submit pencarian -->
                     <?= Button::button(class: "px-4 h-full", label: "Cari", type: 'submit') ?>
                 </div>
             </div>
-            <div class="w-full h-fit transition-all duration-300 ease-in-out bg-baseColor shadow-md shadow-gray-200 rounded-xl border border-gray-200 overflow-visible"
-                :class="showFilter ? 'max-h-[500px] opacity-100 p-4' : 'max-h-0 opacity-0 overflow-hidden border-0'">
-                <div class="flex flex-wrap gap-4 items-start justify-start w-full">
-
+            <!-- Panel filter lanjutan -->
+            <div class="w-full bg-baseColor shadow-md shadow-gray-200 rounded-xl border border-gray-200 transition-all duration-300 ease-in-out overflow-hidden"
+                :class="showFilter ? 'max-h-[500px] opacity-100 p-4 h-fit' : 'max-h-0 h-0 opacity-0 p-0 border-0 pointer-events-none'">
+                <div x-show="showFilter" class="flex flex-wrap gap-4 items-start justify-start w-full overflow-visible">
+                    <!-- Dropdown filter tanggal -->
                     <div class="relative w-fit h-full" x-data="{ open: false }" x-show="month">
                         <input type="hidden" name="date" x-model="date">
                         <button type="button" @click="open = !open" :disabled="!year || !month"
@@ -116,6 +133,7 @@ $totalPage = $data['total_page'] ?? 1;
                             <span class="transition-all duration-300" :class="open? 'rotate-180':''"><?= Icon::arrowDown('w-5 h-5') ?></span>
                         </button>
 
+                        <!-- Menu dropdown tanggal -->
                         <div x-show="open" @click.outside="open = false" style="display: none;"
                             class="bg-white border border-gray-200 rounded-md shadow-lg absolute top-12 left-0 z-50 w-full max-h-60 overflow-y-auto">
                             <button type="button" @click="set('date', '', 'Semua Tanggal'); open = false"
@@ -131,6 +149,7 @@ $totalPage = $data['total_page'] ?? 1;
                         </div>
                     </div>
 
+                    <!-- Dropdown filter bulan -->
                     <div class="relative w-fit " x-data="{ open: false }" x-show="year">
                         <input type="hidden" name="bulan" x-model="month">
                         <button type="button" @click="open = !open"
@@ -141,6 +160,7 @@ $totalPage = $data['total_page'] ?? 1;
                             </div>
                             <span class="transition-all duration-300" :class="open? 'rotate-180':''"><?= Icon::arrowDown('w-5 h-5') ?></span>
                         </button>
+                        <!-- Menu dropdown bulan -->
                         <div x-show="open" @click.outside="open = false" style="display: none;"
                             class="bg-white border border-gray-200 rounded-md shadow-lg absolute top-12 left-0 z-50 w-full max-h-60 overflow-y-auto">
                             <button type="button" @click="set('month', '', 'Semua Bulan'); open = false" class="w-full cursor-pointer text-left px-3 py-2  text-primary hover:bg-primary/10">Semua</button>
@@ -150,6 +170,7 @@ $totalPage = $data['total_page'] ?? 1;
                         </div>
                     </div>
 
+                    <!-- Dropdown filter tahun -->
                     <div class="relative w-fit" x-data="{ open: false }">
                         <input type="hidden" name="tahun" x-model="year">
                         <button type="button" @click="open = !open"
@@ -160,6 +181,7 @@ $totalPage = $data['total_page'] ?? 1;
                             </div>
                             <span class="transition-all duration-300" :class="open? 'rotate-180':''"><?= Icon::arrowDown('w-5 h-5') ?></span>
                         </button>
+                        <!-- Menu dropdown tahun -->
                         <div x-show="open" @click.outside="open = false" style="display: none;"
                             class="bg-white border border-gray-200 rounded-md shadow-lg absolute top-12 left-0 z-50 w-full max-h-60 overflow-y-auto">
                             <button type="button" @click="set('year', '', 'Semua Tahun'); open = false" class="w-full text-left px-3 py-2  text-primary hover:bg-primary/10">Semua</button>
@@ -169,16 +191,24 @@ $totalPage = $data['total_page'] ?? 1;
                         </div>
                     </div>
 
+                    <!-- Dropdown filter status -->
                     <div>
                         <?= StagedCustomSelect::render(name: 'status', defaultLabel: 'Status', options: $statusLabel, selectedValue: $_GET['status'] ?? '') ?>
                     </div>
+                    
+                    <!-- Dropdown filter ruangan -->
                     <div>
                         <?= StagedCustomSelect::render(name: 'room', defaultLabel: 'Ruangan', options: $roomOption, selectedValue: $_GET['room'] ?? '') ?>
                     </div>
 
+                    <!-- Tombol aksi filter -->
                     <div class="flex gap-2 ml-auto">
+                        <!-- Tombol terapkan filter -->
                         <?= Button::button(class: "py-2! px-4! h-10", label: "Terapkan", type: 'submit') ?>
+                        <!-- Tombol reset filter -->
                         <?= Button::anchor(icon: 'arrow_cycle', color: 'primary', href: '/admin/booking/index', class: 'h-10 py-2! px-4!') ?>
+                        <!-- Tombol tutup filter -->
+                        <?= Button::button(class: "py-2! px-4! h-10", icon: 'cross', btn_icon_size: 'w-4 h-4', type: 'button', alpineClick: "toggleFilter()") ?>
                     </div>
                 </div>
             </div>

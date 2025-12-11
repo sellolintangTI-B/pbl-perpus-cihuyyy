@@ -7,14 +7,17 @@ use App\Components\Badge;
 use App\Components\DashboardCard;
 use App\Components\Modal;
 ?>
+<!-- Container utama dashboard -->
 <div class="w-full h-full overflow-y-auto no-scrollbar">
     <div class="flex flex-col justify-start items-start h-full w-full gap-5" x-data="SearchBooking()">
+        <!-- Judul halaman -->
         <h1 class="text-2xl font-medium text-primary">
             Beranda
         </h1>
 
-        <!-- Search Form -->
+        <!-- Form pencarian booking -->
         <form @submit.prevent="searchBooking()" class="flex gap-2 items-center w-full">
+            <!-- Input pencarian dengan icon -->
             <div class="relative flex-1">
                 <div class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -30,6 +33,7 @@ use App\Components\Modal;
                     class="rounded-xl shadow-md py-3 px-5 pl-12 bg-baseColor text-gray-600 border border-gray-400 hover:border-primary outline-none text-sm focus:shadow-md focus:shadow-primary/20 transition-shadow duration-300 w-full"
                     :disabled="loading" />
             </div>
+            <!-- Tombol submit pencarian -->
             <?php
             Button::button(
                 label: '<span x-show="!loading">Cari</span><span x-show="loading">Loading...</span>',
@@ -41,7 +45,7 @@ use App\Components\Modal;
             ?>
         </form>
 
-        <!-- Loading State -->
+        <!-- State loading saat mencari booking -->
         <div x-show="loading" class="w-full py-8 flex justify-center" x-cloak>
             <div class="flex flex-col items-center gap-3">
                 <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
@@ -49,7 +53,7 @@ use App\Components\Modal;
             </div>
         </div>
 
-        <!-- Error State -->
+        <!-- State error jika terjadi kesalahan -->
         <div x-show="error && !loading"
             class="w-full bg-red-50 border border-red-200 rounded-lg p-4"
             x-cloak>
@@ -61,25 +65,26 @@ use App\Components\Modal;
             </div>
         </div>
 
-        <!-- Booking Card -->
+        <!-- Card detail booking hasil pencarian -->
         <template x-if="bookingData && !loading && !error">
             <div class="w-full p-6 flex flex-col gap-4 bg-white border-gray-200 border rounded-lg font-medium overflow-visible"
                 x-data="{ showAlert: false, cancelPeminjamanId: null, copyToast: CopyToast() }"
                 @cancel-peminjaman.window="showAlert = true; cancelPeminjamanId = $event.detail.cancelPeminjamanId">
+                <!-- Header card dengan kode booking dan status -->
                 <div class="w-full flex justify-between">
                     <div class="flex gap-2 text-xl font-medium">
                         <span class="text-primary">
                             Kode Booking:
                         </span>
                         <span class="text-secondary" x-text="'#' + bookingData.booking_code"></span>
-                        <!-- copy button -->
+                        <!-- Tombol copy kode booking -->
                         <button @click="copyToast.copyText(bookingData.booking_code)"
                             class="p-1.5 rounded-md hover:bg-gray-100 transition-colors duration-150 cursor-pointer">
                             <?php Icon::copy('w-5 h-5 text-black/80') ?>
                         </button>
                     </div>
 
-                    <!-- Badge Status -->
+                    <!-- Badge status booking -->
                     <div class="px-3 py-1.5 rounded-full flex items-center justify-center text-xs font-medium w-fit whitespace-nowrap border"
                         :class="[
                             bookingData.status === 'created' ? 'border-primary bg-primary/20 text-primary' : '',
@@ -91,6 +96,7 @@ use App\Components\Modal;
                     </div>
                 </div>
 
+                <!-- Info lokasi ruangan -->
                 <div class="flex gap-2 text-black/80">
                     <span>
                         <?php Icon::location('w-5 h-5') ?>
@@ -100,6 +106,7 @@ use App\Components\Modal;
                     </span>
                 </div>
 
+                <!-- Info tanggal booking -->
                 <div class="flex gap-2 text-black/80">
                     <span>
                         <?php Icon::calendar_pencil('w-5 h-5') ?>
@@ -107,7 +114,9 @@ use App\Components\Modal;
                     <span x-text="formatDate(bookingData.start_time)"></span>
                 </div>
 
+                <!-- Info waktu dan menu aksi -->
                 <div class="flex justify-between">
+                    <!-- Info jam booking -->
                     <div class="flex gap-2 text-black/80">
                         <span>
                             <?php Icon::clock('w-5 h-5') ?>
@@ -117,7 +126,7 @@ use App\Components\Modal;
                         </span>
                     </div>
 
-                    <!-- Action Menu -->
+                    <!-- Menu aksi untuk booking -->
                     <div class="relative" x-data="{open: false}" x-show=" bookingData.status == 'created' ||  bookingData.status == 'checked_in'">
                         <button
                             @click="open = !open"
@@ -125,7 +134,7 @@ use App\Components\Modal;
                             <?= Icon::dotMenu('w-5 h-5') ?>
                         </button>
 
-                        <!-- Dropdown Menu -->
+                        <!-- Dropdown menu aksi -->
                         <div
                             x-show="open"
                             @click.outside="open = false"
@@ -137,6 +146,7 @@ use App\Components\Modal;
                             x-transition:leave-end="opacity-0 scale-95"
                             class="absolute right-0 mt-1 w-32 bg-white border border-gray-200 rounded-md shadow-md text-left z-50 overflow-hidden"
                             x-cloak>
+                            <!-- Aksi check in untuk status created -->
                             <template x-if="bookingData.status === 'created'">
 
                                 <a :href="`<?= URL ?>/admin/dashboard/check_in/${bookingData.id}`"
@@ -145,6 +155,7 @@ use App\Components\Modal;
                                 </a>
                             </template>
 
+                            <!-- Aksi check out untuk status checked_in -->
                             <template x-if="bookingData.status === 'checked_in'">
 
                                 <a :href="`<?= URL ?>/admin/dashboard/check_out/${bookingData.id}`"
@@ -153,6 +164,7 @@ use App\Components\Modal;
                                 </a>
                             </template>
 
+                            <!-- Aksi cancel untuk status created -->
                             <template x-if="bookingData.status === 'created'">
                                 <button
                                     @click="$dispatch('cancel-peminjaman', { cancelPeminjamanId: bookingData.id }); showAlert = true;"
@@ -164,7 +176,7 @@ use App\Components\Modal;
                     </div>
                 </div>
 
-                <!-- Form buat batalin peminjaman -->
+                <!-- Form pembatalan peminjaman -->
                 <?php
                 ob_start();
                 ?>
@@ -172,6 +184,7 @@ use App\Components\Modal;
                     x-bind:action="`<?= URL ?>/admin/dashboard/cancel/${cancelPeminjamanId}`"
                     method="POST"
                     class="w-full flex flex-col gap-2">
+                    <!-- Input alasan pembatalan -->
                     <?= FormInput::textarea(
                         id: 'reason',
                         name: 'reason',
@@ -181,6 +194,7 @@ use App\Components\Modal;
                         color: 'red',
                         required: true
                     ) ?>
+                    <!-- Tombol konfirmasi pembatalan -->
                     <div class="flex gap-4 w-full">
                         <?php
                         Button::button(label: 'Iya', color: 'red', type: 'submit', class: 'w-full py-3');
@@ -190,7 +204,7 @@ use App\Components\Modal;
                 </form>
                 <?php $content = ob_get_clean(); ?>
 
-                <!-- Alert untuk batalin booking -->
+                <!-- Modal konfirmasi pembatalan booking -->
                 <?= Modal::render(
                     title: 'Yakin ingin membatalkan booking?',
                     color: 'red',
@@ -200,7 +214,7 @@ use App\Components\Modal;
                     height: 'h-[24rem]'
                 ) ?>
 
-                <!--Notifikasi Copy Code Booking -->
+                <!-- Notifikasi toast untuk copy kode booking -->
                 <div x-show="copyToast.copyToast"
                     x-transition:enter="transition ease-out duration-300"
                     x-transition:enter-start="opacity-0 translate-y-4"
@@ -229,7 +243,7 @@ use App\Components\Modal;
             </div>
         </template>
 
-        <!-- Not Found State -->
+        <!-- State tidak ditemukan saat pencarian -->
         <div x-show="searched && !bookingData && !loading && !error"
             class="w-full h-[28rem] flex items-center justify-center"
             x-cloak>
@@ -242,8 +256,9 @@ use App\Components\Modal;
             </div>
         </div>
 
-        <!-- Content Utama -->
+        <!-- Konten utama dashboard -->
         <div class="flex flex-col gap-6 w-full">
+            <!-- Dashboard cards statistik -->
             <div class="flex items-center justify-start gap-4 w-full">
                 <?php
                 foreach ($data['card_data'] as $dat):
@@ -254,8 +269,9 @@ use App\Components\Modal;
                 ?>
             </div>
 
+            <!-- Grid chart visualisasi data -->
             <div class="w-full grid grid-cols-2 gap-4">
-                <!-- Chart 1: Line Chart -->
+                <!-- Chart line: Jumlah peminjaman per bulan -->
                 <div class="w-full h-[32rem] bg-white col-span-2 border-gray-400 border rounded-lg flex flex-col overflow-hidden gap-2 p-4">
                     <h1 class="text-xl font-medium text-primary">
                         Jumlah Peminjaman
@@ -265,7 +281,7 @@ use App\Components\Modal;
                     </div>
                 </div>
 
-                <!-- Chart 2: Bar Chart - Per Ruangan -->
+                <!-- Chart bar: Jumlah peminjaman per ruangan -->
                 <div class="w-full h-[32rem] bg-white col-span-2 border-gray-400 border rounded-lg flex flex-col overflow-hidden gap-2 p-4">
                     <h1 class="text-xl font-medium text-primary">
                         Jumlah Peminjaman Per Ruangan
@@ -281,7 +297,7 @@ use App\Components\Modal;
 
 <script src="<?= URL ?>/public/js/copy-toast.js"></script>
 
-<!-- search booking -->
+<!-- Script fungsi pencarian booking -->
 <script>
     function SearchBooking() {
         return {
@@ -291,6 +307,7 @@ use App\Components\Modal;
             error: null,
             searched: false,
 
+            // Fungsi untuk mencari booking berdasarkan kode
             async searchBooking() {
                 if (this.searchQuery.trim() === '') return;
 
@@ -320,6 +337,7 @@ use App\Components\Modal;
                 }
             },
 
+            // Fungsi untuk clear hasil pencarian saat input dikosongkan
             clearResults() {
                 if (this.searchQuery.trim() === '') {
                     this.bookingData = null;
@@ -328,6 +346,7 @@ use App\Components\Modal;
                 }
             },
 
+            // Fungsi untuk format tanggal ke bahasa Indonesia
             formatDate(dateString) {
                 const date = new Date(dateString);
                 const options = {
@@ -339,11 +358,13 @@ use App\Components\Modal;
                 return date.toLocaleDateString('id-ID', options);
             },
 
+            // Fungsi untuk format waktu (HH:MM:SS)
             formatTime(dateString) {
                 const date = new Date(dateString);
                 return date.toTimeString().split(' ')[0];
             },
 
+            // Fungsi untuk mendapatkan label status dalam bahasa Indonesia
             getStatusLabel(status) {
                 const labels = {
                     'created': 'created',
@@ -354,6 +375,7 @@ use App\Components\Modal;
                 return labels[status] || status;
             },
 
+            // Fungsi untuk mendapatkan warna status
             getStatusColor(status) {
                 const colors = {
                     'created': 'primary',
@@ -364,6 +386,7 @@ use App\Components\Modal;
                 return colors[status] || 'primary';
             },
 
+            // Fungsi untuk copy ke clipboard (tidak digunakan, menggunakan CopyToast)
             copyToClipboard(text) {
                 if (navigator.clipboard && navigator.clipboard.writeText) {
                     navigator.clipboard.writeText(text)
@@ -379,12 +402,13 @@ use App\Components\Modal;
     }
 </script>
 
+<!-- Script untuk chart line jumlah peminjaman per bulan -->
 <script>
     document.addEventListener('DOMContentLoaded', async function() {
         const apiUrl = '<?= URL ?>/admin/dashboard/get_chart_data';
         const chartCanvas = document.getElementById('chart-peminjaman-line');
 
-        // 1. Palette Warna Dasar (Format RGB String agar mudah atur opacity)
+        // Palette warna untuk chart (format RGB agar mudah atur opacity)
         const colorPalette = [
             '255, 99, 132', // Red
             '54, 162, 235', // Blue
@@ -404,7 +428,7 @@ use App\Components\Modal;
         try {
             const response = await fetch(apiUrl);
 
-            // Security Check
+            // Validasi response dan content type
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             const contentType = response.headers.get("content-type");
             if (!contentType || !contentType.includes("application/json")) {
@@ -413,12 +437,13 @@ use App\Components\Modal;
 
             const data = await response.json();
 
-            // Validasi Data Kosong
+            // Validasi data tidak kosong
             if (!data || Object.keys(data).length === 0) {
                 console.warn('Data chart kosong.');
                 return;
             }
 
+            // Urutkan tahun dan buat dataset untuk setiap tahun
             const sortedYears = Object.keys(data).sort();
 
             const datasets = sortedYears.map((year, index) => {
@@ -501,11 +526,13 @@ use App\Components\Modal;
     });
 </script>
 
+<!-- Script untuk chart bar jumlah peminjaman per ruangan -->
 <script>
     document.addEventListener('DOMContentLoaded', async function() {
         const apiUrl = '<?= URL ?>/admin/dashboard/get_barchart_data';
         const chartCanvas = document.getElementById('chart-peminjaman-ruangan');
 
+        // Palette warna untuk chart bar
         const colorPalette = [
             '139, 92, 246', // Purple
             '251, 146, 146', // Pink/Salmon
@@ -527,14 +554,16 @@ use App\Components\Modal;
 
             const data = await response.json();
 
+            // Validasi data tidak kosong
             if (!data || Object.keys(data).length === 0) {
                 console.warn('Data chart kosong.');
                 return;
             }
 
+            // Ambil nama-nama ruangan dari data
             const roomNames = Object.keys(data);
 
-
+            // Kumpulkan semua tahun yang ada dari semua ruangan
             const allYearsSet = new Set();
             Object.values(data).forEach(roomData => {
                 if (typeof roomData === 'object' && roomData !== null) {
@@ -542,6 +571,7 @@ use App\Components\Modal;
                 }
             });
 
+            // Urutkan tahun dan buat dataset untuk setiap tahun
             const dynamicYears = Array.from(allYearsSet).sort();
 
             const datasets = dynamicYears.map((year, index) => {
@@ -624,7 +654,7 @@ use App\Components\Modal;
 
         } catch (error) {
             console.error('Gagal memuat grafik:', error);
-            // Optional: Tampilkan pesan error user-friendly di UI
+            // Tampilkan pesan error di UI jika gagal memuat chart
             chartCanvas.parentNode.innerHTML = `<div class="text-center p-4 text-red-500">Gagal memuat data grafik. Silakan refresh halaman.</div>`;
         }
     });

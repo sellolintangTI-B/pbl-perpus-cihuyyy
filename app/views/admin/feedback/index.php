@@ -60,18 +60,11 @@ $totalPage = $data['total_page'] ?? 1;
         <div class="w-full h-10 flex items-center justify-between">
             <div class="flex items-center justify-start gap-2 h-full">
                 <?php
-                // Logic Export tetap menggunakan parameter yang sama
-                $exportParams = [];
-                if (isset($_GET['ruangan']) && $_GET['ruangan'] !== '') {
-                    $exportParams[] = 'ruangan=' . urlencode($_GET['ruangan']);
+                // Build export URL with all current query parameters safely
+                $exportUrl = '/admin/feedback/export';
+                if (!empty($queryParams)) {
+                    $exportUrl .= '?' . http_build_query($queryParams);
                 }
-                if (isset($_GET['bulan']) && $_GET['bulan'] !== '') {
-                    $exportParams[] = 'bulan=' . urlencode($_GET['bulan']);
-                }
-                if (isset($_GET['tahun']) && $_GET['tahun'] !== '') {
-                    $exportParams[] = 'tahun=' . urlencode($_GET['tahun']);
-                }
-                $exportUrl = '/admin/feedback/export' . (!empty($exportParams) ? '?' . implode('&', $exportParams) : '');
                 ?>
                 <?= Button::anchor(
                     label: 'Export',
@@ -118,7 +111,7 @@ $totalPage = $data['total_page'] ?? 1;
             </div>
         </div>
 
-        <div class="w-full h-full overflow-y-auto p-2">
+        <div class="w-full h-full  min-h-[28.5rem] overflow-y-auto p-2">
             <?php if (empty($feedback)): ?>
                 <div class="w-full h-full flex items-center justify-center">
                     <div class="text-center text-gray-500">
