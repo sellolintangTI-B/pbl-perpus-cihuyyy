@@ -23,11 +23,8 @@ class ProfileController extends Controller
     public function index()
     {
         $userId = $this->authUser->user['id'];
-
-        $suspension = Suspension::checkSupensionsByUserId($userId);
         $data = [
             'data' => User::getById($userId),
-            'suspension' => $suspension
         ];
         $this->view('user/profile/index', $data, layoutType: $this::$layoutType['civitas']);
     }

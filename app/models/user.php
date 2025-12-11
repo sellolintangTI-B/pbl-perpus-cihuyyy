@@ -173,20 +173,22 @@ class User extends Database
 
     public static function update($id, $data)
     {
+        $fields = [];
+        $values = [];
         $conn = parent::getConnection();
-        $query = "UPDATE users SET id_number = ?, email = ?, first_name = ?, last_name = ?, major = ?, study_program = ?, phone_number = ?, institution = ?, role = ?, is_active = ? WHERE id = ?";
-        if (isset($data['image'])) {
-            $query = "UPDATE users SET id_number = ?, email = ?, first_name = ?, last_name = ?, major = ?, study_program = ?, phone_number = ?, institution = ?, role = ?, is_active = ?,profile_picture_url = ? WHERE id = ?";
+        foreach($data as $key => $value) {
+            $fields[] = "$key = :$key";
+            $values[] = $value;
         }
+        $fields = implode(',', $fields);
+        $query = "UPDATE users SET $fields WHERE id = :id RETURNING *";
         $q = $conn->prepare($query);
-        $i = 1;
-        foreach ($data as $key => $value) {
-            $q->bindParam($i, $data[$key]);
-            $i++;
+        $q->bindValue(':id', $id);
+        $q->execute($values);
+        if ($q) {
+            $data = $q->fetch(PDO::FETCH_OBJ);
+            return $data;
         }
-        $q->bindParam($i++, $id);
-        $q->execute();
-        if ($q) return true;
         return false;
     }
 
@@ -272,7 +274,7 @@ class User extends Database
     public static function checkUserSuspend($userId)
     {
         $conn = parent::getConnection();
-        $q = $conn->prepare("SELECT is_suspend, TO_CHAR(suspend_untill, 'YYYY-MM-DD') AS suspend_date FROM users WHERE id = :userId");
+        $q = $conn->prepare("SELECT suspend_count ,is_suspend, TO_CHAR(suspend_untill, 'YYYY-MM-DD') AS suspend_date FROM users WHERE id = :userId");
         $q->bindValue(':userId', $userId);
         $q->execute();
         $data = $q->fetch(PDO::FETCH_OBJ);
@@ -297,4 +299,7 @@ class User extends Database
         return $data;
     }
 
+
 }
+
+

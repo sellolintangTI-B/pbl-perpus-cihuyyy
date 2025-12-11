@@ -44,7 +44,7 @@ class LoginController extends Controller
             $validator = new Validator($data);
             str_contains($data['identifier'], '@') ? $validator->field("identifier", ['required', 'email']) : $validator->field('identifier', ['required']);
             $validator->field("password", ["required"]);
-            $validator->field("captcha", ['captcha']);
+            // $validator->field("captcha", ['captcha']);
 
             $errors = $validator->error();
             if ($errors) throw new CustomException($validator->getErrors());
@@ -55,14 +55,14 @@ class LoginController extends Controller
             if (!password_verify($data['password'], $checkIfUserExist['password_hash'])) throw new CustomException('Credentials not match');
             if (!$checkIfUserExist['is_active']) throw new CustomException('Akun ini masih menunggu verifikasi admin');
 
-            $validateTurnStileBody = [
-                'secret' => $_ENV['TURNSTILE_SECRETKEY'],
-                'response' => $data['captcha'],
-                'remoteip' => $_SERVER['REMOTE_ADDR']
-            ];
+            // $validateTurnStileBody = [
+            //     'secret' => $_ENV['TURNSTILE_SECRETKEY'],
+            //     'response' => $data['captcha'],
+            //     'remoteip' => $_SERVER['REMOTE_ADDR']
+            // ];
 
-            $validateCaptcha = $this->validateCaptcha($validateTurnStileBody);
-            if (!$validateCaptcha) throw new CustomException('Gagal verifikasi captcha');
+            // $validateCaptcha = $this->validateCaptcha($validateTurnStileBody);
+            // if (!$validateCaptcha) throw new CustomException('Gagal verifikasi captcha');
 
             if (isset($_POST['remember_me'])) {
                 setcookie('remember_username', $_POST['username'], time() + (30 * 24 * 60 * 60), '/');

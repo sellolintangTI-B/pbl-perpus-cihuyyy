@@ -10,6 +10,7 @@ use App\Models\Booking;
 use App\Models\BookingLog;
 use App\Models\LibraryClose;
 use App\Utils\Authentication;
+use App\Utils\Mailer;
 use App\Utils\Validator;
 use Carbon\Carbon;
 
@@ -66,11 +67,18 @@ class CloseController extends Controller
             if ($closeDate < $nowdate) throw new CustomException('Tdak bisa close dikemarin hari');
             $_SESSION['old_close'] = null;
             $bookingByDate = Booking::getBookingForCancelByDate($closeDate);
-
             if ($bookingByDate) {
-                $bookingIds = array_map(function ($item) {
-                    return $item->booking_id;
+                $emails = [];
+                $bookingIds = array_map(function ($item) use(&$emails) {
+                    $emails[] = $item->email;
+                    return $item->id;
                 }, $bookingByDate);
+
+                $emails = array_filter($emails, fn($item) => !is_null($item));
+
+                foreach($emails as $email) {
+                    Mailer::send($email , 'NOTIFIKASI', 'Booking anda telah di cancel oleh admin');
+                }
 
                 $cancelAllBookingByDate = BookingLog::cancelAllBookingByDate($bookingIds, $data['reason'], $data['created_by']);
             }
