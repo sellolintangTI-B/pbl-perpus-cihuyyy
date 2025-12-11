@@ -145,7 +145,7 @@ $bookingDetail = [
                 </div>
             <?php endif; ?>
 
-            <?php if (($bookingDetail['status'] == $statusEnum["created"] || $bookingDetail['status'] == $statusEnum["checked_in"]) && $authUser->user['id'] === $data['booking']->pic_id): ?>
+            <?php if (($bookingDetail['status'] == $statusEnum["created"] || $bookingDetail['status'] == $statusEnum["checked_in"]) && $authUser->user['id'] === $data['booking']->user_id): ?>
 
                 <?= Button::button(label: 'Cancel', type: 'button', color: 'red', class: 'w-full py-2 rounded-full!', alpineClick: "onModalShow=true") ?>
             <?php endif; ?>

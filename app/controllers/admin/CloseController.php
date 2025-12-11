@@ -18,10 +18,13 @@ class CloseController extends Controller
     public function index()
     {
         try {
-            $data = LibraryClose::get();
-
-            $count = LibraryClose::count();
+            $page = 0;
             
+            if(isset($_GET['page'])) $page = $_GET['page'];
+
+            $data = LibraryClose::get($page);
+            $count = LibraryClose::count();
+             
             $data = [
                 'close' => $data,
                 'total_page' => ceil((int) $count->count / 15)

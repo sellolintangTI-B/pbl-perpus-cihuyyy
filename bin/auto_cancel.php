@@ -18,6 +18,8 @@ try {
 try {
     $data = BookingLog::getLateBookings();
 
+    
+
     $bookingIds = array_map(function($item){
         return $item->id;
     }, $data);

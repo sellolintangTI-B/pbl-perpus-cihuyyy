@@ -61,7 +61,6 @@ class ProfileController extends Controller
             $validator->field("first_name", ['required']);
             $validator->field("email", ['required']);
             $validator->field("phone_number", ['required']);
-            $validator->field("institution", ['required']);
 
             if ($validator->error()) throw new CustomException($validator->getErrors());
 

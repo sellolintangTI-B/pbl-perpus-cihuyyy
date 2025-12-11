@@ -133,7 +133,7 @@ use Carbon\Carbon;
                     <!-- gatau make modal ato kaga -->
                     <?php
                     if ($data['detail']->is_operational) {
-                        Button::button(label: 'Nonaktifkan Ruangan', color: 'red', class: 'w-full py-3 px-6', alpineClick: "showAlert=true");
+                        Button::button(label: 'Nonaktifkan Ruangan', color: 'red', class: 'w-full py-3 px-6', alpineClick: "showAlert=true" );
                     } else {
                         Button::anchor(label: 'Aktifkan Ruangan', color: 'secondary', class: 'w-full py-3 px-6', href: '/admin/room/activate/' . $data['detail']->id);
                     }
@@ -151,7 +151,7 @@ use Carbon\Carbon;
         confirmText: 'Ya',
         cancelText: 'Tidak',
         message: 'Ruangan akan dinonaktifkan. Pastikan keputusan Anda sudah benar.',
-        method: 'GET',
+        method: 'POST',
         alpineShow: 'showAlert',
     ) ?>
 </div>

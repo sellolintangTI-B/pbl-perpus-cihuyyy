@@ -151,7 +151,8 @@ class Room extends Database
         $stmt->bindValue(':adminId', $adminId);
         if ($stmt->execute()) {
             $data = $stmt->fetchAll(PDO::FETCH_OBJ);
-            return $data;
+            if(!empty($data)) return $data;
+            return true;
         }
         return false;
     }

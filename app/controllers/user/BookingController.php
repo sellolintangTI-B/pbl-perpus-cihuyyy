@@ -225,7 +225,8 @@ class BookingController extends Controller
             ];
             $bookingCheck = Booking::getById($data['booking_id']);
             if (!$bookingCheck) throw new CustomException('Booking tidak tersedia');
-            if ($bookingCheck->pic_id !== $data['user_id']) throw new CustomException('Maaf anda bukan PIC dari peminjaman ini');
+
+            if ($bookingCheck->user_id !== $data['user_id']) throw new CustomException('Maaf anda bukan PIC dari peminjaman ini');
             $checkSuspendUser = Suspension::checkSupensionsByUserId($data['user_id']);
             if (!$checkSuspendUser) {
                 $suspension = Suspension::create([
