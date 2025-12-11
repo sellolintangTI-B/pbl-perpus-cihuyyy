@@ -176,10 +176,10 @@ class BookingController extends Controller
             $bookingParticipants = BookingParticipant::getParticipantsByBookingId($id);
             $feedback = Feedback::getByBookingIdAndUserId($id, $authUser->user['id']);
 
-            if ($booking->status == 'cancelled') {
+            if ($booking->current_status == 'cancelled') {
                 $detailCancel = BookingLog::getCancelDetailByBookingId($id);
             }
-            if ($booking->status == 'finished') {
+            if ($booking->current_status == 'finished') {
                 $detailFinished = BookingLog::getFinishedDetailByBookingId($id);
             }
             $data  = [
@@ -225,7 +225,8 @@ class BookingController extends Controller
             ];
             $bookingCheck = Booking::getById($data['booking_id']);
             if (!$bookingCheck) throw new CustomException('Booking tidak tersedia');
-            if ($bookingCheck->pic_id !== $data['user_id']) throw new CustomException('Maaf anda bukan PIC dari peminjaman ini');
+
+            if ($bookingCheck->user_id !== $data['user_id']) throw new CustomException('Maaf anda bukan PIC dari peminjaman ini');
             $checkSuspendUser = Suspension::checkSupensionsByUserId($data['user_id']);
             if (!$checkSuspendUser) {
                 $suspension = Suspension::create([

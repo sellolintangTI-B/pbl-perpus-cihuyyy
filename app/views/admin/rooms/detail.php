@@ -151,7 +151,7 @@ use Carbon\Carbon;
         confirmText: 'Ya',
         cancelText: 'Tidak',
         message: 'Ruangan akan dinonaktifkan. Pastikan keputusan Anda sudah benar.',
-        method: 'GET',
+        method: 'POST',
         alpineShow: 'showAlert',
     ) ?>
 </div>

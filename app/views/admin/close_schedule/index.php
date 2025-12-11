@@ -10,7 +10,7 @@ use App\Components\Pagination;
 
 $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $totalPage = $data['total_page'] ?? 1;
-
+$no = 1;
 ?>
 
 <div class="w-full h-full" x-data="{ showAlert: false, cancelPeminjamanId: null }" @cancel-peminjaman.window="showAlert = true; cancelPeminjamanId = $event.detail.cancelPeminjamanId">

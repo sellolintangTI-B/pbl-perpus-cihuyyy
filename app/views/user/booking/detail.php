@@ -26,11 +26,11 @@ $statusLabel = [
     "finished" => "selesai"
 ];
 $bookingDetail = [
-    'id' => $data['booking']->id,
+    'id' => $data['booking']->booking_id,
     'code' => $data['booking']->booking_code,
-    'status' => $data['booking']->status,
-    'pic' => $data['booking']->pic,
-    'room' => $data['booking']->name,
+    'status' => $data['booking']->current_status,
+    'pic' => $data['booking']->pic_name,
+    'room' => $data['booking']->room_name,
     'floor' => $data['booking']->floor,
     'date' => Carbon::parse($data['booking']->start_time)->translatedFormat('l, d F Y'),
     'time' => Carbon::parse($data['booking']->start_time)->translatedFormat('l, H F Y') . ' - ' . Carbon::parse($data['booking']->end_time)->toTimeString(),
@@ -145,7 +145,7 @@ $bookingDetail = [
                 </div>
             <?php endif; ?>
 
-            <?php if (($bookingDetail['status'] == $statusEnum["created"] || $bookingDetail['status'] == $statusEnum["checked_in"]) && $authUser->user['id'] === $data['booking']->pic_id): ?>
+            <?php if (($bookingDetail['status'] == $statusEnum["created"] || $bookingDetail['status'] == $statusEnum["checked_in"]) && $authUser->user['id'] === $data['booking']->user_id): ?>
 
                 <?= Button::button(label: 'Cancel', type: 'button', color: 'red', class: 'w-full py-2 rounded-full!', alpineClick: "onModalShow=true") ?>
             <?php endif; ?>

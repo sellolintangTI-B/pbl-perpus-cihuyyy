@@ -94,18 +94,54 @@ class BookingLog extends Database
         $insertData = [];
         $conn = parent::getConnection();
         $n = 0;
-        foreach($bookingId as $item) {
+        foreach ($bookingId as $item) {
             $insertQuery[] = "(:status$n, :cancelled_by$n, :reason$n, :bookingId$n)";
-            $insertData["status$n"] = 'cancelled'; 
-            $insertData["cancelled_by$n"] = $actor; 
-            $insertData["reason$n"] = $reason; 
-            $insertData["bookingId$n"] = $item; 
+            $insertData["status$n"] = 'cancelled';
+            $insertData["cancelled_by$n"] = $actor;
+            $insertData["reason$n"] = $reason;
+            $insertData["bookingId$n"] = $item;
             $n++;
         }
         $query = implode(', ', $insertQuery);
         $q = $conn->prepare("INSERT INTO booking_logs (status, cancelled_by, reason, booking_id) VALUES $query");
         $q->execute($insertData);
-        if($q) return true;
+        if ($q) return true;
         return false;
     }
+
+    public static function bulkCancel($bookingIds, $reason)
+    {
+        $values = [];
+        $placeholder = [];
+        $conn = parent::getConnection();
+        $stmt = "INSERT INTO booking_logs (booking_id, reason, status) VALUES ";
+
+        $counter = 1;
+        foreach($bookingIds as $value) {
+            $placeholder[] = "(:bookingId$counter, :reason$counter, 'cancelled')";
+            $values["bookingId$counter"] = $value;
+            $values["reason$counter"] = $reason;
+            $counter++;
+        }
+
+        $stmt .= implode(',', $placeholder);
+
+        $q = $conn->prepare($stmt);
+        $q->execute($values);
+        if ($q) return true;
+        return false;
+    }
+
+    public static function getLateBookings()
+    {
+        $conn = parent::getConnection();
+        $q = $conn->prepare("SELECT b.id, b.booking_code, b.start_time, u.email
+            FROM bookings b JOIN users AS u ON b.user_id = u.id WHERE b.start_time <= ((NOW() AT TIME ZONE 'Asia/Jakarta') - INTERVAL '10 minutes')
+            AND (SELECT status FROM booking_logs bl WHERE bl.booking_id = b.id ORDER BY bl.created_at DESC 
+            LIMIT 1) = 'created';");
+        $q->execute();
+        $data = $q->fetchAll(PDO::FETCH_OBJ);
+        return $data;
+    }
+
 }

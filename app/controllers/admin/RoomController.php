@@ -193,7 +193,7 @@ class RoomController extends Controller
         try {
             $authUser = new Authentication;
             $delete = Room::softDelete($id, $authUser->user['id']);
-            if ($delete) {
+            if ($delete != false) {
                 foreach ($delete as $data) {
                     $user = User::getById($data->affected_user_id);
                     Mailer::send($user->email, 'PEMBERITAHUAN', 'Booking anda telah di cancel oleh admin');
@@ -226,6 +226,7 @@ class RoomController extends Controller
             header('location:' . URL . '/admin/room/index');
         }
     }
+
     public function activate($id)
     {
         try {

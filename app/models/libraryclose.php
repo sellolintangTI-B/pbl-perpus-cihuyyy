@@ -7,10 +7,10 @@ use PDO;
 
 class LibraryClose extends Database
 {
-    public static function get($page = 1)
+    public static function get($page = 0)
     {
         $conn = parent::getConnection();
-        $q = $conn->prepare("SELECT u.first_name || ' ' || u.last_name AS name, l.* FROM library_close_logs l JOIN users AS u ON l.created_by = u.id LIMIT 15 OFFSET 15 * $page");
+        $q = $conn->prepare("SELECT u.first_name || ' ' || u.last_name AS name, l.* FROM library_close_logs AS l JOIN users AS u ON l.created_by = u.id LIMIT 15 OFFSET 15 * $page");
         $q->execute();
         $data = $q->fetchAll(PDO::FETCH_OBJ);
         return $data;
