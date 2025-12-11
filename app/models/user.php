@@ -180,10 +180,11 @@ class User extends Database
             $fields[] = "$key = :$key";
             $values[] = $value;
         }
+        $values[] = $id;
+
         $fields = implode(',', $fields);
         $query = "UPDATE users SET $fields WHERE id = :id RETURNING *";
         $q = $conn->prepare($query);
-        $q->bindValue(':id', $id);
         $q->execute($values);
         if ($q) {
             $data = $q->fetch(PDO::FETCH_OBJ);
@@ -299,6 +300,18 @@ class User extends Database
         return $data;
     }
 
+    public static function resetSuspend()
+    {
+        $conn = parent::getConnection();
+        $q = $conn->prepare("UPDATE users SET suspend_count = 0, is_suspend = null, suspend_untill = null 
+        WHERE id IN (SELECT id FROM users WHERE TO_CHAR(suspend_untill, 'YYYY-MM-DD') = TO_CHAR(NOW() AT TIME ZONE 'Asia/Jakarta', 'YYYY-MM-DD')) RETURNING email");
+        $q->execute();
+        if($q) {
+            $data = $q->fetchAll(PDO::FETCH_OBJ);
+            return $data;
+        }
+        return false;
+    }
 
 }
 

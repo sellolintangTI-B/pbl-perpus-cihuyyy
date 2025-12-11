@@ -230,12 +230,13 @@ class BookingController extends Controller
 
             
             $checkSuspendUser = User::checkUserSuspend($data['user_id']);
-            $suspension = User::update($id, [
+            $suspension = User::update($data['user_id'], [
                 'suspend_count' => $checkSuspendUser->suspend_count + 1
             ]);
-
+            
             $cancelled = BookingLog::cancel($data);
             $responseMessage = 'Berhasil membatalkan peminjaman';
+
             if ($suspension->suspend_count >= 3) {
                 $suspendUser = User::suspendAccount($data['user_id']);
                 $suspendDate = Carbon::parse($suspendUser->suspend_untill)->toDateString();

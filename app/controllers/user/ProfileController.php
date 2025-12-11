@@ -8,7 +8,6 @@ use App\Core\ResponseHandler;
 use App\Error\CustomException;
 use App\Utils\Validator;
 use App\Models\User;
-use App\Models\Suspension;
 use App\Utils\FileHandler;
 
 class ProfileController extends Controller
