@@ -176,10 +176,10 @@ class BookingController extends Controller
             $bookingParticipants = BookingParticipant::getParticipantsByBookingId($id);
             $feedback = Feedback::getByBookingIdAndUserId($id, $authUser->user['id']);
 
-            if ($booking->status == 'cancelled') {
+            if ($booking->current_status == 'cancelled') {
                 $detailCancel = BookingLog::getCancelDetailByBookingId($id);
             }
-            if ($booking->status == 'finished') {
+            if ($booking->current_status == 'finished') {
                 $detailFinished = BookingLog::getFinishedDetailByBookingId($id);
             }
             $data  = [

@@ -41,7 +41,7 @@ use App\Components\Modal;
             <div class="flex items-center justify-center w-full max-w-5xl mx-auto">
                 <form
                     class="w-full max-w-3xl flex flex-col gap-2"
-                    action="<?= URL ?>/admin/booking/update/<?= $data['booking']->id ?>"
+                    action="<?= URL ?>/admin/booking/update/<?= $data['booking']->booking_id ?>"
                     id="updateRoomForm"
                     method="post"
                     enctype="multipart/form-data"
