@@ -30,15 +30,23 @@ $oldRooms = $_SESSION['old_rooms'] ?? []
                         required: true,
                         value: $oldRooms['name'] ?? ''
                     );
-
-                    FormInput::input(
+                    FormInput::select(
                         id: 'lantai',
                         name: 'floor',
-                        type: 'number',
                         label: 'Lantai',
-                        placeholder: "contoh: 1",
+                        placeholder: "Lantai Ruangan",
+                        value: $old_data['floor'] ?? '',
                         required: true,
-                        value: $oldRooms['floor'] ?? ''
+                        options: [
+                            [
+                                "display" => "1",
+                                "value" => 1
+                            ],
+                            [
+                                "display" => "2",
+                                "value" => 2
+                            ],
+                        ]
                     );
 
                     FormInput::input(

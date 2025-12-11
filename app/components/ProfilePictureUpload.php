@@ -26,6 +26,7 @@ class ProfilePictureUpload
                 <img :src="previewUrl"
                     class="h-full w-full rounded-full object-cover transition-opacity duration-300"
                     :class="isUploading ? 'opacity-50' : 'opacity-100'"
+                    onerror="this.onerror=null; this.src='<?= URL ?>/public/storage/bg-pattern/no-profile.webp';"
                     alt="Profile Picture" />
 
                 <!-- Upload overlay (show on hover) -->

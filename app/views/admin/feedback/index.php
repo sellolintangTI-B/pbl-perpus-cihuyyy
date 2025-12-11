@@ -183,7 +183,7 @@ $totalPage = $data['total_page'] ?? 1;
                     <?php endforeach; ?>
                 </div>
 
-                <div class="mt-12">
+                <div class="mt-6">
                     <?php if (isset($data['total_page']) && $data['total_page'] > 1): ?>
                         <div class="w-full flex justify-center mb-6">
                             <?= Pagination::render(
