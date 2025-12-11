@@ -213,17 +213,19 @@ $totalPage = $data['total_page'] ?? 1;
                 </table>
             </div>
 
-            <!-- Pagination Section -->
-            <div class="mt-12">
-                <?php if (isset($data['total_page']) && $data['total_page'] > 1): ?>
-                    <?= Pagination::render(
-                        currentPage: $currentPage,
-                        totalPage: $totalPage,
-                        queryParams: $queryParams
-                    ) ?>
-                <?php endif; ?>
-            </div>
+
         </div>
+        <!-- Pagination Section -->
+        <?php if (isset($data['total_page']) && $data['total_page'] > 1): ?>
+            <div class="mt-2 w-full">
+                <?= Pagination::render(
+                    currentPage: $currentPage,
+                    totalPage: $totalPage,
+                    queryParams: $queryParams
+                ) ?>
+            </div>
+        <?php endif; ?>
+
     </div>
 
     <!-- Modal -->

@@ -89,7 +89,7 @@ $totalPage = $data['total_page'] ?? 1;
                 </table>
             </div>
 
-            <div class="mt-12">
+            <div class="mt-8">
                 <?php if (isset($data['total_page']) && $data['total_page'] > 1): ?>
                     <?= Pagination::render(
                         currentPage: $currentPage,

@@ -146,7 +146,6 @@ $roleOptions = [
                     id: 'jurusan',
                     name: 'major',
                     label: 'Jurusan',
-                    required: true,
                     alpine_disabled: '!isEdit',
                     value: $data->major ?? ""
                 );
@@ -175,7 +174,7 @@ $roleOptions = [
                     label: 'Institusi',
                     value: $data->institution ?? "",
                     required: true,
-                    alpine_disabled: 'true'
+                    readonly: true
                 );
                 ?>
 

@@ -35,7 +35,7 @@ class RoomController extends Controller
         $count = Room::count($params);
         $data = [
             'rooms' => $rooms,
-            'total_page' => ceil((int)$count->count / 5)
+            'total_page' => ceil((int)$count->count / 7)
         ];
 
         $this->view('admin/rooms/index', $data, layoutType: "Admin");

@@ -29,7 +29,9 @@ $auth = new Authentication();
         <div class="flex items-center justify-center w-full ps-4 flex-col gap-4">
             <a class="w-full p-2 items-center justify-start flex gap-2 bg-white/20 rounded-lg cursor-pointer hover:bg-white/40 transition-all duration-300" href="<?= URL . "/admin/profile/index" ?>">
                 <div class="rounded-full bg-baseColor/20 p-0.5 w-8 h-8">
-                    <img src="<?= URL ?>/public/<?= $auth->user["img_url"] ?? "" ?>" class="w-full h-full object-cover rounded-full" />
+                    <img src="<?= URL ?>/public/<?= $auth->user["img_url"] ?? "" ?>"
+                        class="w-full h-full object-cover rounded-full"
+                        onerror="this.onerror=null; this.src='<?= URL ?>/public/storage/bg-pattern/no-profile.webp';" />
                 </div>
                 <div class="flex-1 break-all line-clamp-1">
                     <?= $auth->user["username"] ?>

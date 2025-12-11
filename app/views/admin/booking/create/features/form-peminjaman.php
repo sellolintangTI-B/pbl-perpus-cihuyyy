@@ -4,6 +4,8 @@ use App\Components\Button;
 use App\Components\Icon\Icon;
 use App\Components\FormInput;
 use Carbon\Carbon;
+
+$oldData = $_SESSION['bookingOld'] ?? [];
 ?>
 
 <div class="w-full h-full grid sm:grid-cols-5 grid-cols-1 gap-4 overflow-y-scroll">
@@ -12,11 +14,13 @@ use Carbon\Carbon;
             <img
                 src="<?= URL ?>/public/<?= $data['data']->room_img_url ?>"
                 alt="Foto Ruangan"
-                class="w-full h-full object-cover" />
+                class="w-full h-full object-cover"
+                onerror="this.onerror=null; this.src='<?= URL ?>/public/storage/bg-pattern/no-img.webp';" />
         </div>
     </div>
+
     <!-- form peminjaman ruangan di sebelah kiri -->
-    <div class="sm:col-span-3 h-fit   flex flex-col">
+    <div class="sm:col-span-3 h-fit flex flex-col">
         <div class="w-full h-full p-6 bg-white rounded-lg">
             <div class="flex flex-col items-start gap-4 w-full">
                 <h1 class="font-medium text-black/80 text-xl">
@@ -85,7 +89,6 @@ use Carbon\Carbon;
                             required: true,
                             classGlobal: 'col-span-1',
                             value: $oldData['end_time'] ?? (isset($_GET['end_time']) ? $_GET['end_time'] : null)
-
                         );
                         ?>
                     </div>
@@ -119,12 +122,16 @@ use Carbon\Carbon;
                                             <button
                                                 type="button"
                                                 @click="deleteAnggota(index)"
-                                                class="text-red hover:text-red/80 text-xs font-medium transition-colors"
-                                                x-show="index !== 0">
+                                                class="text-red hover:text-red/80 text-xs font-medium transition-colors">
                                                 Hapus
                                             </button>
                                         </div>
                                     </template>
+
+                                    <!-- Empty State -->
+                                    <div x-show="listAnggota.length === 0" class="text-center py-4 text-gray-500 text-sm">
+                                        Belum ada anggota ditambahkan
+                                    </div>
                                 </div>
 
                                 <!-- Add Member Input -->
@@ -177,58 +184,65 @@ use Carbon\Carbon;
     </div>
 
     <!-- detail ruangan  -->
-    <div class="sm:col-span-2 h-fit w-full  flex flex-col gap-6">
+    <div class="sm:col-span-2 h-fit w-full flex flex-col gap-6">
         <div class="flex flex-col gap-4 w-full h-full p-6 bg-white rounded-lg">
-            <!-- foto ruangan -->
-            <!-- <div class="w-full h-48 rounded-lg overflow-hidden shrink-0">
-                <img
-                    src="<?= URL ?>/public/<?= $data['data']->room_img_url ?>"
-                    alt="Foto Ruangan"
-                    class="w-full h-full object-cover" />
-            </div> -->
             <!-- Divider -->
             <div class="flex flex-col gap-2 w-full">
                 <h3 class="text-lg font-medium text-black/80">Waktu Terpakai</h3>
                 <div class="w-full h-px bg-gray-400 rounded-full"></div>
             </div>
+
             <!-- Date Input -->
             <form class="w-full flex justify-between items-center gap-2" method="get">
                 <input type="hidden" name="state" value="detail">
                 <input type="hidden" name="date" value="<?= $_GET['date'] ?? "" ?>">
                 <input type="hidden" name="start_time" value="<?= $_GET['start_time'] ?? "" ?>">
                 <input type="hidden" name="end_time" value="<?= $_GET['end_time'] ?? "" ?>">
-                <input type="hidden" name="state" value="detail">
                 <input type="hidden" name="id" value="<?= $data['data']->id ?>">
-                <input id="date_check" name="date_check" , type="date" required value=<?= $data["date_check"] ?? $_GET['date_check'] ?? "" ?> class="custom-input-icon border-none bg-none text-sm outline-none" />
+                <input
+                    id="date_check"
+                    name="date_check"
+                    type="date"
+                    required
+                    value="<?= $data["date_check"] ?? $_GET['date_check'] ?? "" ?>"
+                    class="custom-input-icon border-none bg-none text-sm outline-none" />
                 <button
                     type="submit"
                     class="bg-primary cursor-pointer text-white px-4 py-1 rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors whitespace-nowrap">
                     Cek
                 </button>
             </form>
+
             <div class="flex-1 h-full max-h-full overflow-y-auto">
                 <div class="flex flex-col gap-4 h-fit">
                     <!-- Tabel Jadwal -->
-                    <div class=" rounded-lg overflow-hidden w-full bg-baseColor">
-                        <table class="w-full text-sm text-black/80 table table-auto border-collapse ">
+                    <div class="rounded-lg overflow-hidden w-full bg-baseColor">
+                        <table class="w-full text-sm text-black/80 table table-auto border-collapse">
                             <thead class="border-b border-gray-400">
                                 <tr>
-                                    <th class="px-4 py-2 text-left font-medium ">Jam</th>
-                                    <th class="px-4 py-2 text-left font-medium ">Peminjam</th>
+                                    <th class="px-4 py-2 text-left font-medium">Jam</th>
+                                    <th class="px-4 py-2 text-left font-medium">Peminjam</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-x divide-gray-200">
-
-                                <?php foreach ($data['schedule'] as $schedule) : ?>
+                                <?php if (!empty($data['schedule'])): ?>
+                                    <?php foreach ($data['schedule'] as $schedule) : ?>
+                                        <tr>
+                                            <td class="px-4 py-3">
+                                                <?= Carbon::parse($schedule->start_time)->format('H:i') ?> - <?= Carbon::parse($schedule->end_time)->format('H:i') ?>
+                                            </td>
+                                            <td class="px-4 py-3">
+                                                <?= $schedule->pic_name ?>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach ?>
+                                <?php else: ?>
                                     <tr>
-                                        <td class="px-4 py-3 ">
-                                            <?= Carbon::parse($schedule->start_time)->toTimeString() ?> - <?= Carbon::parse($schedule->end_time)->toTimeString() ?>
-                                        </td>
-                                        <td class="px-4 py-3 ">
-                                            <?= $schedule->pic_name ?>
+                                        <td colspan="2" class="px-4 py-3 text-center text-gray-500">
+                                            Tidak ada jadwal pada tanggal ini
                                         </td>
                                     </tr>
-                                <?php endforeach ?>
+                                <?php endif; ?>
                             </tbody>
                         </table>
                     </div>
@@ -246,22 +260,37 @@ use Carbon\Carbon;
 
         return {
             identifier: '',
-            listAnggota: <?= !empty($oldData['list_anggota']) ? json_encode($oldData['list_anggota']) : '[]' ?>,
+            listAnggota: <?php
+                            if (!empty($oldData['list_anggota'])) {
+                                if (is_string($oldData['list_anggota'])) {
+                                    echo $oldData['list_anggota'];
+                                } else if (is_array($oldData['list_anggota'])) {
+                                    echo json_encode($oldData['list_anggota']);
+                                } else {
+                                    echo '[]';
+                                }
+                            } else {
+                                echo '[]';
+                            }
+                            ?>,
             message: '',
 
             async tambahAnggota() {
                 this.message = '';
 
+                // Validasi input kosong
                 if (this.identifier.trim() === '') {
                     this.message = '* NIM/NIP atau Email tidak boleh kosong';
                     return;
                 }
 
+                // Validasi kapasitas maksimal
                 if (this.listAnggota.length >= maxCapacity) {
                     this.message = `* Maksimal ${maxCapacity} anggota diperbolehkan.`;
                     return;
                 }
 
+                // Cek duplikasi
                 const isExist = this.listAnggota.find(anggota =>
                     anggota.id_number === this.identifier ||
                     anggota.id === this.identifier
@@ -299,6 +328,7 @@ use Carbon\Carbon;
             },
 
             deleteAnggota(index) {
+                // Tidak bisa hapus PJ (index 0)
                 if (index > 0 && index < this.listAnggota.length) {
                     this.listAnggota.splice(index, 1);
                     this.message = '';
@@ -306,13 +336,16 @@ use Carbon\Carbon;
             },
 
             prepareData(event) {
+                // Skip validation untuk special approval
                 if (!requiresSpecialApproval) {
+                    // Validasi minimal capacity
                     if (this.listAnggota.length < minCapacity) {
                         event.preventDefault();
                         this.message = `* Minimal ${minCapacity} anggota diperlukan.`;
                         return false;
                     }
 
+                    // Validasi maksimal capacity
                     if (this.listAnggota.length > maxCapacity) {
                         event.preventDefault();
                         this.message = `* Maksimal ${maxCapacity} anggota diperbolehkan.`;
@@ -325,3 +358,9 @@ use Carbon\Carbon;
         }
     }
 </script>
+
+<style>
+    [x-cloak] {
+        display: none !important;
+    }
+</style>

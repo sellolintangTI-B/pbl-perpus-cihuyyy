@@ -201,7 +201,7 @@ $badgeSuspendColor = [
                     label: 'Institusi',
                     value: $data['data']->institution ?? "",
                     required: true,
-                    alpine_disabled: 'true'
+                    readonly: 'true'
                 );
                 ?>
 

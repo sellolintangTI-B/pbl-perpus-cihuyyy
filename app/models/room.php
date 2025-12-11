@@ -31,7 +31,7 @@ class Room extends Database
             $stmt .= "AND " . $whereClauses;
         }
 
-        $stmt .= " LIMIT 5 OFFSET 5 * $page";
+        $stmt .= " LIMIT 7 OFFSET 7 * $page";
 
         $q = $conn->prepare($stmt);
         $q->execute($values);

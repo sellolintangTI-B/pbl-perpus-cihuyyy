@@ -8,7 +8,11 @@ use App\Components\Badge;
 <div class="flex flex-col gap-4 rounded-lg overflow-hidden bg-baseColor p-2 h-full w-[175px] sm:w-[200px] md:w-full cursor-pointer" onclick="window.location.href = '<?= URL . $room['room_url'] ?>'">
     <!-- Room Image -->
     <div class="relative w-full md:h-72 h-36 overflow-hidden rounded-lg flex-shrink-0">
-        <img src="<?= URL . '/public/' . $room['image'] ?>" alt="<?= $room['name'] ?? 'Room' ?>" class="w-full h-full object-cover ">
+        <img
+            src="<?= URL . '/public/' . $room['image'] ?>" alt="<?= $room['name'] ?? 'Room' ?>"
+            class="w-full h-full object-cover "
+            onerror="this.onerror=null; this.src='<?= URL ?>/public/storage/bg-pattern/no-img.webp';">
+
         <?php if ($room['isSpecial']): ?>
             <div class="px-2 py-1 h-fit w-fit m-2 ms-auto rounded-full absolute top-0 right-0 text-sm border border-secondary bg-white/80 text-secondary">
                 Ruang Rapat

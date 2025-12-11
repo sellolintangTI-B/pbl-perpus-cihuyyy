@@ -24,7 +24,8 @@ use Carbon\Carbon;
                     <div class="relative h-80 w-96 shrink-0 self-stretch">
                         <img
                             src="<?= URL . "/public/" . $data['detail']->room_img_url ?>"
-                            alt="Ruang Perancis"
+                            alt="<?= $data['detail']->name ?>"
+                            onerror="this.onerror=null; this.src='<?= URL ?>/public/storage/bg-pattern/no-img.webp';"
                             class="w-full h-full object-cover rounded-lg shadow-sm" />
                     </div>
 
@@ -133,9 +134,9 @@ use Carbon\Carbon;
                     <!-- gatau make modal ato kaga -->
                     <?php
                     if ($data['detail']->is_operational) {
-                        Button::button(label: 'Nonaktifkan Ruangan', color: 'red', class: 'w-full py-3 px-6', alpineClick: "showAlert=true");
+                        Button::button(label: 'Nonaktifkan Ruangan', color: 'red', class: 'w-full py-2 px-6', alpineClick: "showAlert=true");
                     } else {
-                        Button::anchor(label: 'Aktifkan Ruangan', color: 'secondary', class: 'w-full py-3 px-6', href: '/admin/room/activate/' . $data['detail']->id);
+                        Button::anchor(label: 'Aktifkan Ruangan', color: 'secondary', class: 'w-full py-2 px-6', href: '/admin/room/activate/' . $data['detail']->id);
                     }
                     ?>
 
@@ -146,7 +147,6 @@ use Carbon\Carbon;
     <?= Modal::render(
         title: 'Yakin ingin menonaktifkan ruangan ini?',
         actionUrl: URL . '/admin/room/deactivate/' . $data['detail']->id,
-        alpineId: 'deleteUserId',
         color: 'red',
         confirmText: 'Ya',
         cancelText: 'Tidak',

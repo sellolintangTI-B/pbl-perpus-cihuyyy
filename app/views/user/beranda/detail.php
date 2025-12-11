@@ -11,7 +11,9 @@ $authUser = new Authentication;
 if (isset($_SESSION['old_booking'])) {
     $oldData = $_SESSION['old_booking'];
 }
-
+$date = $_GET['date'] ?? null;
+$startTime = $_GET['start_time'] ?? null;
+$endTime = $_GET['end_time'] ?? null;
 ?>
 
 <div class="max-w-6xl mx-auto md:p-4 justify-center items-start flex flex-col gap-6" x-data="formAnggota()">
@@ -27,8 +29,11 @@ if (isset($_SESSION['old_booking'])) {
     </div>
 
     <div class="w-full relative">
-        <img src="<?= URL ?>/public/<?= $data['detail']->room_img_url ?>" alt="Ruang Perancis" class="w-full h-80 object-cover md:rounded-lg shadow-md">
-        <a class="flex items-center gap-2 p-2 bg-white/30 hover:bg-white/40 transition-all duration-200 text-white rounded-lg absolute inset-0 m-4 w-fit h-fit" href="../">
+        <img
+            src="<?= URL ?>/public/<?= $data['detail']->room_img_url ?>"
+            alt="Ruang Perancis" class="w-full h-80 object-cover md:rounded-lg shadow-md"
+            onerror="this.onerror=null; this.src='<?= URL ?>/public/storage/bg-pattern/no-img.webp';">
+        <a class="flex items-center md:hidden gap-2 p-2 bg-white/30 hover:bg-white/40 transition-all duration-200 text-white rounded-lg absolute inset-0 m-4 w-fit h-fit" href="../">
             <?= Icon::arrowLeft('w-5 h-5 text-white') ?>
             Kembali
         </a>
@@ -138,9 +143,12 @@ if (isset($_SESSION['old_booking'])) {
                     </div>
                 </div>
                 <!-- Date Input -->
-                <form class="w-full flex justify-between items-center h-8" method="get">
+                <form class="w-full flex justify-between items-center h-8" method="get" >
                     <div class="flex items-center shrink gap-2 h-full">
                         <label class="block text-lg  text-black/80">Tanggal:</label>
+                        <input type="hidden" name="date" value="<?=$date?>">
+                        <input type="hidden" name="start_time" value="<?=$startTime?>">
+                        <input type="hidden" name="end_time" value="<?=$endTime?>">
                         <?php FormInput::input(
                             id: "date_check",
                             name: "date_check",

@@ -18,6 +18,7 @@ use Carbon\Carbon;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 class BookingController extends Controller
 {
     public function index()
@@ -63,7 +64,7 @@ class BookingController extends Controller
         try {
             $params = [];
             $page = 0;
-            $filename = 'DataPeminjaman';   
+            $filename = 'DataPeminjaman';
 
             if (isset($_GET['search']) && !empty($_GET['search'])) $params['booking_code'] = $_GET['search'];
 
@@ -119,7 +120,7 @@ class BookingController extends Controller
             $activeWorksheet->getStyle('A1:G' . $lastRow)->applyFromArray($styleArray);
             $writer = new Xlsx($spreadsheet);
             header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-            header('Content-Disposition: attachment; filename="'.$filename.'.xlsx"');
+            header('Content-Disposition: attachment; filename="' . $filename . '.xlsx"');
             header('Cache-Control: max-age=0');
             $writer->save('php://output');
             exit;
@@ -128,7 +129,6 @@ class BookingController extends Controller
             ResponseHandler::setResponse($e->getErrorMessages(), 'error');
             header('location:' . URL . '/admin/booking/index');
         }
-
     }
     public function details($id)
     {
@@ -283,11 +283,17 @@ class BookingController extends Controller
             }
 
             ResponseHandler::setResponse("Berhasil menambahkan data");
-            $_SESSION['old_booking'] = null;
+            $_SESSION['bookingOld'] = null;
             header("location:" . URL . '/admin/booking/index');
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), 'error');
-            $this->redirectWithOldInput(url: "/admin/booking/create?state=detail&id=$id", oldData: $data, session_name: 'old_booking');
+            $oldData = [
+                'datetime' => $_POST['datetime'] ?? '',
+                'start_time' => $_POST['start_time'] ?? '',
+                'end_time' => $_POST['end_time'] ?? '',
+                'list_anggota' => $_POST['list_anggota'] ?? '[]'
+            ];
+            $this->redirectWithOldInput(url: "/admin/booking/create?state=detail&id=$id", oldData: $oldData, session_name: 'bookingOld');
         }
     }
 

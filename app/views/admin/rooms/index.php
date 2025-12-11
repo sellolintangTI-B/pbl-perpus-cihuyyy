@@ -232,26 +232,24 @@ $totalPage = $data['total_page'] ?? 1;
                 </tbody>
             </table>
         </div>
-
-        <!-- Pagination Section -->
-        <div class="mt-12">
-            <?php
-            if (isset($data['total_page']) && $data['total_page'] > 1):
-            ?>
-                <?= Pagination::render(
-                    currentPage: $currentPage,
-                    totalPage: $totalPage,
-                    queryParams: $queryParams,
-                    maxVisible: 7,
-                    prevText: "Sebelumnya",
-                    nextText: "Selanjutnya"
-                ) ?>
-            <?php
-            endif;
-            ?>
-        </div>
     </div>
-
+    <!-- Pagination Section -->
+    <?php
+    if (isset($data['total_page']) && $data['total_page'] > 1):
+    ?>
+        <div class="mt-2 w-full">
+            <?= Pagination::render(
+                currentPage: $currentPage,
+                totalPage: $totalPage,
+                queryParams: $queryParams,
+                maxVisible: 7,
+                prevText: "Sebelumnya",
+                nextText: "Selanjutnya"
+            ) ?>
+        </div>
+    <?php
+    endif;
+    ?>
     <!-- Modal -->
     <?= Modal::render(
         title: 'Yakin ingin menghapus ruangan?',

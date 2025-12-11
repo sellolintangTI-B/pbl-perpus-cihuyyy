@@ -19,6 +19,7 @@ $authUser = new Authentication;
                     <!-- Room Image -->
                     <img src="<?= URL . '/public/' . $value->room_img_url ?>"
                         alt="<?= $value->room_name ?>"
+                        onerror="this.onerror=null; this.src='<?= URL ?>/public/storage/bg-pattern/no-img.webp';"
                         class="md:w-44 w-full h-72 md:h-48 object-cover rounded-lg shrink-0">
                     <!-- Booking Info -->
                     <div class="flex-1">

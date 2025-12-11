@@ -48,7 +48,24 @@ use Carbon\Traits\Options;
                 <form class="w-full grid grid-cols-1 sm:grid-cols-2 gap-6" id="updateRoomForm" x-data="updateRoomForm()" @submit.prevent="validateAndShowUpdateAlert" action="<?= URL . "/admin/room/update/" . $data->id ?>" method="post" enctype="multipart/form-data">
                     <?php
                     FormInput::input(id: 'nama', name: 'name', label: 'Nama', placeholder: "masukkan nama ruangan", required: true, value: $data->name);
-                    FormInput::input(id: 'lantai', name: 'floor', type: 'number', label: 'Lantai', placeholder: "contoh: 1", required: true, value: $data->floor);
+                    FormInput::select(
+                        id: 'lantai',
+                        name: 'floor',
+                        label: 'Lantai',
+                        placeholder: "Lantai Ruangan",
+                        value: $data->floor,
+                        required: true,
+                        options: [
+                            [
+                                "display" => "1",
+                                "value" => 1
+                            ],
+                            [
+                                "display" => "2",
+                                "value" => 2
+                            ],
+                        ]
+                    );
                     FormInput::input(id: 'kapasitas_minimal', name: 'min', type: 'number', label: 'Kapasitas Minimal (orang)', placeholder: 'contoh: 2', required: true, value: $data->min_capacity);
                     FormInput::input(id: 'kapasitas_maximal', name: 'max', type: 'number', label: 'Kapasitas Maximal (orang)', placeholder: 'contoh: 4',  required: true, value: $data->max_capacity);
                     FormInput::select(
