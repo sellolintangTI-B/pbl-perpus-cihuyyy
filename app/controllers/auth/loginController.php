@@ -8,6 +8,7 @@ use App\Error\CustomException;
 use App\Core\ResponseHandler;
 use App\Models\User;
 use App\Utils\Authentication;
+use Carbon\Carbon;
 
 class LoginController extends Controller
 {
@@ -50,6 +51,7 @@ class LoginController extends Controller
 
             $checkIfUserExist = User::getByEmailOrIdNumber($data['identifier']);
             if (!$checkIfUserExist) throw new CustomException('NIM/NIP/EMAIL Belum terdaftar');
+            if(Carbon::parse($checkIfUserExist['active_periode'])->lte(Carbon::now('Asia/Jakarta'))) throw new CustomException('Akun anda sudah melewati masa aktif');
             if (!password_verify($data['password'], $checkIfUserExist['password_hash'])) throw new CustomException('Credentials not match');
             if (!$checkIfUserExist['is_active']) throw new CustomException('Akun ini masih menunggu verifikasi admin');
 

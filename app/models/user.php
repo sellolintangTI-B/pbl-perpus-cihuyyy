@@ -278,6 +278,7 @@ class User extends Database
         $data = $q->fetch(PDO::FETCH_OBJ);
         return $data;
     }
+    
     public static function getActiveUserCount()
     {
         $conn = parent::getConnection();
@@ -286,6 +287,7 @@ class User extends Database
         $data = $q->fetchColumn();
         return $data;
     }
+
     public static function getNeedConfirmationAccountCount()
     {
         $conn = parent::getConnection();
@@ -294,4 +296,5 @@ class User extends Database
         $data = $q->fetchColumn();
         return $data;
     }
+
 }

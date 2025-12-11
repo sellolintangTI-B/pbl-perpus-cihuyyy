@@ -57,7 +57,7 @@ if (isset($_SESSION['old_booking'])) {
             <div class="flex gap-8 p-4 bg-white rounded-xl items-center justify-center shadow-md text-center w-full h-full">
                 <div class="text-center flex flex-col items-center justify-center gap-4 w-full">
                     <div class="flex items-center justify-center gap-1 text-primary">
-                        <span class="text-3xl font-bold">4.75</span>
+                        <span class="text-3xl font-bold"><?= $data['detail']->rating ?></span>
                     </div>
                     <div class="flex justify-center gap-1">
                         <?php for ($i = 0; $i < 5; $i++): ?>
@@ -71,7 +71,7 @@ if (isset($_SESSION['old_booking'])) {
 
                 </div>
                 <div class="text-center flex flex-col items-center justify-center gap-4 w-full">
-                    <div class="text-3xl font-bold text-primary">63</div>
+                    <div class="text-3xl font-bold text-primary"><?= $data['detail']->feedback_count ?></div>
                     <div class="text-sm text-gray-600">Ulasan</div>
                 </div>
             </div>
