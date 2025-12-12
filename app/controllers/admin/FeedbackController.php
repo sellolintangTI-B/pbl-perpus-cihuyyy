@@ -71,8 +71,8 @@ class FeedbackController extends Controller
                     $params['date'] = Carbon::createFromDate((int) $_GET['tahun'], (int) $_GET['bulan'])->format('Y-m');
                     $bulan = $_GET['bulan'];
                     $tahun = $_GET['tahun'];
-                    $filename .= "-$bulan";
-                    $filename .= "-$tahun";
+                    $filename .= "_$bulan";
+                    $filename .= "_$tahun";
                 }
             }
 

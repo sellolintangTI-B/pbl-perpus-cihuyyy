@@ -39,7 +39,7 @@ class Booking extends Database
             $stmt .= " WHERE " . $whereClauses;
         }
 
-        $stmt .= " ORDER BY start_time DESC, last_status_update DESC LIMIT 15 OFFSET 15 * $page";
+        $stmt .= " ORDER BY last_status_update DESC LIMIT 15 OFFSET 15 * $page";
         $q = $conn->prepare($stmt);
         $q->execute($values);
         $data = $q->fetchAll(PDO::FETCH_OBJ);

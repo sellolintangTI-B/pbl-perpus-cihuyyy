@@ -117,17 +117,14 @@ class BookingController extends Controller
             if ($checkIfLibraryClose) throw new CustomException('Tidak bisa booking di tanggal ini');
 
             if ($data['date']->isWeekend()) throw new CustomException('Tidak bisa booking di weekend');
+            if ($data['date']->lt(Carbon::now('Asia/Jakarta'))) throw new CustomException('Tidak bisa booking di kemarin hari');
+            if (Carbon::today('Asia/Jakarta')->diffInDays($data['date']) >= 7) throw new CustomException('Tidak bisa booking untuk jadwal lebih dari 7 hari per hari ini');
 
             if ($data['date']->isToday()) {
                 $startHour = $data['date']->format('H:i:s');
                 $nowHour = Carbon::now('Asia/Jakarta')->format('H:i:s');
                 if ($startHour < $nowHour) throw new CustomException('Tidak bisa booking pada jam yang sudah lewat');
             }
-
-            if ($data['date']->lt(Carbon::now('Asia/Jakarta'))) throw new CustomException('Tidak bisa booking di kemarin hari');
-
-            if (Carbon::today('Asia/Jakarta')->diffInDays($data['date']) >= 7) throw new CustomException('Tidak bisa booking untuk jadwal lebih dari 7 hari per hari ini');
-
 
             $dayCheck = $scheduleJson[$data['date']->dayOfWeek()];
             $isValid = false;
