@@ -51,7 +51,7 @@ if (isset($_SESSION['register_old'])) {
 
                             FormInput::input(
                                 id: 'email',
-                                placeholder: 'Masukkan email',
+                                placeholder: 'Masukkan email kampus',
                                 name: 'email',
                                 type: 'email',
                                 label: 'Email',
@@ -107,7 +107,7 @@ if (isset($_SESSION['register_old'])) {
                                 name: 'role',
                                 label: 'Jenis Civitas',
                                 required: true,
-                                placeholder: "Pilih Role",
+                                placeholder: "Pilih Jenis Civitas",
                                 value: $old_data['role'] ?? '',
                                 options: [
                                     [

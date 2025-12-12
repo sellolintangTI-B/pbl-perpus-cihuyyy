@@ -10,12 +10,14 @@
     $no = 1;
 
     $statusColor = [
+        "-" => "primary",
         "created" => "primary",
         "checked_in" => "secondary",
         "cancelled" => "red",
         "finished" => "tertiary"
     ];
     $statusLabel = [
+        "-" => "undefined",
         "created" => "created",
         "checked_in" => "berlangsung",
         "cancelled" => "dibatalkan",
@@ -37,8 +39,8 @@
                 </button>
             </div>
             <?= Badge::badge(
-                label: $statusLabel[$data->status],
-                color: $statusColor[$data->status],
+                label: $statusLabel[$data->status ?? '-'],
+                color: $statusColor[$data->status ?? '-'],
                 class: "w-24 text-xs!"
             ) ?>
         </div>
@@ -49,7 +51,7 @@
                 ?>
             </span>
             <span>
-                Tempat: <span class="text-primary"><?= $data->name ?></span>, Perpustakaan PNJ, LT. <?= $data->floor ?>
+                Tempat: <span class="text-primary"><?= $data->name ?? '-' ?></span>, Perpustakaan PNJ, LT. <?= $data->floor ?>
             </span>
         </div>
         <div class="flex gap-2 text-black/80">
@@ -95,7 +97,7 @@
                     style="display: none;">
                     <?php if ($data->status == 'created') : ?>
                         <a
-                            href="<?= URL . '/admin/booking/check_in/' . $data->id ?>"
+                            href="<?= URL . '/admin/booking/check_in/' . $data->id ?? '-' ?>"
                             class="flex items-center gap-2 px-3 py-2 text-xs text-secondary hover:bg-secondary/5 border-t border-gray-100 w-full transition cursor-pointer">
                             Check In
                         </a>
@@ -103,7 +105,7 @@
 
                     <?php if ($data->status == 'checked_in') : ?>
                         <a
-                            href="<?= URL . '/admin/booking/check_out/' . $data->id ?>"
+                            href="<?= URL . '/admin/booking/check_out/' . $data->id ?? '-' ?>"
                             class="flex items-center gap-2 px-3 py-2 text-xs text-primary hover:bg-primary/5 border-t border-gray-100 w-full transition cursor-pointer">
                             Check Out
                         </a>
@@ -111,7 +113,7 @@
 
                     <?php if ($data->status == 'created') : ?>
                         <button
-                            @click="$dispatch('cancel-peminjaman', { cancelPeminjamanId: '<?= $data->id ?>' }); showAlert = true;"
+                            @click="$dispatch('cancel-peminjaman', { cancelPeminjamanId: '<?= $data->id ?? '-' ?>' }); showAlert = true;"
                             class="flex items-center gap-2 px-3 py-2 text-xs text-red hover:bg-red/5 border-t border-gray-100 w-full transition cursor-pointer">
                             Cancel
                         </button>
