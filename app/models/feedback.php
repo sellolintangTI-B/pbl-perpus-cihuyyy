@@ -50,8 +50,8 @@ class Feedback extends Database
                 }
 
                 if ($key === 'date' && !empty($value)) {
-                    $where[] = "TO_CHAR(b.start_time, 'YYYY-MM') = :date";
-                    $values[] = $value; 
+                    $where[] = "TO_CHAR(b.start_time, 'YYYY-MM') ILIKE :date";
+                    $values[] = "%$value%"; 
                 }
             }
         }
@@ -87,8 +87,8 @@ class Feedback extends Database
                 }
 
                 if ($key === 'date' && !empty($value)) {
-                    $where[] = "TO_CHAR(b.start_time, 'YYYY-MM') = :date";
-                    $values[] = $value; 
+                    $where[] = "TO_CHAR(b.start_time, 'YYYY-MM') ILIKE :date";
+                    $values[] = "%$value%"; 
                 }
             }
         }
