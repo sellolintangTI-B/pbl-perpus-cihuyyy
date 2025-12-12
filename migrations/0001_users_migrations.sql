@@ -1,4 +1,5 @@
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+DROP VIEW IF EXISTS v_booking_details;
 DROP TABLE IF EXISTS feedbacks;
 DROP TABLE IF EXISTS booking_participants;
 DROP TABLE IF EXISTS booking_logs;
@@ -20,6 +21,7 @@ CREATE TABLE IF NOT EXISTS users  (
     phone_number VARCHAR(20) UNIQUE NOT NULL,
     active_periode TIMESTAMP,
     role VARCHAR(20) CHECK (role IN ('Admin', 'Mahasiswa', 'Dosen', 'Guest')) NOT NULL,
+    suspend_count SMALLINT,
     is_suspend BOOLEAN DEFAULT FALSE,
     suspend_untill TIMESTAMP, 
     profile_picture_url VARCHAR(255),

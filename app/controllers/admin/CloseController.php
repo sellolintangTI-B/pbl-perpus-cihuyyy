@@ -10,6 +10,7 @@ use App\Models\Booking;
 use App\Models\BookingLog;
 use App\Models\LibraryClose;
 use App\Utils\Authentication;
+use App\Utils\Mailer;
 use App\Utils\Validator;
 use Carbon\Carbon;
 
@@ -19,12 +20,12 @@ class CloseController extends Controller
     {
         try {
             $page = 0;
-            
-            if(isset($_GET['page'])) $page = $_GET['page'];
+
+            if (isset($_GET['page'])) $page = $_GET['page'];
 
             $data = LibraryClose::get($page);
             $count = LibraryClose::count();
-             
+
             $data = [
                 'close' => $data,
                 'total_page' => ceil((int) $count->count / 15)
@@ -45,6 +46,7 @@ class CloseController extends Controller
             header('location:' . URL . '/admin/close/');
         }
     }
+
     public function store()
     {
         try {
@@ -62,19 +64,26 @@ class CloseController extends Controller
 
             $closeDate = Carbon::parse($data['close_date'])->toDateString();
             $nowdate = Carbon::now('Asia/Jakarta')->toDateString();
-            if($closeDate < $nowdate) throw new CustomException('Tdak bisa close dikemarin hari');
+            if ($closeDate < $nowdate) throw new CustomException('Tdak bisa close dikemarin hari');
             $_SESSION['old_close'] = null;
             $bookingByDate = Booking::getBookingForCancelByDate($closeDate);
-
-            if($bookingByDate) {
-                $bookingIds = array_map(function($item){
-                    return $item->booking_id;
+            if ($bookingByDate) {
+                $emails = [];
+                $bookingIds = array_map(function ($item) use(&$emails) {
+                    $emails[] = $item->email;
+                    return $item->id;
                 }, $bookingByDate);
+
+                $emails = array_filter($emails, fn($item) => !is_null($item));
+
+                foreach($emails as $email) {
+                    Mailer::send($email , 'NOTIFIKASI', 'Booking anda telah di cancel oleh admin');
+                }
 
                 $cancelAllBookingByDate = BookingLog::cancelAllBookingByDate($bookingIds, $data['reason'], $data['created_by']);
             }
             $libraryClose = LibraryClose::store($data);
-            
+
             ResponseHandler::setResponse("Berhasil menambahkan tanggal tutup!", 'success');
             $this->redirectWithOldInput(url: '/admin/close');
         } catch (CustomException $e) {
@@ -87,7 +96,7 @@ class CloseController extends Controller
     {
         try {
             $data = LibraryClose::delete($id);
-            if($data) {
+            if ($data) {
                 ResponseHandler::setResponse('Berhasil menghapus data');
                 header('location:' . URL . '/admin/close/index');
             } else {

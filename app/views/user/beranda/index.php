@@ -89,7 +89,7 @@ use App\Components\RoomCard;
                     'id' => $room->id,
                     'name' => $room->name,
                     'image' => $room->room_img_url,
-                    'rating' => '4.85',
+                    'rating' => $room->rating,
                     'min' => $room->min_capacity,
                     'max' => $room->max_capacity,
                     'description' => $room->description,

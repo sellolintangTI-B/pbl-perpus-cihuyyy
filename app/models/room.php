@@ -72,7 +72,7 @@ class Room extends Database
     {
         $paramValues = [];
         $conn = parent::getConnection();
-        $stmt = " SELECT * FROM rooms WHERE is_deleted = FALSE ";
+        $stmt = "SELECT *, avg_room_ratings(id) AS rating FROM rooms WHERE is_deleted = FALSE ";
         if (!empty($params)) {
 
             if (!empty($params['start_time']) && !empty($params['duration'])) {
@@ -110,8 +110,8 @@ class Room extends Database
     public static function getById($id)
     {
         $conn = parent::getConnection();
-        $stmt = $conn->prepare("SELECT * FROM rooms WHERE id = ?");
-        $stmt->bindValue(1, $id);
+        $stmt = $conn->prepare("SELECT *, avg_room_ratings(:roomId) AS rating, count_feedbacks(:roomId) AS feedback_count FROM rooms WHERE id = :roomId");
+        $stmt->bindValue(':roomId', $id);
         $stmt->execute();
         $data = $stmt->fetch(PDO::FETCH_OBJ);
         return $data;

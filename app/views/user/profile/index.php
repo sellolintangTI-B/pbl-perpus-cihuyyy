@@ -83,7 +83,7 @@ $badgeSuspendColor = [
 
             </div>
             <div class="flex justify-end items-center p-3 md:p-4 ">
-                <?= Badge::badge(label: 'Suspend Point: ' . (isset($data['suspension']) ? ($data['suspension']->suspend_count ?? 0) : 0) . ' point', color: $badgeSuspendColor[isset($data['suspension']) ? ($data['suspension']->suspend_count ?? 0) : 0], class: 'px-2! py-1! text-xs md:text-sm') ?>
+                <?= Badge::badge(label: 'Suspend Point: ' . (isset($data['data']) ? ($data['data']->suspend_count ?? 0) : 0) . ' point', color: $badgeSuspendColor[isset($data['data']) ? ($data['data']->suspend_count ?? 0) : 0], class: 'px-2! py-1! text-xs md:text-sm') ?>
             </div>
 
             <div class="absolute p-3 md:p-4 inset-0  flex flex-col items-start justify-start gap-3 md:gap-4">

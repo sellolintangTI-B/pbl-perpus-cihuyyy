@@ -275,10 +275,11 @@ class Booking extends Database
     public static function getBookingForCancelByDate($date)
     {
         $conn = parent::getConnection();
-        $q = $conn->prepare("SELECT DISTINCT ON(b.id) * FROM bookings AS b JOIN booking_logs AS bl ON b.id = bl.booking_id 
-            WHERE TO_CHAR(b.start_time, 'YYYY-MM-DD') = :date AND bl.status NOT IN ('checked_in', 'cancelled', 'finished')
-            ORDER BY b.id, bl.created_at DESC
-            ");
+        $q = $conn->prepare("SELECT DISTINCT ON(b.id) b.*, u.email FROM bookings AS b JOIN booking_logs AS bl ON b.id = bl.booking_id 
+            LEFT JOIN users AS u ON b.user_id = u.id
+            WHERE TO_CHAR(b.start_time, 'YYYY-MM-DD') = :date AND bl.status 
+            NOT IN ('checked_in', 'cancelled', 'finished')
+            ORDER BY b.id, bl.created_at DESC");
         $q->bindValue(":date", $date);
         $q->execute();
         $data = $q->fetchAll(PDO::FETCH_OBJ);
