@@ -117,16 +117,3 @@ LINE 1: ...NSERT INTO booking_logs (booking_id, reason, status) VALUES
 [2025-12-11 07:10:08] ERROR: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at end of input
 LINE 1: ...NSERT INTO booking_logs (booking_id, reason, status) VALUES 
                                                                        ^
-[2025-12-12 09:39:17] ERROR: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at end of input
-LINE 1: ...NSERT INTO booking_logs (booking_id, reason, status) VALUES 
-                                                                       ^
-[2025-12-12 09:39:52] ERROR: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at end of input
-LINE 1: ...NSERT INTO booking_logs (booking_id, reason, status) VALUES 
-                                                                       ^
-[2025-12-12 09:41:21] SUKSES: Auto Cancel dijalankan.
-[2025-12-12 09:41:53] SUKSES: Auto Cancel dijalankan.
-[2025-12-12 09:43:26] SUKSES: Auto Cancel dijalankan.
-[2025-12-12 09:52:51] SUKSES: Auto Cancel dijalankan.
-[2025-12-12 12:34:47] SUKSES: Auto Cancel dijalankan.
-[2025-12-12 12:35:09] SUKSES: Auto Cancel dijalankan.
-[2025-12-12 12:36:09] SUKSES: Auto Cancel dijalankan.
