@@ -148,19 +148,19 @@ $totalPage = $data['total_page'] ?? 1;
                                 </td>
 
                                 <td class="px-3 py-3 text-xs font-medium text-gray-800">
-                                    <?= htmlspecialchars($room->name) ?>
+                                    <?= htmlspecialchars($room->name ?? '-') ?>
                                 </td>
 
                                 <td class="px-3 py-3 text-xs text-gray-600 text-center">
-                                    <?= htmlspecialchars($room->floor) ?>
+                                    <?= htmlspecialchars($room->floor ?? '-') ?>
                                 </td>
 
                                 <td class="px-3 py-3 text-xs text-gray-600 text-center">
-                                    <?= htmlspecialchars($room->min_capacity) ?>
+                                    <?= htmlspecialchars($room->min_capacity ?? '-') ?>
                                 </td>
 
                                 <td class="px-3 py-3 text-xs text-gray-600 text-center">
-                                    <?= htmlspecialchars($room->max_capacity) ?>
+                                    <?= htmlspecialchars($room->max_capacity ?? '-') ?>
                                 </td>
 
                                 <td class="px-3 py-3 text-xs">

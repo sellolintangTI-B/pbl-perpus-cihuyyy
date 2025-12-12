@@ -133,7 +133,7 @@ $totalPage = $data['total_page'] ?? 1;
                                 <div class="flex gap-2 items-center">
                                     <?= Icon::star('w-5 h-5 text-primary') ?>
                                     <h1 class="text-black/80 text-xl font-medium">
-                                        <?= htmlspecialchars($d->rating) ?>
+                                        <?= htmlspecialchars($d->rating ?? '-') ?>
                                     </h1>
                                 </div>
                             </div>
@@ -143,21 +143,21 @@ $totalPage = $data['total_page'] ?? 1;
                             <div class="flex gap-2 items-center justify-start text-black/80 mt-2">
                                 <?= Icon::location("w-5 h-5") ?>
                                 <p class="font-medium text-sm">
-                                    Tempat: <?= htmlspecialchars($d->room_name) ?>, Perpustakaan PNJ, LT. <?= htmlspecialchars($d->floor) ?>
+                                    Tempat: <?= htmlspecialchars($d->room_name ?? '-') ?>, Perpustakaan PNJ, LT. <?= htmlspecialchars($d->floor) ?>
                                 </p>
                             </div>
 
                             <div class="flex gap-2 items-center justify-start text-black/80 mt-2">
                                 <?= Icon::person("w-5 h-5") ?>
                                 <p class="font-medium text-sm">
-                                    Nama: <?= htmlspecialchars($d->name) ?>
+                                    Nama: <?= htmlspecialchars($d->name ?? '-') ?>
                                 </p>
                             </div>
 
                             <div class="flex gap-2 items-center justify-start text-black/80 mt-2">
                                 <?= Icon::calendar_pencil("w-5 h-5") ?>
                                 <p class="font-medium text-sm">
-                                    Tanggal Booking: <?= htmlspecialchars(Carbon::parse($d->start_time)->translatedFormat('l, d M Y')) ?>
+                                    Tanggal Booking: <?= htmlspecialchars(Carbon::parse($d->start_time ?? '-')->translatedFormat('l, d M Y')) ?>
                                 </p>
                             </div>
 
@@ -175,7 +175,7 @@ $totalPage = $data['total_page'] ?? 1;
                                         class="text-sm text-black/80 cursor-pointer transition-all duration-300 max-w-full break-words overflow-hidden text-ellipsis"
                                         :class="isExpanded ? 'line-clamp-none' : 'line-clamp-4'"
                                         @click="isExpanded = !isExpanded">
-                                        <?= htmlspecialchars($d->feedback) ?>
+                                        <?= htmlspecialchars($d->feedback ?? '-') ?>
                                     </p>
                                 </div>
                             </div>
