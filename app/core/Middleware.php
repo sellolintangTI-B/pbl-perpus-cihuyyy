@@ -46,6 +46,7 @@ class Middleware
             "/admin/user/approve_user",
             "/admin/user/update",
             "/admin/user/edit",
+            "/admin/user/edit_suspend",
             "/admin/user/reset_suspend",
             "/admin/user/reset_password",
             "/admin/user/details",

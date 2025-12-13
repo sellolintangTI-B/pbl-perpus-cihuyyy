@@ -227,12 +227,13 @@ $roleOptions = [
                             <form
                                 id="updateSuspension"
                                 class="w-full grid grid-cols-1 sm:grid-cols-2 gap-6"
-                                action=""
-                                method="post"
+                                action="<?= URL ?>/admin/user/edit_suspend/<?= $data->id ?>"
+                                method="POST"
                                 enctype="multipart/form-data">
                                 <?php
                                 FormInput::input(
                                     id: 'suspend_point',
+                                    type: 'number',
                                     name: 'suspend_point',
                                     type: 'number',
                                     label: 'Suspend Point',
@@ -246,8 +247,7 @@ $roleOptions = [
                                 FormInput::input(
                                     id: 'date',
                                     type: 'date',
-                                    required: true,
-                                    name: 'active_until',
+                                    name: 'suspend_untill',
                                     label: 'Suspend Period',
                                     class: 'w-full custom-input-icon',
                                     value: $data->suspend_untill ? Carbon::parse($data->suspend_untill)->toDateString() : "",

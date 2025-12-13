@@ -182,7 +182,8 @@ class UserController extends Controller
                 "institution" => $_POST['institution'],
                 "role" => $_POST["role"],
                 "profile_picture_url" => empty($_FILES['image']['name']) ? null : $_FILES['image'],
-                "is_active" => $_POST['status'] ?? 1
+                "is_active" => $_POST['status'] ?? 1,
+                "active_periode" => $_POST['active_until']
             ];
 
             $validator = new Validator($data);
@@ -191,6 +192,7 @@ class UserController extends Controller
             $validator->field("phone_number", ['required']);
             $validator->field("institution", ['required']);
             $validator->field("role", ['required']);
+            $validator->field("active_periode", ['required']);
 
             if ($validator->error()) throw new CustomException($validator->getErrors());
 
@@ -216,6 +218,42 @@ class UserController extends Controller
             if ($update) {
                 ResponseHandler::setResponse('Berhasil mengubah data');
                 header('location:' . URL . '/admin/user');
+            } else {
+                throw new CustomException('Gagal mengubah data');
+            }
+        } catch (CustomException $e) {
+            ResponseHandler::setResponse($e->getErrorMessages(), "error");
+            header('location:' . URL . "/admin/user/edit/$id");
+        }
+    }
+
+    public function edit_suspend($id)
+    {
+        try {
+            $data = [
+                'suspend_count' => $_POST['suspend_point'],
+                'suspend_untill' => $_POST['suspend_untill']
+            ];
+
+            $v = new Validator($data);
+            $v->field('suspend_count', ['required']);
+
+            if(empty($data['suspend_untill'])) unset($data['suspend_untill']);
+            
+            if($data['suspend_count'] >= 0 && $data['suspend_count'] < 3) {
+                $data['suspend_untill'] = null;
+                $data['is_suspend'] = 0;
+            }
+
+            if($data['suspend_count'] == 3 && empty($data['suspend_untill'])) {
+                $data['suspend_untill'] = Carbon::now('Asia/Jakarta')->addDays(7);
+                $data['is_suspend'] = true;
+            } 
+
+            $update = User::update($id, $data);
+            if($update) {
+                ResponseHandler::setResponse('Berhasil mengubah suspend user');
+                header('location:' . URL . "/admin/user/edit/$id");
             } else {
                 throw new CustomException('Gagal mengubah data');
             }
