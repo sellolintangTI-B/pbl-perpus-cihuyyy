@@ -20,7 +20,7 @@ $oldRooms = $_SESSION['old_rooms'] ?? []
         </div>
         <div class="flex-1 w-full overflow-y-auto">
             <div class="flex items-center justify-center  w-full max-w-3xl mx-auto bg-white p-6 border border-gray-200 rounded-xl shadow-md">
-                <form class="w-full grid grid-cols-1 sm:grid-cols-2 gap-6" action="<?= URL . "/admin/room/store" ?>" method="post" enctype="multipart/form-data">
+                <form class="w-full grid grid-cols-1 sm:grid-cols-2 gap-6" action="<?= URL . "/admin/room/store" ?>" method="POST" enctype="multipart/form-data">
                     <?php
                     FormInput::input(
                         id: 'nama',

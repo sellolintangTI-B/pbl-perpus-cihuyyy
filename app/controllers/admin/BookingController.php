@@ -255,6 +255,7 @@ class BookingController extends Controller
     public function store($id)
     {
         try {
+            $authUser = new Authentication;
             $data = [
                 "room_id" => $id,
                 "start_time" => $_POST['start_time'],
@@ -297,7 +298,7 @@ class BookingController extends Controller
             if ($getRoomById->requires_special_approval) {
                 $path = FileHandler::save($data['file'], 'booking');
                 $insertData['special_requirement_attachments_url'] = $path;
-                unset($insertData['user_id']);
+                $insertData['user_id'] = $authUser->user['id'];
             }
 
             $booking = Booking::create($insertData);
@@ -535,8 +536,19 @@ class BookingController extends Controller
             $data = [
                 'user_id' => $user->user['id'],
                 'reason' => $_POST['reason'],
-                'booking_id' => $bookingId
+                'booking_id' => $bookingId,
             ];
+
+            if(isset($_POST['is_suspend'])) {
+                $userBooked = User::getUserByBookingId($data['booking_id']);
+                $suspension = User::update($userBooked->id, [
+                    'suspend_count' => $userBooked->suspend_count + 1
+                ]);
+                
+                if ($suspension->suspend_count >= 3) User::suspendAccount($userBooked->id);
+                
+            }
+
             $cancel = BookingLog::cancel($data);
             if ($cancel) {
                 ResponseHandler::setResponse('Berhasil membatalkan peminjaman ruangan');

@@ -313,6 +313,15 @@ class User extends Database
         return false;
     }
 
+    public static function getUserByBookingId($bookingId)
+    {
+        $conn = parent::getConnection();
+        $q = $conn->prepare("SELECT * FROM users WHERE id = (SELECT user_id FROM bookings WHERE id = :bookingId)");
+        $q->bindValue(':bookingId', $bookingId);
+        $q->execute();
+        $data = $q->fetch(PDO::FETCH_OBJ);
+        return $data;
+    }
 }
 
 
