@@ -68,7 +68,7 @@ class Room extends Database
         return $data;
     }
 
-    public static function get($params = [])
+public static function get($params = [])
     {
         $paramValues = [];
         $conn = parent::getConnection();
@@ -76,9 +76,10 @@ class Room extends Database
         if (!empty($params)) {
 
             if (!empty($params['start_time']) && !empty($params['duration'])) {
-                $stmt .= " AND id NOT IN (SELECT room_id FROM bookings WHERE 
-                    start_time < TO_TIMESTAMP(:start_time, 'YYYY-MM-DD HH24:MI:SS') + (:duration || ' minutes')::INTERVAL
-                    AND end_time > TO_TIMESTAMP(:start_time, 'YYYY-MM-DD HH24:MI:SS'))";
+                $stmt .= " AND id NOT IN ( SELECT b.room_id FROM bookings b WHERE 
+                        b.start_time < TO_TIMESTAMP(:start_time, 'YYYY-MM-DD HH24:MI:SS') + (:duration || ' minutes')::INTERVAL
+                        AND b.end_time > TO_TIMESTAMP(:start_time, 'YYYY-MM-DD HH24:MI:SS')
+                        AND ( SELECT status FROM booking_logs bl WHERE bl.booking_id = b.id ORDER BY bl.created_at DESC LIMIT 1) != 'cancelled')";
                 $paramValues['start_time'] = $params['start_time'];
                 $paramValues['duration']  = $params['duration'];
             }
