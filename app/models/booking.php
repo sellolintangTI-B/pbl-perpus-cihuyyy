@@ -39,7 +39,7 @@ class Booking extends Database
             $stmt .= " WHERE " . $whereClauses;
         }
 
-        $stmt .= " ORDER BY last_status_update DESC LIMIT 15 OFFSET 15 * $page";
+        $stmt .= " ORDER BY start_time DESC, last_status_update DESC LIMIT 15 OFFSET 15 * $page";
         $q = $conn->prepare($stmt);
         $q->execute($values);
         $data = $q->fetchAll(PDO::FETCH_OBJ);
@@ -77,7 +77,7 @@ class Booking extends Database
             $stmt .= " WHERE " . $whereClauses;
         }
         $stmt .= " ORDER BY last_status_update DESC";
-        
+
         $q = $conn->prepare($stmt);
         $q->execute($values);
         $data = $q->fetchAll(PDO::FETCH_OBJ);
@@ -143,8 +143,15 @@ class Booking extends Database
     {
         $conn = parent::getConnection();
         $q = $conn->prepare("SELECT b.start_time, b.start_time + (b.duration || ' minutes')::INTERVAL AS end_time, u.first_name || ' ' || u.last_name AS pic_name 
-        FROM bookings AS b LEFT JOIN users AS u ON b.user_id = u.id
-        WHERE b.room_id = ? AND b.start_time::date = ? ORDER BY start_time ASC");
+            FROM bookings AS b LEFT JOIN users AS u ON b.user_id = u.id WHERE b.room_id = ?  AND b.start_time::date = ? 
+            AND (
+                SELECT status 
+                FROM booking_logs bl 
+                WHERE bl.booking_id = b.id 
+                ORDER BY bl.created_at DESC 
+                LIMIT 1
+            ) != 'cancelled'
+            ORDER BY start_time ASC");
         $q->bindValue(1, $id);
         $q->bindValue(2, $date);
         $q->execute();
@@ -155,8 +162,12 @@ class Booking extends Database
     public static function checkSchedule($startTime, $duration, $roomId)
     {
         $conn = parent::getConnection();
-        $q = $conn->prepare("SELECT * FROM bookings WHERE start_time < TO_TIMESTAMP(:startTime, 'YYYY-MM-DD HH24:MI:SS') + (:duration || ' minutes')::INTERVAL 
-        AND end_time > TO_TIMESTAMP(:startTime2, 'YYYY-MM-DD HH24:MI:SS') AND room_id = :roomId;");
+        $q = $conn->prepare("SELECT b.*, bl_latest.status FROM bookings AS b JOIN ( SELECT DISTINCT ON (booking_id) booking_id, status
+                FROM booking_logs ORDER BY booking_id, created_at DESC ) AS bl_latest ON b.id = bl_latest.booking_id
+            WHERE b.start_time < TO_TIMESTAMP(:startTime, 'YYYY-MM-DD HH24:MI:SS') + (:duration || ' minutes')::INTERVAL
+                AND b.end_time > TO_TIMESTAMP(:startTime2, 'YYYY-MM-DD HH24:MI:SS')
+                AND b.room_id = :roomId
+                AND bl_latest.status != 'cancelled';");
         $q->bindValue(":startTime", $startTime);
         $q->bindValue(":duration", $duration);
         $q->bindValue(":startTime2", $startTime);

@@ -73,12 +73,11 @@ $rooms = $data['data'] ?? [];
                         'id' => $room->id,
                         'name' => $room->name,
                         'image' => $room->room_img_url,
-                        'rating' => '4.85',
+                        'rating' => $room->rating,
                         'min' => $room->min_capacity,
                         'max' => $room->max_capacity,
                         'description' => $room->description,
                         'isSpecial' => $room->requires_special_approval,
-                        // 'room_url' => "/admin/booking/create?id=" . $room->id . "&state=detail",
                         'room_url' => "/admin/booking/create?id=" . $room->id . "&state=detail&date=" . (isset($_GET['date']) ? $_GET['date'] : null) . "&date_check=" . (isset($_GET['date']) ? $_GET['date'] : null) . "&start_time=" . (isset($_GET['start_time']) ? $_GET['start_time'] : null) . "&end_time=" . (isset($_GET['end_time']) ? $_GET['end_time'] : null),
                     ];
                     RoomCard::card($r);

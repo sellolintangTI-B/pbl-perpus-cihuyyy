@@ -15,6 +15,7 @@ use App\Utils\Authentication;
 use App\Utils\FileHandler;
 use App\Utils\Validator;
 use Carbon\Carbon;
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -47,9 +48,12 @@ class BookingController extends Controller
 
             $count = Booking::count($params);
 
+            $year = Booking::getAllBookingsYear();
+
             $data = [
                 'room' => $room,
                 'booking'  => $booking,
+                'years' => $year,
                 'total_page' => ceil((int) $count->count / 15)
             ];
             $this->view('admin/booking/index', $data, layoutType: "Admin");
@@ -65,20 +69,36 @@ class BookingController extends Controller
             $params = [];
             $page = 0;
             $filename = 'DataPeminjaman';
+            $prefix = [];
 
             if (isset($_GET['search']) && !empty($_GET['search'])) $params['booking_code'] = $_GET['search'];
 
-            if (isset($_GET['room']) && !empty($_GET['room'])) $params['room_id'] = $_GET['room'];
+            if (isset($_GET['room']) && !empty($_GET['room'])) {
+                $params['room_id'] = $_GET['room'];
+                $room = Room::getById($_GET['room']);
+                $ruangan = str_replace(" ", "_", $room->name);
+                $prefix[] = $ruangan;
+            }
 
-            if (isset($_GET['status']) && !empty($_GET['status'])) $params['current_status'] = $_GET['status'];
+            if (isset($_GET['status']) && !empty($_GET['status'])) {
+                $params['current_status'] = $_GET['status'];
+                $prefix[] = $_GET['status'];
+            } 
 
-            if (isset($_GET['tahun']) && !empty($_GET['tahun'])) $params['start_time'] = $_GET['tahun'];
+            if (isset($_GET['tahun']) && !empty($_GET['tahun'])) {
+                $params['start_time'] = $_GET['tahun'];
+            }
 
-            if (isset($_GET['bulan']) && !empty($_GET['bulan'])) $params['start_time'] = Carbon::create($_GET['tahun'], $_GET['bulan'])->format('Y-m');
+            if (isset($_GET['bulan']) && !empty($_GET['bulan'])) {
+                $params['start_time'] = Carbon::create($_GET['tahun'], $_GET['bulan'])->format('Y-m');
+            } 
 
-            if (isset($_GET['date']) && !empty($_GET['date'])) $params['start_time'] = Carbon::create($_GET['tahun'], $_GET['bulan'], $_GET['date'])->format('Y-m-d');
+            if (isset($_GET['date']) && !empty($_GET['date'])) {
+                $params['start_time'] = Carbon::create($_GET['tahun'], $_GET['bulan'], $_GET['date'])->format('Y-m-d');
+            } 
 
-            if (isset($_GET['page']) && !empty($_GET['page'])) $page = $_GET['page'] - 1;
+            if(isset($params['start_time'])) $prefix[] = Carbon::parse($params['start_time'])->format('d-m-Y');
+            if(!empty($prefix)) $filename .= "_" . implode('_', $prefix); 
 
             $booking = Booking::getForExport($params);
 
@@ -89,16 +109,21 @@ class BookingController extends Controller
             $activeWorksheet->setCellValue('C1', 'Nama Pengguna');
             $activeWorksheet->setCellValue('D1', 'Ruangan');
             $activeWorksheet->setCellValue('E1', 'Tanggal Booking');
-            $activeWorksheet->setCellValue('E1', 'Status');
+            $activeWorksheet->setCellValue('F1', 'Durasi');
+            $activeWorksheet->setCellValue('G1', 'Status');
             $rowNumber = 2;
             $no = 1;
             foreach ($booking as $key => $value) {
                 $activeWorksheet->setCellValue('A' . $rowNumber, $no);
-                $activeWorksheet->setCellValue('B' . $rowNumber, $value->booking_code);
+                $activeWorksheet->setCellValueExplicit('B' . $rowNumber, $value->booking_code, DataType::TYPE_STRING);
                 $activeWorksheet->setCellValue('C' . $rowNumber, $value->pic_name);
                 $activeWorksheet->setCellValue('D' . $rowNumber, $value->room_name);
                 $activeWorksheet->setCellValue('E' . $rowNumber, Carbon::parse($value->start_time)->translatedFormat('l, d M Y'));
-                $activeWorksheet->setCellValue('E' . $rowNumber, $value->current_status);
+                $jam = floor($value->duration / 60);
+                $menit = $value->duration % 60;
+                $formatWaktu = sprintf('%d jam %d menit', $jam, $menit);
+                $activeWorksheet->setCellValue('F' . $rowNumber, $formatWaktu);
+                $activeWorksheet->setCellValue('G' . $rowNumber, $value->current_status);
                 $no++;
                 $rowNumber++;
             }
@@ -129,6 +154,7 @@ class BookingController extends Controller
             ResponseHandler::setResponse($e->getErrorMessages(), 'error');
             header('location:' . URL . '/admin/booking/index');
         }
+
     }
     public function details($id)
     {
