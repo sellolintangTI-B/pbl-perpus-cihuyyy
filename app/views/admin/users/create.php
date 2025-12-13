@@ -14,10 +14,10 @@ $oldUsers = $_SESSION['old_users'] ?? []
     </div>
     <div class="p-6 gap-6 bg-baseColor shadow-sm shadow-gray-600 rounded-xl w-full h-full border border-gray-200 overflow-hidden flex flex-col items-start justify-center">
         <div class="w-full h-10 flex items-center justify-start">
-            <a class="flex gap-2 text-primary items-center h-full cursor-pointer hover:bg-primary/5 px-3 py-1 rounded-full" href="<?= URL . "/admin/user/index" ?>">
+            <button class="flex gap-2 text-primary items-center cursor-pointer hover:bg-primary/5 px-3 py-1 rounded-full" onclick="history.back()">
                 <?= Icon::arrowLeft('w-4 h-4') ?>
                 Back
-            </a>
+            </button>
         </div>
         <div class="h-full w-full flex-1 overflow-y-auto py-2">
             <form id="CreateForm" class="w-full max-w-3xl bg-white p-6 rounded-xl border border-gray-200 shadow-md grid grid-cols-1 sm:grid-cols-2 gap-6 mx-auto" action=<?= URL . "/admin/user/store" ?> method="post" enctype="multipart/form-data">

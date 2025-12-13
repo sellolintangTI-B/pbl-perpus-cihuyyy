@@ -12,10 +12,10 @@ use Carbon\Carbon;
         Detail Peminjaman
     </h1>
     <div class="flex-1 flex flex-col gap-4 items-start justify-start w-full h-full p-6 rounded-xl border border-gray-200 overflow-hidden bg-white shadow-lg shadow-black/20">
-        <a class="flex gap-2 text-primary items-center cursor-pointer hover:bg-primary/5 px-3 py-1 rounded-full" href="<?= URL . "/admin/booking/index" ?>">
+        <button class="flex gap-2 text-primary items-center cursor-pointer hover:bg-primary/5 px-3 py-1 rounded-full" onclick="history.back()">
             <?= Icon::arrowLeft('w-4 h-4') ?>
             Back
-        </a>
+        </button>
         <div class="w-full h-full overflow-y-auto overflow-hidden">
             <div class="flex flex-col items-start justify-start gap-6 w-full max-w-5xl mx-auto px-2">
                 <!-- informasi ruangan -->

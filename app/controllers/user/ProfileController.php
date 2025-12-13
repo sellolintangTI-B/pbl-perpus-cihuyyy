@@ -37,9 +37,10 @@ class ProfileController extends Controller
                 'profile_picture_url' => $path
             ]);
 
-            if($updateProfile) {
+            if ($updateProfile) {
                 ResponseHandler::setResponse('Berhasil mengubah profile picture');
-                header('location:' . URL . "/user/profile/index");  
+                $_SESSION['loggedInUser']['img_url'] = $path;
+                header('location:' . URL . "/user/profile/index");
             }
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), "error");

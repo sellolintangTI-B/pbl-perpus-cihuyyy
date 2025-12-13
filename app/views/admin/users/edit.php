@@ -73,54 +73,14 @@ $roleOptions = [
         <div class="p-6 bg-baseColor shadow-sm shadow-gray-600 rounded-xl w-full flex-1 border border-gray-200 overflow-hidden flex flex-col items-start justify-start">
             <!-- Back Button -->
             <div class="w-full flex-shrink-0 flex items-center justify-start mb-4">
-                <a class="flex gap-2 text-primary items-center cursor-pointer hover:bg-primary/5 px-3 py-1 rounded-full" href="<?= URL . "/admin/user/index" ?>">
+                <button class="flex gap-2 text-primary items-center cursor-pointer hover:bg-primary/5 px-3 py-1 rounded-full" onclick="history.back()">
                     <?= Icon::arrowLeft('w-4 h-4') ?>
                     Back
-                </a>
+                </button>
             </div>
 
             <!-- Forms Suspensi -->
             <div class="flex-1 flex flex-col items-center gap-8 w-full overflow-y-auto p-4">
-                <!-- Form Data Pengguna -->
-                <div class="w-full max-w-3xl">
-                    <h2 class="text-xl font-medium text-gray-800 mb-4">Informasi Suspensi</h2>
-                    <div class="w-full p-6 shadow-md border border-gray-300 rounded-xl bg-white">
-                        <form
-                            id="updateSuspension"
-                            class="w-full grid grid-cols-1 sm:grid-cols-2 gap-6"
-                            action=""
-                            method="post"
-                            enctype="multipart/form-data">
-                            <?php
-                            FormInput::input(
-                                id: 'date',
-                                type: 'date',
-                                required: true,
-                                name: 'active_until',
-                                label: 'Suspend Period',
-                                class: 'w-full custom-input-icon',
-                                value: Carbon::parse($data->active_periode)->toDateString(),
-                                classGlobal: 'sm:col-span-2'
-                            );
-                            ?>
-
-                            <div class="sm:col-span-2 mt-4">
-                                <button type="submit" class="w-full bg-primary text-white px-4 py-3 rounded-xl cursor-pointer shadow-sm shadow-gray-400 hover:shadow-md hover:shadow-primary transition-all duration-300 font-medium text-baseColor">
-                                    Simpan Perubahan
-                                </button>
-                            </div>
-
-                            <!-- modal -->
-                            <?= Modal::render(
-                                title: 'Yakin ingin menyimpan perubahan?',
-                                color: 'secondary',
-                                message: 'Perubahan akan langsung tersimpan di database. Tidak ada riwayat edit, jadi harap berhati-hati.',
-                                customContent: $updateAccountContent,
-                                alpineShow: 'updateAlert',
-                            ) ?>
-                        </form>
-                    </div>
-                </div>
                 <!-- Form Data Pengguna -->
                 <div class="w-full max-w-3xl">
                     <h2 class="text-xl font-medium text-gray-800 mb-4">Informasi Pengguna</h2>
@@ -257,7 +217,54 @@ $roleOptions = [
                         </form>
                     </div>
                 </div>
+                <!-- Form Suspensi Pengguna -->
+                <?php
+                if ($data->role != "Admin") {
+                ?>
+                    <div class="w-full max-w-3xl">
+                        <h2 class="text-xl font-medium text-gray-800 mb-4">Informasi Suspensi Pengguna</h2>
+                        <div class="w-full p-6 shadow-md border border-gray-300 rounded-xl bg-white">
+                            <form
+                                id="updateSuspension"
+                                class="w-full grid grid-cols-1 sm:grid-cols-2 gap-6"
+                                action=""
+                                method="post"
+                                enctype="multipart/form-data">
+                                <?php
+                                FormInput::input(
+                                    id: 'suspend_point',
+                                    name: 'suspend_point',
+                                    label: 'Suspend Point',
+                                    value: $data->suspend_count ?? 0,
+                                    required: true,
+                                    classGlobal: "sm:col-span-2"
+                                );
+                                FormInput::input(
+                                    id: 'date',
+                                    type: 'date',
+                                    required: true,
+                                    name: 'active_until',
+                                    label: 'Suspend Period',
+                                    class: 'w-full custom-input-icon',
+                                    value: $data->suspend_untill ? Carbon::parse($data->suspend_untill)->toDateString() : "",
+                                    classGlobal: 'sm:col-span-2'
+                                );
+                                ?>
 
+                                <div class="sm:col-span-2 mt-4 flex gap-2">
+                                    <a type="submit" class=" bg-red text-white px-4 py-3 rounded-xl cursor-pointer shadow-sm shadow-gray-400 hover:shadow-md hover:shadow-red transition-all duration-300 font-medium text-baseColor" href="<?= URL ?>/admin/user/reset_suspend/<?= $data->id ?>">
+                                        Reset
+                                    </a>
+                                    <button type="submit" class=" flex-1 bg-primary text-white px-4 py-3 rounded-xl cursor-pointer shadow-sm shadow-gray-400 hover:shadow-md hover:shadow-primary transition-all duration-300 font-medium text-baseColor">
+                                        Simpan Perubahan
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                <?php
+                }
+                ?>
                 <!-- Form Ganti Password -->
                 <div class="w-full max-w-3xl">
                     <h2 class="text-xl font-medium text-gray-800 mb-4">Keamanan Akun</h2>

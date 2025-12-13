@@ -2381,6 +2381,16 @@
       }
     }
   }
+  .hover\:shadow-red {
+    &:hover {
+      @media (hover: hover) {
+        --tw-shadow-color: #FF0051;
+        @supports (color: color-mix(in lab, red, red)) {
+          --tw-shadow-color: color-mix(in oklab, var(--color-red) var(--tw-shadow-alpha), transparent);
+        }
+      }
+    }
+  }
   .hover\:shadow-red-300 {
     &:hover {
       @media (hover: hover) {

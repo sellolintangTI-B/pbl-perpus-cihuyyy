@@ -1,5 +1,6 @@
 <?php
 
+use App\Components\Badge;
 use App\Components\Icon\Icon;
 use App\Components\FormInput;
 use App\Components\Button;
@@ -13,7 +14,12 @@ $options_jurusan = [
     ["display" => "Administrasi Niaga", "value" => "Administrasi Niaga"],
     ["display" => "Teknik Grafika dan Penerbitan", "value" => "Teknik Grafika dan Penerbitan"],
 ];
-
+$badgeSuspendColor = [
+    0 => 'tertiary',
+    1 => 'tertiary',
+    2 => 'yellow',
+    3 => 'red',
+];
 ?>
 
 <div class="w-full h-full flex flex-col gap-6">
@@ -22,11 +28,10 @@ $options_jurusan = [
     <div class="flex-1 w-full h-full min-h-0 bg-baseColor border border-gray-200 shadow-lg shadow-black/20 rounded-xl flex flex-col overflow-hidden">
 
         <div class="p-6 pb-2 shrink-0">
-            <a href="<?= URL . "/admin/user/index" ?>"
-                class="flex gap-2 text-primary items-center cursor-pointer hover:bg-primary/5 px-3 py-1 rounded-full w-fit">
+            <button class="flex gap-2 text-primary items-center cursor-pointer hover:bg-primary/5 px-3 py-1 rounded-full" onclick="history.back()">
                 <?= Icon::arrowLeft('w-4 h-4') ?>
                 Back
-            </a>
+            </button>
         </div>
 
         <div class="flex-1 w-full overflow-y-auto p-6 pt-2">
@@ -45,13 +50,17 @@ $options_jurusan = [
                     <div class="flex flex-col gap-6">
 
                         <div class="flex items-center justify-between bg-white shadow-md p-6 rounded-xl border border-gray-200">
-                            <div class="flex items-center gap-6">
-                                <img src="<?= URL . "/public/" . $data->profile_picture_url ?>"
-                                    alt="Profile"
-                                    class="w-20 h-20 rounded-full object-cover border-2 border-gray-200" />
-                                <h2 class="text-2xl font-medium text-primary break-all">
-                                    <?= htmlspecialchars($data->first_name . " " . $data->last_name) ?>
-                                </h2>
+                            <div class="flex items-center justify-between gap-6 w-full">
+                                <div class="flex items-center justify-start gap-4">
+                                    <img src="<?= URL . "/public/" . $data->profile_picture_url ?>"
+                                        alt="Profile"
+                                        onerror="this.onerror=null; this.src='<?= URL ?>/public/storage/bg-pattern/no-profile.webp';"
+                                        class="w-20 h-20 rounded-full object-cover border-2 border-gray-200" />
+                                    <h2 class="text-2xl font-medium text-primary break-all">
+                                        <?= htmlspecialchars($data->first_name . " " . $data->last_name) ?>
+                                    </h2>
+                                </div>
+                                <?= Badge::badge(label: 'Suspend Point: ' . (isset($data) ? ($data->suspend_count ?? 0) : 0) . ' point', color: $badgeSuspendColor[isset($data->suspend_count) ? ($data->suspend_count ?? 0) : 0], class: 'px-2! py-1! text-xs md:text-sm') ?>
                             </div>
                         </div>
 

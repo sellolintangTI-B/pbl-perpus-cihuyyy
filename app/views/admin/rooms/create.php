@@ -13,10 +13,10 @@ $oldRooms = $_SESSION['old_rooms'] ?? []
     </div>
     <div class="p-6 bg-baseColor shadow-sm shadow-gray-600 rounded-xl w-full h-full border border-gray-200 overflow-hidden flex flex-col items-start justify-center gap-6">
         <div class="w-full h-10 flex items-center justify-start">
-            <a class="flex gap-2 text-primary items-center h-full cursor-pointer hover:bg-primary/5 px-3 py-1 rounded-full" href="<?= URL . "/admin/room/index" ?>">
+            <button class="flex gap-2 text-primary items-center cursor-pointer hover:bg-primary/5 px-3 py-1 rounded-full" onclick="history.back()">
                 <?= Icon::arrowLeft('w-4 h-4') ?>
                 Back
-            </a>
+            </button>
         </div>
         <div class="flex-1 w-full overflow-y-auto">
             <div class="flex items-center justify-center  w-full max-w-3xl mx-auto bg-white p-6 border border-gray-200 rounded-xl shadow-md">
