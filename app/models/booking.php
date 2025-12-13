@@ -148,7 +148,7 @@ class Booking extends Database
                 SELECT status 
                 FROM booking_logs bl 
                 WHERE bl.booking_id = b.id 
-                ORDER BY bl.id DESC 
+                ORDER BY bl.created_at DESC 
                 LIMIT 1
             ) != 'cancelled'
             ORDER BY start_time ASC");
@@ -163,7 +163,7 @@ class Booking extends Database
     {
         $conn = parent::getConnection();
         $q = $conn->prepare("SELECT b.*, bl_latest.status FROM bookings AS b JOIN ( SELECT DISTINCT ON (booking_id) booking_id, status
-                FROM booking_logs ORDER BY booking_id, id DESC ) AS bl_latest ON b.id = bl_latest.booking_id
+                FROM booking_logs ORDER BY booking_id, created_at DESC ) AS bl_latest ON b.id = bl_latest.booking_id
             WHERE b.start_time < TO_TIMESTAMP(:startTime, 'YYYY-MM-DD HH24:MI:SS') + (:duration || ' minutes')::INTERVAL
                 AND b.end_time > TO_TIMESTAMP(:startTime2, 'YYYY-MM-DD HH24:MI:SS')
                 AND b.room_id = :roomId

@@ -270,4 +270,26 @@ class UserController extends Controller
             header('location:' . URL . '/admin/user/edit/' . $id);
         }
     }
+
+    public function reset_suspend($id)
+    {
+        try {
+
+            $user = User::update($id, [
+                'suspend_count' => 0,
+                'is_suspend' => 0,
+                'suspend_untill' => null
+            ]);
+
+            if($user) {
+                ResponseHandler::setResponse('Berhasil reset suspend user');
+                header('location:' . URL . '/admin/user/edit/' . $id);
+            } else {
+                throw new CustomException('Gagal reset suspend user');
+            }
+        } catch (CustomException $e) {
+            ResponseHandler::setResponse($e->getErrorMessages(), 'error');
+            header('location:' . URL . '/admin/user/edit/' . $id);
+        }
+    }
 }
