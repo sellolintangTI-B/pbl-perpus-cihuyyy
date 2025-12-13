@@ -34,7 +34,7 @@ $oldData = $_SESSION['bookingOld'] ?? [];
                     x-data="formAnggota()"
                     @submit="prepareData($event)">
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <?php
                         // Room Select Options
                         $options = [];
@@ -75,8 +75,7 @@ $oldData = $_SESSION['bookingOld'] ?? [];
                             type: 'time',
                             label: 'Waktu Mulai',
                             placeholder: 'Masukkan jam mulai peminjaman',
-                            required: true,
-                            classGlobal: 'col-span-1',
+                            required: !$data['data']->requires_special_approval,
                             value: $oldData['start_time'] ?? (isset($_GET['start_time']) ? $_GET['start_time'] : null)
                         );
 
@@ -86,8 +85,7 @@ $oldData = $_SESSION['bookingOld'] ?? [];
                             type: 'time',
                             label: 'Waktu Berakhir',
                             placeholder: 'Masukkan jam peminjaman berakhir',
-                            required: true,
-                            classGlobal: 'col-span-1',
+                            required: !$data['data']->requires_special_approval,
                             value: $oldData['end_time'] ?? (isset($_GET['end_time']) ? $_GET['end_time'] : null)
                         );
                         ?>
@@ -186,6 +184,19 @@ $oldData = $_SESSION['bookingOld'] ?? [];
     <!-- detail ruangan  -->
     <div class="sm:col-span-2 h-fit w-full flex flex-col gap-6">
         <div class="flex flex-col gap-4 w-full h-full p-6 bg-white rounded-lg">
+            <h1 class="text-xl font-medium text-primary"><?= $data['data']->name ?></h1>
+            <!-- Capacity -->
+            <div class="flex items-start md:items-center gap-2 text-gray-700  w-full">
+                <span><?= Icon::people('w-4 h-4 text-black/80') ?></span>
+                <span class="font-normal font-black/80   max-w-3/4 md:max-w-full">Minimal <?= $data['data']->min_capacity ?> orang &bull; Maksimal <?= $data['data']->max_capacity ?> orang</span>
+            </div>
+
+            <!-- Location -->
+            <div class="flex items-start md:items-center gap-2 text-gray-700  w-full">
+                <span><?= Icon::location('w-4 h-4 text-black/80') ?></span>
+                <span class="font-normal font-black/80   max-w-3/4 md:max-w-full">Tempat: Perpustakaan PNJ, LT. <?= $data['data']->floor ?></span>
+            </div>
+
             <!-- Divider -->
             <div class="flex flex-col gap-2 w-full">
                 <h3 class="text-lg font-medium text-black/80">Waktu Terpakai</h3>

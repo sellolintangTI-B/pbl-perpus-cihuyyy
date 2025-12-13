@@ -1,5 +1,5 @@
 <div class="<?= $classGlobal ?> flex flex-col w-full gap-1 font-poppins">
-    <label for="<?= $id ?? ($name ?? '') ?>" class="block mb-1 text-lg font-normal text-primary ">
+    <label for="<?= $id ?? ($name ?? '') ?>" class="block font-medium text-primary mb-2">
         <?= $label ?? '' ?>
     </label>
     <div class="mt-2">

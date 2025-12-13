@@ -194,8 +194,9 @@ use App\Components\Modal;
                         color: 'red',
                         required: true
                     ) ?>
+                    <?= FormInput::checkbox(id: 'is_suspend', name: 'is_suspend', label: 'Tambah 1 suspend point') ?>
                     <!-- Tombol konfirmasi pembatalan -->
-                    <div class="flex gap-4 w-full">
+                    <div class="flex gap-4 w-full mt-4">
                         <?php
                         Button::button(label: 'Iya', color: 'red', type: 'submit', class: 'w-full py-3');
                         Button::button(label: 'Tidak', color: 'white', type: 'button', alpineClick: "showAlert=false", class: 'w-full py-3');
@@ -211,7 +212,6 @@ use App\Components\Modal;
                     message: 'Booking akan dibatalkan. Pastikan keputusan Anda sudah benar sebelum melanjutkan.',
                     customContent: $content,
                     alpineShow: 'showAlert',
-                    height: 'h-[24rem]'
                 ) ?>
 
                 <!-- Notifikasi toast untuk copy kode booking -->

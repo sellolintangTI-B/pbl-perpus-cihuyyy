@@ -248,8 +248,8 @@ $totalPage = $data['total_page'] ?? 1;
                             ?>
                                 <tr x-data="{ open: false }" class="hover:bg-gray-50 transition-colors duration-150 text-center">
                                     <td class="px-3 py-3 text-xs text-gray-700 text-start "><?= $value->booking_code ?></td>
-                                    <td class="px-3 py-3 text-xs font-medium text-gray-800 text-start"><?= htmlspecialchars($value->pic_name) ?></td>
-                                    <td class="px-3 py-3 text-xs text-gray-700 text-start"><?= htmlspecialchars($value->room_name) ?></td>
+                                    <td class="px-3 py-3 text-xs font-medium text-gray-800 text-start"><?= htmlspecialchars($value->pic_name ?? "-") ?></td>
+                                    <td class="px-3 py-3 text-xs text-gray-700 text-start"><?= htmlspecialchars($value->room_name ?? "-") ?></td>
                                     <td class="px-3 py-3 text-xs text-gray-700 text-start"><?= htmlspecialchars(Carbon::parse($value->start_time)->translatedFormat('D, d M Y')) ?></td>
                                     <td class="px-3 py-3 text-xs text-gray-700 text-start"><?= htmlspecialchars($hours->h . ' jam ' . $hours->i . ' menit ') ?></td>
                                     <td class="px-3 py-3 text-xs">
@@ -298,7 +298,8 @@ $totalPage = $data['total_page'] ?? 1;
     <?php ob_start(); ?>
     <form x-bind:action="`<?= URL ?>/admin/booking/cancel/${cancelPeminjamanId}`" method="POST" class="w-full flex flex-col gap-2">
         <?= FormInput::textarea(id: 'reason', name: 'reason', label: 'Alasan:', class: 'h-18', maxlength: 100, color: 'red', required: true) ?>
-        <div class="flex gap-4 w-full ">
+        <?= FormInput::checkbox(id: 'is_suspend', name: 'is_suspend', label: 'Tambah 1 suspend point') ?>
+        <div class="flex gap-4 w-full mt-4">
             <?php
             Button::button(label: 'Iya', color: 'red', type: 'submit', class: 'w-full py-3');
             Button::button(label: 'Tidak', color: 'white', type: 'button', alpineClick: "showAlert=false", class: 'w-full py-3');
@@ -306,7 +307,7 @@ $totalPage = $data['total_page'] ?? 1;
         </div>
     </form>
     <?php $content = ob_get_clean(); ?>
-    <?= Modal::render(title: 'Yakin ingin membatalkan booking?', color: 'red', message: 'Booking akan dibatalkan. Pastikan keputusan Anda sudah benar sebelum melanjutkan.', customContent: $content, alpineShow: 'showAlert', height: 'h-[24rem]') ?>
+    <?= Modal::render(title: 'Yakin ingin membatalkan booking?', color: 'red', message: 'Booking akan dibatalkan. Pastikan keputusan Anda sudah benar sebelum melanjutkan.', customContent: $content, alpineShow: 'showAlert') ?>
 </div>
 
 <style>

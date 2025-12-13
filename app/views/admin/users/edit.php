@@ -237,7 +237,7 @@ $roleOptions = [
                                     label: 'Suspend Point',
                                     value: $data->suspend_count ?? 0,
                                     required: true,
-                                    classGlobal: "sm:col-span-2"
+                                    classGlobal: "sm:col-span-2",
                                 );
                                 FormInput::input(
                                     id: 'date',

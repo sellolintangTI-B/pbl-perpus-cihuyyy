@@ -6,6 +6,19 @@ $classColor = match ($color) {
     'tertiary' => 'focus:border-tertiary hover:border-tertiary',
     default => 'focus:border-primary hover:border-primary',
 };
+
+$attributesString = '';
+if (isset($attributes) && is_array($attributes)) {
+    foreach ($attributes as $key => $value) {
+        if (is_bool($value)) {
+            $attributesString .= $value ? " {$key}" : '';
+        } elseif ($value === null) {
+            continue;
+        } else {
+            $attributesString .= " {$key}=\"" . htmlspecialchars($value, ENT_QUOTES, 'UTF-8') . "\"";
+        }
+    }
+}
 ?>
 <div class="<?= $classGlobal ?> flex flex-col gap-1 font-poppins focus-within:text-secondary">
     <label for="<?= $id ?? ($name ?? '') ?>" class="<?= empty($label) ? 'hidden' : 'block font-medium text-primary mb-2' ?>">
@@ -27,7 +40,8 @@ $classColor = match ($color) {
             <?= isset($required) && $required ? 'required' : '' ?>
             <?= isset($readonly) && $readonly ? 'readonly' : '' ?>
             <?= isset($disabled) && $disabled ? 'disabled' : '' ?>
-            <?= isset($alpine_disabled) && $alpine_disabled ? 'x-bind:disabled="' . $alpine_disabled . '"' : '' ?> />
+            <?= isset($alpine_disabled) && $alpine_disabled ? 'x-bind:disabled="' . $alpine_disabled . '"' : '' ?>
+            <?= $attributesString ?> />
         <?php if ($type == "password"): ?>
             <button
                 type="button"
@@ -62,3 +76,28 @@ $classColor = match ($color) {
         }
     }
 </script>
+
+<!-- 
+CARA PENGGUNAAN ATTRIBUTES:
+
+FormInput::input(
+    id: 'email',
+    name: 'email',
+    type: 'email',
+    label: 'Email',
+    placeholder: 'Masukkan email',
+    attributes: [
+        'min' => '0',
+        'max' => '100',
+        'step' => '5',
+        'maxlength' => '255',
+        'minlength' => '3',
+        'pattern' => '[A-Za-z0-9]+',
+        'autocomplete' => 'off',
+        'autofocus' => true,
+        'data-value' => 'custom-data',
+        'x-on:input' => 'handleInput($event)',
+        '@keyup.enter' => 'submitForm()',
+    ]
+);
+-->
