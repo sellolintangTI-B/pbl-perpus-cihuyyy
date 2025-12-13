@@ -4,6 +4,7 @@ use App\Components\Icon\Icon;
 use App\Components\FormInput;
 use App\Components\Modal;
 use App\Components\Button;
+use Carbon\Carbon;
 
 $roleOptions = [
     [
@@ -78,8 +79,48 @@ $roleOptions = [
                 </a>
             </div>
 
-            <!-- Forms Container -->
+            <!-- Forms Suspensi -->
             <div class="flex-1 flex flex-col items-center gap-8 w-full overflow-y-auto p-4">
+                <!-- Form Data Pengguna -->
+                <div class="w-full max-w-3xl">
+                    <h2 class="text-xl font-medium text-gray-800 mb-4">Informasi Suspensi</h2>
+                    <div class="w-full p-6 shadow-md border border-gray-300 rounded-xl bg-white">
+                        <form
+                            id="updateSuspension"
+                            class="w-full grid grid-cols-1 sm:grid-cols-2 gap-6"
+                            action=""
+                            method="post"
+                            enctype="multipart/form-data">
+                            <?php
+                            FormInput::input(
+                                id: 'date',
+                                type: 'date',
+                                required: true,
+                                name: 'active_until',
+                                label: 'Suspend Period',
+                                class: 'w-full custom-input-icon',
+                                value: Carbon::parse($data->active_periode)->toDateString(),
+                                classGlobal: 'sm:col-span-2'
+                            );
+                            ?>
+
+                            <div class="sm:col-span-2 mt-4">
+                                <button type="submit" class="w-full bg-primary text-white px-4 py-3 rounded-xl cursor-pointer shadow-sm shadow-gray-400 hover:shadow-md hover:shadow-primary transition-all duration-300 font-medium text-baseColor">
+                                    Simpan Perubahan
+                                </button>
+                            </div>
+
+                            <!-- modal -->
+                            <?= Modal::render(
+                                title: 'Yakin ingin menyimpan perubahan?',
+                                color: 'secondary',
+                                message: 'Perubahan akan langsung tersimpan di database. Tidak ada riwayat edit, jadi harap berhati-hati.',
+                                customContent: $updateAccountContent,
+                                alpineShow: 'updateAlert',
+                            ) ?>
+                        </form>
+                    </div>
+                </div>
                 <!-- Form Data Pengguna -->
                 <div class="w-full max-w-3xl">
                     <h2 class="text-xl font-medium text-gray-800 mb-4">Informasi Pengguna</h2>
@@ -162,7 +203,7 @@ $roleOptions = [
                                 label: 'Jenis Civitas',
                                 options: $roleOptions,
                                 selected: $data->role,
-                                required: true
+                                required: true,
                             );
                             FormInput::select(
                                 id: 'status',
@@ -174,7 +215,21 @@ $roleOptions = [
                                 ],
                                 selected: $data->is_active,
                                 required: true,
+                                disabled: $data->role == "Admin"
                             );
+                            if ($data->role != "Admin") {
+
+                                FormInput::input(
+                                    id: 'date',
+                                    type: 'date',
+                                    required: true,
+                                    name: 'active_until',
+                                    label: 'Aktif sampai',
+                                    class: 'w-full custom-input-icon',
+                                    value: Carbon::parse($data->active_periode)->toDateString(),
+                                    classGlobal: 'sm:col-span-2'
+                                );
+                            }
                             FormInput::fileInput(
                                 id: 'image',
                                 name: 'image',

@@ -182,7 +182,7 @@ class UserController extends Controller
                 "institution" => $_POST['institution'],
                 "role" => $_POST["role"],
                 "profile_picture_url" => empty($_FILES['image']['name']) ? null : $_FILES['image'],
-                "is_active" => $_POST['status']
+                "is_active" => $_POST['status'] ?? 1
             ];
 
             $validator = new Validator($data);
