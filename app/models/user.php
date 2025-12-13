@@ -32,7 +32,7 @@ class User extends Database
             $stmt .= "WHERE " . $whereClauses;
         }
 
-        $stmt .= " ORDER BY is_active ASC, created_at ASC LIMIT 15 OFFSET 15 * $page";
+        $stmt .= " ORDER BY is_active ASC, created_at LIMIT 15 OFFSET 15 * $page";
         $q = $conn->prepare($stmt);
         $q->execute($values);
         $data = $q->fetchAll(PDO::FETCH_OBJ);
