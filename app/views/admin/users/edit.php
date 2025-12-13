@@ -235,7 +235,6 @@ $roleOptions = [
                                     id: 'suspend_point',
                                     type: 'number',
                                     name: 'suspend_point',
-                                    type: 'number',
                                     label: 'Suspend Point',
                                     value: $data->suspend_count ?? 0,
                                     required: true,
