@@ -9,13 +9,13 @@ $classColor = match ($color) {
 
 $attributesString = '';
 if (isset($attributes) && is_array($attributes)) {
-    foreach ($attributes as $key => $value) {
-        if (is_bool($value)) {
-            $attributesString .= $value ? " {$key}" : '';
-        } elseif ($value === null) {
+    foreach ($attributes as $key => $val) {
+        if (is_bool($val)) {
+            $attributesString .= $val ? " {$key}" : '';
+        } elseif ($val === null) {
             continue;
         } else {
-            $attributesString .= " {$key}=\"" . htmlspecialchars($value, ENT_QUOTES, 'UTF-8') . "\"";
+            $attributesString .= " {$key}=\"" . htmlspecialchars($val, ENT_QUOTES, 'UTF-8') . "\"";
         }
     }
 }

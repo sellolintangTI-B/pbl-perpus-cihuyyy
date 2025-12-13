@@ -234,9 +234,13 @@ $roleOptions = [
                                 FormInput::input(
                                     id: 'suspend_point',
                                     name: 'suspend_point',
+                                    type: 'number',
                                     label: 'Suspend Point',
                                     value: $data->suspend_count ?? 0,
                                     required: true,
+                                    attributes: [
+                                        "max" => 3
+                                    ],
                                     classGlobal: "sm:col-span-2",
                                 );
                                 FormInput::input(
