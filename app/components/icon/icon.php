@@ -386,5 +386,17 @@ class Icon
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>';
     }
-    
+    public static function download(string $class = 'w-5 h-5 text-gray-700'): void
+    {
+        echo '
+        <svg 
+        xmlns="http://www.w3.org/2000/svg" 
+            fill="none" 
+            viewBox="0 0 24 24" 
+            stroke="currentColor" 
+            class="' . htmlspecialchars($class) . '">
+        <path  d="m11.47,15.53c.146.146.338.22.53.22s.384-.073.53-.22l3-3c.293-.293.293-.768,0-1.061s-.768-.293-1.061,0l-1.72,1.72V4c0-.414-.336-.75-.75-.75s-.75.336-.75.75v9.189l-1.72-1.72c-.293-.293-.768-.293-1.061,0s-.293.768,0,1.061l3,3Z"></path>
+        <path  d="m20,14.25c-.414,0-.75.336-.75.75v3c0,.689-.561,1.25-1.25,1.25H6c-.689,0-1.25-.561-1.25-1.25v-3c0-.414-.336-.75-.75-.75s-.75.336-.75.75v3c0,1.517,1.233,2.75,2.75,2.75h12c1.517,0,2.75-1.233,2.75-2.75v-3c0-.414-.336-.75-.75-.75Z"></path>
+        </svg>';
+    }
 }

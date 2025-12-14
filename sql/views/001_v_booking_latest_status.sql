@@ -7,6 +7,7 @@ SELECT DISTINCT ON (b.id)
     b.start_time,
     b.end_time,
     b.duration,
+    b.special_requirement_attachments_url,
     bl.reason,
     u.first_name || ' ' || u.last_name AS pic_name,
     u.email AS pic_email,

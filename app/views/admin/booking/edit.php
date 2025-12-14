@@ -46,7 +46,6 @@ use App\Components\Modal;
                     method="post"
                     enctype="multipart/form-data"
                     x-data="formAnggota()"
-                    @submit="prepareData($event)"
                     @submit.prevent="validateAndShowUpdateAlert">
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 p-6 bg-white rounded-xl border border-gray-400">
@@ -106,16 +105,40 @@ use App\Components\Modal;
                         ?>
 
                         <?php if ($data['booking']->requires_special_approval): ?>
+                            <!-- PDF Viewer for Current Document -->
+                            <div class="sm:col-span-2 mt-4">
+                                <label class="block text-lg font-medium text-primary mb-4">Dokumen Saat Ini</label>
+                                <div class="w-full border border-gray-300 rounded-lg overflow-hidden shadow-sm bg-gray-50">
+                                    <iframe
+                                        src="<?= URL ?>/public/storage/booking/<?= $data['booking']->approval_document_url ?? '' ?>"
+                                        class="w-full h-[32rem]"
+                                        frameborder="0">
+                                    </iframe>
+                                    <div class="p-3 bg-white border-t border-gray-300">
+                                        <a
+                                            href="<?= URL ?>/public/storage/booking/<?= $data['booking']->approval_document_url ?? '' ?>"
+                                            target="_blank"
+                                            class="text-secondary hover:underline text-sm flex items-center gap-2">
+                                            <?= Icon::download("w-4 h-4") ?>
+                                            Download Dokumen
+                                        </a>
+                                    </div>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-2">
+                                    * Upload file baru di bawah akan menggantikan dokumen yang ada
+                                </p>
+                            </div>
+
                             <!-- Special Approval: File Upload -->
                             <div class="sm:col-span-2 mt-4">
                                 <?php
                                 FormInput::fileInput(
                                     id: 'file_upload',
                                     name: 'file',
-                                    label: 'Upload Surat Peminjaman',
-                                    required: true,
+                                    label: 'Upload Surat Peminjaman Baru',
+                                    required: false,
                                     classGlobal: 'sm:col-span-2',
-                                    accept: 'image/*'
+                                    accept: 'application/pdf'
                                 );
                                 ?>
                             </div>
@@ -209,7 +232,7 @@ use App\Components\Modal;
         return {
             identifier: '',
             listAnggota: <?php
-                            if ($data['participants']) {
+                            if (isset($data['participants'])) {
                                 echo json_encode($data['participants']);
                             }
                             ?>,
@@ -217,6 +240,21 @@ use App\Components\Modal;
             updateAlert: false,
             validateAndShowUpdateAlert(event) {
                 const form = event.target;
+
+                // Validate members for regular bookings
+                if (!requiresSpecialApproval) {
+                    if (this.listAnggota.length < minCapacity) {
+                        this.message = `* Minimal ${minCapacity} anggota diperlukan.`;
+                        return;
+                    }
+
+                    if (this.listAnggota.length > maxCapacity) {
+                        this.message = `* Maksimal ${maxCapacity} anggota diperbolehkan.`;
+                        return;
+                    }
+                }
+
+                // Check form validity
                 if (form.checkValidity()) {
                     this.updateAlert = true;
                 } else {
@@ -279,24 +317,6 @@ use App\Components\Modal;
                     this.listAnggota.splice(index, 1);
                     this.message = '';
                 }
-            },
-
-            prepareData(event) {
-                if (!requiresSpecialApproval) {
-                    if (this.listAnggota.length < minCapacity) {
-                        event.preventDefault();
-                        this.message = `* Minimal ${minCapacity} anggota diperlukan.`;
-                        return false;
-                    }
-
-                    if (this.listAnggota.length > maxCapacity) {
-                        event.preventDefault();
-                        this.message = `* Maksimal ${maxCapacity} anggota diperbolehkan.`;
-                        return false;
-                    }
-                }
-
-                return true;
             }
         }
     }
