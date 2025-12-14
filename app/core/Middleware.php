@@ -126,6 +126,9 @@ class Middleware
         "/auth/login/index",
         "/auth/login/signin",
         "/auth/register/index",
+        "/auth/password/forget",
+        "/auth/password/successfully_sent",
+        "/auth/password/new",
         "/auth/register/signup",
         "/error/notfound/index",
         // "/guest/index"

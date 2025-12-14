@@ -170,7 +170,7 @@ if (isset($_SESSION['register_old'])) {
 
                         <!-- Login Link -->
                         <div class="w-full text-xs md:text-sm flex justify-center items-center gap-2 mt-6 md:mt-8 pb-32">
-                            <p class="text-primary">Already have an account?</p>
+                            <p class="text-primary">Sudah punya akun?</p>
                             <a class="text-secondary cursor-pointer hover:underline font-medium"
                                 href="<?= URL ?>/auth/login/index">
                                 Login

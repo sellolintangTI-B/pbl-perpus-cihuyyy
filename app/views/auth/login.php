@@ -66,10 +66,10 @@ use App\Components\icon\Icon;
                                         value="true"
                                         <?= isset($_COOKIE['remember_username']) ? 'checked' : '' ?>
                                         class="w-4 h-4 bg-primary active:bg-primary cursor-pointer text-primary rounded" />
-                                    <label for="remember_me" class="cursor-pointer">Remember username</label>
+                                    <label for="remember_me" class="cursor-pointer">Ingat username</label>
                                 </div>
-                                <a class="cursor-pointer hover:underline">
-                                    Forgot Password?
+                                <a class="cursor-pointer hover:underline" href="<?= URL ?>/auth/password/forget">
+                                    Lupa Password?
                                 </a>
                             </div>
 
@@ -79,10 +79,10 @@ use App\Components\icon\Icon;
 
                             <!-- Register Link -->
                             <div class="w-full text-xs md:text-sm flex justify-center items-center gap-2 mt-4 md:mt-8 pb-6 md:pb-0">
-                                <p class="text-primary">Don't have an account?</p>
+                                <p class="text-primary">Belum punya akun?</p>
                                 <a class="text-secondary cursor-pointer hover:underline font-medium"
                                     href="<?= URL ?>/auth/register/index">
-                                    Register Now
+                                    Register Sekarang
                                 </a>
                             </div>
                         </form>

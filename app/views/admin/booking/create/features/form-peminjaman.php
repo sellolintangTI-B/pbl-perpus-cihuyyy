@@ -100,7 +100,7 @@ $oldData = $_SESSION['bookingOld'] ?? [];
                                 name: 'file',
                                 label: 'Upload Surat Peminjaman',
                                 required: true,
-                                accept: 'image/*'
+                                accept: 'application/pdf'
                             );
                             ?>
                         </div>
