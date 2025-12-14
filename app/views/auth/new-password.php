@@ -3,6 +3,7 @@
 use App\Components\Button;
 use App\Components\FormInput;
 use App\Components\icon\Icon;
+var_dump($data);
 ?>
 
 <div class="h-screen w-full md:bg-primary md:p-4">
@@ -19,7 +20,7 @@ use App\Components\icon\Icon;
                             Pastikan password mudah diingat oleh Anda, namun sulit ditebak oleh orang lain. </p>
 
                         <form class="w-full flex flex-col gap-4"
-                            action="<?= URL ?>/auth/password/update"
+                            action="<?= URL ?>/auth/password/reset_password"
                             method="post"
                             enctype="multipart/form-data">
 
@@ -43,6 +44,14 @@ use App\Components\icon\Icon;
                                 placeholder: "Masukkan ulang password baru",
                                 classGlobal: 'w-full'
                             );
+
+                            FormInput::input(
+                                id: 'token',
+                                name: 'token',
+                                type: 'hidden',
+                                value: $data
+                            );
+
                             ?>
                             <div class="sm:col-span-2 px-4">
                                 <ul class="text-xs text-start list-disc hidden text-red" id="text_alert"></ul>

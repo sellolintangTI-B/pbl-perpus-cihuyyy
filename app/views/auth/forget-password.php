@@ -21,7 +21,7 @@ use App\Components\icon\Icon;
                         </p>
 
                         <form class="w-full flex flex-col gap-4"
-                            action="<?= URL ?>/auth/password/successfully_sent"
+                            action="<?= URL ?>/auth/password/send_token"
                             method="post"
                             enctype="multipart/form-data">
 
