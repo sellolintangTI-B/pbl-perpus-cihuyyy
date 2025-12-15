@@ -17,11 +17,11 @@ try {
 
 try {
     $users = User::resetSuspend();
-    if($users) {
-        foreach($users as $user) {
-            Mailer::send($user->email, 'PEMBERITAHUAN', 'Anda sudah melalui masa suspend, akun anda sudah aktif kembali');
-        }
-    }
+    // if($users) {
+    //     foreach($users as $user) {
+    //         Mailer::send($user->email, 'PEMBERITAHUAN', 'Anda sudah melalui masa suspend, akun anda sudah aktif kembali');
+    //     }
+    // }
 
 } catch (Throwable $e) {
     $errorMsg = "[" . date('Y-m-d H:i:s') . "] ERROR: " . $e->getMessage() . "\n";

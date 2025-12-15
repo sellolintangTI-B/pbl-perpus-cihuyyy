@@ -35,7 +35,10 @@ class PasswordController extends Controller
 
                 if(!$storeToken) throw new CustomException("Terjadi kesalahan");
 
-                Mailer::send($email, 'RESET PASSWORD', $url);
+                Mailer::send($email, 'RESET PASSWORD', 'reset-password.php', [
+                    'username' => $user['first_name'] . ' ' . $user['last_name'],
+                    'url' => $url
+                ]);
                 header('location:' . URL . '/auth/password/successfully_sent');
             } else {
                 header('location:' . URL . '/auth/password/successfully_sent');

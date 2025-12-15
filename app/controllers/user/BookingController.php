@@ -88,7 +88,15 @@ class BookingController extends Controller
             $members = $this->addBookingIdToMembersData($members, $booking->id);
             $bookingParticipants = BookingParticipant::bulkInsert($members);
 
-            Mailer::send($user->user['email'], 'KODE BOOKING', $data['booking_code']);
+            Mailer::send($user->user['email'], 'PEMBERITAHUAN', 'booking-code.php', [
+                'booking_code' => $data['booking_code'],
+                'username' => $user->user['username'] . ' ' . $user->user['lastname'],
+                'room' => $getRoomById,
+                'start_time' => $data['start_time'],
+                'end_time' => $data['end_time'],
+                'booking_id' => $booking->id
+            ]);
+
             ResponseHandler::setResponse("Berhasil menambahkan data");
             header("location:" . URL . '/user/room/index');
             $_SESSION['old_booking'] = null;

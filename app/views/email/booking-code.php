@@ -1,3 +1,10 @@
+<?php
+
+use Carbon\Carbon;
+$startTime = Carbon::parse($data['start_time']);
+$endTime = Carbon::parse($data['end_time']);
+$hours = $startTime->diff($endTime);
+?>
 <!DOCTYPE html>
 <html lang="id">
 
@@ -304,7 +311,7 @@
 
         <!-- Content -->
         <div class="content">
-            <h2>Halo, [Nama User]!</h2>
+            <h2>Halo, <?= $data['username'] ?>!</h2>
 
             <div class="status-badge">DIBUAT</div>
 
@@ -313,7 +320,7 @@
             <!-- Booking Code Section -->
             <div class="booking-code-section">
                 <div class="booking-code-label">Kode Booking Anda</div>
-                <div class="booking-code">LIB24A001</div>
+                <div class="booking-code"><?= $data['booking_code'] ?></div>
                 <div class="booking-code-note">
                     💡 Tunjukkan kode ini kepada petugas perpustakaan
                 </div>
@@ -324,23 +331,19 @@
                 <h3>Detail Peminjaman Ruangan</h3>
                 <div class="detail-row">
                     <div class="detail-label">Kode Booking:</div>
-                    <div class="detail-value highlight">LIB24A001</div>
+                    <div class="detail-value highlight"><?= $data['booking_code'] ?></div>
                 </div>
                 <div class="detail-row">
                     <div class="detail-label">Nama Ruangan:</div>
-                    <div class="detail-value">Ruang Diskusi A - Lt. 2</div>
-                </div>
-                <div class="detail-row">
-                    <div class="detail-label">Kapasitas:</div>
-                    <div class="detail-value">8 Orang</div>
+                    <div class="detail-value"><?= $data['room']->name ?> - Lt. <?= $data['room']->floor ?></div>
                 </div>
                 <div class="detail-row">
                     <div class="detail-label">Tanggal:</div>
-                    <div class="detail-value">Selasa, 17 Desember 2024</div>
+                    <div class="detail-value"><?= $startTime->translatedFormat('D, d M Y') ?></div>
                 </div>
                 <div class="detail-row">
                     <div class="detail-label">Waktu:</div>
-                    <div class="detail-value">09:00 - 11:00 WIB (2 Jam)</div>
+                    <div class="detail-value"><?= $startTime->format('H:i') ?> - <?= $endTime->format('H:i') ?> WIB</div>
                 </div>
             </div>
 
@@ -351,23 +354,19 @@
                     <li>Harap tiba <strong>15 menit sebelum</strong> waktu peminjaman dimulai</li>
                     <li>Bawa <strong>kartu identitas</strong> (KTP/Kartu Mahasiswa) untuk verifikasi</li>
                     <li>Kode booking hanya berlaku untuk tanggal dan waktu yang telah ditentukan</li>
-                    <li>Check-in maksimal 30 menit setelah waktu mulai, atau booking akan dibatalkan otomatis</li>
+                    <li>Check-in maksimal 10 menit setelah waktu mulai, atau booking akan dibatalkan otomatis</li>
                 </ul>
             </div>
 
             <div class="divider"></div>
 
-            <p style="text-align: center; color: #555555; font-size: 15px;">
-                <strong>Perlu melakukan perubahan?</strong>
-            </p>
-
             <!-- Action Buttons -->
             <div class="button-container">
-                <a href="https://yourwebsite.com/booking/LIB24A001" class="action-button">
+                <a href="<?= URL ?>/user/booking/detail/<?= $data['booking_id'] ?>" class="action-button">
                     Lihat Detail Booking
                 </a>
                 <!-- ini diarahin ke booking aja  -->
-                <a href="https://yourwebsite.com/booking/cancel/LIB24A001" class="action-button secondary">
+                <a href="<?= URL ?>/user/booking/detail/<?= $data['booking_id'] ?>" class="action-button secondary">
                     Batalkan Booking
                 </a>
             </div>

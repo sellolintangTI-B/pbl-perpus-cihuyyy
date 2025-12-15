@@ -13,6 +13,7 @@ use App\Models\Room;
 use App\Models\User;
 use App\Utils\Authentication;
 use App\Utils\FileHandler;
+use App\Utils\Mailer;
 use App\Utils\Validator;
 use Carbon\Carbon;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
@@ -556,19 +557,23 @@ class BookingController extends Controller
                 'reason' => $_POST['reason'],
                 'booking_id' => $bookingId,
             ];
+            $userBooked = User::getUserByBookingId($data['booking_id']);
 
             if(isset($_POST['is_suspend'])) {
-                $userBooked = User::getUserByBookingId($data['booking_id']);
                 $suspension = User::update($userBooked->id, [
                     'suspend_count' => $userBooked->suspend_count + 1
                 ]);
-                
                 if ($suspension->suspend_count >= 3) User::suspendAccount($userBooked->id);
-                
             }
 
             $cancel = BookingLog::cancel($data);
             if ($cancel) {
+                $getBookData = Booking::getById($data['booking_id']);
+                Mailer::send($userBooked->email, 'PEMBERITAHUAN', 'booking-cancel.php', [
+                    'name' => $userBooked->first_name . ' ' . $userBooked->last_name,
+                    'booking' => $getBookData,
+                    'reason' => $data['reason']
+                ]);
                 ResponseHandler::setResponse('Berhasil membatalkan peminjaman ruangan');
                 header('location:' . URL . '/admin/booking/index');
             }

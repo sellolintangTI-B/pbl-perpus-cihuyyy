@@ -135,8 +135,10 @@ class BookingLog extends Database
     public static function getLateBookings()
     {
         $conn = parent::getConnection();
-        $q = $conn->prepare("SELECT b.id, b.booking_code, b.start_time, u.email, b.user_id
-            FROM bookings b JOIN users AS u ON b.user_id = u.id WHERE b.start_time <= ((NOW() AT TIME ZONE 'Asia/Jakarta') - INTERVAL '10 minutes')
+        $q = $conn->prepare("SELECT b.id, b.booking_code, b.start_time, b.end_time, u.email, u.first_name || ' ' || u.last_name AS username, b.user_id, r.name, r.floor, u.role FROM bookings b 
+            JOIN users AS u ON b.user_id = u.id 
+            JOIN rooms as r ON b.room_id = r.id
+            WHERE b.start_time <= ((NOW() AT TIME ZONE 'Asia/Jakarta') - INTERVAL '10 minutes')
             AND (SELECT status FROM booking_logs bl WHERE bl.booking_id = b.id ORDER BY bl.created_at DESC 
             LIMIT 1) = 'created';");
         $q->execute();

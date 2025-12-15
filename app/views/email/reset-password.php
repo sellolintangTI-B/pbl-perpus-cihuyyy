@@ -155,7 +155,7 @@
 
         <!-- Content -->
         <div class="content">
-            <h2>Halo, Cahyadi!</h2>
+            <h2>Halo, <?= $data['username'] ?>!</h2>
 
             <p>
                 Kami menerima permintaan untuk mereset password akun Anda.
@@ -165,7 +165,7 @@
 
             <div class="button-container">
                 <a
-                    href="#"
+                    href="<?= $data['url'] ?>"
                     class="reset-button">
                     Reset Password
                 </a>
@@ -183,7 +183,7 @@
             </p>
 
             <div class="link-text">
-                https://yourwebsite.com/reset-password?token=RESET_TOKEN_HERE
+                <?= $data['url'] ?>
             </div>
 
             <p class="warning">

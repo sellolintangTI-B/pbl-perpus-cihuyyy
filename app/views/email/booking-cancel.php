@@ -1,3 +1,9 @@
+<?php
+use Carbon\Carbon;
+$startTime = Carbon::parse($data['booking']->start_time);
+$endTime = Carbon::parse($data['booking']->end_time);
+$hours = $startTime->diff($endTime);
+?>
 <!DOCTYPE html>
 <html lang="id">
 
@@ -248,7 +254,7 @@
 
         <!-- Content -->
         <div class="content">
-            <h2>Halo, [Nama User]!</h2>
+            <h2>Halo, <?= $data['name'] ?>!</h2>
 
             <div class="status-badge">PEMINJAMAN DIBATALKAN</div>
 
@@ -260,30 +266,26 @@
                 <h3>Detail Peminjaman Ruangan</h3>
                 <div class="detail-row">
                     <div class="detail-label">Kode Booking:</div>
-                    <div class="detail-value highlight">LIB24A001</div>
+                    <div class="detail-value highlight"><?= $data['booking']->booking_code ?></div>
                 </div>
                 <div class="detail-row">
                     <div class="detail-label">Nama Ruangan:</div>
-                    <div class="detail-value">Ruang Diskusi A - Lt. 2</div>
-                </div>
-                <div class="detail-row">
-                    <div class="detail-label">Kapasitas:</div>
-                    <div class="detail-value">8 Orang</div>
+                    <div class="detail-value"><?= $data['booking']->room_name ?> - Lt. <?= $data['booking']->floor ?></div>
                 </div>
                 <div class="detail-row">
                     <div class="detail-label">Tanggal:</div>
-                    <div class="detail-value">Selasa, 17 Desember 2024</div>
+                    <div class="detail-value"><?= Carbon::parse($data['booking']->start_time)->translatedFormat('D, d M Y') ?></div>
                 </div>
                 <div class="detail-row">
                     <div class="detail-label">Waktu:</div>
-                    <div class="detail-value">09:00 - 11:00 WIB (2 Jam)</div>
+                    <div class="detail-value"><?= $startTime->format('H:i') ?> - <?= $endTime->format('H:i') ?> WIB</div>
                 </div>
             </div>
 
             <!-- Cancellation Reason -->
             <div class="cancellation-reason">
                 <h3>Alasan Pembatalan</h3>
-                <p>[ALASAN PEMBATALAN - contoh: Maaf, kami harus membatalkan booking ini karena ada perubahan jadwal mendadak dari pihak penyedia layanan. Kami mohon maaf atas ketidaknyamanan ini.]</p>
+                <p><?= $data['reason'] ?></p>
             </div>
             <div class="divider"></div>
 
@@ -294,11 +296,8 @@
 
             <!-- Action Buttons -->
             <div class="button-container">
-                <a href="https://yourwebsite.com/booking" class="action-button">
+                <a href="<?= URL ?>/user/booking/index" class="action-button">
                     Booking Lagi
-                </a>
-                <a href="https://yourwebsite.com/contact" class="action-button secondary">
-                    Hubungi Kami
                 </a>
             </div>
 

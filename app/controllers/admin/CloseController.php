@@ -65,19 +65,39 @@ class CloseController extends Controller
             $closeDate = Carbon::parse($data['close_date'])->toDateString();
             $nowdate = Carbon::now('Asia/Jakarta')->toDateString();
             if ($closeDate < $nowdate) throw new CustomException('Tdak bisa close dikemarin hari');
+
             $_SESSION['old_close'] = null;
             $bookingByDate = Booking::getBookingForCancelByDate($closeDate);
             if ($bookingByDate) {
-                $emails = [];
-                $bookingIds = array_map(function ($item) use(&$emails) {
-                    $emails[] = $item->email;
+                $mailData = [];
+                $bookingIds = array_map(function ($item) use(&$mailData) {
+                    $mailData[] = [
+                        'email' => $item->email,
+                        'username' => $item->username,
+                        'role' => $item->role,
+                        'booking' => (object) [
+                            'start_time' => $item->start_time,
+                            'end_time' => $item->end_time,
+                            'booking_code' => $item->booking_code,
+                            'room_name' => $item->name,
+                            'floor' => $item->floor
+                        ]
+                    ];
                     return $item->id;
                 }, $bookingByDate);
 
-                $emails = array_filter($emails, fn($item) => !is_null($item));
+                $mailData = array_values(array_filter($mailData, function($item){
+                    if($item['role'] !== 'Admin') {
+                        return $item;
+                    }
+                }));
 
-                foreach($emails as $email) {
-                    Mailer::send($email , 'NOTIFIKASI', 'Booking anda telah di cancel oleh admin');
+                foreach($mailData as $item) {
+                    Mailer::send($item['email'], 'PEMBERITAHUAN', 'booking-cancel.php', [
+                        'name' => $item['username'],
+                        'booking' => $item['booking'],
+                        'reason' => $data['reason']
+                    ]);
                 }
 
                 $cancelAllBookingByDate = BookingLog::cancelAllBookingByDate($bookingIds, $data['reason'], $data['created_by']);

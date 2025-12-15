@@ -76,6 +76,7 @@ class LoginController extends Controller
 
             $_SESSION['loggedInUser'] = [
                 "username" => $checkIfUserExist['first_name'],
+                "lastname" => $checkIfUserExist['last_name'],
                 "role" => $checkIfUserExist['role'],
                 "id_number" => $checkIfUserExist['id_number'],
                 "email" => $checkIfUserExist['email'],

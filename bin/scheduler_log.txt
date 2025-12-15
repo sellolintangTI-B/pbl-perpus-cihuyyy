@@ -117,3 +117,13 @@ LINE 1: ...NSERT INTO booking_logs (booking_id, reason, status) VALUES
 [2025-12-11 07:10:08] ERROR: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at end of input
 LINE 1: ...NSERT INTO booking_logs (booking_id, reason, status) VALUES 
                                                                        ^
+[2025-12-15 18:35:17] ERROR: Invalid address:  (to): 
+[2025-12-15 18:35:34] ERROR: Undefined constant "URL"
+[2025-12-15 18:36:28] ERROR: Undefined constant "URL"
+[2025-12-15 18:36:56] ERROR: Undefined constant "URL"
+[2025-12-15 18:37:08] ERROR: Undefined constant "URL"
+[2025-12-15 18:38:46] ERROR: Failed opening required 'C:\laragon\www\pbl-perpus-cihuyyy\app\views\email/../vendor/autoload.php' (include_path='.;C:/laragon/etc/php/pear')
+[2025-12-15 18:40:22] ERROR: Undefined constant "URL"
+[2025-12-15 18:41:06] SUKSES: Auto Cancel dijalankan.
+[2025-12-15 18:42:12] ERROR: Undefined constant "URL"
+[2025-12-15 18:45:54] SUKSES: Auto Cancel dijalankan.
