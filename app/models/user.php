@@ -322,6 +322,25 @@ class User extends Database
         $data = $q->fetch(PDO::FETCH_OBJ);
         return $data;
     }
+
+    public static function updateByEmail($email, $data)
+    {
+        $conn = parent::getConnection();
+        $fields = [];
+        $values = [];
+
+        foreach ($data as $key => $value) {
+            $fields[] = "$key = :$key";
+            $values[] = $value;
+        }
+        $values[] = $email;
+        $fields = implode(', ', $fields);
+        $query = "UPDATE users SET $fields WHERE email = :email";
+        $q = $conn->prepare($query);
+        $q->execute($values);
+        if ($q) return true;
+        return false;
+    }
 }
 
 

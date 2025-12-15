@@ -129,10 +129,10 @@ class Middleware
         "/auth/password/forget",
         "/auth/password/successfully_sent",
         "/auth/password/new",
+        "/auth/password/send_token",
         "/auth/register/signup",
         "/email/email/reset_password",
         "/error/notfound/index",
-        // "/guest/index"
     ];
 
     private $auth;
