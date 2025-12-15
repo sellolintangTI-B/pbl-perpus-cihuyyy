@@ -33,7 +33,7 @@ $bookingDetail = [
     'room' => $data['booking']->room_name,
     'floor' => $data['booking']->floor,
     'date' => Carbon::parse($data['booking']->start_time)->translatedFormat('l, d F Y'),
-    'time' => Carbon::parse($data['booking']->start_time)->translatedFormat('l, H F Y') . ' - ' . Carbon::parse($data['booking']->end_time)->toTimeString(),
+    'time' => Carbon::parse($data['booking']->start_time)->toTimeString() . ' - ' . Carbon::parse($data['booking']->end_time)->toTimeString(),
     'members' => $data['participants']
 ];
 ?>
