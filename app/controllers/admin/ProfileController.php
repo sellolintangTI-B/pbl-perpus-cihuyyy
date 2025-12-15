@@ -52,8 +52,8 @@ class ProfileController extends Controller
                 "email" => $_POST["email"],
                 "first_name" => $_POST["first_name"],
                 "last_name" => $_POST["last_name"],
-                "major" => $_POST['major'],
-                "study_program" => $_POST['study_program'],
+                "major" => $_POST['major'] ?? "",
+                "study_program" => $_POST['study_program'] ?? "",
                 "phone_number" => $_POST["phone_number"],
                 "institution" => $_POST['institution'],
             ];
