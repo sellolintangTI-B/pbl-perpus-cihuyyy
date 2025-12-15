@@ -44,6 +44,8 @@
             font-size: 24px;
             margin-top: 0;
             margin-bottom: 20px;
+            font-weight: bold;
+
         }
 
         .content p {

@@ -10,4 +10,12 @@ class EmailController extends Controller
     {
         $this->view('email/reset-password');
     }
+    public function booking_cancel()
+    {
+        $this->view('email/booking-cancel');
+    }
+    public function booking_code()
+    {
+        $this->view('email/booking-code');
+    }
 }

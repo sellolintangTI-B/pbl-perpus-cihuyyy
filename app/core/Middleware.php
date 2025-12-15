@@ -132,6 +132,8 @@ class Middleware
         "/auth/password/send_token",
         "/auth/register/signup",
         "/email/email/reset_password",
+        "/email/email/booking_cancel",
+        "/email/email/booking_code",
         "/error/notfound/index",
     ];
 
