@@ -130,6 +130,7 @@ class Middleware
         "/auth/password/successfully_sent",
         "/auth/password/new",
         "/auth/register/signup",
+        "/email/email/reset_password",
         "/error/notfound/index",
         // "/guest/index"
     ];
