@@ -125,9 +125,9 @@ $totalPage = $data['total_page'] ?? 1;
                 </div>
             </div>
             <!-- Panel filter lanjutan -->
-            <div class="w-full bg-baseColor shadow-md shadow-gray-200 rounded-xl border border-gray-200 transition-all duration-300 ease-in-out overflow-visible"
-                :class="showFilter ? 'max-h-[500px] opacity-100  h-fit' : 'max-h-0 h-0 opacity-0 p-0 border-0 pointer-events-none'" x-cloak>
-                <div class="flex flex-wrap gap-4 items-start justify-start w-full overflow-visible p-4">
+            <div class="w-full bg-baseColor shadow-md shadow-gray-200 rounded-xl border border-gray-200  transition-all duration-500 ease-in-out "
+                :class="showFilter ? 'max-h-96 opacity-100 py-4 overflow-visible' : 'max-h-0 opacity-0 py-0 border-0 overflow-hidden'" x-cloak>
+                <div class="flex flex-wrap gap-4 items-start justify-start w-full overflow-visible px-4">
                     <!-- Dropdown filter tanggal -->
                     <div class="relative w-fit h-full" x-data="{ open: false }" x-show="month">
                         <input type="hidden" name="date" x-model="date">
