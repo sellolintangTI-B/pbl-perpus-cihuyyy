@@ -105,7 +105,7 @@ use Carbon\Carbon;
                                 </div>
                                 <div class="w-full border border-gray-300 rounded-lg overflow-hidden shadow-sm bg-gray-50">
                                     <iframe
-                                        src="<?= URL ?>/public/storage/booking/<?= $data['booking']->special_requirement_attachments_url ?? '' ?>"
+                                        src="<?= URL ?>/public/<?= $data['booking']->special_requirement_attachments_url ?? '' ?>"
                                         class="w-full h-[32rem]"
                                         frameborder="0">
                                     </iframe>

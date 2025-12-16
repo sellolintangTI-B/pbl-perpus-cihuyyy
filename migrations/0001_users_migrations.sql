@@ -1,5 +1,6 @@
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 DROP VIEW IF EXISTS v_booking_details;
+DROP TABLE IF EXISTS reset_password;
 DROP TABLE IF EXISTS feedbacks;
 DROP TABLE IF EXISTS booking_participants;
 DROP TABLE IF EXISTS booking_logs;

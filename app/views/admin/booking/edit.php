@@ -110,13 +110,13 @@ use App\Components\Modal;
                                 <label class="block text-lg font-medium text-primary mb-4">Dokumen Saat Ini</label>
                                 <div class="w-full border border-gray-300 rounded-lg overflow-hidden shadow-sm bg-gray-50">
                                     <iframe
-                                        src="<?= URL ?>/public/storage/booking/<?= $data['booking']->approval_document_url ?? '' ?>"
+                                        src="<?= URL ?>/public/<?= $data['booking']->special_requirement_attachments_url ?? '' ?>"
                                         class="w-full h-[32rem]"
                                         frameborder="0">
                                     </iframe>
                                     <div class="p-3 bg-white border-t border-gray-300">
                                         <a
-                                            href="<?= URL ?>/public/storage/booking/<?= $data['booking']->approval_document_url ?? '' ?>"
+                                            href="<?= URL ?>/public/<?= $data['booking']->special_requirement_attachments_url ?? '' ?>"
                                             target="_blank"
                                             class="text-secondary hover:underline text-sm flex items-center gap-2">
                                             <?= Icon::download("w-4 h-4") ?>
