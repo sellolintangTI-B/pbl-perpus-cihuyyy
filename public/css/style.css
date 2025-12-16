@@ -387,6 +387,9 @@
   .m-4 {
     margin: calc(var(--spacing) * 4);
   }
+  .mx-0 {
+    margin-inline: calc(var(--spacing) * 0);
+  }
   .mx-4 {
     margin-inline: calc(var(--spacing) * 4);
   }
@@ -523,9 +526,6 @@
     width: calc(var(--spacing) * 6);
     height: calc(var(--spacing) * 6);
   }
-  .h-0 {
-    height: calc(var(--spacing) * 0);
-  }
   .h-1 {
     height: calc(var(--spacing) * 1);
   }
@@ -592,6 +592,9 @@
   .h-48 {
     height: calc(var(--spacing) * 48);
   }
+  .h-52 {
+    height: calc(var(--spacing) * 52);
+  }
   .h-56 {
     height: calc(var(--spacing) * 56);
   }
@@ -618,6 +621,9 @@
   }
   .h-\[65vh\] {
     height: 65vh;
+  }
+  .h-\[80vh\] {
+    height: 80vh;
   }
   .h-\[90vh\] {
     height: 90vh;
@@ -655,6 +661,9 @@
   .max-h-80 {
     max-height: calc(var(--spacing) * 80);
   }
+  .max-h-96 {
+    max-height: calc(var(--spacing) * 96);
+  }
   .max-h-\[14rem\] {
     max-height: 14rem;
   }
@@ -664,8 +673,8 @@
   .max-h-\[65vh\] {
     max-height: 65vh;
   }
-  .max-h-\[500px\] {
-    max-height: 500px;
+  .max-h-\[80vh\] {
+    max-height: 80vh;
   }
   .max-h-full {
     max-height: 100%;
@@ -1541,6 +1550,9 @@
   }
   .px-8 {
     padding-inline: calc(var(--spacing) * 8);
+  }
+  .py-0 {
+    padding-block: calc(var(--spacing) * 0);
   }
   .py-1 {
     padding-block: calc(var(--spacing) * 1);
@@ -2511,9 +2523,19 @@
       grid-column: span 5 / span 5;
     }
   }
+  .sm\:hidden {
+    @media (width >= 40rem) {
+      display: none;
+    }
+  }
   .sm\:w-\[200px\] {
     @media (width >= 40rem) {
       width: 200px;
+    }
+  }
+  .sm\:w-auto {
+    @media (width >= 40rem) {
+      width: auto;
     }
   }
   .sm\:grid-cols-2 {
@@ -2534,6 +2556,11 @@
   .sm\:flex-row {
     @media (width >= 40rem) {
       flex-direction: row;
+    }
+  }
+  .sm\:items-center {
+    @media (width >= 40rem) {
+      align-items: center;
     }
   }
   .sm\:text-left {
@@ -2919,6 +2946,11 @@
   .md\:px-8 {
     @media (width >= 48rem) {
       padding-inline: calc(var(--spacing) * 8);
+    }
+  }
+  .md\:py-1 {
+    @media (width >= 48rem) {
+      padding-block: calc(var(--spacing) * 1);
     }
   }
   .md\:py-3 {

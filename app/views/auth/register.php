@@ -27,7 +27,10 @@ if (isset($_SESSION['register_old'])) {
             </div>
 
             <!-- Form Section -->
-            <div class="col-span-1 bg-white rounded-t-4xl md:bg-transparent z-20 md:z-0 absolute md:static bottom-0 left-0 right-0 md:rounded-none shadow-2xl md:shadow-none max-h-[60vh] md:max-h-full h-[60vh] md:h-full overflow-y-auto no-scrollbar md:show-scrollbar">
+            <div class="col-span-1 bg-white rounded-t-4xl md:bg-transparent z-20 md:z-0 absolute md:static bottom-0 left-0 right-0 md:rounded-none shadow-2xl md:shadow-none overflow-y-auto no-scrollbar md:show-scrollbar transition-all duration-300"
+                x-data="{ scrolled: false }"
+                @scroll="scrolled = $el.scrollTop > 0"
+                :class="scrolled ? 'max-h-[80vh] h-[80vh]' : 'max-h-[60vh] h-[60vh] md:max-h-full md:h-full'">
                 <div class="h-full w-full p-6 md:p-8">
                     <div class="w-full md:max-w-none mx-auto">
                         <h1 class="text-2xl md:text-3xl font-poppins text-center font-medium mb-6 md:mb-8 text-primary">

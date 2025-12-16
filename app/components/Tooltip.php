@@ -14,8 +14,8 @@ class Tooltip
 ?>
         <div x-data="{ open: false }" class="relative inline-block z-10">
             <button
-                @mouseenter="open = true"
-                @mouseleave="open = false"
+                @click="open=!open"
+                @click.outside="open=false"
                 class="flex items-center justify-center cursor-pointer <?= $classes ?>"
                 type="button">
                 <?= Icon::info('w-6 h-6') ?>

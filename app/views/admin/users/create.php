@@ -2,6 +2,7 @@
 
 use App\Components\Icon\Icon;
 use App\Components\FormInput;
+use Carbon\Carbon;
 
 $oldUsers = $_SESSION['old_users'] ?? []
 ?>
@@ -111,16 +112,26 @@ $oldUsers = $_SESSION['old_users'] ?? []
                         ],
                     ]
                 );
+                FormInput::input(
+                    id: 'date',
+                    type: 'date',
+                    required: true,
+                    name: 'active_until',
+                    label: 'Aktif sampai',
+                    class: 'w-full custom-input-icon',
+                    value: Carbon::parse($oldUsers['active_until'] ?? '')->toDateString(),
+                    classGlobal: 'sm:col-span-2'
+                );
                 FormInput::input(id: 'password', name: 'password', type: 'password', label: 'Password', required: true, placeholder: 'masukkan password');
                 FormInput::input(id: 'password_confirmation', name: 'password_confirmation', type: 'password', label: 'Konfirmasi Password', required: true, placeholder: 'masukkan konfirmasi password');
                 ?>
-
                 <div class="sm:col-span-2 mt-4">
                     <div class="sm:col-span-2 px-4">
                         <ul class="text-xs text-start list-disc hidden text-red" id="text_alert"></ul>
                         <ul class="text-xs text-start list-disc hidden text-red" id="match_alert"></ul>
                     </div>
                 </div>
+
                 <div class="sm:col-span-2 mt-4">
                     <button type="submit" name="register" class="w-full bg-primary text-white px-4 py-2 rounded-xl cursor-pointer shadow-sm shadow-gray-400 hover:shadow-md hover:shadow-primary-100 duration-300 transition-all font-medium">
                         Tambah Akun

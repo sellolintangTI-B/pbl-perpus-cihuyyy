@@ -70,7 +70,7 @@ $badgeSuspendColor = [
 </div>
 <?php $updatePasswordContent = ob_get_clean() ?>
 
-<div class="w-full h-full md:p-0 p-4 md:pb-16">
+<div class="w-full h-full md:p-0 p-4 md:pb-16" x-data="{logoutAlert: false}">
 
     <div class="max-w-6xl mx-auto flex flex-col gap-4 md:gap-6" x-data="updateUserForm()">
 
@@ -78,7 +78,7 @@ $badgeSuspendColor = [
             Tentang Saya
         </h1>
 
-        <div class="w-full h-48 md:h-56 bg-white rounded-lg shadow-sm shadow-black/40 overflow-hidden relative">
+        <div class="w-full h-52 md:h-56 bg-white rounded-lg shadow-sm shadow-black/40 overflow-hidden relative">
             <div class="h-1/2 bg-linear-120 from-primary to-secondary">
 
             </div>
@@ -93,7 +93,7 @@ $badgeSuspendColor = [
                     userName: ($data['data']->first_name ?? "") . " " . ($data['data']->last_name ?? ""),
                     userRole: $data['data']->role ?? "",
                     inputName: 'profile_picture',
-                    class: 'mx-4 md:mx-18'
+                    class: ' md:mx-18'
                 ) ?>
             </div>
         </div>
@@ -269,6 +269,7 @@ $badgeSuspendColor = [
                 </div>
             </form>
         </div>
+        <?= Button::button(label: 'Logout', class: 'px-4 py-2.5 md:py-3 text-sm md:text-base w-full rounded-full! sm:hidden', type: 'submit', color: 'red', alpineClick: "logoutAlert = true") ?>
         <?= Modal::render(
             title: 'Yakin ingin menyimpan perubahan?',
             color: 'secondary',
@@ -284,6 +285,19 @@ $badgeSuspendColor = [
             alpineShow: 'updatePasswordAlert',
         ) ?>
     </div>
+
+    <?= Modal::render(
+        title: 'Yakin ingin logout?',
+        actionUrl: URL . '/auth/logout/logout',
+        color: 'red',
+        confirmText: 'Ya',
+        cancelText: 'Tidak',
+        message: 'Anda akan keluar dari akun ini. Pastikan semua pekerjaan sudah disimpan sebelum logout.',
+        method: 'POST',
+        alpineShow: 'logoutAlert',
+        height: 'h-fit',
+        class: 'max-w-xl w-full p-8'
+    ) ?>
 </div>
 <script src="<?= URL ?>/public/js/profile-picture-upload.js"></script>
 <script src="<?= URL ?>/public/js/select-jurusan.js"></script>

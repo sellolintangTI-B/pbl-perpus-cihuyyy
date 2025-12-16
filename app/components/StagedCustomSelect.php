@@ -52,7 +52,7 @@ class StagedCustomSelect
                 <?php foreach ($options as $optionValue => $optionLabel): ?>
                     <button
                         type="button"
-                        @click="display = '<?= htmlspecialchars($optionLabel) ?>'; value='<?= htmlspecialchars($optionValue) ?>'"
+                        @click="display = '<?= htmlspecialchars($optionLabel) ?>'; value='<?= htmlspecialchars($optionValue) ?>';openSelect=false"
                         class="flex line-clamp-1 truncate items-center gap-2 px-3 py-2 text-primary hover:bg-primary/5 text-sm border-t border-gray-100 w-full text-left transition cursor-pointer">
                         <?= htmlspecialchars($optionLabel) ?>
                     </button>

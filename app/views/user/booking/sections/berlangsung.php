@@ -27,7 +27,7 @@ $authUser = new Authentication;
                             <h3 class="text-xl font-bold text-primary"><?= $value->room_name ?></h3>
                             <?php
                             Tooltip::render(
-                                message: 'Silakan menuju perpustakaan untuk melakukan check-in dan pengambilan kunci. Pastikan Anda hadir maksimal 15 menit setelah waktu peminjaman dimulai.',
+                                message: 'Silakan menuju perpustakaan untuk melakukan check-in dan pengambilan kunci. Pastikan Anda hadir maksimal 10 menit setelah waktu peminjaman dimulai.',
                                 title: 'Bantuan'
                             );
                             ?>

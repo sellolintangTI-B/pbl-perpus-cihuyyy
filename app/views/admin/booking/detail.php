@@ -157,7 +157,7 @@ use Carbon\Carbon;
                                 <div class="flex gap-2 items-center justify-start text-black/80 mt-2">
                                     <?= Icon::clock("w-5 h-5") ?>
                                     <p class="font-medium text-sm">
-                                        Jam Pembatalan: <?= Carbon::parse($data['detailCancel']->created_at)->translatedFormat('H:i A') ?>
+                                        Waktu Pembatalan: <?= Carbon::parse($data['detailCancel']->created_at)->translatedFormat('d/M/Y - H:i A') ?>
                                     </p>
                                 </div>
                                 <div class="flex gap-2 items-start mt-2">

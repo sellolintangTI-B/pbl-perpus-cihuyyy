@@ -16,7 +16,6 @@ class Modal
         string $color = 'red',
         string $alpineShow = '',
         string $alpineId = '',
-        // UBAHAN 1: Default padding dibuat responsive
         string $class = 'p-6 md:p-8',
         string $width = 'w-full max-w-2xl',
         string $height = 'h-fit',
@@ -49,12 +48,12 @@ class Modal
         ob_start();
 ?>
         <div
-            class="h-full w-full absolute inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs"
+            class="h-full w-full absolute inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4"
             x-show="<?= $alpineShow ?>"
             x-cloak
             @click.outside="<?= $alpineShow ?> = false">
             <div
-                class="<?= $class ?> <?= $height ?> <?= $width ?>   bg-baseColor rounded-xl shadow-xl flex items-center justify-center border-2 <?= $selectedColor['border'] ?> absolute transition-all duration-300 ease-in-out "
+                class="<?= $class ?> <?= $height ?> <?= $width ?> max-w-full bg-baseColor rounded-xl shadow-xl flex items-center justify-center border-2 <?= $selectedColor['border'] ?> absolute transition-all duration-300 ease-in-out"
                 x-show="<?= $alpineShow ?>"
                 x-cloak
                 @click.outside="<?= $alpineShow ?> = false"

@@ -69,7 +69,7 @@ $currentPath = URL . parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
                 ?>
                     <div class="flex flex-col items-center justify-center">
                         <a class="h-full p-2  flex items-center justify-center" href="<?= URL . $item['url'] ?>">
-                            <?= Icon::{$item['icon']}('w-8 h-8 text-white'); ?>
+                            <?= Icon::{$item['icon']}('w-6 h-6 text-white'); ?>
                         </a>
                         <div class="px-3 h-1 mt-2 rounded-t-lg <?= $isActive ? 'bg-white' : 'bg-none' ?>">
 
