@@ -81,7 +81,8 @@ class User extends Database
 
         $implodedFields = implode(', ', $fields);
         $implodedParams = implode(', ', $params);
-        $q = $conn->prepare("INSERT INTO users ($implodedFields) VALUES ($implodedParams)");
+        $stmt = "INSERT INTO users ($implodedFields) VALUES ($implodedParams)";
+        $q = $conn->prepare($stmt);
         $q->execute($values);
 
         if ($q) {

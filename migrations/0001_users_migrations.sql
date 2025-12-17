@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS users  (
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100),
     institution VARCHAR(255) NOT NULL,
-    major VARCHAR(100) NOT NULL,
+    major VARCHAR(100),
     study_program VARCHAR(100),
     phone_number VARCHAR(20) UNIQUE NOT NULL,
     active_periode TIMESTAMP,
