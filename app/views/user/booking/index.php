@@ -9,7 +9,7 @@ use App\Components\Modal;
 <div class=" font-poppins w-full px-4 py-4 md:p-0 " x-data="{showCancel: false, cancelPeminjamanId: null }">
     <div class="max-w-6xl mx-auto">
         <!-- Header -->
-        <h1 class="text-2xl font-bold text-primary mb-6">Booking</h1>
+        <h1 class="text-2xl font-medium text-black/80 mb-6 hidden md:block">Booking</h1>
 
         <!-- Tabs -->
         <form class="flex gap-4 mb-6 border-b-2 border-gray-200" method="get">
@@ -29,7 +29,7 @@ use App\Components\Modal;
 
         <!-- Container for main content with fixed height and scroll -->
         <div
-            class="w-full pb-32">
+            class="w-full pb-48">
             <div class=" w-full ">
                 <?php
                 if ($tab == 'berlangsung') {

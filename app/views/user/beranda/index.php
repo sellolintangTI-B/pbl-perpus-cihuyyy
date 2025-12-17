@@ -6,8 +6,8 @@ use App\Components\RoomCard;
 <main class="w-full max-w-7xl mx-auto px-4 py-4 md:px-8 md:py-8 pb-16 h-fit">
     <!-- Greeting Section -->
     <div class="w-full flex flex-col items-center md:gap-6 gap-2 mb-8">
-        <h1 class="text-2xl font-semibold text-black/90 hidden md:block">
-            Halo, mau pinjam ruangan apa?
+        <h1 class="text-lg md:text-2xl text-black/80 font-medium">
+            Mau pinjam ruangan apa?
         </h1>
 
         <!-- Search & Filter Section -->

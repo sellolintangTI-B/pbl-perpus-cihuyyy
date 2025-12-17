@@ -160,7 +160,7 @@ $panduanList = [
 <div class=" font-poppins w-full p-4 md:p-0 pb-16">
     <div class="max-w-5xl mx-auto flex flex-col gap-4 pb-8">
         <?php foreach ($panduanList as $kategori): ?>
-            <h1 class="text-xl md:text-2xl text-primary font-semibold">
+            <h1 class="text-xl md:text-2xl text-black/80 font-medium">
                 <?= $kategori['kategori'] ?>
             </h1>
             <?php foreach ($kategori['data'] as $panduan): ?>

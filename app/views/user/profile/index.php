@@ -78,23 +78,26 @@ $badgeSuspendColor = [
             Tentang Saya
         </h1>
 
-        <div class="w-full h-52 md:h-56 bg-white rounded-lg shadow-sm shadow-black/40 overflow-hidden relative">
+        <div class="w-full h-58 md:h-56 bg-white rounded-lg shadow-sm shadow-black/40 overflow-hidden relative">
             <div class="h-1/2 bg-linear-120 from-primary to-secondary">
 
             </div>
-            <div class="flex justify-end items-center p-3 md:p-4 ">
+            <div class="md:flex justify-end items-center p-3 md:p-4 hidden">
                 <?= Badge::badge(label: 'Suspend Point: ' . (isset($data['data']) ? ($data['data']->suspend_count ?? 0) : 0) . ' point', color: $badgeSuspendColor[isset($data['data']) ? ($data['data']->suspend_count ?? 0) : 0], class: 'px-2! py-1! text-xs md:text-sm') ?>
             </div>
 
-            <div class="absolute p-3 md:p-4 inset-0  flex flex-col items-start justify-start gap-3 md:gap-4">
+            <div class="absolute p-3 md:p-4 inset-0  flex flex-col items-center md:items-start justify-start gap-3 md:gap-4">
                 <?= ProfilePictureUpload::render(
                     imageUrl: URL . "/public/" . $data['data']->profile_picture_url ?? "",
                     formAction: URL . "/user/profile/update_picture/" . $data['data']->id ?? "",
                     userName: ($data['data']->first_name ?? "") . " " . ($data['data']->last_name ?? ""),
                     userRole: $data['data']->role ?? "",
                     inputName: 'profile_picture',
-                    class: ' md:mx-18'
+                    class: 'mx-auto mt-2 md:mx-18 md:mt-0'
                 ) ?>
+                <div class="md:hidden">
+                    <?= Badge::badge(label: 'Suspend Point: ' . (isset($data['data']) ? ($data['data']->suspend_count ?? 0) : 0) . ' point', color: $badgeSuspendColor[isset($data['data']) ? ($data['data']->suspend_count ?? 0) : 0], class: 'px-2! py-1! text-xs md:text-sm') ?>
+                </div>
             </div>
         </div>
 
@@ -296,7 +299,7 @@ $badgeSuspendColor = [
         method: 'POST',
         alpineShow: 'logoutAlert',
         height: 'h-fit',
-        class: 'max-w-xl w-full p-8'
+        class: 'max-w-xl p-8'
     ) ?>
 </div>
 <script src="<?= URL ?>/public/js/profile-picture-upload.js"></script>

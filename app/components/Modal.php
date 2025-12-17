@@ -53,7 +53,7 @@ class Modal
             x-cloak
             @click.outside="<?= $alpineShow ?> = false">
             <div
-                class="<?= $class ?> <?= $height ?> <?= $width ?> max-w-md md:max-w-4xl lg:max-w-3xl xl:max-w-2xl  bg-baseColor rounded-xl shadow-xl flex items-center justify-center border-2 <?= $selectedColor['border'] ?> absolute transition-all duration-300 ease-in-out"
+                class="<?= $class ?> <?= $height ?> <?= "md:" . $width ?> max-w-md md:max-w-4xl lg:max-w-3xl xl:max-w-2xl w-[95%]!  bg-baseColor rounded-xl shadow-xl flex items-center justify-center border-2 <?= $selectedColor['border'] ?> absolute transition-all duration-300 ease-in-out"
                 x-show="<?= $alpineShow ?>"
                 x-cloak
                 @click.outside="<?= $alpineShow ?> = false"
@@ -64,7 +64,7 @@ class Modal
                 x-transition:leave-start="opacity-100 scale-100"
                 x-transition:leave-end="opacity-0 scale-95">
 
-                <div class="flex flex-col gap-5 md:gap-8 items-center justify-center max-w-4xl w-full px-4 md:px-6 h-fit">
+                <div class="flex flex-col gap-5 md:gap-8 items-center justify-center max-w-4xl  px-2 md:px-6 h-fit">
 
                     <h1 class="<?= $selectedColor['text'] ?> font-medium text-xl md:text-2xl text-center">
                         <?= htmlspecialchars($title) ?>

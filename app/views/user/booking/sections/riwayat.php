@@ -160,7 +160,7 @@ $currentStatus = !empty($_GET['status']) ? $_GET['status'] : 'semua';
         message: '',
         customContent: $feedbackContent,
         alpineShow: 'showFeedback',
-        class: 'max-w-2xl p-8',
+        class: 'max-w-2xl md:p-8 p-4',
         height: 'h-fit'
     ) ?>
 </div>

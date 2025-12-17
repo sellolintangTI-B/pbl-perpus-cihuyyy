@@ -14,11 +14,11 @@ class ProfilePictureUpload
     ) {
         ob_start();
 ?>
-        <div class="flex flex-col items-center gap-2 <?= $class ?>"
+        <div class="flex flex-col items-center gap-1 md:gap-2 <?= $class ?>"
             x-data="profilePictureUpload('<?= $imageUrl ?>', '<?= $formAction ?>', '<?= $inputName ?>')">
 
             <!-- Profile picture with hover effect -->
-            <div class="relative h-28 w-28 rounded-full bg-white p-1"
+            <div class="relative md:h-28 md:w-28 h-24 w-24 rounded-full bg-white p-1"
                 @mouseenter="showUploadIcon = true"
                 @mouseleave="showUploadIcon = false">
 
@@ -43,7 +43,7 @@ class ProfilePictureUpload
                 <div x-show="isUploading"
                     x-transition
                     class="absolute inset-0 rounded-full bg-black/70 flex flex-col items-center justify-center">
-                    <svg class="animate-spin h-8 w-8 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <svg class="animate-spin md:h-8 md:w-8 h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
