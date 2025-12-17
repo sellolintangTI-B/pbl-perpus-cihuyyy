@@ -115,7 +115,7 @@ $oldUsers = $_SESSION['old_users'] ?? []
                 FormInput::input(
                     id: 'date',
                     type: 'date',
-                    required: true,
+                    // required: true,
                     name: 'active_until',
                     label: 'Aktif sampai',
                     class: 'w-full custom-input-icon',

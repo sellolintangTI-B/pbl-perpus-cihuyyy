@@ -114,16 +114,17 @@ class UserController extends Controller
     {
         try {
             $data = [
-                "id_number" => $_POST["id_number"],
-                "email" => $_POST["email"],
-                "password_hash" => $_POST["password"],
-                "first_name" => $_POST["first_name"],
-                "last_name" => $_POST["last_name"],
-                "institution" => "Politeknik Negeri Jakarta",
-                "study_program" => $_POST['prodi'],
-                "phone_number" => $_POST["phone_number"],
-                "major" => $_POST["major"],
-                "role" => $_POST['role'],
+                "id_number" => $_POST["id_number"] ?? null,
+                "email" => $_POST["email"] ?? null,
+                "password_hash" => $_POST["password"] ?? null,
+                "first_name" => $_POST["first_name"] ?? null,
+                "last_name" => $_POST["last_name"] ?? null,
+                "institution" => "Politeknik Negeri Jakarta" ?? null,
+                "study_program" => $_POST['prodi'] ?? null,
+                "phone_number" => $_POST["phone_number"] ?? null,
+                "major" => $_POST["major"] ?? null,
+                "role" => $_POST['role'] ?? null,
+                "active_periode" => $_POST['active_until'] ?? null,
                 "is_active" => true
             ];
 
@@ -132,7 +133,13 @@ class UserController extends Controller
             $validator->field('email', ['required']);
             $validator->field('password_hash', ['required']);
             $validator->field('first_name', ['required']);
-            $validator->field('major', ['required']);
+            if($data['role'] !== 'Admin') {
+                $validator->field('active_periode', ['required']);
+                $validator->field('major', ['required']);
+                $validator->field('study_program', ['required']);
+            } else {
+                unset($data['active_periode'], $data['major'], $data['study_program']);
+            }
 
             if ($validator->error()) throw new CustomException($validator->getErrors());
 
@@ -145,11 +152,11 @@ class UserController extends Controller
             $data['password_hash'] = password_hash($data['password_hash'], PASSWORD_BCRYPT);
             $insert = User::insert($data);
             if ($insert) {
-                ResponseHandler::setResponse("Berhasil menambahkan akun admin");
+                ResponseHandler::setResponse("Berhasil menambahkan akun ");
                 $_SESSION['old_users'] = [];
                 header('location:' . URL . '/admin/user/index');
             } else {
-                throw new CustomException("Gagal memasukan data admin");
+                throw new CustomException("Gagal memasukan data");
             }
         } catch (CustomException $e) {
             ResponseHandler::setResponse($e->getErrorMessages(), "error");
@@ -176,14 +183,14 @@ class UserController extends Controller
                 "email" => $_POST["email"],
                 "first_name" => $_POST["first_name"],
                 "last_name" => $_POST["last_name"],
-                "major" => $_POST['major'] ?? "",
-                "study_program" => $_POST['study_program'] ?? "",
+                "major" => $_POST['major'] ?? null,
+                "study_program" => $_POST['study_program'] ?? null,
                 "phone_number" => $_POST["phone_number"],
                 "institution" => $_POST['institution'],
                 "role" => $_POST["role"],
                 "profile_picture_url" => empty($_FILES['image']['name']) ? null : $_FILES['image'],
                 "is_active" => $_POST['status'] ?? 1,
-                "active_periode" => $_POST['active_until']
+                "active_periode" => $_POST['active_until'] ?? null
             ];
 
             $validator = new Validator($data);
@@ -192,7 +199,9 @@ class UserController extends Controller
             $validator->field("phone_number", ['required']);
             $validator->field("institution", ['required']);
             $validator->field("role", ['required']);
-            $validator->field("active_periode", ['required']);
+            if($data['role'] !== 'Admin') {
+                $validator->field("active_periode", ['required']);
+            }
 
             if ($validator->error()) throw new CustomException($validator->getErrors());
 
