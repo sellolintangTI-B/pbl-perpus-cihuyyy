@@ -30,13 +30,17 @@ if (isset($_SESSION['register_old'])) {
             <div class="col-span-1 bg-white rounded-t-4xl md:bg-transparent z-20 md:z-0 absolute md:static bottom-0 left-0 right-0 md:rounded-none shadow-2xl md:shadow-none overflow-y-auto no-scrollbar md:show-scrollbar transition-all duration-300"
                 x-data="{ scrolled: false }"
                 @scroll="scrolled = $el.scrollTop > 0"
-                :class="scrolled ? 'max-h-[80vh] h-[80vh]' : 'max-h-[60vh] h-[60vh] md:max-h-full md:h-full'">
+                :class="scrolled ? 'max-h-[80vh] h-[80vh] md:max-h-full md:h-full' : 'max-h-[60vh] h-[60vh] md:max-h-full md:h-full'">
                 <div class="h-full w-full p-6 md:p-8">
                     <div class="w-full md:max-w-none mx-auto">
-                        <h1 class="text-2xl md:text-3xl font-poppins text-center font-medium mb-6 md:mb-8 text-primary">
-                            Register
-                        </h1>
-
+                        <div class="mb-6 md:mb-8 flex flex-col gap-2">
+                            <h1 class="text-2xl md:text-3xl font-poppins font-medium  text-primary">
+                                Halo pengguna baru!
+                            </h1>
+                            <p class="text-gray-600">
+                                Masukkan data diri anda melalui form dibawah ini untuk mendaftar.
+                            </p>
+                        </div>
                         <form class="w-full grid grid-cols-1 sm:grid-cols-2 gap-4"
                             id="form_register"
                             action="<?= URL ?>/auth/register/signup"

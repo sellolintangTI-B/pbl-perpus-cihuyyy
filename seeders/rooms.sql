@@ -18,3 +18,6 @@ VALUES
 (gen_random_uuid(), 'Galeri Literasi', 2, 'Ruang Baca Kelompok.', 6, 12, FALSE, TRUE, FALSE, 'storage/rooms/galeri_literasi.jpg'),
 (gen_random_uuid(), 'Ruang Cendekia', 2, 'Ruang Baca Kelompok.', 6, 12, FALSE, TRUE, FALSE, 'storage/rooms/ruang_cendekia.jpg'),
 (gen_random_uuid(), 'Pusat Perancis', 2, 'Ruang Koleksi Bahasa Prancis.', 6, 12, FALSE, TRUE, FALSE, 'storage/rooms/pusat_prancis.jpg');
+
+-- Tanpa minimal dan maksimal
+(gen_random_uuid(), 'Ruang Rapat', 2, 'Ruang Koleksi Bahasa Prancis.', 6, 12, FALSE, TRUE, FALSE, 'storage/rooms/pusat_prancis.jpg');

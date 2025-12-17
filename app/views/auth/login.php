@@ -26,10 +26,14 @@ use App\Components\icon\Icon;
             <div class="col-span-1 bg-white rounded-t-4xl md:bg-transparent z-20 md:z-0 absolute md:static bottom-0 left-0 right-0 md:rounded-none shadow-2xl md:shadow-none max-h-[65vh] md:max-h-full h-[65vh] md:h-full">
                 <div class="h-full w-full overflow-y-auto no-scrollbar md:overflow-y-auto p-6 md:p-8">
                     <div class="w-full md:max-w-md mx-auto flex flex-col justify-start md:justify-center md:min-h-full">
-                        <h1 class="text-2xl md:text-3xl font-poppins text-center font-medium mb-6 md:mb-8 text-primary">
-                            Login
-                        </h1>
-
+                        <div class="mb-6 md:mb-8 flex flex-col gap-2">
+                            <h1 class="text-2xl md:text-3xl font-poppins font-medium  text-primary">
+                                Selamat datang!
+                            </h1>
+                            <p class="text-gray-600">
+                                Masukkan username dan password anda untuk login.
+                            </p>
+                        </div>
                         <form class="w-full flex flex-col gap-4"
                             action="<?= URL ?>/auth/login/signin"
                             method="post"

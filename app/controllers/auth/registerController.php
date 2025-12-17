@@ -65,14 +65,14 @@ class RegisterController extends Controller
             if ($errors) throw new CustomException($validator->getErrors());
 
 
-            $validateTurnStileBody = [
-                'secret' => $_ENV['TURNSTILE_SECRETKEY'],
-                'response' => $data['captcha'],
-                'remoteip' => $_SERVER['REMOTE_ADDR']
-            ];
+            // $validateTurnStileBody = [
+            //     'secret' => $_ENV['TURNSTILE_SECRETKEY'],
+            //     'response' => $data['captcha'],
+            //     'remoteip' => $_SERVER['REMOTE_ADDR']
+            // ];
 
-            $validateCaptcha = $this->validateCaptcha($validateTurnStileBody);
-            if(!$validateCaptcha) throw new CustomException('Gagal verifikasi captcha');
+            // $validateCaptcha = $this->validateCaptcha($validateTurnStileBody);
+            // if(!$validateCaptcha) throw new CustomException('Gagal verifikasi captcha');
 
             $checkByIdNumber = User::getByUniqueField(id_number: $data['id_number']);
             $checkByEmail = User::getByUniqueField(email: $data['email']);

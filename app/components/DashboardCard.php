@@ -30,9 +30,9 @@ class DashboardCard
                 <h2 class="font-medium text-xl min-h-[3.25rem] line-clamp-2">
                     <?= $label ?>
                 </h2>
-                <h2 class="font-normal text-sm">
+                <!-- <h2 class="font-normal text-sm">
                     <?= $filter_value ?>
-                </h2>
+                </h2> -->
             </div>
             <div class="flex-1 flex items-center justify-center gap-6">
                 <!-- <div>

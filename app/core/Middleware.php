@@ -134,6 +134,7 @@ class Middleware
         "/email/email/reset_password",
         "/email/email/booking_cancel",
         "/email/email/booking_code",
+        "/email/email/activation_alert",
         "/error/notfound/index",
     ];
 
