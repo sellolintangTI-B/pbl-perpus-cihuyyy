@@ -3,7 +3,6 @@
 use App\Components\Button;
 use App\Components\FormInput;
 use App\Components\icon\Icon;
-var_dump($data);
 ?>
 
 <div class="h-screen w-full md:bg-primary md:p-4">
