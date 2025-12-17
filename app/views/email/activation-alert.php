@@ -1,12 +1,3 @@
-<?php
-
-use Carbon\Carbon;
-
-$data['status'] = 'activated'; //atau 'deactivated'
-$data['name'] = "Suryatno";
-$data['email'] = "Suryatno.tik24.stu.pnj.ac.id";
-$data['reason'] =   "anda kebanyakan bercanda";
-?>
 <!DOCTYPE html>
 <html lang="id">
 
@@ -24,7 +15,7 @@ $data['reason'] =   "anda kebanyakan bercanda";
 
         .email-container {
             max-width: 600px;
-            margin: 0 auto;
+            margin: 100px auto;
             background-color: #ffffff;
         }
 
@@ -261,50 +252,15 @@ $data['reason'] =   "anda kebanyakan bercanda";
     <div class="email-container">
         <!-- Header -->
         <div class="header">
-            <h1><?= $data['status'] === 'activated' ? 'Akun Diaktifkan' : 'Akun Dinonaktifkan' ?></h1>
+            <h1>Pemberitahuan ! </h1>
         </div>
 
         <!-- Content -->
         <div class="content">
-            <h2>Halo, <?= $data['name'] ?>!</h2>
-
-            <div class="status-badge <?= $data['status'] === 'deactivated' ? 'deactivated' : '' ?>">
-                <?= $data['status'] === 'activated' ? 'AKUN AKTIF' : 'AKUN NONAKTIF' ?>
-            </div>
-
             <?php if ($data['status'] === 'activated'): ?>
-                <p>Kami dengan senang hati menginformasikan bahwa akun Anda telah <strong>diaktifkan</strong>. Anda sekarang dapat menggunakan semua layanan kami.</p>
+                <p><?= $data['message'] ?></p>
             <?php else: ?>
-                <p>Kami informasikan bahwa akun Anda telah <strong>dinonaktifkan</strong>. Anda tidak dapat mengakses layanan kami untuk sementara waktu.</p>
-            <?php endif; ?>
-
-            <!-- Account Details -->
-            <div class="account-details <?= $data['status'] === 'deactivated' ? 'deactivated' : '' ?>">
-                <h3>Detail Akun</h3>
-                <div class="detail-row">
-                    <div class="detail-label">Nama Lengkap:</div>
-                    <div class="detail-value"><?= $data['name'] ?></div>
-                </div>
-                <div class="detail-row">
-                    <div class="detail-label">Email:</div>
-                    <div class="detail-value"><?= $data['email'] ?></div>
-                </div>
-                <div class="detail-row">
-                    <div class="detail-label">Status Akun:</div>
-                    <div class="detail-value"><strong><?= $data['status'] === 'activated' ? 'Aktif' : 'Nonaktif' ?></strong></div>
-                </div>
-                <div class="detail-row">
-                    <div class="detail-label">Tanggal Update:</div>
-                    <div class="detail-value"><?= Carbon::now()->translatedFormat('D, d M Y - H:i') ?> WIB</div>
-                </div>
-            </div>
-
-            <?php if ($data['status'] === 'deactivated' && !empty($data['reason'])): ?>
-                <!-- Deactivation Reason -->
-                <div class="reason-box">
-                    <h3>Alasan Penonaktifan</h3>
-                    <p><?= $data['reason'] ?></p>
-                </div>
+                <p><?= $data['message'] ?></p>
             <?php endif; ?>
 
             <div class="divider"></div>

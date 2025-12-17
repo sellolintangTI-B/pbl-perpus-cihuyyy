@@ -71,7 +71,10 @@ class UserController extends Controller
             $periode = Carbon::parse($_POST['active_until'])->toDateTimeString();
             $approve = User::approve($id, $periode);
             if ($approve) {
-                Mailer::send($approve->email, 'VERIFIKASI AKUN SIMARU', 'Berhasil diverifikasi');
+                Mailer::send($approve->email, 'VERIFIKASI AKUN SIMARU', 'activation-alert.php', [
+                    'message' => 'Kami dengan senang hati menginformasikan bahwa akun Anda telah <strong>diaktifkan</strong>. Anda sekarang dapat menggunakan semua layanan kami.',
+                    'status' => 'activated'
+                ]);
                 ResponseHandler::setResponse("Akun berhasil disetujui, akun sudah aktif");
                 header('location:' . URL . '/admin/user/index');
             } else {
@@ -88,7 +91,10 @@ class UserController extends Controller
         try {
             $approve = User::delete($id);
             if ($approve) {
-                Mailer::send($approve->email, 'VERIFIKASI AKUN SIMARU', 'Akun anda tidak diverifikasi oleh admin, harap registrasi ulang');
+                Mailer::send($approve->email, 'VERIFIKASI AKUN SIMARU', 'activation-alert.php', [
+                    'status' => 'deactivated',
+                    'message' => 'Kami informasikan verifikasi akun Anda telah <strong>ditolak</strong>. Anda tidak akan dapat mengakses layanan kami.'
+                ]);
                 ResponseHandler::setResponse("Akun berhasil ditolak");
                 header('location:' . URL . '/admin/user/index');
             } else {

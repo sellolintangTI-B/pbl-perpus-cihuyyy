@@ -18,6 +18,7 @@ class EmailController extends Controller
     {
         $this->view('email/booking-code');
     }
+
     public function activation_alert()
     {
         $this->view('email/activation-alert');

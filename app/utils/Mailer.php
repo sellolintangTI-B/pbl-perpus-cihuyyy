@@ -12,10 +12,10 @@ class Mailer {
         
         $mail->isSMTP();
         $mail->Host = $_ENV['SMTP_HOST'];
-        $mail->SMTPAuth = false;  
-        // $mail->Username = $_ENV['SMTP_USERNAME'];
-        // $mail->Password = $_ENV['SMTP_PASS'];
-        // $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;  
+        $mail->SMTPAuth = true;  
+        $mail->Username = $_ENV['SMTP_USERNAME'];
+        $mail->Password = $_ENV['SMTP_PASS'];
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;  
         $mail->Port = $_ENV['SMTP_PORT'];  
         // $mail->SMTPDebug = 4;
         
