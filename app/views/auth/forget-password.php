@@ -58,7 +58,7 @@ use App\Components\icon\Icon;
 
             <!-- Image Section - Hidden on Mobile -->
             <div class="hidden md:flex col-span-1 h-full relative overflow-hidden items-center justify-center">
-                <img src="<?= URL ?>/public/storage/images/forgot-password-image.png"
+                <img src="<?= URL ?>/public/storage/images/forgot-password-image.webp"
                     alt="forgot password image"
                     class="w-3/4 object-contain md:rounded-lg" />
             </div>

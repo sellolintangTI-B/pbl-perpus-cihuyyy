@@ -11,7 +11,7 @@ use App\Components\icon\Icon;
             <!-- Image Section -->
             <div class="col-span-1 h-full relative md:static">
                 <div class="w-full h-full md:shadow-md shadow-gray-400 md:rounded-lg relative overflow-hidden">
-                    <img src="<?= URL ?>/public/storage/images/login-image.jpg"
+                    <img src="<?= URL ?>/public/storage/images/login-image.webp"
                         alt="login image"
                         class="w-full h-full object-cover md:rounded-lg" />
                     <div class="p-2 m-4 md:m-4 w-fit h-fit bg-primary/40 absolute top-0 left-1/2 md:left-0 -translate-x-1/2 md:translate-x-0 rounded-lg z-20">
